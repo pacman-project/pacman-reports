@@ -6,10 +6,10 @@ A repository to host the reports from UNIPI within the PaCMan project.
 
 1. Create your file DXY.tex or MSXY.tex.
 
-2. Add your document to the CMakeLists.txt following this template
+2. Add your document to the CMakeLists.txt following this template, and filling convieniently the options:
 
 ```
-ADD_LATEX_DOCUMENT(<tex_file>
+ADD_LATEX_DOCUMENT(DXY.tex
                    [BIBFILES <bib_files>]
                    [INPUTS <input_tex_files>]
                    [IMAGE_DIRS] <image_directories>
@@ -24,10 +24,10 @@ ADD_LATEX_DOCUMENT(<tex_file>
 
 ## Build
 
-`mkdir build && cd build && cmake ..`
+Typical CMake procuder, first type `mkdir build && cd build && cmake ..`
 
-Then you can type `make` or `make all` to generate all reports, or you can type `make DXY` or `make MSXY` to compile a specific report.
+And then you can use tab completrion after typing `make`. Or just type `make` or `make all` to compile all reports at once, or you can type `make DXY` or `make MSXY` to compile a specific report.
 
-All generated PDFs are copied into the `pdf` folder to access them easily.
+All PDFs are copied into the `pdf` folder to access them easily.
 
-The `make clean` command is not fully implemented, you need to delete by hand. Or you can clean the output of a single report `make DXY_clean` or `make MSXY`. Use tab completion to see different targets.
+Note: The `make clean` command is not implemented, you need to delete auxiliary files by hand. Or you can clean the output of a single report `make DXY_clean` or `make MSXY_clean`.
