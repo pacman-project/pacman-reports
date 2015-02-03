@@ -1,4 +1,4 @@
-PROJECT(pacman_unipi_report)
+PROJECT(pacman_unipi_reports)
 cmake_minimum_required(VERSION 2.8)
 
 # Set path for CMake
