@@ -2,3 +2,7 @@ build
 BUILD
 Build
 pdf
+*.bbl
+*.blg
+*.toc
+D42/D42.pdf
