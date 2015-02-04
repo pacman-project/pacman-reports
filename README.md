@@ -4,7 +4,8 @@ A repository to host the reports from UNIPI within the PaCMan project.
 
 ## Installing the report style
 
-The reportd use the style defined in the file `pacmanreport/pacamanreport.cls`. You need to install it on your tex system in order to compile the reports following these instructions:
+The reportd use the style defined in the file `templates/pacamanreport.cls`. 
+You need to install it on your tex system in order to compile the reports following these instructions:
 
 ### On Windows/MikTeX:
 * Add the path to the `templates` folder using the admin menu of MikTeX:
@@ -14,6 +15,10 @@ The reportd use the style defined in the file `pacmanreport/pacamanreport.cls`. 
 * Refresh the MikTeX database:
 
 ![Image of MikTeX/General](http://i.stack.imgur.com/1zp0h.png)
+
+### On Windows/TeXLive:
+Just copy the .cls file into the local texmf folder.
+In my laptop I just copied this is in: C:\texlive\texmf-local\tex\latex\local
 
 ### On Unix-based (at least Uuntu 14.04):
 
