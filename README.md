@@ -2,27 +2,30 @@
 
 A repository to host the reports from UNIPI within the PaCMan project.
 
+
 ## Adding a new document
 
-1. Create your file DXY.tex or MSXY.tex.
+1. Create your folder DXY or MSXY containing your DXY/MSXY.tex, and also `bibliography`, `images`, as subfolders. We recommend the use of `\graphicspath{}` to access `shared_images`.
 
-2. Add your document to the CMakeLists.txt following this template, and filling convieniently the options:
+### For CMakers:
+
+2. Add a CMakeLists.txt following this template, and filling convieniently the options:
 
 ```
+project(DXY)
+cmake_minimum_required(VERSION 2.8)
+
 ADD_LATEX_DOCUMENT(DXY.tex
                    [BIBFILES <bib_files>]
-                   [INPUTS <input_tex_files>]
-                   [IMAGE_DIRS] <image_directories>
-                   [IMAGES] <image_files>
-                   [CONFIGURE] <tex_files>
-                   [DEPENDS] <tex_files>
-                   [MULTIBIB_NEWCITES] <suffix_list>
-                   [USE_INDEX] [USE_GLOSSARY] [USE_NOMENCL]
-                   [DEFAULT_PDF] [DEFAULT_SAFEPDF] [DEFAULT_PS] [NO_DEFAULT]
-                   [MANGLE_TARGET_NAMES])
+                   [IMAGE_DIRS] image ../shared_images
+                   )
 ```
 
+3. Add in the main CMakeLists.txt your folder with `add_subdirectory(DXY`
+
 ## Build
+
+### For CMakers:
 
 Typical CMake procuder, first type `mkdir build && cd build && cmake ..`
 

@@ -42,6 +42,7 @@
 \typeout{PACMANREPORT style, Jeremy L Wyatt Feb 2014, Geert-Jan M. Kruijff, July 2009}
 \typeout{==============================================}
 \RequirePackage{epsfig,tabularx,graphicx}
+\graphicspath{{shared_images/}{../shared_images/}}
 \usepackage[scaled=0.92]{helvet}
 %%\RequirePackage{concrete}
 
@@ -86,7 +87,7 @@
 \newcommand{\headerauthor}[1]{\renewcommand{\myauthor}{#1}}
 \newcommand{\headertitle}[1]{\renewcommand{\mytitle}{#1}}
 
-\newcommand{\mylogo}{images/pacman-logo-long-red.pdf}
+\newcommand{\mylogo}{pacman-logo-long-red.pdf}
 \newcommand{\reportlogo}[1]{\renewcommand{\mylogo}{#1}}
 
 
