@@ -1,1 +1,0 @@
-../pacmanreport.cls
