@@ -5,11 +5,11 @@ A repository to host the reports from UNIPI within the PaCMan project.
 
 ## Adding a new document
 
-1. Create your folder DXY or MSXY containing your DXY/MSXY.tex, and also `bibliography`, `images`, as subfolders. We recommend the use of `\graphicspath{}` to access `shared_images`.
+* Create your folder DXY/MSXY containing your DXY/MSXY.tex, and also `bibliography`, `images`, as subfolders. We recommend the use of `\graphicspath{}` to access `shared_images`.
 
 ### For CMakers:
 
-2. Add a CMakeLists.txt following this template, and filling convieniently the options:
+* Add a CMakeLists.txt following this template, and filling convieniently the options:
 
 ```
 project(DXY)
@@ -21,15 +21,15 @@ ADD_LATEX_DOCUMENT(DXY.tex
                    )
 ```
 
-3. Add in the main CMakeLists.txt your folder with `add_subdirectory(DXY`
+* Add your folder to the main CMakeLists.txt  with `add_subdirectory(DXY)`
 
 ## Build
 
 ### For CMakers:
 
-Typical CMake procuder, first type `mkdir build && cd build && cmake ..`
+* Type `mkdir build && cd build && cmake ..`
 
-And then you can use tab completrion after typing `make`. Or just type `make` or `make all` to compile all reports at once, or you can type `make DXY` or `make MSXY` to compile a specific report.
+* Type `make` and use tab completion. Or hit `make` / `make all` to compile all reports at once, or hit `make DXY` or `make MSXY` to compile a specific report.
 
 All PDFs are copied into the `pdf` folder to access them easily.
 
