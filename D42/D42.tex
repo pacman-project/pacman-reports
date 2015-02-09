@@ -4,6 +4,22 @@
 \usepackage{graphicx}
 \graphicspath{{images/}{../shared_images/}}
 
+% The following is used to make packages hyperref and cite work together
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+
+\usepackage[bookmarks=true,hyperfootnotes=true]{hyperref}
+\hypersetup{
+			colorlinks=true,
+			linkcolor=red,
+			anchorcolor=blue,
+			citecolor=blue,
+			urlcolor=blue,
+            filecolor=blue,
+			pdftitle={Deliverable 4.2}
+}
+
 %% ================================
 %% PROJECT INFO
 
@@ -82,6 +98,30 @@ What does the report actually present? How have the tasks been addressed? To wha
 % \subsection{Relation to the state-of-the-art}
 % How are the obtained results related to the state-of-the-art?
 % This part is usually discussed in the corresponding subsection. Therefore, % a global 'Relation to the state-of-the-art' is unnecessary
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Work directly into the following .tex files
+
+% To be prepared by: Manuel Bonilla
+% Grasp Planning via a Bounding Box Object Decomposition
+\input{./inputFiles/GraspPlanningBoundingBoxes.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Hamal Marino
+% High-Level Planning for Dual Arm Goal-Oriented Tasks
+\input{./inputFiles/HighLevelPlanningDualArm.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Marco Gabiccini
+% Computational Framework for Environment-Aware Robotic Manipulation 
+% Planning
+\input{./inputFiles/ComputationalFramework.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Annexes}
 
