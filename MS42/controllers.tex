@@ -1,0 +1,335 @@
+%!TEX root = MS42.tex
+\section{Implemented Controllers}\nocite{siciliano09}\nocite{bicchi13}
+Due to the limited number of control strategies provided by the manufacturer for the KUKA LWR IV robot, a new set of ROS-enabled controllers has been developed in \textit{C++} language\footnote{Source code available at \url{https://github.com/enricocorvaglia/kuka-lwr}}, following some interesting paradigms available in the robotics literature.
+
+\subsection{Robot Control Problem Definition}
+Consider the expression of the dynamics of a $n$-links robot manipulator
+\begin{equation}
+M(q)\ddot{q} + C(q,\dot{q})\dot{q} + g(q) = \tau,
+\label{eq:robotdynamics}
+\end{equation}
+where $M\in\mathbb{R}^{n \times n}$ is the manipulator inertia matrix, $C\in\mathbb{R}^{n \times n}$ the Coriolis and centripetal forces matrix, $g\in\mathbb{R}^n$ is the gravity forces vector, $q\in\mathbb{R}^n$ is the set of configuration variables for the robot and $\tau\in\mathbb{R}^n$ denotes the torques applied at the joints. A compact version of \eqref{eq:robotdynamics} could be written in the form
+\begin{equation}
+M(q)\ddot{q} + n(q,\dot{q}) = \tau
+\label{eq:compactrobotdynamics}
+\end{equation}
+where $n(q,\dot{q}) = C(q,\dot{q})\dot{q} + g(q)$. The problem of the control can be formalized as the choice of the torques $ \tau $ that will stimulate the robot to behave according to some desired dynamics, such as reaching a set-point or tracking a trajectory.
+\subsubsection{Joint Space VS Operational Space Formulation}
+A classical approach for manipulators control is to define a task in the joint space, i.e.\ providing a motion law for specific joints to be followed. An alternative way to define the motion law in task space is the \textit{Operational Space Formulation} \cite{khatib87}, in which the desired behavior of the robot can be described through the dynamics of its end-effector. This approach allows to formulate tasks in a more human-like way, where the importance is put more on the manipulation task rather than on the internal behaviour of the robot.
+
+\subsection{Computed Torque Control}
+Given desired joint positions, velocities and accelerations, the required joint torques can be computed using \eqref{eq:robotdynamics}, resulting in a \textit{feedforward} (open-loop) control law
+\begin{equation}
+\tau(q,\dot{q},e,\dot{e})\vert_{q \equiv q_d} = M(q_d)\ddot{q_d} + C(q_d,\dot{q_d})\dot{q_d} + g(q_d).
+\end{equation}
+But the limit of this control law is that, the tracking is assured only if the initial condition errors are zero ($ q(0)=q_d(0),\dot{q}(0)=\dot{q_d}(0) $). To cope with these model uncertainties, a \textit{feedback} action must be added to the controller, implemented as a simple PD. The result is the computed torque control law (control scheme in \autoref{fig:computedtorque})
+\begin{equation}
+\tau(q,\dot{q},e,\dot{e}) = \underbrace{M(q)\ddot{q_d} + C(q,\dot{q})\dot{q} + g(q)}_{\tau_{feedforward}} + 
+\underbrace{K_p'e + K_v'\dot{e}}_{\tau_{feedback}},
+\end{equation}
+where $ K_p' $ and $ K_v' $ are positive-definite matrices and $ e = q_d-q $ is the tracking error.
+Furthermore, imposing $ K_p' = M(q)K_p $ and $ K_v' = M(q)K_v $ leads to
+\begin{equation}
+\tau(q,\dot{q},e,\dot{e}) = M(q)(\ddot{q_d} + K_{p}e + K_{v}\dot{e}) + C(q,\dot{q})\dot{q} + g(q).
+\end{equation}
+It is important to note that, if matrices $ K_p $ and $ K_v $ are diagonal, it leads to $ n $ decoupled second-order systems, where $ n $ is the number of the robot joints. In this way, the asymptotically stability of the equilibrium $ e = \dot{e} =0 $ is guaranteed, according to the closed-loop poles placement rules.
+
+ \begin{figure}[h]
+ \centering
+ \begin{tikzpicture}[auto,node distance=2.5cm,>=latex']
+ % placing nodes
+ \node [input](input){};
+ \node [sum, right of=input](sum1){};
+ \node [block, right of=sum1](feedback){Feedback};
+ \node [block, above of=feedback, node distance=2cm](feedforward){Feedforward};
+ \node [sum, right of=feedback](sum2){};
+ \node [block, right of=sum2](motors){Motors};
+ \node [output, right of=motors](output){};
+ \node [block, below of=sum2, node distance=2cm](measurements){Measurements};
+ % connecting nodes
+ \draw [->](input) -- node[near start]{$q_d,\dot{q_d},\ddot{q_d}$} node[name=in,near end,below]{}(sum1);
+ \draw [->](in) |- (feedforward);
+ \draw [->](feedforward) -| node[near start]{$\tau_{ff}$} node[pos=0.95]{$+$}(sum2);
+ \draw [->](sum1) -- node{$e$} (feedback);
+ \draw [->](feedback) -- node{$\tau_{fb}$}(sum2);
+ \draw [->](sum2) -- (motors);
+ \draw [->](motors) -- node[name=I]{$I$}(output);
+ \draw [->](I) |- (measurements);
+ \draw [->](measurements) -| node[pos=0.95]{$-$} node[near end]{$q,\dot{q}$}(sum1); 
+ \end{tikzpicture}
+ \caption[Control scheme for Computed Torque controller.]{Control scheme for Computed Torque controller. $I$ is the vector of output current measured from joint actuators which is then transduced to joint positions and velocity.}
+ \label{fig:computedtorque}
+ \end{figure}
+
+\subsection{Inverse Kinematics-based Control}
+Given an end-effector position and orientation, the problem of inverse kinematics consists in determining the corresponding joint configurations. Since the system to solve is in general nonlinear, it's not possible to compute a solution in closed-form. This leads to different scenarios, i.e.\ no admissible solutions in presence of structure singularities, multiple or infinite solutions if the robot is redundant (which is the case of KUKA LWR IV, see Section \ref{sec:therobot}). As an extension of the forward and inverse kinematics problem, it is also possible to define a relationship between the end-effector linear and angular velocity and the joint velocities as follows
+\begin{equation}
+\dot{x} = J\dot{q} \hspace{1cm} q \in \mathbb{R}^n,\,x \in \mathbb{R}^m
+\label{eq:diffkinematics}
+\end{equation}
+representing the \textit{Differential Kinematics} equation. The mapping is described by the \textit{Jacobian} matrix $J \in \mathbb{R}^{m \times n}$ which depends on the robot configuration. Inverting \eqref{eq:diffkinematics}, leads to the \textit{Inverse Differential Kinematics} problem
+\begin{equation}
+\dot{q} = J^+\dot{x}
+\end{equation}
+where $J^+$ is a generalized inverse of the Jacobian. For the project's purpose, it has been implemented in ROS as the Moore-Penrose damped pseudo-inverse through the SVD method, denoted in the sequel as $J^{\dagger}$.\\
+In view of the operational space formulation, given a desired end-effector pose $x_d$ and velocity $\dot{x}_d$, a task can be defined as 
+\begin{equation}
+e = x_d - x(t)
+\end{equation}
+where $x(t)$ is the end-effector pose at time t.
+The related reference motion in the task space is
+\begin{equation}
+\dot{e}^* = \dot{x}_d + K(x_d - x) = \dot{x}_d + Ke
+\end{equation}
+where $K$ is a positive definite gain matrix (usually diagonal).
+
+% \begin{figure}[h]
+% \centering
+% \begin{tikzpicture}[auto,node distance=2cm,>=latex']
+% % placing nodes
+% \node [input](input1){};
+% \node [input, above of=input1, node distance=1.5cm](input2){};
+% \node [sum, right of=input1](sum1){};
+% \node [block_small, right of=sum1](K){$K$};
+% \node [sum, right of=K](sum2){};
+% \node [block_small, right of=sum2](jac_inv){$J^{-1}(q)$};
+% \node [sum, right of=jac_inv](integral){$\int$};
+% \node [output, right of=integral](output){};
+% \node [block, below of=sum2](forw_kin){Forward Kinematics};
+% \coordinate [above of=integral,node distance=1.5cm](tmp);
+% %% connecting nodes
+% \draw [->](input1) -- node[pos=0]{$x_d$} (sum1);
+% \draw [->](input2) -| node[pos=0]{$\dot{x}_d$} (sum2);
+% \draw [->](sum1) -- node{$e$} (K);
+% \draw [->](K) -- (sum2);
+% \draw [->](sum2) -- (jac_inv);
+% \draw [->](jac_inv) -- node{$\dot{q}$} (integral);
+% \draw [->](integral) -- node[intersection,anchor=base,name=q]{} 
+% 		   node[near end]{$q$} (output);
+% \draw [->](q) |- (tmp) -| (jac_inv);
+% \draw [->](q) |- (forw_kin);
+% \draw [->](forw_kin) -|  node[pos=0.55]{$x_e$} node[pos=0.95]{$-$} (sum1); 
+% \end{tikzpicture}
+
+% \caption{Control scheme for Differential Inverse Kinematics-based controller.}
+% \label{fig:diffinversekinematics}
+% \end{figure}
+
+\subsubsection{Hierarchical Inverse Kinematics}
+It is possible to exploit the redundancy of the manipulator, i.e.\ when the rank of $J$ is smaller than $n$, to assign a secondary task by projecting an arbitrary vector on the null-space of the Jacobian, thus not affecting the higher priority task. So, considering two tasks $e_1$ and $e_2$, the following control law will perform exactly $\dot{e}_1^*$ and, if possible, $\dot{e}_2^*$
+\begin{equation}
+\dot{q} = J_1^{\dagger}\dot{e}_1^* + (J_{2}P_1)^{\dagger}(\dot{e}_2^* - J_{2}J_1^{\dagger}\dot{e}_1^*)
+\end{equation}
+This method is called \textit{Stack of Tasks} and can be generalized for $k$ tasks, ensuring a correct hierarchy between them \cite{mansardICAR09},\cite{mansardIEEE09}
+\begin{equation}
+\begin{dcases}
+\dot{q}_0 = 0\\
+P_0 = I_n\\
+\dot{q}_i = \dot{q}_{i-1} + (J_{i}P_{i-1})^{\dagger}(\dot{e}_i^* - J_{i}\dot{q}_{i-1})\\
+P_i = P_{i-1} + (J_{i}P_{i-1})^{\dagger}(J_{i}P_{i-1})
+\end{dcases}
+\end{equation}
+where $P_i$ is the projection operator onto the null-space of $J_i$ and the robot joint velocity realizing all the tasks is $\dot{q}=\dot{q}_k$. This way, all the tasks are decoupled from each other and if a task won't be feasible it will be executed only at its best without disturbing the higher priority tasks.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{hik}
+\caption{Simulated robot performing two tasks at different priority levels using Hierarchical Inverse Kinematics.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{plots/invkin}
+\caption{Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Kinematics.}
+\end{figure}
+
+\subsection{Inverse Dynamics-based Control}
+The problem of inverse dynamics in the operational space consists in the determination of the joint torques $\tau$ that realizes a specific motion $\ddot{e}^*$ assigned in terms of $\ddot{x}_d,\dot{x}_d,x_d$, the end-effector desired acceleration,velocity and position
+\begin{equation}
+\ddot{e}^* = \ddot{x}_d + K_d(\dot{x}_d - \dot{x}) + K_p(x_d - x) = 
+\ddot{x}_d + K_{d}\dot{e} + K_{p}e
+\end{equation}
+where $K_p$ and $K_d$ are positive definite diagonal matrices. Recalling the manipulator dynamic model in the compact form \eqref{eq:compactrobotdynamics}, the choice of the \textit{inverse dynamics control}
+\begin{equation}
+\tau = M(q)y + n(q,\dot{q})
+\end{equation}
+leads to a double integrators system
+\begin{equation*}
+\ddot{q} = y
+\end{equation*}
+where the control $y$ is designed to track the desired motion $\ddot{e}^*$ through the following second-order relationship
+\begin{equation}
+\ddot{e}^* = J(q)\ddot{q} + \dot{J}(q,\dot{q})\dot{q}
+\end{equation}
+It is then possible to write, omitting dependencies in $q$ and its derivatives
+\begin{equation}
+\ddot{e}^* + b = JM^{-1}\tau
+\label{eq:tempinvdyn}
+\end{equation}
+where $b = JM^{-1}n - \dot{J}(q,\dot{q})\dot{q}$.
+Defining $\Omega = JM^{-1}J^T$ and $\Lambda = \Omega^{-1}$ and multiplying \eqref{eq:tempinvdyn} by $\Lambda$ leads to
+\begin{equation}
+\Lambda\ddot{e}^* + {\Lambda}b = \bar{J}^T\tau
+\label{eq:temp2invdyn}
+\end{equation}
+where $\bar{J} = M^{-1}J^T\Lambda$ is the generalized inverse of $J$ weighted by $M^{-1}$. Finally, multiplying \eqref{eq:temp2invdyn} by $J^T$ it is possible to define the control law that realizes the reference motion $\ddot{e}^*$
+\begin{equation}
+\tau = J^T\Lambda(\ddot{e}^* + b)
+\label{eq:onetaskinversedynamics}
+\end{equation}
+\subsubsection{Hierarchical Inverse Dynamics}
+Equation \eqref{eq:onetaskinversedynamics} implements the inverse dynamics control for a single task $e$. As for inverse kinematics, the manipulator redundancy can be exploited also at dynamics level to give the possibility to execute other lower priority tasks, using the \textit{Stack of Tasks} framework (applied to $k$ tasks)
+\begin{equation}
+\begin{dcases}
+\tau_0 = 0\\
+{N_0}^T = I_n\\
+\tau_i = \tau_{i-1} + {J_i}^T\Lambda_{i\vert i-1}({\ddot{e}_i}^* + b_i - J_{i}M^{-1}\tau_{i-1}) \\
+{N_i}^T = {N_{i-1}}^T - {J_i}^T\Lambda_{i\vert i-1}J_{i}M^{-1}
+\end{dcases}
+\end{equation}
+where $\Lambda_{i\vert i-1} = {\Omega_{i\vert i-1}}^{-1}$ and ${\Omega_{i\vert i-1}} = {J_i}^{T}M^{-1}{N_{i-1}}^TJ_i$. The projection operator is ${N_i}^T$ and the control $\tau$ applied to the robot is $\tau_k$.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{hid}
+\caption{Simulated robot performing two tasks at different priority levels using Hierarchical Inverse Dynamics.}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{plots/invdyn}
+\caption[Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Dynamics.]{Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Dynamics. Notice in the zoomed plot how the higher priority task converges to zero faster.}
+\end{figure}
+\subsubsection{Minimum Effort Control}
+Another way to take advantage of the redundant DOFs, other than performing additional motion tasks, is to use the Jacobian null-space projection method to maximize an objective function in the joint space as follows
+\begin{equation}
+\tau = J^T\Lambda(\ddot{e}^* + b) + N^T\tau_{null}
+\label{eq:projectednullspaceobjective}
+\end{equation}
+where in general $\tau_{null} = \nabla_{q}H(q)$ and $H(q)$ is a differentiable objective funcion to be maximized, implementing a specific criterion with the goal of moving the manipulator in its gradient direction. Taking inspiration from human manipulation, it is possible to reproduce those natural motions in an efficient way, setting the objective function $H(q) = g(q)^{T}Wg(q)$, where $g(q)$ is the gravitational force vector as in \eqref{eq:robotdynamics} and $W$ is a constant diagonal weighting matrix \cite{ajoudani13}. This way, control law \eqref{eq:projectednullspaceobjective} will minimize joint masses and payload gravitational forces while guaranteeing asymptotic stability of the system and not affecting the primary motion task referenced by $\ddot{e}^*$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{minimumeffort_rviz}
+\caption{Simulated robot tracking a circle figure using Minimum Effort Control.}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/minimumeffort_X}
+		\subcaption{X-Axis}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/minimumeffort_Y}
+		\subcaption{Y-Axis}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/minimumeffort_Z}
+		\subcaption{Z-Axis}
+	\end{subfigure}
+	\caption{Axis-specific end-effector trajectories tracking a circle figure using Minimum Effort Control.}
+\end{figure}
+
+\subsection{Backstepping Control}
+Backstepping is a recursive methodology for designing both feedback control laws and associated Lyapunov functions in a systematic way, with the goal of obtaining a good flexibility over the nonlinearities. Consider the following nonlinear system in which the origin is an equilibrium
+\begin{equation}
+\begin{dcases}
+\dot{\xi}_1 = f(\xi_1) + g(\xi_1)\xi_2 \\
+\dot{\xi}_2 = h(\xi_1,\xi_2) + \ell(\xi_1,\xi_2)u
+\end{dcases}
+\label{eq:backsteppingsystem}
+\end{equation}
+with $\xi_1\in\mathbb{R}^{n_1}, \xi_2\in\mathbb{R}^{n_2},u\in\mathbb{R}^{n_2}$ and $\ell(\xi_1,\xi_2)\in\mathbb{R}^{n_2 \times n_2}$ is invertible for all $\xi_1,\xi_2$. Assume that a stabilizing feedback law $u'=\Gamma(\xi_1)$ exists for the subsystem 
+\begin{equation}
+\dot{\xi}_1 = f(\xi_1) + g(\xi_1)u'
+\end{equation}
+and that a Lyapunov function $V(\xi_1)$ is postulated such that
+\begin{equation}
+\dot{V}(\xi_1) = V_{\xi_1}(f + g\Gamma)
+\end{equation}
+is at least negative semi-definite, with $V_{\xi_1} = \frac{\partial{V}}{\partial{\xi_1}}$. So, the control of the whole system \eqref{eq:backsteppingsystem} is obtained making $\xi_2$ to track the value of $u'=\Gamma(\xi_1)$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{backstepping_rviz}
+	\caption{Simulated robot tracking a 8 figure using Backstepping Control.}
+\end{figure}
+The backstepping control method can be applied to a robotic manipulator described by its dynamic model \eqref{eq:robotdynamics}, designing the joint torques $\tau$ that track the trajectory $q_d(t)$. Defining the tracking error $e=q-q_d$ and its derivative $\dot{e}=w$, it is possible to consider the following system
+\begin{equation}
+\begin{dcases}
+\dot{e} = w\\
+\dot{w} = \ddot{q}-\ddot{q}_d = -\ddot{q}_d - M^{-1}\left(C\dot{q}+g(q)\right) + M^{-1}\tau
+\end{dcases}
+\label{eq:lagrangianbackstepping}
+\end{equation}
+which can be interpreted in the form of \eqref{eq:backsteppingsystem}, imposing $e=\xi_1, w=\xi_2, f(e)=0, g(e)=1, \ell(e,t)=M(e+q_d)^{-1}$ and $h(e,w,t)=-\ddot{q}_d(t)-M^{-1}\left(C(\dot{e}+\dot{q}_d)+g\right)$. After performing a stability study with Lyapunov control functions, the backstepping control law for a fully actuated manipulator can be defined as
+\begin{equation}
+\tau = M\ddot{q}_r + C\dot{q}_r + g(q) - K_{d}s - e
+\label{eq:backsteppingcontrollaw}
+\end{equation}
+where
+\begin{align*}
+s &= \dot{e} + \Lambda{e}\\
+&= \dot{q} - (\dot{q}_d - \Lambda{e}) = \dot{q} - \dot{q}_r
+\end{align*}
+and $\dot{q}_r$ is the so-called reference velocity. 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/backstepping_X}
+		\subcaption{X-Axis}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/backstepping_Y}
+		\subcaption{Y-Axis}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/backstepping_Z}
+		\subcaption{Z-Axis}
+	\end{subfigure}
+	\caption{Axis-specific end-effector trajectories tracking a 8 figure using Backstepping Control.}
+\end{figure}
+
+\subsection{Dynamic Sliding PID Control}
+Regarding simple tasks such as set-point regulation, a proportional-integral-derivative (PID) controller would be enough, but the limitation of this class of controllers is that they can't achieve asymptotic stability for trajectory tracking. However, it is possible to enhance PID controllers by applying to them the sliding mode theory, as explained in the sequel \cite{parravega03}. So, given a desired motion specified by $q_d,\dot{q}_d,\ddot{q}_d\in\mathbb{R}^n$, it is analyzed the problem of designing the controller $\tau$ which guarantees the tracking of $q_d(t)$ without any knowledge of the system dynamic model and without introducing high-frequency components, by considering the following steps
+\begin{align}
+&\dot{q}_r = \dot{q}_d - \alpha\Delta{q} + S_d - \gamma\sigma \label{eq:sliding_qdotref}\\
+&\dot{\sigma} = sgn(S_q)
+\end{align}
+where $\Delta{q}$ is the tracking error $q-q_d$, $\alpha,\gamma\in\mathbb{R}^{n \times n}$ are diagonal positive definite gain matrices and $sgn(S_q)$ represents the input-wise discontinuous signum function of $S_q\in\mathbb{R}^n$, the so-called sliding surface, being defined by
+\begin{align}
+&S_q = S - S_d\\
+&S = \Delta{\dot{q}} + \alpha\Delta{q}\\
+&S_d = S(t_0)e^{-\kappa(t-t_0)}
+\end{align}
+with $\kappa > 0$.
+Considering a new error coordinates $S_r$ defined as
+\begin{equation}
+S_r = \dot{q} - \dot{q}_r
+\end{equation}
+and substituting $\dot{q}_r$ as in \eqref{eq:sliding_qdotref}, it leads to
+\begin{equation}
+S_r = S_q + \gamma\sigma
+\end{equation}
+Finally, the controller $\tau$ which realizes the tracking of $q_d(t)$ in closed loop is
+\begin{equation}
+\tau = -K_{d}S_r
+\end{equation}
+where $K_d\in\mathbb{R}^{n \times n}$ is a diagonal symmetric positive definite matrix. According to the controller structure, the semi-global exponential tracking is assured and the passivity of the system is preserved, as long as $\gamma$ in \eqref{eq:sliding_qdotref} and $K_d$ are large enough, for small initial conditions.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/slidingmode_j1}
+		\subcaption{Joint 1}
+	\end{subfigure}
+	\\
+	\begin{subfigure}[t]{\textwidth}
+		\includegraphics[height=0.275\textheight]{plots/slidingmode_j3}
+		\subcaption{Joint 3}
+	\end{subfigure}
+	\caption{Joint-specific sine waves trajectories tracking using Dynamic Sliding PID Control.}
+\end{figure}
+
+\newpage

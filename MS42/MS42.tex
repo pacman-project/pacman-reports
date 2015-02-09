@@ -2,6 +2,20 @@
 
 \usepackage{helvet}
 \usepackage{graphicx}
+
+%%=== Aditional packages
+\usepackage{hyperref} % references
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{subcaption}
+
+%%=====================
+
+
 \graphicspath{{images/}{../shared_images/}}
 
 %% ================================
@@ -17,12 +31,14 @@
 
 \title{Reactive haptic exploration control strategies ready for integration with planning}
 \deliverableid{Milestone 4.2}
-\author{Carlos Rosales, Federico Spinelli, Manuel Bonilla, Marco Gabiccini}
+\author{Manuel Bonilla, Carlos Rosales, Federico Spinelli, Marco Gabiccini}
+% \author{Carlos Rosales, Federico Spinelli, Manuel Bonilla, Marco Gabiccini}
 \address{Centro di Ricerca ``E. Piaggio'', Universit\`{a} di Pisa}
-\email{carlos.rosales@for.unipi.it}
+% \email{carlos.rosales@for.unipi.it}
+\email{manuel.bonilla@centropiaggio.unipi.t}
 \headertitle{Exploration strategies}
-\headerauthor{C. Rosales, F. Spinelli, M. Bonilla, M. Gabiccini}
-
+% \headerauthor{C. Rosales, F. Spinelli, M. Bonilla, M. Gabiccini}
+\headerauthor{M. Bonilla, F. Spinelli, M. Bonilla, M. Gabiccini}
 \duedate{2015-02-28}
 \submissiondate{2014-02-28}
 \leadpartner{Universit\`{a} di Pisa}
@@ -33,8 +49,16 @@
 %% UNCOMMENT: to get the logo; if you've copied this file to a directory yearX/wpY/ then this should work
 \reportlogo{pacmanlogo.png}
 
-
-
+%% ======= Defining tikz style
+\tikzstyle{block} = [draw, fill=blue!5, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{block_small} = [draw, fill=blue!5, rectangle, 
+    minimum height=3em, minimum width=3em]
+\tikzstyle{sum} = [draw, fill=blue!5, circle]
+\tikzstyle{intersection} = [fill,circle,minimum size=3pt,inner sep=0pt]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+%%==============
 
 
 \begin{document}
@@ -58,27 +82,33 @@
 
 \newpage
 
-\section{Milestone Summary and Context}
+% \section{Milestone Summary and Context}
 
-What was the milestone that you are examining? What were the criteria for achieving it? What role does achievement of the milestone play in the whole project? How will its achievement as presented in this report contribute to the PaCMan scenarios and prototypes? 
-
-
-\newpage
-
-\section{Report on Milestone Achievement}
-
-How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? In particular what concrete acceptance tests, or experimental results show that the milestone has been achieved.
+% What was the milestone that you are examining? What were the criteria for achieving it? What role does achievement of the milestone play in the whole project? How will its achievement as presented in this report contribute to the PaCMan scenarios and prototypes? 
 
 
-\section{Annexes}
+% \newpage
 
-Here you should briefly describe the papers attached that provide evidence for achievement of the milestone. Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
+% \section{Report on Milestone Achievement}
 
-
-
-%\bibliographystyle{IEEEtran}
-%\bibliography{bibibliography/SOME_BIB_FILE}
+% How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? In particular what concrete acceptance tests, or experimental results show that the milestone has been achieved.
 
 
+% \section{Annexes}
+
+% Here you should briefly describe the papers attached that provide evidence for achievement of the milestone. Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
+
+
+
+\input{intro}
+\input{kuka}
+\input{software}
+\input{controllers}
+\input{issues}
+\input{conclusions}
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibibliography/bibliography}
 
 \end{document}
