@@ -49,16 +49,7 @@
 %% UNCOMMENT: to get the logo; if you've copied this file to a directory yearX/wpY/ then this should work
 \reportlogo{pacmanlogo.png}
 
-%% ======= Defining tikz style
-\tikzstyle{block} = [draw, fill=blue!5, rectangle, 
-    minimum height=3em, minimum width=6em]
-\tikzstyle{block_small} = [draw, fill=blue!5, rectangle, 
-    minimum height=3em, minimum width=3em]
-\tikzstyle{sum} = [draw, fill=blue!5, circle]
-\tikzstyle{intersection} = [fill,circle,minimum size=3pt,inner sep=0pt]
-\tikzstyle{input} = [coordinate]
-\tikzstyle{output} = [coordinate]
-%%==============
+\include{tikz_definitions}
 
 
 \begin{document}
@@ -66,7 +57,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent In  this milestone 
+\noindent In this milestone we explain the work performed to integrate planning and execution phases involving grasping and object exploration tasks. 
 \end{abstract}
 
 
@@ -82,14 +73,18 @@
 
 \newpage
 
-% \section{Milestone Summary and Context}
+\section{Milestone Summary and Context}
+
+This milestone report describes the work performed to integrate planning and execution phases regarding to grasping and object exploration (milestone 4.2). The main contributions are 1) the technical implementation of hardware interfaces to command the KUKA LWR arm using ROS and 2)  the implementation of different classical controllers to move the robot using torque references.
+
+The first contribution is useful to command the robot using torque commands easier that using the actual KUKA FRI interface. The second helps to execute trajectories coming from planning phase, and to move the robot to desired references under different situations such as dynamic model uncertainty and different redundancy resolution at kinematic and dynamic levels. These contributions have impact in the implementation of the PaCMan Scenarios and demos and will be used for high-level exploration planning.
 
 % What was the milestone that you are examining? What were the criteria for achieving it? What role does achievement of the milestone play in the whole project? How will its achievement as presented in this report contribute to the PaCMan scenarios and prototypes? 
 
 
 % \newpage
 
-% \section{Report on Milestone Achievement}
+\section{Report on Milestone Achievement}
 
 % How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? In particular what concrete acceptance tests, or experimental results show that the milestone has been achieved.
 
