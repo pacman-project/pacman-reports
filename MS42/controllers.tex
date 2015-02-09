@@ -1,6 +1,5 @@
-%!TEX root = MS42.tex
-\section{Implemented Controllers}\nocite{siciliano09}\nocite{bicchi13}
-Due to the limited number of control strategies provided by the manufacturer for the KUKA LWR IV robot, a new set of ROS-enabled controllers has been developed in \textit{C++} language\footnote{Source code available at \url{https://github.com/enricocorvaglia/kuka-lwr}}, following some interesting paradigms available in the robotics literature.
+ \section{Implemented Controllers}\nocite{siciliano09}\nocite{bicchi13}
+Exploiting the force $\tau_{FRI}$ in \eqref{eq:axisspecificstiffnesscontroller} (which will be the control strategy used for this project's purpose) as external torque command, a new set of ROS-enabled controllers has been developed in \textit{C++} language\footnote{Source code available at \url{https://github.com/CentroEPiaggio/kuka-lwr}}, following some interesting paradigms available in the robotics literature.
 
 \subsection{Robot Control Problem Definition}
 Consider the expression of the dynamics of a $n$-links robot manipulator
@@ -19,9 +18,9 @@ A classical approach for manipulators control is to define a task in the joint s
 
 \subsection{Computed Torque Control}
 Given desired joint positions, velocities and accelerations, the required joint torques can be computed using \eqref{eq:robotdynamics}, resulting in a \textit{feedforward} (open-loop) control law
-\begin{equation}
+\begin{equation*}
 \tau(q,\dot{q},e,\dot{e})\vert_{q \equiv q_d} = M(q_d)\ddot{q_d} + C(q_d,\dot{q_d})\dot{q_d} + g(q_d).
-\end{equation}
+\end{equation*}
 But the limit of this control law is that, the tracking is assured only if the initial condition errors are zero ($ q(0)=q_d(0),\dot{q}(0)=\dot{q_d}(0) $). To cope with these model uncertainties, a \textit{feedback} action must be added to the controller, implemented as a simple PD. The result is the computed torque control law (control scheme in \autoref{fig:computedtorque})
 \begin{equation}
 \tau(q,\dot{q},e,\dot{e}) = \underbrace{M(q)\ddot{q_d} + C(q,\dot{q})\dot{q} + g(q)}_{\tau_{feedforward}} + 
@@ -34,32 +33,32 @@ Furthermore, imposing $ K_p' = M(q)K_p $ and $ K_v' = M(q)K_v $ leads to
 \end{equation}
 It is important to note that, if matrices $ K_p $ and $ K_v $ are diagonal, it leads to $ n $ decoupled second-order systems, where $ n $ is the number of the robot joints. In this way, the asymptotically stability of the equilibrium $ e = \dot{e} =0 $ is guaranteed, according to the closed-loop poles placement rules.
 
- \begin{figure}[h]
- \centering
- \begin{tikzpicture}[auto,node distance=2.5cm,>=latex']
- % placing nodes
- \node [input](input){};
- \node [sum, right of=input](sum1){};
- \node [block, right of=sum1](feedback){Feedback};
- \node [block, above of=feedback, node distance=2cm](feedforward){Feedforward};
- \node [sum, right of=feedback](sum2){};
- \node [block, right of=sum2](motors){Motors};
- \node [output, right of=motors](output){};
- \node [block, below of=sum2, node distance=2cm](measurements){Measurements};
- % connecting nodes
- \draw [->](input) -- node[near start]{$q_d,\dot{q_d},\ddot{q_d}$} node[name=in,near end,below]{}(sum1);
- \draw [->](in) |- (feedforward);
- \draw [->](feedforward) -| node[near start]{$\tau_{ff}$} node[pos=0.95]{$+$}(sum2);
- \draw [->](sum1) -- node{$e$} (feedback);
- \draw [->](feedback) -- node{$\tau_{fb}$}(sum2);
- \draw [->](sum2) -- (motors);
- \draw [->](motors) -- node[name=I]{$I$}(output);
- \draw [->](I) |- (measurements);
- \draw [->](measurements) -| node[pos=0.95]{$-$} node[near end]{$q,\dot{q}$}(sum1); 
- \end{tikzpicture}
- \caption[Control scheme for Computed Torque controller.]{Control scheme for Computed Torque controller. $I$ is the vector of output current measured from joint actuators which is then transduced to joint positions and velocity.}
- \label{fig:computedtorque}
- \end{figure}
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[auto,node distance=2.5cm,>=latex']
+% placing nodes
+\node [input](input){};
+\node [sum, right of=input](sum1){};
+\node [block, right of=sum1](feedback){Feedback};
+\node [block, above of=feedback, node distance=2cm](feedforward){Feedforward};
+\node [sum, right of=feedback](sum2){};
+\node [block, right of=sum2](motors){Motors};
+\node [output, right of=motors](output){};
+\node [block, below of=sum2, node distance=2cm](measurements){Measurements};
+% connecting nodes
+\draw [->](input) -- node[near start]{$q_d,\dot{q_d},\ddot{q_d}$} node[name=in,near end,below]{}(sum1);
+\draw [->](in) |- (feedforward);
+\draw [->](feedforward) -| node[near start]{$\tau_{ff}$} node[pos=0.95]{$+$}(sum2);
+\draw [->](sum1) -- node{$e$} (feedback);
+\draw [->](feedback) -- node{$\tau_{fb}$}(sum2);
+\draw [->](sum2) -- (motors);
+\draw [->](motors) -- node[name=I]{$I$}(output);
+\draw [->](I) |- (measurements);
+\draw [->](measurements) -| node[pos=0.95]{$-$} node[near end]{$q,\dot{q}$}(sum1); 
+\end{tikzpicture}
+\caption[Control scheme for Computed Torque controller.]{Control scheme for Computed Torque controller. $I$ is the vector of output current measured from joint actuators which is then transduced to joint positions and velocity.}
+\label{fig:computedtorque}
+\end{figure}
 
 \subsection{Inverse Kinematics-based Control}
 Given an end-effector position and orientation, the problem of inverse kinematics consists in determining the corresponding joint configurations. Since the system to solve is in general nonlinear, it's not possible to compute a solution in closed-form. This leads to different scenarios, i.e.\ no admissible solutions in presence of structure singularities, multiple or infinite solutions if the robot is redundant (which is the case of KUKA LWR IV, see Section \ref{sec:therobot}). As an extension of the forward and inverse kinematics problem, it is also possible to define a relationship between the end-effector linear and angular velocity and the joint velocities as follows
@@ -83,37 +82,37 @@ The related reference motion in the task space is
 \end{equation}
 where $K$ is a positive definite gain matrix (usually diagonal).
 
-% \begin{figure}[h]
-% \centering
-% \begin{tikzpicture}[auto,node distance=2cm,>=latex']
-% % placing nodes
-% \node [input](input1){};
-% \node [input, above of=input1, node distance=1.5cm](input2){};
-% \node [sum, right of=input1](sum1){};
-% \node [block_small, right of=sum1](K){$K$};
-% \node [sum, right of=K](sum2){};
-% \node [block_small, right of=sum2](jac_inv){$J^{-1}(q)$};
-% \node [sum, right of=jac_inv](integral){$\int$};
-% \node [output, right of=integral](output){};
-% \node [block, below of=sum2](forw_kin){Forward Kinematics};
-% \coordinate [above of=integral,node distance=1.5cm](tmp);
-% %% connecting nodes
-% \draw [->](input1) -- node[pos=0]{$x_d$} (sum1);
-% \draw [->](input2) -| node[pos=0]{$\dot{x}_d$} (sum2);
-% \draw [->](sum1) -- node{$e$} (K);
-% \draw [->](K) -- (sum2);
-% \draw [->](sum2) -- (jac_inv);
-% \draw [->](jac_inv) -- node{$\dot{q}$} (integral);
-% \draw [->](integral) -- node[intersection,anchor=base,name=q]{} 
-% 		   node[near end]{$q$} (output);
-% \draw [->](q) |- (tmp) -| (jac_inv);
-% \draw [->](q) |- (forw_kin);
-% \draw [->](forw_kin) -|  node[pos=0.55]{$x_e$} node[pos=0.95]{$-$} (sum1); 
-% \end{tikzpicture}
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[auto,node distance=2cm,>=latex']
+% placing nodes
+\node [input](input1){};
+\node [input, above of=input1, node distance=1.5cm](input2){};
+\node [sum, right of=input1](sum1){};
+\node [block_small, right of=sum1](K){$K$};
+\node [sum, right of=K](sum2){};
+\node [block_small, right of=sum2](jac_inv){$J^{-1}(q)$};
+\node [sum, right of=jac_inv](integral){$\int$};
+\node [output, right of=integral](output){};
+\node [block, below of=sum2](forw_kin){Forward Kinematics};
+\coordinate [above of=integral,node distance=1.5cm](tmp);
+%% connecting nodes
+\draw [->](input1) -- node[pos=0]{$x_d$} (sum1);
+\draw [->](input2) -| node[pos=0]{$\dot{x}_d$} (sum2);
+\draw [->](sum1) -- node{$e$} (K);
+\draw [->](K) -- (sum2);
+\draw [->](sum2) -- (jac_inv);
+\draw [->](jac_inv) -- node{$\dot{q}$} (integral);
+\draw [->](integral) -- node[intersection,anchor=base,name=q]{} 
+		   node[near end]{$q$} (output);
+\draw [->](q) |- (tmp) -| (jac_inv);
+\draw [->](q) |- (forw_kin);
+\draw [->](forw_kin) -|  node[pos=0.55]{$x_e$} node[pos=0.95]{$-$} (sum1); 
+\end{tikzpicture}
 
-% \caption{Control scheme for Differential Inverse Kinematics-based controller.}
-% \label{fig:diffinversekinematics}
-% \end{figure}
+\caption{Control scheme for Differential Inverse Kinematics-based controller.}
+\label{fig:diffinversekinematics}
+\end{figure}
 
 \subsubsection{Hierarchical Inverse Kinematics}
 It is possible to exploit the redundancy of the manipulator, i.e.\ when the rank of $J$ is smaller than $n$, to assign a secondary task by projecting an arbitrary vector on the null-space of the Jacobian, thus not affecting the higher priority task. So, considering two tasks $e_1$ and $e_2$, the following control law will perform exactly $\dot{e}_1^*$ and, if possible, $\dot{e}_2^*$
@@ -332,4 +331,14 @@ where $K_d\in\mathbb{R}^{n \times n}$ is a diagonal symmetric positive definite 
 	\caption{Joint-specific sine waves trajectories tracking using Dynamic Sliding PID Control.}
 \end{figure}
 
+\subsection{Controllers Design Issues}
+During the process of controllers design, certainly one requirement that has to be met is to reach an efficient complexity in terms of computational resources. In the sequel it's analyzed a category of control strategies which requires, at least in this case study, the exploitation of a big amount of resources that unfortunately weren't available on the machines used for experiments.
+\subsubsection{Adaptive Control}
+In this section it has been assumed that the dynamic model of the robot is perfectly known at any instant of time, but, in practice, this can't be always true. In fact there exist some model uncertainties depending on the robot configuration, mainly mechanical parameters like inertia matrices and masses for the single links or those related to the robot payload. To overcome this intrinsic problem, it is always possible to write the dynamic model of the robot \eqref{eq:robotdynamics} through a linear parametrization
+\begin{equation}
+M(q)\ddot{q} + C(q,\dot{q})\dot{q} + g(q) = Y(q,\dot{q},\ddot{q})\pi = \tau
+\end{equation}
+where the vector $\pi\in\mathbb{R}^r$ contains the combinations of the aforementioned physical parameters and $Y(q,\dot{q},\ddot{q})\in\mathbb{R}^{n\times r}$ is called the \textit{regressor} matrix. In brief, this sums up the aim of the \textit{Adaptive Control}, which, as the name suggests, makes the control law to adapt to the variations of the unknown robot model parameters. Recently, an analytic closed formula for the regressor has been derived from the Lagrange equations, in terms of the Denavit-Hartenberg parameters and the joints configurations  $q,\dot{q},\ddot{q}$, and implemented in \textit{Mathematica} environment \cite{gabiccini09}. For a 7-links manipulator like KUKA LWR, the resulting regressor matrix has dimensions $7$x$70$ in its unsimplified form, making literally impossible to handle an adaptive control with the owned instruments.
+\subsubsection{Gravity Compensation}
+Recalling the built-in controllers \eqref{eq:cartesianstiffnesscontroller},\eqref{eq:axisspecificstiffnesscontroller} of the KUKA LWR arm, the term $f_{dynamics}(q,\dot{q},\ddot{q})$ must be analyzed. It refers to the gravity compensation performed internally by the robot, in a way that the commanded torque isn't indeed affected by the gravitational field. This, unfortunately, generates a conflict between the internal compensation and the whole control law, which at dynamic level requires the knowledge of the gravitational force to compute the input torques. Since such term can't be forced to zero, one workaround could be that of not considering the gravity ($g(q)=0$) in all model-based controller, introducing a really negligible error.
 \newpage
