@@ -5,4 +5,10 @@ pdf
 *.bbl
 *.blg
 *.toc
+*.log
+*.out
+*.aux
+*.fdb_latexmk
+*.synctex.gz
 D42/D42.pdf
+
