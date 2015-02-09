@@ -11,4 +11,5 @@ pdf
 *.fdb_latexmk
 *.synctex.gz
 D42/D42.pdf
-
+*.out
+=======

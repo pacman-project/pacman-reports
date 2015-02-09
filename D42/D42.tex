@@ -4,6 +4,22 @@
 \usepackage{graphicx}
 \graphicspath{{images/}{../shared_images/}}
 
+% The following is used to make packages hyperref and cite work together
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+
+\usepackage[bookmarks=true,hyperfootnotes=true]{hyperref}
+\hypersetup{
+			colorlinks=true,
+			linkcolor=blue,
+			anchorcolor=blue,
+			citecolor=blue,
+			urlcolor=blue,
+            filecolor=blue,
+			pdftitle={Deliverable 4.2}
+}
+
 %% ================================
 %% PROJECT INFO
 
@@ -17,14 +33,14 @@
 
 \title{Methodologies for incipient grasp evaluation}
 \deliverableid{DR 4.2}
-\author{Hamal Marino, Manuel Bonilla, Daniela Resasco, Marco Gabiccini}
+\author{H. Marino, M. Bonilla, D. Resasco, C.J. Rosales, M. Gabiccini}
 \address{Universit\`{a} di Pisa, Pisa Italy}
 \email{hamal.marino@centropiaggio.unipi.it}
 \headertitle{Incipient grasp}
-\headerauthor{H. Marino, M. Bonilla, D. Resasco, M. Gabiccini}
+\headerauthor{H. Marino, M. Bonilla, D. Resasco, C.J. Rosales, M. Gabiccini}
 
 \duedate{2015-02-28}
-\submissiondate{2014-02-28}
+\submissiondate{2015-02-28}
 \leadpartner{Universit\`{a} di Pisa}
 \revision{draft}
 \disseminationlevel{PU}
@@ -83,12 +99,36 @@ What does the report actually present? How have the tasks been addressed? To wha
 % How are the obtained results related to the state-of-the-art?
 % This part is usually discussed in the corresponding subsection. Therefore, % a global 'Relation to the state-of-the-art' is unnecessary
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Work directly into the following .tex files
+
+% To be prepared by: Manuel Bonilla
+% Grasp Planning via a Bounding Box Object Decomposition
+\input{./inputFiles/GraspPlanningBoundingBoxes.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Hamal Marino
+% High-Level Planning for Dual Arm Goal-Oriented Tasks
+\input{./inputFiles/HighLevelPlanningDualArm.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Marco Gabiccini
+% Computational Framework for Environment-Aware Robotic Manipulation 
+% Planning
+\input{./inputFiles/ComputationalFramework.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Annexes}
 
 Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed.
 
-%\bibliographystyle{IEEEtran}
-%\bibliography{bibibliography/SOME_BIB_FILE}
+\bibliographystyle{IEEEtran}
+\bibliography{./bibliography/marco}
 
 
 \end{document}
