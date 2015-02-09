@@ -6,3 +6,4 @@ pdf
 *.blg
 *.toc
 D42/D42.pdf
+*.out
