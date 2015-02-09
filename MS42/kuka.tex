@@ -13,7 +13,7 @@ The robot used for the project experiments, the \textit{KUKA Lightweight Robot I
 The communication between the robot and an external computer is handled by the \textit{Fast Research Interface} (FRI), a real-time proprietary software interface able to read and write system variables of the robot and execute user-programs.
 
 \subsection{Built-in Control Strategies}
-The robot provides three different control strategies as default setting, which are described below.
+The robot provides three different control strategies as default setting, which are described below \cite{kukafri}.
 \subsubsection*{Position Controller}
 The position controller takes as command the desired joints set-point position, ensuring regulation through the use of an internal \textit{PID}. 
 
@@ -23,21 +23,31 @@ The Cartesian stiffness controller is characterized by the following control law
 \tau_{cmd} = J^T(k_c(x_{FRI} - x_{msr}) + F_{FRI}) + D(d_c) + f_{dynamics}(q,\dot{q},\ddot{q})
 \label{eq:cartesianstiffnesscontroller}
 \end{equation}
-
 where:
 \begin{itemize}
-\item $x_{FRI}$: cartesian commanded set-point position;
-\item $k_c$: cartesian stiffness;
-\item $D(d_c)$: damping term;
-\item $f_{dynamics}(q,\dot{q},\ddot{q})$: the dynamic model;
-\item $F_{FRI}$: the cartesian force.
+\item $\tau_{cmd}\in\mathbb{R}^7$: control torque;
+\item $x_{FRI}\in\mathbb{R}^{12}$: commanded cartesian set-point position;
+\item $x_{msr}\in\mathbb{R}^{12}$: measured cartesian position;
+\item $k_c\in\mathbb{R}^{7\times 7}$: cartesian stiffness;
+\item $D(d_c)\in\mathbb{R}^7$: damping term;
+\item $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$: the dynamic compensation;
+\item $F_{FRI}\in\mathbb{R}^7$: the cartesian external force.
 \end{itemize}
 
 \subsubsection*{Axis-specific Stiffness Controller}
 The axis-specific stiffness controller is similar to the cartesian stiffness controller, but it takes commands in joints space:
 \begin{equation}
-\tau_{cmd} = (k_j(q_{FRI} - q_{msr}) + \tau_{FRI}) + D(d_j) + f_{dynamics}(q,\dot{q},\ddot{q})
+\tau_{cmd} = k_j(q_{FRI} - q_{msr}) + D(d_j) + \tau_{FRI} + f_{dynamics}(q,\dot{q},\ddot{q})
 \label{eq:axisspecificstiffnesscontroller}
 \end{equation}
-
+where:
+\begin{itemize}
+\item $\tau_{cmd}\in \mathbb{R}^7$: control torque;
+\item $q_{FRI}\in\mathbb{R}^7$: commanded joint set-point position;
+\item $q_{msr}\in\mathbb{R}^7$: measured joint position;
+\item $k_j\in\mathbb{R}^{7\times 7}$: joint stiffness;
+\item $D(d_j)\in\mathbb{R}^7$: damping term;
+\item $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$: the dynamic compensation;
+\item $\tau_{FRI}\in\mathbb{R}^7$: the joint external force.
+\end{itemize}
 \newpage
