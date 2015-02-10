@@ -138,7 +138,7 @@ where $P_i$ is the projection operator onto the null-space of $J_i$ and the robo
 \end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{plots/invkin}
+\includegraphics[width=\textwidth]{invkin}
 \caption{Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Kinematics.}
 \end{figure}
 
@@ -194,7 +194,7 @@ where $\Lambda_{i\vert i-1} = {\Omega_{i\vert i-1}}^{-1}$ and ${\Omega_{i\vert i
 \end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{plots/invdyn}
+\includegraphics[width=\textwidth]{invdyn}
 \caption[Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Dynamics.]{Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Dynamics. Notice in the zoomed plot how the higher priority task converges to zero faster.}
 \end{figure}
 \subsubsection{Minimum Effort Control}
@@ -213,17 +213,17 @@ where in general $\tau_{null} = \nabla_{q}H(q)$ and $H(q)$ is a differentiable o
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/minimumeffort_X}
+		\includegraphics[height=0.275\textheight]{minimumeffort_X}
 		\subcaption{X-Axis}
 	\end{subfigure}
 	\\
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/minimumeffort_Y}
+		\includegraphics[height=0.275\textheight]{minimumeffort_Y}
 		\subcaption{Y-Axis}
 	\end{subfigure}
 	\\
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/minimumeffort_Z}
+		\includegraphics[height=0.275\textheight]{minimumeffort_Z}
 		\subcaption{Z-Axis}
 	\end{subfigure}
 	\caption{Axis-specific end-effector trajectories tracking a circle figure using Minimum Effort Control.}
@@ -275,17 +275,17 @@ and $\dot{q}_r$ is the so-called reference velocity.
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/backstepping_X}
+		\includegraphics[height=0.275\textheight]{backstepping_X}
 		\subcaption{X-Axis}
 	\end{subfigure}
 	\\
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/backstepping_Y}
+		\includegraphics[height=0.275\textheight]{backstepping_Y}
 		\subcaption{Y-Axis}
 	\end{subfigure}
 	\\
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/backstepping_Z}
+		\includegraphics[height=0.275\textheight]{backstepping_Z}
 		\subcaption{Z-Axis}
 	\end{subfigure}
 	\caption{Axis-specific end-effector trajectories tracking a 8 figure using Backstepping Control.}
@@ -321,12 +321,12 @@ where $K_d\in\mathbb{R}^{n \times n}$ is a diagonal symmetric positive definite 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/slidingmode_j1}
+		\includegraphics[height=0.275\textheight]{slidingmode_j1}
 		\subcaption{Joint 1}
 	\end{subfigure}
 	\\
 	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{plots/slidingmode_j3}
+		\includegraphics[height=0.275\textheight]{slidingmode_j3}
 		\subcaption{Joint 3}
 	\end{subfigure}
 	\caption{Joint-specific sine waves trajectories tracking using Dynamic Sliding PID Control.}
