@@ -89,9 +89,16 @@ To our eyes, grasp methodologies that try to cope with pose uncertainty, object 
 
 \subsection{Planned work}
 
-What tasks was the report supposed to address? What objectives, results were these tasks to achieve?
+Humans have no troubles in selecting the correct grasp strategies even if the object to be grasped is unknown or partially visible. On the contrary, though robotics has made significant progress in the field of autonomous grasping, the problem of grasping novel objects in cluttered scenarios has not been completely solved yet. In this report, we document the activities of the consortium to tackle this problem.
+
+The work to be documented in this report regards: ``Metodologies for incipient grasping evaluation''. This should mostly contain the results of Task 4.2 and the progress of Task 4.3 at this stage. In particular, the report should contain a description of the procedures to infer first-order object surface properties and the quality of the associated grasp from fingerpad sensor recordings, and algorithms for local optimization of contact point locations and on-line grasping force optimization.
+
 
 \subsection{Actual work performed}
+
+We have to clearly state, right away, that not all the pieces of work presented in this report, even if sharing the very same goals of WP4, i.e., ``to develop methods to control grasping actions given a detection of an object using the compositional object model'', fit exactly the breakdown structure suggested by the Tasks reported in the ``Description of Work''. In particular, the description of the activities to be performed in Tasks 4.1, 4.2 and 4.3, represents the sequential temporal stages that one could envision in performing a robust grasp when adopting a fully actuated and sensorized robotic hand. In fact, the pre-shaping of the hand to a first object contact (Task 4.1), the assessment of the first-order properties of the object surface, plus the local optimization of the contact point locations (Task 4.2), and the actual grasp acquisition with the optimal distribution of contact forces (Task 4.3), indeed assume that the action is performed by employing a dexterous hand with a plethora of force and position sensors. Moreover, here the robustness of the grasp was envisioned by reasoning, at each stage of the process, whether the previous step was successful and taking proper corrective actions if that was not the case.
+
+The approach that we came to pursue sees instead a central role of compliantly underactuated hands, where uncertainty in the relative pose between the hand and the object and object shape itself is mechanically absorbed by the adaptive behavior of the Pisa/IIT SoftHand.
 
 What does the report actually present? How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not?
 
