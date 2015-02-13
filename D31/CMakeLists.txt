@@ -7,5 +7,5 @@ ADD_LATEX_DOCUMENT(
     D31.tex
     IMAGE_DIRS images ../shared_images
     INPUTS ${input_files}
-    #BIBFILES bibliography.bib
+    BIBFILES bibliography/D31.bib ../shared_bibliography/abbreviations.bib
     )

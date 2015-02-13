@@ -3,6 +3,15 @@
 \usepackage{helvet}
 \usepackage{graphicx}
 \graphicspath{{images/}{../shared_images/}}
+\usepackage{bm}
+\usepackage{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} command for typesetting SI units
+\usepackage{epstopdf}
+\usepackage{booktabs}
+\usepackage{floatrow}
+
+% Table float box with bottom caption, box width adjusted to content
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
 
 % The following is used to make packages hyperref and cite work together
 \makeatletter
@@ -33,7 +42,7 @@
 
 \title{Control algorithms for haptic object exploration}
 \deliverableid{DR 3.1}
-\author{C.~J. Rosales, G. Santaera, E. Luberto, M. Gabiccini}
+\author{C. Rosales, M. Bonilla, G. Santaera, E. Luberto, M. Gabiccini}
 \address{Centro di Ricerca ``E. Piaggio'', Universit\`{a} di Pisa}
 \email{carlos.rosales@for.unipi.it}
 \headertitle{Haptic exploration}
@@ -46,8 +55,6 @@
 \disseminationlevel{PU}
 
 
-
-
 %% UNCOMMENT: to get the logo; if you've copied this file to a directory yearX/wpY/ then this should work
 \reportlogo{pacmanlogo.png}
 
@@ -57,7 +64,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent Here comes the abstract
+\noindent This report describes activities related to haptic object exploration methodologies. The object shape refinement and friction coefficient estimation require low-level controllers that allow contour tracing actions as well as a sophisticated sensorization of the exploratory probe. This report presents the efforts on providing controllers to perform sliding and rolling of a fingertip over a surface, integrating controllers with vision as the initial source of information, implementing a robust testbed to simulate results, and last but not least, specifying the designs on the sensorization of the Pisa/IIT soft hand.
 \end{abstract}
 
 
@@ -74,16 +81,17 @@
 
 \section*{Executive Summary}
 \includegraphics[height=80pt]{pacmanlogo.png}\\
-What does the report present? What tasks does it address? How has progress been evaluated? What previous reports does this report follow up on?
+This report describes the activities within the PaCMan consortium to define methodologies for \emph{haptic object exploration}. The material included in this report shows the results of Task 3.1 (M 1-24), and the progress of Task 3.2 (M 1-36).
 
 \section*{Role of haptic object exploration in PaCMan}
 
-What role do the tasks addressed in this report play in the larger context of PaCMan? How do these tasks, how does report, contribute to achieving the overall goals for PaCMan?
+This deliverable reports the research done on finding a methodology to explore objects and gather their haptic properties such as the static and dynamic friction coefficient. To this end, \emph{control algorithms} and \emph{innovative sensors} are developed.
 
 \section*{Contribution to the PaCMan scenario}
 
-How do the results presented in this report contribute to the PaCMan scenarios and prototypes?
+Within the project, there is the need to actively acquire information from objects to feed the multi-modal representation of an object to be developed in WP2. The exploratory strategies which combine low-level control algorithms developed by the UNIPI team and high-level decision making strategies developed by UoB team, together with a sensorized adaptive hand as proposed from the UNIPI team, make this possible.
 
+Additionally, the developed algorithms make no assumption on how the gathered information is encoded. This provides a versatile testbed to contrast the representation coming from WP2 with other approaches.
 
 \newpage
 
@@ -91,11 +99,15 @@ How do the results presented in this report contribute to the PaCMan scenarios a
 
 \subsection{Planned work}
 
-What tasks was the report supposed to address? What objectives, results were these tasks to achieve?
+This report must show the results of Task 3.1. Particularly, it should describe reactive control strategies for haptic exploration of an object by a robotic hand, consisting of contour tracing of the object's surface and finger rolling over the object surface, as well as strategies for extracting higher-order geometric features and frictional properties.
 
 \subsection{Actual work performed}
 
-What does the report actually present? How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not?
+We can proudly say that Task 3.1 has been fulfilled, and Sec.~\ref{sec:ControlAlgorithms} summarizes the results following the proposed activities.
+
+%Sec.~\ref{sec:Simulation} describes the simulation environment that will be used to test the results of Tasks~3.1 and~3.2. The reason behind implementing another simulation environment different from the one presented in Sec.~\ref{sec:ControlAlgorithms} is the integration with vision and to the expected results from Task~3.2, which was acknowledge after obtaining the results of Task~3.1.
+
+The fact that the object shape uncertainty is reduced by making contact with the object, combined with the adaptability of the Pisa/IIT SoftHand to any kind of surface, shaped the idea of using the hand as sophisticated exploratory probe. Sec.~\ref{sec:IMUGlove} ans~\ref{sec:SenseOfTouch} provide glove-inspired solutions to read the hand configuration as well as the contact information to estimate accurately the object shape as the result of grasping the object. The solution can help greatly in situations where only partial visual information is available, as challenged in Task 3.2, thus we believe that this research line deserves further attention as seems beneficial to accomplish the project goals.
 
 % \subsection{Relation to the state-of-the-art}
 % How are the obtained results related to the state-of-the-art?
@@ -109,10 +121,15 @@ What does the report actually present? How have the tasks been addressed? To wha
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% To be prepared by: Marco Gabiccini
-% Low-cost, Fast and Accurate Reconstruction of Robotic and Human Postures 
-% via IMU Measurements
-\input{./inputFiles/ReconstructionPosturesImuMeasurements.tex}
+% To be prepared by: Carlos
+% Learning the haptic characteristics of objects by exploration in-hand
+\input{./inputFiles/LearningHapticCharacteristicsObjectsExplorationInHand.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Carlos
+% SimulationEnvironment moving the gazebo part to here, since testing in simulation is advised by the Tasks.
+% \input{./inputFiles/SimulationEnvironment.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -122,10 +139,10 @@ What does the report actually present? How have the tasks been addressed? To wha
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% To be prepared by: Carlos
-% Active Gathering of Frictional Properties from Objects
-% ..........................
-\input{./inputFiles/ActiveGatheringOfFrictionalPropertiesFromObjects.tex}
+% To be prepared by: Marco Gabiccini
+% Low-cost, Fast and Accurate Reconstruction of Robotic and Human Postures 
+% via IMU Measurements
+\input{./inputFiles/ReconstructionPosturesImuMeasurements.tex}
 
 \section{Annexes}
 
@@ -133,7 +150,7 @@ Which papers / articles are included in the report? Mention titles, authors, pub
 
 
 \bibliographystyle{IEEEtran}
-\bibliography{./bibliography/abbreviations,./bibliography/marco}
+\bibliography{../shared_bibliography/abbreviations,./bibliography/D31}
 
 
 
