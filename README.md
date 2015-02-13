@@ -9,6 +9,8 @@ You need to install it on your tex system in order to compile the reports follow
 
 Note: the steps should be repeated if the file is changed.
 
+Note2: bibliography uses the `IEEEtran` style, so ensure you have it on your system. In Linux: `sudo apt-get install texlive-publishers`.
+
 ### On Windows/TeXLive:
 Just copy the .cls file into the local texmf folder.
 In my laptop I just copied this is in: C:\texlive\texmf-local\tex\latex\local
