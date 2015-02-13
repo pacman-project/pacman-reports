@@ -64,9 +64,8 @@
 \maketitle
 
 \begin{abstract}
-\noindent This report describes activities related to haptic object exploration methodologies. The object shape refinement and friction coefficient estimation require low-level controllers that allow contour tracing actions as well as a sophisticated sensorization of the exploratory probe. This report presents the efforts on providing controllers to perform sliding and rolling of a fingertip over a surface, integrating controllers with vision as the initial source of information, implementing a robust testbed to simulate results, and last but not least, specifying the designs on the sensorization of the Pisa/IIT soft hand.
+\noindent This report describes activities related to the development of haptic object exploration methodologies. Object shape refinement and friction coefficient estimation require low-level controllers that allow contour tracing interaction as well as a sophisticated sensorization of the exploratory probe. This report presents the efforts on providing controllers to perform sliding and rolling of a fingertip over a surface, integrating controller strategy with vision, implementing a robust testbed to simulate results, and last but not least, specifying the designs on the sensorization of the Pisa/IIT SoftHand.
 \end{abstract}
-
 
 \vspace{.2em}
 \hrule
@@ -81,15 +80,17 @@
 
 \section*{Executive Summary}
 \includegraphics[height=80pt]{pacmanlogo.png}\\
-This report describes the activities within the PaCMan consortium to define methodologies for \emph{haptic object exploration}. The material included in this report shows the results of Task 3.1 (M 1-24), and the progress of Task 3.2 (M 1-36).
+This report describes the activities within the PaCMan consortium to define methodologies for \emph{haptic object exploration}. The material included in this report shows the results of Task 3.1 (M 1-24). Aside, progress of Task 3.2 (M 1-36) is presented as well as the envision of a promising approach to tackle the problem within, particularly the information gathering for unknown objects or in cases where partial information is available.
 
 \section*{Role of haptic object exploration in PaCMan}
 
-This deliverable reports the research done on finding a methodology to explore objects and gather their haptic properties such as the static and dynamic friction coefficient. To this end, \emph{control algorithms} and \emph{innovative sensors} are developed.
+This deliverable reports the research done on finding a methodology to explore objects and gather their haptic properties such as the static and dynamic friction coefficient. 
+%To this end, \emph{control algorithms} and \emph{innovative sensors} are developed.
 
 \section*{Contribution to the PaCMan scenario}
 
-Within the project, there is the need to actively acquire information from objects to feed the multi-modal representation of an object to be developed in WP2. The exploratory strategies which combine low-level control algorithms developed by the UNIPI team and high-level decision making strategies developed by UoB team, together with a sensorized adaptive hand as proposed from the UNIPI team, make this possible.
+The multi-modal object representation to be reported in WP2 requires information about the shape and haptic properties of an object.
+The active acquisition of such information is essential to build the representation of a particular object. The exploratory strategies which combine low-level control algorithms developed by the UNIPI team, high-level decision making strategies to be completed by UoB team, together with a sensorized adaptive hand as proposed from the UNIPI team, make this possible.
 
 Additionally, the developed algorithms make no assumption on how the gathered information is encoded. This provides a versatile testbed to contrast the representation coming from WP2 with other approaches.
 
@@ -99,11 +100,11 @@ Additionally, the developed algorithms make no assumption on how the gathered in
 
 \subsection{Planned work}
 
-This report must show the results of Task 3.1. Particularly, it should describe reactive control strategies for haptic exploration of an object by a robotic hand, consisting of contour tracing of the object's surface and finger rolling over the object surface, as well as strategies for extracting higher-order geometric features and frictional properties.
+This report must show the results of Task 3.1. Particularly, it should describe reactive control strategies for haptic exploration of an object by a robotic hand, consisting of contour tracing of the object surface and finger rolling over the object surface, as well as strategies for extracting higher-order geometric features and frictional properties.
 
 \subsection{Actual work performed}
 
-We can proudly say that Task 3.1 has been fulfilled, and Sec.~\ref{sec:ControlAlgorithms} summarizes the results following the proposed activities.
+We can proudly say that Task 3.1 has been accomplished, and Sec.~\ref{sec:ControlAlgorithms} summarizes the results following the planned activities accurately.
 
 %Sec.~\ref{sec:Simulation} describes the simulation environment that will be used to test the results of Tasks~3.1 and~3.2. The reason behind implementing another simulation environment different from the one presented in Sec.~\ref{sec:ControlAlgorithms} is the integration with vision and to the expected results from Task~3.2, which was acknowledge after obtaining the results of Task~3.1.
 

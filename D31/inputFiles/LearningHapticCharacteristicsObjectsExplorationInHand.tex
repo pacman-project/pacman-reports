@@ -3,7 +3,7 @@
 \subsubsection{Learning the haptic characteristics of objects by exploration in-hand}
 \label{sec:ControlAlgorithms}
 
-Without loosing generality, this report used fixture device as the supporting hand, and a 7 DOF robot as the exploratory finger. It is worth mentioning that a strategy for concurrent stable object grasping was demonstrated in DR5.1.
+Without loosing generality, this report used fixture device as the supporting hand, and a 7 DOF robot as the exploratory finger. It is worth mentioning that a strategy for concurrent stable object grasping was demonstrated in DR5.1, and assumed to be given for the work presented here.
 
 \paragraph{(a) Definition of control strategies for concurrent stable object grasping and object surface tracing for haptic exploration:}
 
@@ -23,9 +23,9 @@ where $G(\bm{q})$ is the gravity load vector, $\bm{{q}}$  is the generalized joi
 
 A PID force controller is required to ensure contact during motion. The force control law is
 \begin{equation}
-    \bm{\tau_f}=f_dJ^T\bm{n_c}+K_{P_f}\bm{\tau_{e_n}}+K_{I_f}\int\bm{\tau_{e_n}}dt+K_{D_f}\dot{\bm{\tau}}_{e_n},
+    \bm{\tau_f} = f_dJ^T\bm{n_c} + K_{P_f}\bm{\tau_{e_n}} + K_{I_f}\int\bm{\tau_{e_n}}dt + K_{D_f}\dot{\bm{\tau}}_{e_n},
 \end{equation}
-where $J$ is the robot Jacobian matrix, $\bm{e_n} = (f_d-f_n)\bm{n_c}$ is the normal force error, $\bm{\tau_{e_n}}=J^T(\bm{q})\bm{e_n}$ is the normal force error in terms of joints torques, $\bm{v_d}$ the desired twist of the end effector, and $\bm{\dot{q}_d}=J^+\bm{v_d}$ the desired rate of angular joints.
+where $J$ is the robot Jacobian matrix, $\bm{e_n} = (f_d - f_n)\bm{n_c}$ is the normal force error, $\bm{\tau_{e_n}} = J^T(\bm{q})\bm{e_n}$ is the normal force error in terms of joints torques, $\bm{v_d}$ the desired twist of the end effector, and $\bm{\dot{q}_d} = J^+\bm{v_d}$ the desired rate of angular joints.
 
 Since the motion and force directions are orthogonal as seen in Fig.~\ref{fig:finger_surface}, we can decouple the actions and sum up the contribution of each controller to form a hybrid force/position controller.
 
