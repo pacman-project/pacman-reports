@@ -7,7 +7,7 @@
 \newline
 
 The Mahony-Hamel filter showed in section \ref{MahonyHamel} is a modified version of the original one, to return in the correction term expression eq. (\ref{vex}) a complete information about errors given by accelerometer and compass measurements. However in his works Sebastian Madgwick shows a new algorithm able to better use the measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
-data read from IMU.  %All quaternions used in this section are to be considered unity normalized. 
+data read from IMU.
 
 Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B \}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector cointaing these measures as
 
@@ -174,9 +174,18 @@ In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, 
 \end{algorithmic}
 \end{algorithm}
 
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.5]{TwoLinksOneJoint.png}
+\caption{Simple structure with two link connected by a revolute joint}
+\label{TwoLinksOneJoint}
+\end{figure}
+
 \noindent $\bullet$ \textbf{Orientation betwenn two IMUs}
 
 Using two different IMUs in a configuration as shown in figure \ref{TwoLinksOneJoint} these will return two different set of measurements ($r_1,r_2$) referred to their body frame $\{ B_1 \}$ and $\{ B_2 \}$. Applying the Madgwick filter to $r_1$ this one will return $^{b{_1}}_a \hat{\overline{q}}$ ,or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_1 \}$, while from $r_2$ the filter will return $^{b{_2}}_a \hat{\overline{q}}$, or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_2 \}$. Trivially the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame $\{ B_1 \}$ is given by
+
+
 
 \begin{equation}
 \label{eq4_18}
