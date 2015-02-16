@@ -6,6 +6,7 @@
 \noindent $\blacktriangleright$  \textbf{The Madgwick Filter} \\ 
 \newline
 
+
 The Mahony-Hamel filter showed in section \ref{MahonyHamel} is a modified version of the original one, to return in the correction term expression eq. (\ref{vex}) a complete information about errors given by accelerometer and compass measurements. However in his works Sebastian Madgwick shows a new algorithm able to better use the measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
 data read from IMU.
 
