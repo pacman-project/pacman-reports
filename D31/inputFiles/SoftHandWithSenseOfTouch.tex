@@ -3,8 +3,11 @@
 \subsubsection{Endowing the Pisa/IIT SoftHand with the sense of touch}
 \label{sec:SenseOfTouch}
 
-\noindent $\blacktriangleright$  \textbf{The Madgwick Filter} \\ 
-\newline
+
+\paragraph{(a) The Madgwick Filter}
+
+%\noindent $\blacktriangleright$  \textbf{The Madgwick Filter} \\ 
+%\newline
 
 
 In \ref{rif} was used a modified version of the Mahony-Hamel passive complementary filter, to obtain the orientation of a generic frame $\{ A \}$ with respect another one $\{ B \}$ expressed by a rotation matrix.  
@@ -246,8 +249,9 @@ In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orienta
 \end{algorithmic}
 \end{algorithm}
 
-\noindent $\blacktriangleright$  \textbf{Hardware} \\ 
-\newline
+\paragraph{(b) Hardware}
+%\noindent $\blacktriangleright$  \textbf{Hardware} \\ 
+%\newline
 
 In this section the sensors will be described and how these was managed and used in the application . The information about acceleration, angular rotation velocity and  magnetic field can be obtained by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these units opens up a wide range of solution. The  purpose is to constrain rigidly one device on each phalanges of the fingers, more two  on the palm of the hand.  Although the size of a generic IMU is very small, the selection  was accurate to permit the correct assembly on the hand. Thus an Invensence product has been chosen, MPU-9250.  \\
 \newline
@@ -369,9 +373,15 @@ two led visualize  input-output data of serial port, useful to continually super
 The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.  
 This was possible exploiting the PSoC5L where the \textit{Firmware} was installed and the \textit{Software} written in C++ in a Personal-Computer.
 
- \noindent $\bullet$ \textbf{Firmware}
+\paragraph{(c) Software}
+% \noindent $\bullet$ \textbf{Firmware}
 
  
 
 
-\noindent $\bullet$ \textbf{Software}
+%\noindent $\bullet$ \textbf{Software}
+
+
+\paragraph{(d) Validation}
+
+More details can be found in the attached paper~\cite{rif} available at this~\href{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}{link}.
