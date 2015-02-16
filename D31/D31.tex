@@ -13,6 +13,9 @@
 \usepackage{amsmath} 
 \usepackage{amssymb}  
 \usepackage{colortbl} 
+\usepackage{gensymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 % Table float box with bottom caption, box width adjusted to content
 \newfloatcommand{capbtabbox}{table}[][\FBwidth]
@@ -21,6 +24,8 @@
 \makeatletter
 \let\NAT@parse\undefined
 \makeatother
+
+\DeclareMathOperator{\rad}{rad}
 
 \usepackage[bookmarks=true,hyperfootnotes=true]{hyperref}
 \hypersetup{
