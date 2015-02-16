@@ -174,6 +174,65 @@ In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, 
 \end{algorithmic}
 \end{algorithm}
 
+\noindent $\bullet$ \textbf{Orientation betwenn two IMUs}
+
+Using two different IMUs in a configuration as shown in figure \ref{TwoLinksOneJoint} these will return two different set of measurements ($r_1,r_2$) referred to their body frame $\{ B_1 \}$ and $\{ B_2 \}$. Applying the Madgwick filter to $r_1$ this one will return $^{b{_1}}_a \hat{\overline{q}}$ ,or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_1 \}$, while from $r_2$ the filter will return $^{b{_2}}_a \hat{\overline{q}}$, or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_2 \}$. Trivially the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame $\{ B_1 \}$ is given by
+
+\begin{equation}
+\label{eq4_18}
+{^{b_1}_{b_2}\hat{\overline{q}}} = {_{a}^{b_2}\hat{\overline{q}}^{*}} \otimes {_{a}^{b_1}\hat{\overline{q}}}.
+\end{equation}   
+
+However, as seen for the Mahony-Hamel filter, it is possible to apply in a suitable way the Madgwick filter to data read from the two IMUs, to obtain ${^{b_1}_{b_2}\hat{\overline{q}}}$.
+
+Starting from the IMUs measurements where $\overline{g}_{b_1}$, $^{b_1} \Omega$ and $\overline{m}_{b_1}$ denotes respectively accelerometer, gyroscope and magnetometer measurements in $\{ B_1 \}$,  while $\overline{g}_{b_2}$, $^{b_2} \Omega$ and $\overline{m}_{b_2}$ denotes respectively accelerometer, gyroscope and magnetometer measurements in $\{ B_2 \}$, the first term the correction factor (\ref{eq4_10}), written in (\ref{eq4_10bis}) become
+
+\begin{equation}
+\label{eq4_19}
+^{b_1}_{b_2} \bar{q}_k = \frac{1}{2} {^{b_1}_{b_2} \bar{q}_{k-1}} \otimes {^{b_1}_{b_2} \Omega_k},  \quad k = 1,2,3 \dots n,
+\end{equation}
+
+\noindent where 
+
+\begin{equation}
+\label{eq4_20}
+{^{b_1}_{b_2} \Omega_k} = {^{b_2} \Omega_k} - {^{b_1}_{b_2} \bar{q}_{k-1}} \otimes {^{b_1} \Omega_k} \otimes {^{b_1}_{b_2} \bar{q}^{*}_{k-1}},
+\end{equation}
+
+\noindent is the angular rate of the frame $\{ B_2 \}$ attached to the $IMU_2$ with respect the frame $\{ B_1 \}$ attached to $IMU_1$. The second term of the correction factor, in (\ref{eq4_16}) become
+
+\begin{equation}
+\begin{split}
+\label{eq4_21}
+\nabla f_{g,m}(^{b_1}_{b_2} \bar{q}_k,\bar{g}_{b_2},\bar{g}_{b_1},\bar{m}_{b_2},\bar{m}_{b_1}) = J_{g,m}^T(^{b_1}_{b_2} \bar{q}_k, \bar{g_{b_2}},\bar{m_{b_2}}) \\ {f}_{g,m}(^{b_1}_{b_2} \bar{q}_k,\bar{g}_{b_2},\bar{g}_{b_1},\bar{m}_{b_2},\bar{m}_{b_1}).
+\end{split}
+\end{equation}
+
+\noindent So the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame ${\{ B_1 \}}$ at step $(k+1)^{th}$ is given by
+
+\begin{equation}
+\label{eq4_22}
+^{b_1}_{b_2} q_{k+1} = ^{b_1}_{b_2} \bar{q}_k - \beta \frac{\nabla f_{g,m}(^{b_1}_{b_2} \bar{q}_k,\bar{g}_{b_2},\bar{g}_{b_1},\bar{m}_{b_2},\bar{m}_{b_1}) }{\vert \vert \nabla f_{g,m}(^{b_1}_{b_2} \bar{q}_k,\bar{g}_{b_2},\bar{g}_{b_1},\bar{m}_{b_2},\bar{m}_{b_1})  \vert \vert}, \quad k = 0,1,2 \dots n.
+\end{equation} 
+
+In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orientation quaternion of a frame $\{ B_2 \}$ with respect frame $\{ B_1 \}$. 
+
+\begin{algorithm}
+\caption{Two IMUs Madgwick Discrete Filter at $n^{th}$ step}
+\begin{algorithmic}[1]
+\label{MadgwickAlgTwo}
+\STATE Reading the current values of the accelerometers ($g_{{b_1}_n}$), magnetometers ($m_{{b_1}_n}$) and gyro rates ($\Omega_{{b_1}_n}$) in the local $IMU_1$ frame $\{B_1\}$
+\STATE Normalizing gravity and magnetic field vector read from $IMU_1$ $\overline{g}_{{b_1}_n} = \frac{g_{{b_1}_n}}{\vert \vert g_{{b_1}_n} \vert \vert}$, $\overline{m}_{{b_1}_n} \frac{m_{{b_1}_n}}{\vert \vert m_{{b_1}_n} \vert \vert}$
+\STATE Reading the current values of the accelerometers ($g_{{b_2}_n}$), magnetometers ($m_{{b_2}_n}$) and gyro rates ($\Omega_{{b_2}_n}$) in the local $IMU_2$ frame $\{B_2\}$
+\STATE Normalizing gravity and magnetic field vector read from $IMU_2$ $\overline{g}_{{b_2}_n} = \frac{g_{{b_2}_n}}{\vert \vert g_{{b_2}_n} \vert \vert}$, $\overline{m}_{{b_2}_n} \frac{m_{{b_2}_n}}{\vert \vert m_{{b_2}_n} \vert \vert}$
+\STATE Computing the objective function value $f_{g,m}({^{b_1}_{b_2}\hat{\overline{q}}_{n-1}},\overline{g}_{{b_2}_n},\overline{g}_{{b_1}_n},\overline{m}_{{b_2}_n},\overline{m}_{{b_1}_n})$ using equations (\ref{eq4_12}) and (\ref{eq4_14})
+\STATE Computing the transpose of the Jacobian of the objective function $J^T_{g,m}(^{b_1}_{b_2}\hat{\overline{q}}_{n-1},\overline{g}_{{b_2}_n},\overline{m}_{{b_2}_n})$ using equations (\ref{eq4_13}) and (\ref{eq4_17})
+\STATE Computing the correction terms $c_n =  \beta \frac{\nabla f}{\vert \vert \nabla f \vert \vert}$ using equation (\ref{eq4_16})
+\STATE Computing the orientation quaternion time variation $^{b_1}_{b_2} \hat{q}_{d_n} =  (\frac{1}{2} {^{b_1}_{b_2}\hat{\overline{q}}_{n-1}} \otimes {^{b_1}_{b_2} \Omega_k}) - c_n$ using (\ref{eq4_20})
+\STATE Computing the new orientation quaternion estimation given by its previouly one and its current time variation $^{b_1}_{b_2} \hat{q}_n = ^{b_1}_{b_2}\hat{\overline{q}}_{n-1} + ^{b_1}_{b_2} \hat{q}_{d_n} \Delta t$
+\STATE Normalizing the new estimated quarternion $^{b_1}_{b_2} \hat{\overline{q}}_n = \frac{^{b_1}_{b_2} \hat{q}_n}{\vert \vert ^{b_1}_{b_2} \hat{q}_n \vert \vert}$ 
+\end{algorithmic}
+\end{algorithm}
 
 \noindent $\blacktriangleright$  \textbf{Hardware} \\ 
 \newline
