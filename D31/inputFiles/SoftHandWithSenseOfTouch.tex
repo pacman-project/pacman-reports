@@ -7,7 +7,9 @@
 \newline
 
 
-The Mahony-Hamel filter showed in section \ref{MahonyHamel} is a modified version of the original one, to return in the correction term expression eq. (\ref{vex}) a complete information about errors given by accelerometer and compass measurements. However in his works Sebastian Madgwick shows a new algorithm able to better use the measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
+In \ref{rif} was used a modified version of the Mahony-Hamel passive complementary filter, to obtain the orientation of a generic frame $\{ A \}$ with respect another one $\{ B \}$ expressed by a rotation matrix.  
+
+In his works Sebastian Madgwick \ref{rif} studies a new algorithm able to better use measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
 data read from IMU.
 
 Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B \}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector cointaing these measures as
