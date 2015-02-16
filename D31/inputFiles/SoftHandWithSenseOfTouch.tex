@@ -3,6 +3,177 @@
 \subsubsection{Endowing the Pisa/IIT SoftHand with the sense of touch}
 \label{sec:SenseOfTouch}
 
+\noindent $\blacktriangleright$  \textbf{The Madgwick Filter} \\ 
+\newline
+
+The Mahony-Hamel filter showed in section \ref{MahonyHamel} is a modified version of the original one, to return in the correction term expression eq. (\ref{vex}) a complete information about errors given by accelerometer and compass measurements. However in his works Sebastian Madgwick shows a new algorithm able to better use the measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
+data read from IMU.  %All quaternions used in this section are to be considered unity normalized. 
+
+Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B \}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector cointaing these measures as
+
+\begin{equation}
+\label{eq4_01}
+^b \Omega = [ 0 \quad {^b\omega_x} \quad {^b\omega_y} \quad {^b\omega_z} ],
+\end{equation}
+
+\noindent the quaternion describing the rate of change of the earth frame $\{ A \}$ with respect to the sensor frame $\{ B \}$ can be written as
+
+\begin{equation}
+\label{eq4_02}
+^b_a\dot{q} = \frac{1}{2} {^b_a \bar{q}}  \otimes {^b\Omega}.
+\end{equation}
+
+\noindent Where $\otimes$ denotes a quaternion product, while $\bar{}$ denotes the unity normalize operator. From eq. (\ref{eq4_02}) trivially the orientation of the earth frame with respect to sensor frame at time \textit{t} is given by eq. (\ref{eq4_03}) and (\ref{eq4_04}) as
+
+\begin{equation}
+\label{eq4_03}
+^b_a \dot{q}_{\Omega,t} = \frac{1}{2} {^b_a \hat{\bar{q}}_{t-1}} \otimes ^b \Omega_t,
+\end{equation}
+
+\begin{equation}
+\label{eq4_04}
+^b_a q_{\Omega,t} = {^b_a \hat{\bar{q}}_{t-1}} + {^b_a \dot{q}_{\Omega,t}} \Delta t,
+\end{equation} 
+
+\noindent where $^b \Omega_t$ is angular rate measured at time \textit{t}, $\Delta t$ is the sampling period and $^b_a \hat{\bar{q}}_{t-1}$ is the previous estimate of the orientation quaternion.
+
+Reading now from a sensor a set of accelerometer and compass measures in a frame strap down to the sensor there are infinite earth frame orientation, according to measures read from the sensors. 
+However using quaternions to express an orientation it is very easy to overcome to the singularities problem, obtaining from sensors meausures an unique orientation for the earth frame with respect the sensor one.
+From this considerations the orientation problem can be written as an optimisation problem, where quaternion $^b_a \bar{q}$ aligns a predefined reference direction of a field (gravity or magnetic) in the earth frame $^a \bar{d}$, with the measured direction of the field in the sensor frame $^b \bar{s}$. So the quaternion $^b_a \bar{q}$ is given by the problem
+
+\begin{equation}
+\label{eq4_05}
+\min_{{^b_a \bar{q}} \in \mathbb{R}^4} f({^b_a \bar{q}}, {^a \bar{d}}, {^b \bar{s}}),
+\end{equation}
+
+\noindent with the objective function $f$, $^b_a \bar{q}$ and the vectors $^a \bar{d}$ and $^b \bar{s}$ defined as 
+
+\begin{equation}
+\label{eq4_06}
+f(^b_a \bar{q},^a \bar{d}, ^b \bar{s}) = ^b_a \bar{q}^{*} \otimes ^a \bar{d} \otimes ^b_a \bar{q} - ^b \bar{s}, 
+\end{equation}
+
+\begin{equation}
+\label{eq4_07}
+^b_a \bar{q} = [q_1 \quad q_2 \quad q_3 \quad q_4],
+\end{equation}
+
+\begin{equation}
+\label{eq4_08}
+^a \bar{d} = [0 \quad d_x \quad d_y \quad d_z],
+\end{equation}
+
+\begin{equation}
+\label{eq4_09}
+^b \bar{s} = [0 \quad s_x \quad s_y \quad s_z],
+\end{equation}
+
+\noindent and $^{*}$ in (\ref{eq4_06}) denotes the conjugate operator of a quaternion $q = [q_1 \quad q_2 \quad q_3 \quad q_4]$ as $q^* = [q_1 \quad -q_2 \quad -q_3 \quad -q_4]$. To solve problem in (\ref{eq4_05}) many algorithms can be used, but in terms of simplicity the gradient descent algorithm should be the best choice. From this last choice and starting from an initial quarternion $^b_a \bar{q}_0$ it is possible to write the quarternion correction factor $^b_a \bar{q}_{k+1}$ linked to step $(k+1)^{th}$ as
+
+\begin{equation}
+\label{eq4_10}
+^b_a q_{k+1} = ^b_a \bar{q}_k - \beta \frac{\nabla f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s})}{\vert \vert \nabla f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s}) \vert \vert}, \quad k = 0,1,2 \dots n,
+\end{equation}
+
+\noindent where 
+\begin{equation}
+\label{eq4_10bis}
+^b_a \bar{q}_k = \frac{1}{2} {^b_a \bar{q}_{k-1}} \otimes ^b{\Omega_k},  \quad k = 1,2,3 \dots n,
+\end{equation}
+
+\begin{equation}
+\label{eq4_11}
+\nabla f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s}) = J^T(^b_a \bar{q}_k,^a \bar{d}) f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s}),
+\end{equation}
+
+\begin{equation}
+\label{eq4_12}
+\begin{split}
+f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s}) = 
+\left [ \begin{array}{c} 
+2d_x(\frac{1}{2} - q_3^2 - q_4^2) + 2d_y(q_1q_4 + q_2 q_3) + \\ 
+2d_x(q_2 q_3 - q_1 q_4) + 2d_y(\frac{1}{2} - q_2^2 - q_4^2) + \\ 
+2d_x(q_1 q_3 + q_2 q_4) + 2d_y(q_3 q_4 - q_1 q_2) + \end{array} \right. \\
+\left. \begin{array}{r}
+2 d_z(q_2q_4 - q_1q_3) - s_x \\
+2d_z(q_1q_2 + q_3 q_4) - s_y \\
+2d_z(\frac{1}{2} - q_2^2 - q_3^2) - s_z  
+\end{array} \right ] \end{split}, 
+\end{equation}
+
+\begin{equation}
+\label{eq4_13}
+\begin{split}
+J(^b_a \bar{q}_k, ^a \bar{d}) = 
+\left [ \begin{array}{cc} 
+2d_yq_4 - 2d_zq_3 & 2d_yq_3+ 2d_zq_4\\ 
+-2d_xq_4 + 2d_zq_2 & 2d_xq_3 - 4d_yq_2 + 2d_zq1 \\ 
+2d_xq_3 - 2d_yq_2 & 2d_xq_4 - 2d_yq_1 - 4d_zq_2 \end{array} \right. \\
+\left. \begin{array}{rr}
+-4d_x q_3 2d_y q_2 - 2d_z q_1 & -4d_x q_4 2d_y q_1 + 2d_z q_2\\
+2d_x q_2 + 2d_z q_4 &  -2d_x q_1 - 4d_y q_4 + 2d_z q_3\\
+2d_x q_1 + 2 d_y q_4 - 4 d_z q_3 & 2 d_x q_2 + 2d_y q_3  
+\end{array} \right ] \end{split}, 
+\end{equation}
+
+\noindent where $\beta$ denotes the step size, while $J^T$ denotes the transpose of the Jacobian matrix from the objective function $f$. 
+
+Problem described in eq. (\ref{eq4_05}) is a general alignement problem, so considering measurements read from accelerometers and from magnetormeters, it is possible to write two different problems, the first one from accelerometers data $f_g(^b_a \overline{q}_k, ^a \overline{g}_a, ^b \overline{g}_b)$ where $^a\overline{g}_a = \overline{g}_a$ is the gravity field measured in the inertial frame while $^b \overline{g}_b = \overline{g}_b$ is the gravity field in the sensor frame. In the same manner the second problem is $f_m(^b_a \overline{q}_k, ^a \overline{m}_a, ^b \overline{m}_b)$ with $^a\overline{m}_a = \overline{m}_a$ magnetic field read in the inertial frame and $^s \overline{m}_b = \overline{m}_b$ magnetic field read in the sensor frame.
+Combining the two optimization problems as
+
+\begin{equation}
+\label{eq4_14}
+f_{g,m}(^b_a \overline{q},\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline{m}_b) = \left [ \begin{array}{c} f_g(^b_a \overline{q}, \overline{g}_a, \overline{g}_b) \\  f_m(^b_a \overline{q},  \overline{m}_a,  \overline{m}_b) \end{array} \right ],
+\end{equation}
+
+\noindent it is possible to find an unique quaternion which describes the orientation, at step $(k+1)^{th}$, of the inertial frame with respect the sensor frame as
+
+\begin{equation}
+\label{eq4_15}
+^b_a q_{k+1} = ^b_a \overline{q}_k - \beta \frac{\nabla f_{g,m}(^b_a \overline{q}_k,\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline{m}_b) }{\vert \vert \nabla f_{g,m}(^b_a \overline{q}_k,\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline{m}_b)  \vert \vert}, \quad k = 0,1,2 \dots n,
+\end{equation} 
+
+\noindent with
+
+\begin{equation}
+\begin{split}
+\label{eq4_16}
+\nabla f_{g,m}(^b_a \overline{q}_k,\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline{m}_b) = J_{g,m}^T(^b_a \overline{q}_k, \overline{g_a},\overline{m_a}) \\ {f}_{g,m}(^b_a \overline{q}_k,\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline{m}_b),
+\end{split}
+\end{equation}
+
+\noindent and
+
+\begin{equation}
+\label{eq4_17}
+J_{g,m}^T(^b_a \overline{q}_k, \overline{g_a}, \overline{m_a}) = \left [ \begin{array}{c} J_g(^b_a \overline{q}_k,\overline{g}_a) \\ J_m(^b_a \overline{q}_k, \overline{m}_a) \end{array} \right ]
+\end{equation}
+ 
+\noindent where $J_g$ and $J_m$ respectvily the Jacobians of the function $f_g$ and $f_m$.
+
+In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, while algorithm \ref{MadgwickAlg} details the steps followed to obtain the orientation quaternion using its previous estimation and data read from IMU, using $g_a$ and $m_a$ to denote respectively the gravity and the magnetic field in the inertial frame. In particular the gravity field commonly is set as $g_a = [0 \quad 0 \quad 0 \quad 1]$, or rather using a North-East-Down convention. For the earth magnetic field it can be considered to have two components in one horizontal axis and the vertical axis, with its vertical component due to the inclination of the field depending by the latitude and it is about $1\degree$ to the horizontal in Pisa, so $m_a = [0 \quad m_{a_x} \quad 0 \quad m_{a_z}]$.
+
+\begin{figure}[t]
+\includegraphics[scale=0.45]{Madgwick_Block_Diagram}
+\caption{Block diagram of the Madgwick passive complementary filter}
+\label{BlockDiagram} 
+\end{figure}
+
+\begin{algorithm}
+\caption{Madgwick Discrete Filter at $n^{th}$ step}
+\begin{algorithmic}[1]
+\label{MadgwickAlg}
+\STATE Reading the current values of the accelerometers ($g_{b_n}$), magnetometers ($m_{b_n}$) and gyro rates ($\Omega_{b_n}$) in the local IMU frame $\{B\}$
+\STATE Normalizing gravity and magnetic field vector read from IMU $\overline{g}_{b_n} = \frac{g_{b_n}}{\vert \vert g_{b_n} \vert \vert}$, $\overline{m}_{b_n} \frac{m_{b_n}}{\vert \vert m_{b_n} \vert \vert}$
+\STATE Computing the objective function value $f_{g,m}({^b_a\hat{\overline{q}}_{n-1}},\overline{g}_a,\overline{g}_{b_n},\overline{m}_a,\overline{m}_{b_n})$ using equations (\ref{eq4_12}) and (\ref{eq4_14})
+\STATE Computing the transpose of the Jacobian of the objective function $J^T_{g,m}(^b_a\hat{\overline{q}}_{n-1},\overline{g_a},\overline{m}_a)$ using equations (\ref{eq4_13}) and (\ref{eq4_17})
+\STATE Computing the correction terms $c_n =  \beta \frac{\nabla f}{\vert \vert \nabla f \vert \vert}$ using equation (\ref{eq4_16})
+\STATE Computing the orientation quaternion time variation $^b_a \hat{q}_{d_n} =  (\frac{1}{2} {^b_a\hat{\overline{q}}_{n-1}} \otimes \Omega_{b_n}) - c_n$
+\STATE Computing the new orientation quaternion estimation given by its previouly one and its current time variation $^b_a \hat{q}_n = ^b_a\hat{\overline{q}}_{n-1} + ^b_a \hat{q}_{d_n} \Delta t$
+\STATE Normalizing the new estimated quarternion $^b_a \hat{\overline{q}}_n = \frac{^b_a \hat{q}_n}{\vert \vert ^b_a \hat{q}_n \vert \vert}$ 
+\end{algorithmic}
+\end{algorithm}
+
 
 \noindent $\blacktriangleright$  \textbf{Hardware} \\ 
 \newline
