@@ -250,6 +250,10 @@ In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orienta
 \end{algorithm}
 
 \paragraph{(b) Hardware}
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 In this section the sensors will be described and how these was managed and used in the application . The information about acceleration, angular rotation velocity and  magnetic field can be obtained by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these units opens up a wide range of solution. The  purpose is to constrain rigidly one device on each phalanges of the fingers, more two  on the palm of the hand.  Although the size of a generic IMU is very small, the selection  was accurate to permit the correct assembly on the hand. Thus an Invensence product has been chosen, MPU-9250.  \\
 \newline
@@ -370,6 +374,10 @@ two led visualize  input-output data of serial port, useful to continually super
 The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.  
 This was possible exploiting the PSoC5L where the \textit{Firmware} was installed and the \textit{Software} written in C++ in a Personal-Computer.
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 \subparagraph{Firmware on PSoC5L}
 
@@ -410,14 +418,44 @@ The other step after the init, is the \textit{Infinite loop}. It is subdivided i
                           \item[-] Mag $\in \Re ^{17 \text{x} 3}$
                           \end{enumerate}
                            The read frequency is the lowest one among the three sensors, and in particular is 100Hz, that of the magnetometer.
-\item[$\cdot$] \textit{Create Package Data}:  the data of the matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in the  
-\end{enumerate} 
+\item[$\cdot$] \textit{Create Package Data}:  the data of the matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in the figure \ref{fig:package}  
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{datapackage.png}
+\caption{Data package sent to  the PC}
+\label{fig:package}
+\end{figure}  
  
+<<<<<<< Updated upstream
 \subparagraph{C++ code on PC}
 
 
 
 
+=======
+\noindent where its the length is 
+\begin{equation*}
+\displaystyle  \left. \begin{array}{lccc}
+\text{int} & \text{ax} & = & 2 \text{byte} \\
+\text{char} & , & = & 1 \text{byte} \\
+\text{char} & : & = & 1 \text{byte} \\
+\text{char} & ; & = & 1 \text{byte} \\
+\text{char} & , & = & 1 \text{byte} \\
+\text{char} & \backslash \text{n} & = & 1 \text{byte}
+\end{array} \right\rbrace \; 
+\left. \begin{array}{lcc}
+\textcolor{blue}{\text{int}} \; \cdot \; 9 \; \cdot \; 17 \; & = & 306 \; \text{byte} \\
+\textcolor{blue}{\text{char}} \; \cdot \; 8  \; \;+\; \; \textcolor{red}{\text{char}} \; \cdot \; 20  & = & 28 \; \text{byte} 
+\end{array} \right\rbrace = \; 334  \;\text{byte}
+\end{equation*}
+
+\noindent The sent of this package is regulated by an interrupt every 50Hz via Serial bus.  
+\end{enumerate} 
+
+\subparagraph{C++ code on PC}
+
+
+>>>>>>> Stashed changes
 \paragraph{(d) Validation}
 
 More details can be found in the attached paper~\cite{Santaera:ICRA:2015} available at this~\href{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}{link}.
