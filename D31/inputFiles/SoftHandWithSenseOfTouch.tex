@@ -15,7 +15,11 @@ In \cite{Santaera:ICRA:2015} was used a modified version of the Mahony-Hamel pas
 In his works Sebastian Madgwick \cite{MadgwickMARG} studies a new algorithm able to better use measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
 data read from IMU.
 
-Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rads^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
+<<<<<<< Updated upstream
+Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
+=======
+Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
+>>>>>>> Stashed changes
 
 \begin{equation}
 \label{eq4_01}
@@ -383,20 +387,52 @@ This was possible exploiting the PSoC5L where the \textit{Firmware} was installe
 % \noindent $\bullet$ \textbf{Firmware}
 =======
 
-\subparagraph{Firmware}
+\subparagraph{Firmware on PSoC5L}
 % \noindent $\bullet$ \textbf{Firmware}
- \noindent First of all the sensor registers must be set. This means configure e.g. internal clock,   type of communication, accelerometer and gyro full scale range, ecc. This setting was implemented in the PSoC5L firmware.  The full program is shown in the figure \ref{fig:psocfirmware}
+\noindent First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It permits to managed the internal component with some code blocks, so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.   How the SPI communication was implemented is possible to view in the figure RIFERIMENTO
+
+IMMAGINE SPI COMMUNICATION BLOCCHI
+
  
+Guaranteed the communication between the sensor and the PSoc5L,  the firmware was written in the memory of the board, figure \ref{fig:psocfirmware}. 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{firmware.png}
 \caption{Scheme of Firmaware written in the PSoC5L}
 \label{fig:psocfirmware}
 \end{figure}  
+\noindent The primary phase, the  \textit{Init}, set all necessary sensor registers. This means configure e.g. internal clock,   type of communication, accelerometer and gyro full scale range, ecc. Then is possible to select two different steps. In particular the \textit{Magnetometer Config} help to know sensitivity adjustment data for each magnetometer axis. Those values are stored in three different 8-bit register of  the IMU called
+\begin{enumerate}
+\item[$\cdot$] ASAX[7:0]: Magnetic sensor X-axis sensitivity adjustment value
+\item[$\cdot$] ASAY[7:0]: Magnetic sensor Y-axis sensitivity adjustment value
+\item[$\cdot$] ASAZ[7:0]: Magnetic sensor Z-axis sensitivity adjustment value
+\end{enumerate}
+
+\noindent The sensitivity adjustment is done by the equation below
+
+\begin{equation}
+\displaystyle Hadj = H \;  \text{x} \left(          \frac{ \left(ASA - 128\right)\; \text{x} \; 0.5 }{128} + 1        \right)
+\end{equation} 
+
+\noindent where $H$ is the measurement dara read out from the measurement data register, $ASA$ is the sensitivity adjustment value, and $Hadj$ is the adjusted measurement data. Each values is possible to view on the LCD module on the PsoC's board via I2C. 
+The magnetometer config step runs only one time, because  the adjustment parameters, once known, are stored by the user in the C++ code in the Personal-Computer. 
+
+The other step after the init, is the \textit{Infinite loop}. It is subdivided in two independent section
+\begin{enumerate}
+\item[$\cdot$] \textit{Read IMUs}: one at a time the IMU are read sequentially (via SPI) and the output data stored in 3 different matrix
+                          \begin{enumerate}
+                          \item[-] Acc $\in \Re ^{17 \text{x} 3}$
+                          \item[-] Gyro $\in \Re ^{17 \text{x} 3}$
+                          \item[-] Mag $\in \Re ^{17 \text{x} 3}$
+                          \end{enumerate}
+                           The read frequency is the lowest one among the three sensors, and in particular is 100Hz, that of the magnetometer.
+\item[$\cdot$] \textit{Create Package Data}:  the data of the matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in the  
+\end{enumerate} 
  
+
 >>>>>>> origin/master
 
-\subparagraph{Software} 
+\subparagraph{C++ code on PC}
 
 
 %\noindent $\bullet$ \textbf{Software}
