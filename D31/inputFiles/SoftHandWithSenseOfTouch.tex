@@ -15,11 +15,7 @@ In \cite{Santaera:ICRA:2015} was used a modified version of the Mahony-Hamel pas
 In his works Sebastian Madgwick \cite{MadgwickMARG} studies a new algorithm able to better use measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
 data read from IMU.
 
-<<<<<<< Updated upstream
 Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
-=======
-Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
->>>>>>> Stashed changes
 
 \begin{equation}
 \label{eq4_01}
@@ -192,7 +188,6 @@ In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, 
 \end{figure}
 
 \subparagraph{Orientation between two IMUs}
-%\noindent $\bullet$ \textbf{Orientation betwenn two IMUs}
 
 Using two different IMUs in a configuration as shown in figure \ref{TwoLinksOneJoint} these will return two different set of measurements ($r_1,r_2$) referred to their body frame $\{ B_1 \}$ and $\{ B_2 \}$. Applying the Madgwick filter to $r_1$ this one will return $^{b{_1}}_a \hat{\overline{q}}$ ,or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_1 \}$, while from $r_2$ the filter will return $^{b{_2}}_a \hat{\overline{q}}$, or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_2 \}$. Trivially the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame $\{ B_1 \}$ is given by
 
@@ -255,14 +250,11 @@ In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orienta
 \end{algorithm}
 
 \paragraph{(b) Hardware}
-%\noindent $\blacktriangleright$  \textbf{Hardware} \\ 
-%\newline
 
 In this section the sensors will be described and how these was managed and used in the application . The information about acceleration, angular rotation velocity and  magnetic field can be obtained by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these units opens up a wide range of solution. The  purpose is to constrain rigidly one device on each phalanges of the fingers, more two  on the palm of the hand.  Although the size of a generic IMU is very small, the selection  was accurate to permit the correct assembly on the hand. Thus an Invensence product has been chosen, MPU-9250.  \\
 \newline
 
 \subparagraph{MPU-9250}
-%\noindent $\bullet$ \textbf{MPU-9250}
 
 \noindent The MPU-9250 is a System in Package (SiP) that combines two chip: the MPU-6500 (used for the paper published in ICRA2015), wich contains a 3-axis gyroscope, a 3-axis accelerometer, and an onboard Digital Motion Processor (DMP); and AK8963, the market leading 3-axis digital compass.  
 \begin{figure}[h]
@@ -334,7 +326,6 @@ Usually the master is a microcontroller  or any processing unit that support SPI
 \newline
 
 \subparagraph{PSoC 5LP}
-%\noindent $\bullet$ \textbf{PSoC 5LP} \textsuperscript \textregistered
 
 \noindent The processing unit used was \textit{PSoC 5LP} developed by  Cypress Semiconductor. PSoC is a low power  ARM \textsuperscript \textregistered Cortex - M3 based programmable system on chip devices offering unmatched high-precision analog and the flexibility to design custom system solutions. When combined with the free PSoC software development tools (PSoC Creatortm and
 PSoC Programmer) from Cypress, this module is more than sufficient for creating anything from basic microcontroller with embedded analog and digital functions to a highly complex system controller. Both the hardware system architecture and the software are supported by the PSoC
@@ -356,7 +347,6 @@ The informations from accelerometers, gyros and magnetometer were stored in the 
 \newline
 
 \subparagraph{Serial Communication}
-%\noindent $\bullet$ \textbf{Serial communication}
 
 The communication between PSocC5 and PC was created exploiting the serial adapter 990 004. It is optimum to connect microcontroller and locig circuit to a PC. The heart of the integrated is the chip FT232R distributed by FTDI the supply a tension of 3.3V, thus it possible to connect the device to another TTL peripheral o microcontroller in the range of 3.3V-5V without the problem to convert the signal RS232 to  the TTL. The size of the circuit are very small, 25x18 mm and
 \begin{figure}[h]
@@ -376,19 +366,13 @@ two led visualize  input-output data of serial port, useful to continually super
 
 
 \paragraph{(c) Software}
-%\noindent $\blacktriangleright$  \textbf{Code} \\ %\setlength{\headheight}{15pt}  \
-%\newline
 
 The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.  
 This was possible exploiting the PSoC5L where the \textit{Firmware} was installed and the \textit{Software} written in C++ in a Personal-Computer.
 
-<<<<<<< HEAD
-%\paragraph{(c) Software}
-% \noindent $\bullet$ \textbf{Firmware}
-=======
 
 \subparagraph{Firmware on PSoC5L}
-% \noindent $\bullet$ \textbf{Firmware}
+
 \noindent First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It permits to managed the internal component with some code blocks, so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.   How the SPI communication was implemented is possible to view in the figure RIFERIMENTO
 
 IMMAGINE SPI COMMUNICATION BLOCCHI
@@ -429,13 +413,9 @@ The other step after the init, is the \textit{Infinite loop}. It is subdivided i
 \item[$\cdot$] \textit{Create Package Data}:  the data of the matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in the  
 \end{enumerate} 
  
-
->>>>>>> origin/master
-
 \subparagraph{C++ code on PC}
 
 
-%\noindent $\bullet$ \textbf{Software}
 
 
 \paragraph{(d) Validation}
