@@ -15,7 +15,11 @@ In \cite{Santaera:ICRA:2015} was used a modified version of the Mahony-Hamel pas
 In his works Sebastian Madgwick \cite{MadgwickMARG} studies a new algorithm able to better use measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
 data read from IMU.
 
+<<<<<<< Updated upstream
 Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
+=======
+Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
+>>>>>>> Stashed changes
 
 \begin{equation}
 \label{eq4_01}
@@ -188,6 +192,7 @@ In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, 
 \end{figure}
 
 \subparagraph{Orientation between two IMUs}
+%\noindent $\bullet$ \textbf{Orientation betwenn two IMUs}
 
 Using two different IMUs in a configuration as shown in figure \ref{TwoLinksOneJoint} these will return two different set of measurements ($r_1,r_2$) referred to their body frame $\{ B_1 \}$ and $\{ B_2 \}$. Applying the Madgwick filter to $r_1$ this one will return $^{b{_1}}_a \hat{\overline{q}}$ ,or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_1 \}$, while from $r_2$ the filter will return $^{b{_2}}_a \hat{\overline{q}}$, or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_2 \}$. Trivially the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame $\{ B_1 \}$ is given by
 
@@ -250,10 +255,7 @@ In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orienta
 \end{algorithm}
 
 \paragraph{(b) Hardware}
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 
 In this section the sensors will be described and how these was managed and used in the application . The information about acceleration, angular rotation velocity and  magnetic field can be obtained by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these units opens up a wide range of solution. The  purpose is to constrain rigidly one device on each phalanges of the fingers, more two  on the palm of the hand.  Although the size of a generic IMU is very small, the selection  was accurate to permit the correct assembly on the hand. Thus an Invensence product has been chosen, MPU-9250.  \\
 \newline
@@ -335,17 +337,23 @@ Usually the master is a microcontroller  or any processing unit that support SPI
 PSoC Programmer) from Cypress, this module is more than sufficient for creating anything from basic microcontroller with embedded analog and digital functions to a highly complex system controller. Both the hardware system architecture and the software are supported by the PSoC
 software tools. 
 The PSoC integrated circuit is composed of a core, configurable analog and digital blocks, and programmable routing and interconnect. The configurable blocks in a PSoC are the biggest different from other microcontrollers, for this reason can be associated to the FPGA microcontroller family (Field-Programmable Gate Array). 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.5]{psoc.png}
-\caption{PSoC 5LP}
-\label{fig:psoc}
-\end{figure}
+%\begin{figure}[h]
+%\centering
+%\includegraphics[scale=0.5]{psoc.png}
+%\caption{PSoC 5LP}
+%\label{fig:psoc}
+%\end{figure}
 
 By using configurable analog and digital blocks, it is possible to  create and change mixed-signal embedded applications. These blocks are designed by PSoC-Creator, an Integreted Design Environment (IDE).  
 The development of the PSoC 5LP  and PSoC-Creator has permitted to managed  the IMUs easily. 
 
 The PSoC5 was exploited to read data from the slave devices allowing a SPI communication. The SPI bus could be only one, but were preferred three separated bus to have greater control on the hardware system. 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{psoc.png}
+\caption{SPI buses on the IMU glove}
+\label{fig:spibuses}
+\end{figure}
 
 The informations from accelerometers, gyros and magnetometer were stored in the  memory of the PSoC5 ready to be sent to the PC.  The PSoC5 has a dual-channel USB interface to the host PC. Channel A of the highspeed USB interface is connected to the PSoC 5 in FIFO parallel mode to allow for the fastest possible transfers between the USB host and the PSoC 5. Channel B of the high-speed USB interface is connected to the PSoC 5 in serial mode to allow for UART communication between the host PC and the PSoC5. Using channel B USB, the PsoC can be read to the PC how a COM port, but to use this port presents an important disadvantage, the data-set can not sent if it is larger than 64 byte. For this reason another strategy was implemented. \\
 \newline
@@ -374,18 +382,18 @@ two led visualize  input-output data of serial port, useful to continually super
 The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.  
 This was possible exploiting the PSoC5L where the \textit{Firmware} was installed and the \textit{Software} written in C++ in a Personal-Computer.
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 
 \subparagraph{Firmware on PSoC5L}
 
-\noindent First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It permits to managed the internal component with some code blocks, so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.   How the SPI communication was implemented is possible to view in the figure RIFERIMENTO
+\noindent First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It permits to managed the internal component with some code blocks, so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.   How the SPI communication was implemented is possible to view in the figure \ref{fig:firmwarepage1}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.7]{Fimware_Page1.png}
+\caption{SPI blocks in the IDE}
+\label{fig:firmwarepage1}
+\end{figure}  
 
-IMMAGINE SPI COMMUNICATION BLOCCHI
-
- 
 Guaranteed the communication between the sensor and the PSoc5L,  the firmware was written in the memory of the board, figure \ref{fig:psocfirmware}. 
 \begin{figure}[h]
 \centering
@@ -393,7 +401,7 @@ Guaranteed the communication between the sensor and the PSoc5L,  the firmware wa
 \caption{Scheme of Firmaware written in the PSoC5L}
 \label{fig:psocfirmware}
 \end{figure}  
-\noindent The primary phase, the  \textit{Init}, set all necessary sensor registers. This means configure e.g. internal clock,   type of communication, accelerometer and gyro full scale range, ecc. Then is possible to select two different steps. In particular the \textit{Magnetometer Config} help to know sensitivity adjustment data for each magnetometer axis. Those values are stored in three different 8-bit register of  the IMU called
+\noindent The primary phase, the  \textit{Init}, set all necessary sensor registers. This means configure e.g. internal clock,   type of communication, accelerometer and gyro full scale range, ecc. Then it is possible to select two different steps. In particular the \textit{Magnetometer Config} help to know sensitivity adjustment data for each magnetometer axis, because when the magnetometer is installed in the MEMS, due to constructive mistakes this one is not always placed in the same pose or orientation. Those values are stored in three different 8-bit register of  the IMU called
 \begin{enumerate}
 \item[$\cdot$] ASAX[7:0]: Magnetic sensor X-axis sensitivity adjustment value
 \item[$\cdot$] ASAY[7:0]: Magnetic sensor Y-axis sensitivity adjustment value
@@ -426,14 +434,7 @@ The other step after the init, is the \textit{Infinite loop}. It is subdivided i
 \label{fig:package}
 \end{figure}  
  
-<<<<<<< Updated upstream
-\subparagraph{C++ code on PC}
-
-
-
-
-=======
-\noindent where its the length is 
+\noindent where its length is 
 \begin{equation*}
 \displaystyle  \left. \begin{array}{lccc}
 \text{int} & \text{ax} & = & 2 \text{byte} \\
@@ -443,19 +444,35 @@ The other step after the init, is the \textit{Infinite loop}. It is subdivided i
 \text{char} & , & = & 1 \text{byte} \\
 \text{char} & \backslash \text{n} & = & 1 \text{byte}
 \end{array} \right\rbrace \; 
-\left. \begin{array}{lcc}
+\begin{array}{lcl}
 \textcolor{blue}{\text{int}} \; \cdot \; 9 \; \cdot \; 17 \; & = & 306 \; \text{byte} \\
-\textcolor{blue}{\text{char}} \; \cdot \; 8  \; \;+\; \; \textcolor{red}{\text{char}} \; \cdot \; 20  & = & 28 \; \text{byte} 
-\end{array} \right\rbrace = \; 334  \;\text{byte}
+\textcolor{blue}{\text{char}} \; \cdot \; 8  \; \;+\; \; \textcolor{red}{\text{char}} \; \cdot \; 20  & = & 28 \; \text{byte}  \\ 
+& & \\ \hline 
+ & & \text{334 byte}
+\end{array} 
 \end{equation*}
 
-\noindent The sent of this package is regulated by an interrupt every 50Hz via Serial bus.  
+\noindent The sent of this package is regulated by an interrupt every 50Hz via Serial bus.  The serial bus is managed developing PSoC Creator too. The frequency of interrupt is created by PWM block while for the serial communication a UART block is implemented, figure \ref{fig:firmwarepage1}.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{Fimware_Page2.png}
+\caption{Interrupt and UART blocks in the IDE}
+\label{fig:firmwarepage1}
+\end{figure}  
 \end{enumerate} 
 
 \subparagraph{C++ code on PC}
+The code written in C++ language not only managed the IMU data but it implemented The Madgwick algorithm too. A scheme of that code is shown in the figure \ref{fig:code_c}.  
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{code_c.png}
+\caption{Code C++ implemented in the PC}
+\label{fig:code_c}
+\end{figure}  
 
+The initial phase implements the setup communication with the PSoC5L. The next step is about magnetometer calibration. A function to calibrate correctly magnetometer is implemented. Execute one time that function the compass correction parameter are stored in a file.txt to be load in the future. The time to effectuate a magnetometer calibration is about 30-40 seconds. 
 
->>>>>>> Stashed changes
+Once detected the offset quaternions, the infinite loop starts calculating the desired joint angles. 
 \paragraph{(d) Validation}
 
 More details can be found in the attached paper~\cite{Santaera:ICRA:2015} available at this~\href{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}{link}.
