@@ -256,13 +256,12 @@ In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orienta
 
 \paragraph{(b) Hardware}
 
+In this section are described the sensors used and how these ones are managed and used by the filter. Information about acceleration, angular rate and  magnetic field are read by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these sensors opens up a wide range of solution. To reconstruct the hand posture 17 IMU are rigidly constrain to a glove dressed by the hand. In particular is mounted one device for each phalanges of the fingers ($3x5=15$), one on the palm and the last one on the wrist of the glove. 
 
-In this section the sensors will be described and how these was managed and used in the application . The information about acceleration, angular rotation velocity and  magnetic field can be obtained by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these units opens up a wide range of solution. The  purpose is to constrain rigidly one device on each phalanges of the fingers, more two  on the palm of the hand.  Although the size of a generic IMU is very small, the selection  was accurate to permit the correct assembly on the hand. Thus an Invensence product has been chosen, MPU-9250.  \\
-\newline
+Although the size of a generic IMU is very small, an accurate selection of the sensors to better assembly the glove, led us to choose the device MPU-9250 by Invensence \cite{riferimento}.  \\
 
 \subparagraph{MPU-9250}
 
-\noindent The MPU-9250 is a System in Package (SiP) that combines two chip: the MPU-6500 (used for the paper published in ICRA2015), wich contains a 3-axis gyroscope, a 3-axis accelerometer, and an onboard Digital Motion Processor (DMP); and AK8963, the market leading 3-axis digital compass.  
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{mpu9250.png}
@@ -270,14 +269,15 @@ In this section the sensors will be described and how these was managed and used
 \label{fig:mpu9250}
 \end{figure}
 
+The MPU-9250 is a System in Package device (SiP) that combines two chip: the MPU-6500 device (used in the first feasibility study \cite{Santaera:ICRA:2015}) containing a 3-axis gyroscope and a 3-axis accelerometer, and the AK8963  a market leading 3-axis digital compass. In particular:
+
 \begin{itemize}
-\item[$\cdot$] \textit{Accelerometer}: the MPU-9250's accelerometers use separate proof masses for each axis. Acceleration along a particular axis induces displacement on the corresponding proof mass, and capacitive sensors detect the displacement differentially. The 3-analog informations are digitized using individual on-chip 16-bit Analog-to-Digital Converers(ADCs) to sample each axis;
+\item[$\cdot$] \textit{Accelerometer}: Use separate proof masses for each axis. Acceleration along a particular axis induces displacement on the corresponding proof mass, and capacitive sensors detect the displacement differentially. The 3-analog informations are digitized using individual on-chip 16-bit Analog-to-Digital Converers(ADCs) to sample each axis;
 
- \item[$\cdot$] \textit{Gyroscope}: three indipendet vibratory rate gyroscopes are in the MPU-9250, wich detect rotation about the X, Y and Z axes. When the gyroscope are rotated about any of sense axes, the Coriolis Effect causes a ibration that is detected by a capacitive pickoff. The resulting signal is amplified, demodulated and filtered to produce a voltage that is proportional to the angular rate. This voltage pass thorugh a ADC providing digital outputs.
+ \item[$\cdot$] \textit{Gyroscope}: There are three indipendet vibratory rate gyroscopes, wich detect rotation about the X, Y and Z axes. When the gyroscope are rotated about any of sense axes, the Coriolis Effect causes a vibration that is detected by a capacitive pickoff. The resulting signal is amplified, demodulated and filtered to produce a voltage proportional to the angular rate. This voltage, as for the accelerometer, pass thorugh a ADC providing digital outputs.
 
- \item[$\cdot$] \textit{Magnetometer}: the 3-axis magnetometer uses higly sensitive Hall sensor technology. It detects terrestrial magnetism in the X, Y and Z axes. As the other, each ADC has 16-bit resolution. 
+ \item[$\cdot$] \textit{Magnetometer}: The 3-axis magnetometer uses higly sensitive Hall sensor technology. It detects a magnetic field in the X, Y and Z axes. As the other, each ADC has 16-bit resolution. 
 \end{itemize}
-
 
 \noindent The MPU-9250's technical features are summarized in the table \ref{tab:mpu}.
 \begin{table}[tb]\footnotesize
@@ -297,7 +297,7 @@ Gyro Full Scale Range & (deg/sec) &  $\begin{array}{l}   \pm 250 \\  \pm 500  \\
 \end{table}
 
 
-The output data from  axes sensors can be read,  in digital way, from a 8-bit  register of the device.  Each axis sensor presents two registers,   up  and  low register. Thus a complete information from a specific sensor, e.g. the accelerometer, occupies 32-bit. 
+The output data from  axes sensors can be read,  in digital way, from a 8-bit  register of the device.  Each axis sensor presents two registers,   up  and  low register. Thus a complete information from a specific sensor occupies 48-bit, considering for exaple the accelerometer there 16-bit for the x axis, 16-bit for the y axis and 16-bit for the z axis. 
 
 The figure \ref{fig:axes} shows the orientation of the axes of sensitivity and the polarity of rotation.
 \begin{figure}[h]
@@ -307,19 +307,16 @@ The figure \ref{fig:axes} shows the orientation of the axes of sensitivity and t
 \label{fig:axes}
 \end{figure}
 
-The necessary IMU to compute the complete posture of the hand are 17, 15 applied on each phalanges and 2 on the palm of the  hand. 
-In this way the communication and data sending to a processing unit becomes a  crucial aspect. In the MPU-9250 it is possible to select two different type of communication, I$^2$C (Inter Integreted Circuit) or SPI (Serial Peripheral Interface). The I$^2$C supports a frequency of 400Hz while the SPI  1Mhz. The advantage to select the SPI way not only allows to send  data faster but 
-also gives the possibility to manage more IMUs in a single communication bus, figure \ref{fig:spi}.
+As said a complete sensorization of the glove and then of the hand needs 17 IMU, so in terms of system time response the communication between a master processing unit and each IMU becomes a crucial aspect. The MPU-9250 supports two  different type of digital communication; I$^2$C (Inter Integreted Circuit) and SPI (Serial Peripheral Interface). The I$^2$C maximum working frequency is 400Hz while the SPI works on 1Mhz. So the SPI allows a faster communication and using the a futher pin (Slave-Select pin) allows the user to use a single bus overcoming to the problem of set an unique address for each sensor. 
 
-SPI is a 4-wire synchronous serial interface that uses two control lines and two data lines. The MPU-9250 alway operates as a Slave device during standard Master-Slave SPI operation, so the bus is made up of 4 communication line:
+In the figure \ref{fig:spi} is showed the pin-out of a generic SPI cominication. In particular the SPI is a 4-wire synchronous serial interface that uses two control lines and two data lines:
 \begin{itemize}
-\item[-] SCLK, clock;
-\item[-] MOSI, master-output slave-input;
-\item[-] MISO, master-input slave-output;
-\item[-] SS,   slave select.
+\item[-] SCLK, clock - control line;
+\item[-] MOSI, master-output slave-input - data line;
+\item[-] MISO, master-input slave-output - data line;
+\item[-] SS,   slave select - control line.
 \end{itemize}
 
-\noindent With respect to the Master, the SCLK, the MISO and the MOSI are shared among the Slaves devices. Each SPI slave devices requires its own SS line from the master. SS goes low, \textit(active) when the transmission start and goes back high \textit(inactive) at the end. Only one SS line is active at a time, ensuring that only one slave is selected at any given time.   
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{spi.png}
@@ -327,8 +324,10 @@ SPI is a 4-wire synchronous serial interface that uses two control lines and two
 \label{fig:spi}
 \end{figure}
 
+In our work MPU-9250 always operates as a Slave device during standard Master-Slave SPI operation. To speed up communication between master and sensors in our works three SPI bus are used (reffig:firmwarepage1{}, \ref{riferimento}).  
+In each bus the SCLK, the MISO and the MOSI pin are shared by all slaves devices, while each slave devices requires its own SS line to communicate with the master. The SS pin goes low, \textit(active) when the transmission start and goes back high \textit(inactive) at the end, so only one SS line is active at a time, ensuring that only one slave is selected at any given time.   
 
-Usually the master is a microcontroller  or any processing unit that support SPI communication. To manage all 17 slave devices,  it is necessary a microcontroller with sufficient number of pins.   The microcontroller must be able not only to read the correct data from the IMUs but also it must send  data packages to the PC, in which the Magdwick Filter is implemented.   \\
+Usually the master is a microcontroller  or any processing unit that support SPI communication. To manage all 17 slave devices,  it is necessary a microcontroller with sufficient number of pins. The microcontroller must be able not only to read the correct data from the IMUs but also it must send  data packages to the PC, where the Magdwick Filter is implemented.   \\
 \newline
 
 \subparagraph{PSoC 5LP}
