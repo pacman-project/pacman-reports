@@ -332,9 +332,11 @@ Usually the master is a microcontroller  or any processing unit that support SPI
 
 \subparagraph{PSoC 5LP}
 
-\noindent The processing unit used was \textit{PSoC 5LP} developed by  Cypress Semiconductor. PSoC is a low power  ARM \textsuperscript \textregistered Cortex - M3 based programmable system on chip devices offering unmatched high-precision analog and the flexibility to design custom system solutions. When combined with the free PSoC software development tools (PSoC Creatortm and
-PSoC Programmer) from Cypress, this module is more than sufficient for creating anything from basic microcontroller with embedded analog and digital functions to a highly complex system controller. Both the hardware system architecture and the software are supported by the PSoC
-software tools. 
+The processing unit used is a PSoC mounted on the \textit{PSoC 5LP} board developed by Cypress Semiconductor \cite{riferimento}. The PSoC is a low power ARM \textsuperscript \textregistered Cortex - M3 based programmable system on chip devices offering unmatched high-precision analog and the flexibility to design custom system solutions. Combined with the free PSoC software development tools (PSoC Creator and
+PSoC Programmer) from Cypress, this board is a good solution for applications who need different hardware devices and good time response. %in able to offer a large range of internal devices and solutions necessary to our application. 
+
+%more than sufficient for creating anything from basic microcontroller with embedded analog and digital functions to a highly complex system controller. Both the hardware system architecture and the software are supported by the PSoC
+%software tools. 
 The PSoC integrated circuit is composed of a core, configurable analog and digital blocks, and programmable routing and interconnect. The configurable blocks in a PSoC are the biggest different from other microcontrollers, for this reason can be associated to the FPGA microcontroller family (Field-Programmable Gate Array). 
 %\begin{figure}[h]
 %\centering
@@ -344,9 +346,10 @@ The PSoC integrated circuit is composed of a core, configurable analog and digit
 %\end{figure}
 
 By using configurable analog and digital blocks, it is possible to  create and change mixed-signal embedded applications. These blocks are designed by PSoC-Creator, an Integreted Design Environment (IDE).  
-The development of the PSoC 5LP  and PSoC-Creator has permitted to managed  the IMUs easily. 
+%The development of the PSoC 5LP  and PSoC-Creator has permitted to managed  the IMUs easily. 
+%In our work the PSoC is used first to communicare with IMU then to send data read from sensors to computer.
 
-The PSoC5 was exploited to read data from the slave devices allowing a SPI communication. The SPI bus could be only one, but were preferred three separated bus to have greater control on the hardware system. 
+The first task of the microcontroller is to read data from the slave devices allowing a SPI communication. The SPI bus could be only one, but were preferred three separated bus to have a greater control on the hardware system and to speed up the communication. 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{psoc.png}
@@ -354,19 +357,20 @@ The PSoC5 was exploited to read data from the slave devices allowing a SPI commu
 \label{fig:spibuses}
 \end{figure}
 
-The informations from accelerometers, gyros and magnetometer were stored in the  memory of the PSoC5 ready to be sent to the PC.  The PSoC5 has a dual-channel USB interface to the host PC. Channel A of the highspeed USB interface is connected to the PSoC 5 in FIFO parallel mode to allow for the fastest possible transfers between the USB host and the PSoC 5. Channel B of the high-speed USB interface is connected to the PSoC 5 in serial mode to allow for UART communication between the host PC and the PSoC5. Using channel B USB, the PsoC can be read to the PC how a COM port, but to use this port presents an important disadvantage, the data-set can not sent if it is larger than 64 byte. For this reason another strategy was implemented. \\
-\newline
+After read all IMUs data read these ones are stored in the EEPROM of the PSoC5 and are ready to be send to the PC. To communicate with the PC the PSoC5 has a dual-channel USB. A first channel \textit{A} %of the highspeed USB interface is
+connected to the PSoC 5 in FIFO parallel mode to allow a fastest transfers between the USB host PC and the PSoC 5 and a channel \textit{B} connected to the PSoC 5 in serial mode to allow a standard UART communication between the host PC and the PSoC5. However the channel A, commonly used to implement fast a communication, has a little communication buffer composed by 64 byte, while to send all IMU data to PC we need more than 300 byte. The channel B instead is a serial RS-232 channel and need a Serial-USB conveter to be connected to the PC. The PSoC 5LP mount on board an internal Serial-USB converter but its maximum speed is 115200 baud while we need more than 900000 baud.
+Starting from this considerations a further solution was implemented using on PSoC a standard serial communication and an external Serial-USB module to connected PSoC board to PC.     
 
 \subparagraph{Serial Communication}
 
-The communication between PSocC5 and PC was created exploiting the serial adapter 990 004. It is optimum to connect microcontroller and locig circuit to a PC. The heart of the integrated is the chip FT232R distributed by FTDI the supply a tension of 3.3V, thus it possible to connect the device to another TTL peripheral o microcontroller in the range of 3.3V-5V without the problem to convert the signal RS232 to  the TTL. The size of the circuit are very small, 25x18 mm and
+The communication between PSocC5 and PC was created exploiting the serial adapter 990 004 \cite{riferimento}. It is optimum to connect microcontroller and logic circuit to a PC with an high rate trasfer data. The heart of the module is the chip FT232R distributed by FTDI \cite{riferimento} which works with a supply tension of 3.3V, thus it possible to connect the device to another TTL peripheral o microcontroller in the range of 3.3V-5V without the problem to convert the signal RS232 to  the TTL. The size of the circuit are very small, 25x18 mm and
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{usb_serial.png}
 \caption{Serial adapter}
 \label{fig:serial_adapter}
 \end{figure}
-two led visualize  input-output data of serial port, useful to continually supervise data stream escaping possible software/hardware problems. The device is USB 2.0 compatible and it permits all velocity to 1Mb. 
+two led visualize input-output data of serial port, very useful to control data stream, escaping possible software/hardware problems. The device is USB 2.0 compatible and it allows all velocity to 1Mb. 
 
 \begin{figure}[h]
 \centering
