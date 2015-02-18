@@ -324,7 +324,7 @@ In the figure \ref{fig:spi} is showed the pin-out of a generic SPI cominication.
 \label{fig:spi}
 \end{figure}
 
-In our work MPU-9250 always operates as a Slave device during standard Master-Slave SPI operation. To speed up communication between master and sensors in our works three SPI bus are used (reffig:firmwarepage1{}, \ref{riferimento}).  
+In our work MPU-9250 always operates as a Slave device during standard Master-Slave SPI operation. To speed up communication between master and sensors in our works three SPI bus are used (ref{fig:firmwarepage1}, \ref{riferimento}).  
 In each bus the SCLK, the MISO and the MOSI pin are shared by all slaves devices, while each slave devices requires its own SS line to communicate with the master. The SS pin goes low, \textit(active) when the transmission start and goes back high \textit(inactive) at the end, so only one SS line is active at a time, ensuring that only one slave is selected at any given time.   
 
 Usually the master is a microcontroller  or any processing unit that support SPI communication. To manage all 17 slave devices,  it is necessary a microcontroller with sufficient number of pins. The microcontroller must be able not only to read the correct data from the IMUs but also it must send  data packages to the PC, where the Magdwick Filter is implemented.   \\
@@ -358,7 +358,7 @@ The first task of the microcontroller is to read data from the slave devices all
 \end{figure}
 
 After read all IMUs data read these ones are stored in the EEPROM of the PSoC5 and are ready to be send to the PC. To communicate with the PC the PSoC5 has a dual-channel USB. A first channel \textit{A} %of the highspeed USB interface is
-connected to the PSoC 5 in FIFO parallel mode to allow a fastest transfers between the USB host PC and the PSoC 5 and a channel \textit{B} connected to the PSoC 5 in serial mode to allow a standard UART communication between the host PC and the PSoC5. However the channel A, commonly used to implement fast a communication, has a little communication buffer composed by 64 byte, while to send all IMU data to PC we need more than 300 byte. The channel B instead is a serial RS-232 channel and need a Serial-USB conveter to be connected to the PC. The PSoC 5LP mount on board an internal Serial-USB converter but its maximum speed is 115200 baud while we need more than 900000 baud.
+connected to the PSoC 5 in FIFO parallel mode to allow a fastest transfers between the USB host PC and the PSoC 5 and a channel \textit{B} connected to the PSoC 5 in serial mode to allow a standard UART communication between the host PC and the PSoC5. However the channel A, commonly used to implement fast a communication, has a little communication buffer composed by 64 byte, while to send all IMU data to PC we need more than 450 byte. The channel B instead is a serial RS-232 channel and need a Serial-USB conveter to be connected to the PC. The PSoC 5LP mount on board an internal Serial-USB converter but its maximum speed is 115200 baud while we need more than 900000 baud.
 Starting from this considerations a further solution was implemented using on PSoC a standard serial communication and an external Serial-USB module to connected PSoC board to PC.     
 
 \subparagraph{Serial Communication}
@@ -382,14 +382,19 @@ two led visualize input-output data of serial port, very useful to control data 
 
 \paragraph{(c) Software}
 
-The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.  
-This was possible exploiting the PSoC5L where the \textit{Firmware} was installed and the \textit{Software} written in C++ in a Personal-Computer.
+To reconstruct the hand complete posture using the IMU glove two different software are written. The first one, written in C, running on the PSoC is its firmware and this one as described read all IMU measurements and then send data to a PC.
+The second software, written in C++, running on a PC reads data from PSoC and applies in a suitable way the Madgwick filter to data from two subsequent IMU.
+%The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.  
+%This was possible exploiting the PSoC5L where the \textit{Firmware} was installed and the \textit{Software} written in C++ in a Personal-Computer.
 
+\subparagraph{Firmware on PSoC}
 
+The firmware is written using the PSoC creator IDE developed by Cypress. This one offers an intuitively GUI to
+%First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It 
+managed the internal PSoC devices represented as code blocks, to configure the PSoC input/output and to write the code necessary to connect and work PSoC internal device and pin.% so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.   
+In figure \ref{fig:firmwarepage1} is showed how the three SPI bus are configurated and the relative pin used.%How the SPI communication was implemented is possible to view in the figure 
 
-\subparagraph{Firmware on PSoC5L}
-
-\noindent First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It permits to managed the internal component with some code blocks, so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.   How the SPI communication was implemented is possible to view in the figure \ref{fig:firmwarepage1}
+\ref{fig:firmwarepage1}
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.7]{Fimware_Page1.png}
@@ -397,39 +402,50 @@ This was possible exploiting the PSoC5L where the \textit{Firmware} was installe
 \label{fig:firmwarepage1}
 \end{figure}  
 
-Guaranteed the communication between the sensor and the PSoc5L,  the firmware was written in the memory of the board, figure \ref{fig:psocfirmware}. 
+In figure \ref{fig:psocfirmware} is showed how the firmware manages IMUs %Guaranteed the communication between the sensor and the PSoc5L,  the firmware was written in the memory of the board, figure \ref{fig:psocfirmware}. 
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{firmware.png}
 \caption{Scheme of Firmaware written in the PSoC5L}
 \label{fig:psocfirmware}
 \end{figure}  
-\noindent The primary phase, the  \textit{Init}, set all necessary sensor registers. This means configure e.g. internal clock,   type of communication, accelerometer and gyro full scale range, ecc. Then it is possible to select two different steps. In particular the \textit{Magnetometer Config} help to know sensitivity adjustment data for each magnetometer axis, because when the magnetometer is installed in the MEMS, due to constructive mistakes this one is not always placed in the same pose or orientation. Those values are stored in three different 8-bit register of  the IMU called
+
+In particular there is an initalization phase \textit{Init}, who sets all IMU internal registers. This means configure e.g. internal clock, type of communication, accelerometer and gyro full scale range, ecc. 
+After the initialization phase firmware could run in two different way. The \textit{Magnetometer Config}, performed whenever there are new IMU, helps to know sensitivity adjustment data for each magnetometer axis. In fact, due to constructive inaccuracies during the magnetometer installation on the MEMS, the magnetometer axis pose or orientation can be different between two IMU. So the manufacturer store in three different IMU 8-bit register three number, one for each axes, to uniform magnetic measures between two o more IMU. In particular these registers are:
+
 \begin{enumerate}
-\item[$\cdot$] ASAX[7:0]: Magnetic sensor X-axis sensitivity adjustment value
-\item[$\cdot$] ASAY[7:0]: Magnetic sensor Y-axis sensitivity adjustment value
-\item[$\cdot$] ASAZ[7:0]: Magnetic sensor Z-axis sensitivity adjustment value
+\item[$\cdot$] $ASA_x[7:0]$: Magnetic sensor X-axis sensitivity adjustment value
+\item[$\cdot$] $ASA_y[7:0]$: Magnetic sensor Y-axis sensitivity adjustment value
+\item[$\cdot$] $ASA_z[7:0]$: Magnetic sensor Z-axis sensitivity adjustment value
 \end{enumerate}
 
-\noindent The sensitivity adjustment is done by the equation below
+Read the three sensivity registers the sensitivity factor corrector $s_a$ is given by %adjustment is done by the equation below
 
 \begin{equation}
-\displaystyle Hadj = H \;  \text{x} \left(          \frac{ \left(ASA - 128\right)\; \text{x} \; 0.5 }{128} + 1        \right)
+s_a  = \frac{ 0.5(ASA_a - 128\right)}{128} + 1,
 \end{equation} 
 
-\noindent where $H$ is the measurement dara read out from the measurement data register, $ASA$ is the sensitivity adjustment value, and $Hadj$ is the adjusted measurement data. Each values is possible to view on the LCD module on the PsoC's board via I2C. 
-The magnetometer config step runs only one time, because  the adjustment parameters, once known, are stored by the user in the C++ code in the Personal-Computer. 
+\noindent and for example the exact magnetic field on the $x$-axes is given
 
-The other step after the init, is the \textit{Infinite loop}. It is subdivided in two independent section
+\begin{equation}
+H_{{adj}_x} = H_x s_x,
+\end{equation} 
+
+\noindent where $H_x$ is the current data read from the measurement data register, $ASA_x$ is the sensitivity $x$-axes correction factor and $H_{{adj}_x}$ is the real measurement. 
+%To Each values is possible to view on the LCD module on the PsoC's board via I2C. 
+After the all magnetometer correction factors are computed, these ones are store on the PC hard disk and then are used to correct the current data read from PSoC. %The magnetometer config step runs only one time, because  the adjustment parameters, once known, are stored by the user in the C++ code in the Personal-Computer. 
+
+If all magnetometer corrector factors are been computed after the initi phase, firmware will run \textit{Infinite loop} phase. It is subdivided in two independent section
 \begin{enumerate}
-\item[$\cdot$] \textit{Read IMUs}: one at a time the IMU are read sequentially (via SPI) and the output data stored in 3 different matrix
+\item[$\cdot$] \textit{Read IMUs}: An internal counter each $20$ms (50Hz) generates an interrupt where IMU are sequentially read and the output data stored in 3 different matrix
                           \begin{enumerate}
                           \item[-] Acc $\in \Re ^{17 \text{x} 3}$
                           \item[-] Gyro $\in \Re ^{17 \text{x} 3}$
                           \item[-] Mag $\in \Re ^{17 \text{x} 3}$
                           \end{enumerate}
-                           The read frequency is the lowest one among the three sensors, and in particular is 100Hz, that of the magnetometer.
-\item[$\cdot$] \textit{Create Package Data}:  the data of the matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in the figure \ref{fig:package}  
+                          The maximum read frequency is the lowest one among the three sensors, and in particular the magnetomer has the lowest refresh frequency 100Hz.
+\item[$\cdot$] \textit{Create Package Data}:  Between two subsequent interrupt data stored in the three matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in the figure \ref{fig:package}  
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{datapackage.png}
@@ -440,22 +456,25 @@ The other step after the init, is the \textit{Infinite loop}. It is subdivided i
 \noindent where its length is 
 \begin{equation*}
 \displaystyle  \left. \begin{array}{lccc}
-\text{int} & \text{ax} & = & 2 \text{byte} \\
+\text{int} & \text{ax},\text{ay},\text{az},\text{gx},\text{gy},\text{gz},\text{mx},\text{my},\text{mz}  & = & 2 \text{byte} \\
 \text{char} & , & = & 1 \text{byte} \\
 \text{char} & : & = & 1 \text{byte} \\
 \text{char} & ; & = & 1 \text{byte} \\
-\text{char} & , & = & 1 \text{byte} \\
+\text{char} & \backslash \text{r} & = & 1 \text{byte} \\
 \text{char} & \backslash \text{n} & = & 1 \text{byte}
 \end{array} \right\rbrace \; 
 \begin{array}{lcl}
-\textcolor{blue}{\text{int}} \; \cdot \; 9 \; \cdot \; 17 \; & = & 306 \; \text{byte} \\
-\textcolor{blue}{\text{char}} \; \cdot \; 8  \; \;+\; \; \textcolor{red}{\text{char}} \; \cdot \; 20  & = & 28 \; \text{byte}  \\ 
+\textcolor{blue}{\text{int}} \; = \; 9 \; \cdot \; 17 \; & = & 306 \; \text{byte} \\
+\textcolor{blue}{\text{char}} \; = \; 8  \; \cdot \;+\; \; \textcolor{red}{\text{char}} \; \cdot \; 20  & = & 156 \; \text{byte}  \\ 
 & & \\ \hline 
- & & \text{334 byte}
+ & & \text{462 byte}
 \end{array} 
 \end{equation*}
 
-\noindent The sent of this package is regulated by an interrupt every 50Hz via Serial bus.  The serial bus is managed developing PSoC Creator too. The frequency of interrupt is created by PWM block while for the serial communication a UART block is implemented, figure \ref{fig:firmwarepage1}.
+\noindent The interrupt who defines the IMU read and data send time is generated using an PWM block, while the communication with computer is implemented using an UART block, as shown in the figure \ref{fig:firmwarepage1}
+
+%The sent of this package is regulated by an interrupt every 50Hz via Serial bus.  The serial bus is managed developing PSoC Creator too. The frequency of interrupt is created by PWM block while for the serial communication a UART block is implemented, figure \ref{fig:firmwarepage1}.
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.8]{Fimware_Page2.png}
@@ -465,7 +484,8 @@ The other step after the init, is the \textit{Infinite loop}. It is subdivided i
 \end{enumerate} 
 
 \subparagraph{C++ code on PC}
-The code written in C++ language not only managed the IMU data but it implemented The Madgwick algorithm too. A scheme of that code is shown in the figure \ref{fig:code_c}.  
+The code on PC implements, from data read by PSoC, the Madgwick algorithm between two IMUs, a scheme of code is shown in the figure \ref{fig:code_c}.  
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{code_c.png}
@@ -473,9 +493,14 @@ The code written in C++ language not only managed the IMU data but it implemente
 \label{fig:code_c}
 \end{figure}  
 
-The initial phase implements the setup communication with the PSoC5L. The next step is about magnetometer calibration. A function to calibrate correctly magnetometer is implemented. Execute one time that function the compass correction parameter are stored in a file.txt to be load in the future. The time to effectuate a magnetometer calibration is about 30-40 seconds. 
+During an initial phase the communication with the PSoC is configured, then user can decide whether to change the magnetometer calibration factors or no. If user decide to change the magnetometer calibration factors a special function 
+to calibrate correctly magnetometer will run and the new compass correction parameter are stored in a file.txt to be load in the future. Magnetometer calibration spends about 50-60 seconds to compute all magnetometer corrector factors. 
+If user decide to mantain the old magnetometer corrector factors, software applies the Madgwick filter to data read from the IMU to compute the offset angles between IMUs due to glove mounting inaccuracies. Then after these initiali stages software entries in a infinite loop where runs computing at each time the joint angles values from the current IMU measurements. 
 
-Once detected the offset quaternions, the infinite loop starts calculating the desired joint angles. 
+
+Once detected the offset quaternions, the infinite loop starts calculating the desired joint angles.
+
+ 
 \paragraph{(d) Validation}
 
 More details can be found in the attached paper~\cite{Santaera:ICRA:2015} available at this~\href{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}{link}.
