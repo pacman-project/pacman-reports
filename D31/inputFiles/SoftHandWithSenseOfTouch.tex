@@ -497,10 +497,35 @@ During an initial phase the communication with the PSoC is configured, then user
 to calibrate correctly magnetometer will run and the new compass correction parameter are stored in a file.txt to be load in the future. Magnetometer calibration spends about 50-60 seconds to compute all magnetometer corrector factors. 
 If user decide to mantain the old magnetometer corrector factors, software applies the Madgwick filter to data read from the IMU to compute the offset angles between IMUs due to glove mounting inaccuracies. Then after these initiali stages software entries in a infinite loop where runs computing at each time the joint angles values from the current IMU measurements. 
 
-
 Once detected the offset quaternions, the infinite loop starts calculating the desired joint angles.
-
  
 \paragraph{(d) Validation}
+
+In order to validate the hand posture, using the IMU glove, and to demonstrate the ability for a robot to recognize a grasped object from the knowledge of its hand posture some simple experiments were performed.
+To validate the hand posture, a Pisa/IIT SoftHand is dressed with the IMU glove. On line visualization of the hand posture is programmed wth ROS (Robot Operating System) \cite{riferimento}. Figs. \ref{fig:hand_reconstruction_1}, {fig:hand_reconstruction_2} and \ref{fig:hand_reconstruction_3} show three different examples of hand posture reconstruction, while the two videos \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{link} and \href{https://www.youtube.com/watch?v=bceOXa990-Q}{link} show the hand postrure reconstruction respectivily in the static and dynamic case.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{Hand_Movement_1.png}
+\caption{Hand Posture Reconstruction Example}
+\label{fig:hand_reconstruction_1}
+\end{figure} 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{Hand_Movement_2.png}
+\caption{Hand Posture Reconstruction Example}
+\label{fig:hand_reconstruction_2}
+\end{figure} 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{Hand_Movement_3.png}
+\caption{fig:hand_reconstruction_3}
+\label{fig:code_c}
+\end{figure} 
+
+
+
 
 More details can be found in the attached paper~\cite{Santaera:ICRA:2015} available at this~\href{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}{link}.
