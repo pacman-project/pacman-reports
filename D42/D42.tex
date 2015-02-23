@@ -95,6 +95,9 @@ Humans have no troubles in selecting the correct grasp strategies even if the ob
 
 The work to be documented in this report regards: ``Metodologies for incipient grasping evaluation''. This should mostly contain the results of Task 4.2 and the progress of Task 4.3 at this stage. In particular, the report should contain a description of the procedures to infer first-order object surface properties and the quality of the associated grasp from fingerpad sensor recordings, and algorithms for local optimization of contact point locations and on-line grasping force optimization.
 
+%% Input from Claudio
+% In Task 4.4 we posed the problem of grasping as a problem of motion planning under uncertainty. We planned to implement and evaluate a motion planning algorithm in a physics based simulation, prior to transfer to a real robot. The requirement was for an algorithm that could provide robust reach to grasp trajectories in the face of object pose and shape uncertainty, planning for and taking advantage of tactile contacts. We considered both methods that plan explicitly in belief space, and those that embed information from observations in the physical space. We elected to pursue the latter route.
+
 
 \subsection{Actual work performed}
 
@@ -107,6 +110,8 @@ For the reasons mentioned above, the work that is presented in this report is mo
 In Sec.~\ref{sec:GraspingWithSoftHands}, we present our approach to define successful synthetic poses for the Pisa/IIT SoftHand in grasping the PaCMan object database. In Sec.~\ref{sec:GraspPlanningBoundingBoxes}, the previous approach is sharpened by employing a custom decomposition into cuboids of the object point cloud. Each cuboid suggests a number of grasps to be performed on the object. These grasps are used to warm start the search for successful grasps to be synthetically found in the simulation environment and to be attached to that object's grasp database. The feasibility of using this approach on-line to find graspable parts on objects in the scene with partial point cloud information and irrespective to their prior recognition is under investigation.
 
 In Sec.~\ref{sec:GraspingNovelObjects}, we shift our attention onto the generalization and adaptation ability of the previously reported grasp planning algorithm for fully actuated hands showing, in experiments using the DLR-HIT Hand II, how it is possible to just use a few exemplary taught grasps in order to be able to transfer this knowledge to unknown, even partially visible objects.
+
+(INPUT FROM CLAUDIO) In Sec.~\ref{sec:GraspingUncertainty}, ...
 
 Sec.~\ref{sec:SampleBasedMotionPlanningSoftRobots} presents a new approach to planning for soft robot manipulators under task constraints. This piece of work is central to motion planning in dual arm configurations, e.g. when an object is held simultaneously with two compliant underactuated hands. The corresponding control problem, which makes use of a geometric formulation and is based on a noninteracting scheme, is tested on a dual-arm (closed kinematic loop) configuration.
 
@@ -142,6 +147,12 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 % To be prepared by: UoB and adapted by Hamal Marino
 % Grasp Novel Objects
 \input{./inputFiles/GraspingNovelObjects.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: UoB (Claudio and Jeremy))
+% Grasping under Uncertainty
+\input{./inputFiles/GraspingUnderUncertainty.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
