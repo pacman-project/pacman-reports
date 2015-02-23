@@ -1,6 +1,4 @@
-# pacman-unipi-report
-
-A repository to host the reports from UNIPI within the PaCMan project.
+# pacman-reports
 
 ## Installing the report style
 
