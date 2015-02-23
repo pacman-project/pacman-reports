@@ -4,13 +4,20 @@
 \label{sec:ObjectGraspingDataset}
 
 In this section we present an object grasping dataset, collected at the University of Pisa, to be used within the PaCMan project as a tool to perform high level planning and grasping.
+The goal of this dataset is to provide a grasp database for each object so that the relative pose between object and hand is always known during the grasp. This information can be later 
+exploited to reproduce the grasp autonomously. 
 The dataset contains a series of grasps performed on kitchen environment objects by a human operator with the aid of the Pisa/IIT SoftHand. The operator wears
-a motorized handle on his right arm, which supports and operates the SoftHand, while it performs grasps on objects. 
-The dataset is populated with 8-10 seconds long records for each object so that in each record the user has constant access to relative and/or absolute hand posture, object pose, hand joints positions 
-and point clouds of the whole scene. %expand/modify?
+a motorized handle on his right arm, which supports and operates the SoftHand, while it performs grasps on objects put on a table. Several different grasp types were performed and recorded for every object, each composed by
+a pre-grasp phase, in which the hand moves towards the object and starts closing on it, and the actual grasp phase, in which the SoftHand closes on the object and lift it up for a few seconds.
+The dataset is then populated by 8-10 seconds long records, on each the user has constant access to relative and/or absolute hand posture, object pose, hand joints positions 
+and point clouds of the whole scene. The remainder of the section describes which hardware was used during records and how it was configured, which software was used and finally a description and usage of data.%expand/modify?
 
 \paragraph{(a) Hardware setup used during dataset recording:}
 %description of various hardware used
+The whole system used to capture grasp recordings is composed by the following:
+\begin{description}
+  \item[PhaseSpace Impulse Motion Tracking System] %TODO
+\end{description}<++>
 \paragraph{(b) Software setup used during dataset recording:}
 %1mention we used ROS to sync various hardware
 %2talk about calibration steps
