@@ -32,7 +32,7 @@ Since the motion and force directions are orthogonal as seen in Fig.~\ref{fig:fi
 The strategy to slide a finger over a surface consist in assigning a reference velocity on the tangent plane at the contact point, of the same contact point. Let $C$ be the contact point and $\left\lbrace T \right\rbrace$ the frame with $C$ as origin, such that the $y$-$z$ directions form the local tangent plane and the $x$ direction is normal to the fingertip surface and pointing outwards, the desired twist of the fingertip with respect to $C$ written in $\left\lbrace T \right\rbrace$ is
 \begin{equation}
     \bm{^Tv_C}=\left(
-    \begin{matrix} 
+    \begin{matrix}
         0\\
         v_{dy}\\
         v_{dz}\\
@@ -47,19 +47,19 @@ The desired twist of the fingertip center point, $P$, written in the end-effecto
 \begin{equation}
 \bm{^Ev_P}=\left(
     \begin{array}{cc}
-       \bm{I}_{3x3} & ^E\hat{\bm{c}} \\ 
-       \bm{0}_{3x3} & \bm{I}_{3x3}  
+       \bm{I}_{3x3} & ^E\hat{\bm{c}} \\
+       \bm{0}_{3x3} & \bm{I}_{3x3}
     \end{array}
     \right)
     \left(
     \begin{array}{cc}
-        R_{ET} & \bm{0}_{3x3} \\ 
-        \bm{0}_{3x3} & R_{ET}  
+        R_{ET} & \bm{0}_{3x3} \\
+        \bm{0}_{3x3} & R_{ET}
     \end{array}
-    \right) 
+    \right)
     \bm{{^Tv_C}},
 \end{equation}
-where $\bm{c}$ is a position vector from the fingertip center to the contact point, and the $\left(\hat{•}\right)$ operator is the skew symmetric matrix extraction from a vector operator.
+where $\bm{c}$ is a position vector from the fingertip center to the contact point, and the $\left(\hat{•}\right)$ operator is the skew-symmetric matrix extraction from a vector operator.
 
 The Jacobian relative to the fingertip center is used to obtain the desired joint angle rates as
 \begin{equation}
@@ -75,20 +75,20 @@ where $\Delta_T$ is the control period.
 
 %% THE PPC CONTROLLER, NOT SURE TO INCLUDE IT
 
-% A more general class of the adaptive controllers called Prescribed Performance Controller (PPC) proposed by~\cite{DoulgeriPPC} achieves force/position tracking with prescribed performance and ensures no loss of contact with the surface under parametric uncertainties in robot dynamics and contact compliance. Prescribed performance is presented in terms of convergence rate, steady state error and allowed overshoot for the force/position tracking errors. 
+% A more general class of the adaptive controllers called Prescribed Performance Controller (PPC) proposed by~\cite{DoulgeriPPC} achieves force/position tracking with prescribed performance and ensures no loss of contact with the surface under parametric uncertainties in robot dynamics and contact compliance. Prescribed performance is presented in terms of convergence rate, steady state error and allowed overshoot for the force/position tracking errors.
 
 % The strong limitation of such controller is that it \textbf{is derivated only for a fixed planar surface}; the robustness by utilizing the controller to perform the same task of the Hybrid F/P one is a possible subject of a future work. Altough a complete mathematical derivation of the controller is in ~\cite{DoulgeriPPC}, here the necessary for the implementation is presented.
 
 % Let the base frame be {B}. Let the surface frame be {S} and attached at some point on the surface; its position is denoted by a vector $\bm{p_s} \in R^3$ and its orientation by a matrix $R_s =[\bm{n_s, o_s, a_s}]$, such that $\bm{n_s} \in R^3$ is the unit vector normal to the contact surface pointing inwards.
 
-% Consider also the end effector frame ${\mathcal{E}}$ described by a position vector $\bm{p_t} \in R^3$ and an orientation matrix $R_t$ that can be parameterized by three rotation angles around the axes of the inertia frame, denoted by $\bm{\phi_t} \in R^3$. Let the generalized position be $\bm{p} = [\bm{p_t^T, \phi_t^T}]^T \in R^6$. The generalized velocity $\dot{\bm{p}} = [\dot{\bm{p}}_t^T, \bm{\omega}_t^T]^T$ is related to the joint velocity $\bm{\dot{q}}$ through the robot Jacobian 
+% Consider also the end effector frame ${\mathcal{E}}$ described by a position vector $\bm{p_t} \in R^3$ and an orientation matrix $R_t$ that can be parameterized by three rotation angles around the axes of the inertia frame, denoted by $\bm{\phi_t} \in R^3$. Let the generalized position be $\bm{p} = [\bm{p_t^T, \phi_t^T}]^T \in R^6$. The generalized velocity $\dot{\bm{p}} = [\dot{\bm{p}}_t^T, \bm{\omega}_t^T]^T$ is related to the joint velocity $\bm{\dot{q}}$ through the robot Jacobian
 % \begin{equation}
 %   \dot{\bm{p}}=J(\bm{q})\dot{\bm{q}}.
 % \end{equation}
 
 % Assume that the position and orientation of the surface is known and hence $\bm{n_s}$ and the generalized normal vector $\bm{n} = [\bm{n^T , 0_3^T}]^T$ can be used to calculate projection matrices $Q_s =[ I_{3 \times 3} - \bm{n_sn_s^T}]$, $Q=[I_{6 \times 6} - \bm{nn^T}]$ to the position/orientation subspace.
 
-% For a planar surface it is possible to derive the material deformation $\chi$ as a function of $\bm{p_s}$ and $\bm{p}$: 
+% For a planar surface it is possible to derive the material deformation $\chi$ as a function of $\bm{p_s}$ and $\bm{p}$:
 % \begin{equation}
 %   \chi = r- \bm{n_s^Tp_s+n_s^Tp_t},
 % \end{equation}
@@ -143,14 +143,14 @@ where $\Delta_T$ is the control period.
 % with $-1 <\ M <\ 1$ and $\rho(t)$ is a bounded, smooth, strictly positive, decreasing function with $\lim_{t \to \infty}\rho(t)= \rho_\infty >\ 0$. A possible choose for $\rho(t)$ is
 % \begin{equation}
 %   \rho(t)=(\rho_0-\rho_\infty)\exp(-lt),
-% \end{equation} 
+% \end{equation}
 % with $\rho_0 >\ |e(0)|$, and $\rho_\infty$ representing the maximum permissible size of the tracking error at steady state. The satisfaction of performance bounds for the force error allows us further to guarantee that the robot will never lose the contact with the surface.
 
 % To satisfy both control objectives define the error trasformation
 % \begin{equation}
 %   \epsilon(t)=T\left(\frac{e(t)}{\rho(t)}\right),
-% \end{equation} 
-% with 
+% \end{equation}
+% with
 % \begin{equation}
 % T(x)=\begin{cases}
 %   \log\left(\frac{M+x}{1-x}\right),\, e(0) >\ 0\\
@@ -180,7 +180,7 @@ where $\Delta_T$ is the control period.
 % \begin{equation}
 %   u=-k_fJ^T\bm{n}\vartheta Z_f^T\hat{\bm{\theta}}_f\vartheta T_f\epsilon_f-k_pJ^TQ\vartheta \bm{T}_p\bm{\epsilon}_p+Z_d^T(\bm{q,\dot{q},\dot{q}_r,\ddot{{q}}_r})\bm{\hat{\theta}}_d+J^T\bm{w}-D\bm{s_q},
 % \end{equation}
-% where 
+% where
 % \begin{equation}
 %   \bm{\dot{q}}_r=J^+\dot{\bm{p_r}}
 % \end{equation}
@@ -202,7 +202,7 @@ where $\Delta_T$ is the control period.
 
 \paragraph{(b) Definition of control strategies for concurrent stable object grasping and rolling manipulation to acquire second-order object surface properties}
 
-Based on the previous control framework, rolling over a surface is achieved by changing reference velocity of the contact point for a pure revolution about an axis on the tangent plane at the contact point. Similar to the previous section, the desired twist of the contact point $C$ written with respect to $\left\lbrace T \right\rbrace$ is
+Based on the previous control framework, rolling over a surface is achieved by changing reference velocity of the contact point for a pure revolution about an axis laying on the tangent plane and passing through the contact point. Similar to the previous section, the desired twist of the contact point $C$ written with respect to $\left\lbrace T \right\rbrace$ is
 \begin{equation}
     \bm{^Tv_C}=\left(
     \begin{array}{c}
@@ -235,20 +235,20 @@ For a finite rolling motion, it is possible to approximate (\ref{eq:montana}) wi
 \begin{equation}
 M_f \Delta{\alpha}_f=\bar{K}_r
 \left[
-\begin{array}{c} 
+\begin{array}{c}
 -\Delta\theta_y\\
 \Delta\theta_x\\
 \end{array}
 \right],
 \label{montanaapprox}
 \end{equation}
-where 
+where
 \begin{equation}
 \bar{K}_r=(K_f+\tilde{K}_0)^{-1}=
 \left(
-\begin{array}{cc} 
+\begin{array}{cc}
 r_1 & r_2 \\
-r_2 & r_3 
+r_2 & r_3
 \end{array}
 \right),
 \end{equation}
@@ -271,7 +271,7 @@ A=\left(
 and
 \begin{equation}
 \bm{r}=\left(
-\begin{array}{c} 
+\begin{array}{c}
 r_1\\
 r_2\\
 r_3
@@ -309,11 +309,11 @@ obtain the principal curvature directions given by $\psi$, and principal curvatu
 % \begin{equation}
 % \begin{cases}
 % S(\bm{c})=0\\
-% \nabla_r^TS(\bm{c})+k\bm{n_c}=0 
+% \nabla_r^TS(\bm{c})+k\bm{n_c}=0
 % \end{cases}
 % \end{equation}
 
-% From the previuos system of equation holds 
+% From the previuos system of equation holds
 % \begin{equation}
 % \bm{y=Wa}
 % \end{equation}
@@ -326,11 +326,11 @@ obtain the principal curvature directions given by $\psi$, and principal curvatu
 
 % \begin{equation}
 % \bm{W}=\left(
-% \begin{matrix} 
+% \begin{matrix}
 % x^2 & y^2 & z^2 & 2xy & 2yz & 2xz & 2x & 2y & 2z & 0 \\
 % x & 0 & 0 & y & 0 & z & 1 & 0 & 0 & n_x\\
 % 0 & y & 0 & x & z & 0 & 0 & 1 & 0 & n_y\\
-% 0 & 0 & z & 0 & y & x & 0 & 0 & 1 & n_z 
+% 0 & 0 & z & 0 & y & x & 0 & 0 & 1 & n_z
 % \end{matrix}
 % \right)
 % \end{equation}
@@ -369,7 +369,7 @@ The simulation framework is heavily based on Adams MSC\copyright, a software for
 
 Another feature is the capability to export a Simulink block representing the articulated model with inputs (e.g. joint torques) and outputs (e.g. joint angles, contact wrench). Matlab and Simulink were used to implement the control laws and to manage the results.
 
-Thus, a planar finger with three angular joints was modeled using the parameters in Table~\ref{tab:3R}. The fingertip is a hemisphere of radius $3$cm.
+Thus, a planar finger with three angular joints was modeled using the parameters in Table~\ref{tab:3R}. The fingertip is a hemisphere of radius $3$ cm.
 
 \begin{table}
 \centering
@@ -388,14 +388,14 @@ Thus, a planar finger with three angular joints was modeled using the parameters
 \label{tab:3R}
 \end{table}
 
-The controller gains for position and force regulation and contact parameters between the fingertip and the objects were set as in Table~\ref{tab:sim_parameters}. The desired normal component contact force was set to $1$N for all cases. 
+The controller gains for position and force regulation and contact parameters between the fingertip and the objects were set as in Table~\ref{tab:sim_parameters}. The desired normal component contact force was set to $1$N for all cases.
 
 \begin{figure}
 \begin{floatrow}
 \ffigbox{%
   \includegraphics[width=\linewidth]{contacted_mesh.png}%
 }{%
-\caption{Contac model in Adams.}%
+\caption{Contact model in Adams.}%
 \label{fig:contactedmesh}%
 }
 \capbtabbox{%
@@ -450,12 +450,12 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:objects}, where t
 \label{tab:results}
 \begin{tabular}{ccccc}
     \hline\hline
-    Object / & \multicolumn{2}{c}{Real Curvature} & \multicolumn{2}{c}{Measured Curvature}\\
+    Object / & \multicolumn{2}{c}{Real Princ. Radii} & \multicolumn{2}{c}{Measured Princ. Radii}\\
     Direction& x (m) & y (m) & x (m) & y (m)\\
     \hline
     Plane & $\infty$ & $\infty$ & 333 & 500 \\
-    Cylinder & $\infty$ & . & 500 & .088 \\
-    Sphere & . & . & 0.121 & 0.127  
+    Cylinder & $\infty$ & .90 & 500 & .088 \\
+    Sphere & .1207 & .1207 & 0.121 & 0.127
 \end{tabular}
 \end{table}
 
@@ -513,4 +513,4 @@ More details on the whole methodology can be found in the attached paper~\cite{A
         }
     \caption{Relevant data recorded during a haptic exploration. Force along $\mathbf{z}_{\text{c}}$ used to detect the contact and non-contact states (top). Friction coefficient $\mu$, the red line marks the mean value during the contact state (bottom). Material: Paperboard.}
     \label{fig:data2}
-\end{figure}
+\end{figure} 

@@ -6,21 +6,15 @@
 
 \paragraph{(a) The Madgwick Filter}
 
-%\noindent $\blacktriangleright$  \textbf{The Madgwick Filter} \\ 
+%\noindent $\blacktriangleright$  \textbf{The Madgwick Filter} \\
 %\newline
 
 
-In \cite{Santaera:ICRA:2015} was used a modified version of the Mahony-Hamel passive complementary filter, to obtain the orientation of a generic frame $\{ A \}$ with respect another one $\{ B \}$ expressed by a rotation matrix.  
+In~\cite{Santaera:ICRA:2015} a modified version of the Mahony-Hamel passive complementary filter was used to obtain the orientation of a generic frame $\{ A \}$ with respect to frame $\{ B \}$, expressed by a rotation matrix.
 
-In his works Sebastian Madgwick \cite{MadgwickMARG} studies a new algorithm able to better use measures read by sensors. Algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, using quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter, in each time a new orientation quaternion is estimated summing to its previously estimation a correction factor, which depends by
-data read from IMU.
+In his works, Sebastian Madgwick~\cite{MadgwickMARG} studied a new algorithm able to better use measurements read by sensors. The algorithm proposed is also able to tackle the singularities, associated for example with Euler angle representation, by employing quaternions to represent a general orientation. The Madgwick filter is similar to Mahony-Hamel filter in that, at each time step, a new orientation quaternion is estimated summing, to its previous estimation, a correction factor that depends on the data read from an IMU.
 
-<<<<<<< Updated upstream
 Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
-=======
-Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (in $\rad s^{-1}$) with respect the IMU body frame $\{ B\}$ respectively about $x$, $y$ and $z$ axis and $^{b}\Omega$ a vector containing these measures as
->>>>>>> Stashed changes
-
 \begin{equation}
 \label{eq4_01}
 ^b \Omega = [ 0 \quad {^b\omega_x} \quad {^b\omega_y} \quad {^b\omega_z} ],
@@ -33,7 +27,7 @@ Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (
 ^b_a\dot{q} = \frac{1}{2} {^b_a \bar{q}}  \otimes {^b\Omega}.
 \end{equation}
 
-\noindent Where $\otimes$ denotes a quaternion product, while $\bar{}$ denotes the unity normalize operator. From eq. (\ref{eq4_02}) trivially the orientation of the earth frame with respect to sensor frame at time \textit{t} is given by eq. (\ref{eq4_03}) and (\ref{eq4_04}) as
+\noindent Where $\otimes$ denotes a quaternion product, while $\bar{}$ denotes the (unity) normalization operator. From eq.~\eqref{eq4_02} trivially the orientation of the earth frame with respect to sensor frame at time \textit{t} is given by eq. (\ref{eq4_03}) and (\ref{eq4_04}) as
 
 \begin{equation}
 \label{eq4_03}
@@ -43,24 +37,24 @@ Let be ${^b\omega_x}$, ${^b\omega_y}$ and ${^b\omega_z}$ angular rate measures (
 \begin{equation}
 \label{eq4_04}
 ^b_a q_{\Omega,t} = {^b_a \hat{\bar{q}}_{t-1}} + {^b_a \dot{q}_{\Omega,t}} \Delta t,
-\end{equation} 
+\end{equation}
 
 \noindent where $^b \Omega_t$ is angular rate measured at time \textit{t}, $\Delta t$ is the sampling period and $^b_a \hat{\bar{q}}_{t-1}$ is the previous estimate of the orientation quaternion.
 
-Reading now from a sensor a set of accelerometer and compass measures in a frame strap down to the sensor there are infinite earth frame orientation, according to measures read from the sensors. 
-However using quaternions to express an orientation it is very easy to overcome to the singularities problem, obtaining from sensors meausures an unique orientation for the earth frame with respect the sensor one.
-From this considerations the orientation problem can be written as an optimisation problem, where quaternion $^b_a \bar{q}$ aligns a predefined reference direction of a field (gravity or magnetic) in the earth frame $^a \bar{d}$, with the measured direction of the field in the sensor frame $^b \bar{s}$. So the quaternion $^b_a \bar{q}$ is given by the problem
+Now, by reading from a sensor a set of accelerometer and compass measurements in a frame strap down to the sensor, one can find infinite earth frame orientations, according to measures read from the sensors.
+However, using quaternions to express an orientation, it is very easy to overcome the singularity problem, obtaining from sensors measures an unique orientation for the earth frame with respect the one attached to the sensor.
+From this considerations, the orientation problem can be written as an optimization problem, where quaternion $^b_a \bar{q}$ aligns a predefined reference direction of a field (gravity or magnetic) in the earth frame $^a \bar{d}$, with the measured direction of the field in the sensor frame $^b \bar{s}$. Therefore, the quaternion $^b_a \bar{q}$ is given by the problem
 
 \begin{equation}
 \label{eq4_05}
 \min_{{^b_a \bar{q}} \in \mathbb{R}^4} f({^b_a \bar{q}}, {^a \bar{d}}, {^b \bar{s}}),
 \end{equation}
 
-\noindent with the objective function $f$, $^b_a \bar{q}$ and the vectors $^a \bar{d}$ and $^b \bar{s}$ defined as 
+\noindent with the objective function $f$, $^b_a \bar{q}$ and the vectors $^a \bar{d}$ and $^b \bar{s}$ defined as
 
 \begin{equation}
 \label{eq4_06}
-f(^b_a \bar{q},^a \bar{d}, ^b \bar{s}) = ^b_a \bar{q}^{*} \otimes ^a \bar{d} \otimes ^b_a \bar{q} - ^b \bar{s}, 
+f(^b_a \bar{q},^a \bar{d}, ^b \bar{s}) = ^b_a \bar{q}^{*} \otimes ^a \bar{d} \otimes ^b_a \bar{q} - ^b \bar{s},
 \end{equation}
 
 \begin{equation}
@@ -78,14 +72,14 @@ f(^b_a \bar{q},^a \bar{d}, ^b \bar{s}) = ^b_a \bar{q}^{*} \otimes ^a \bar{d} \ot
 ^b \bar{s} = [0 \quad s_x \quad s_y \quad s_z],
 \end{equation}
 
-\noindent and $^{*}$ in (\ref{eq4_06}) denotes the conjugate operator of a quaternion $q = [q_1 \quad q_2 \quad q_3 \quad q_4]$ as $q^* = [q_1 \quad -q_2 \quad -q_3 \quad -q_4]$. To solve problem in (\ref{eq4_05}) many algorithms can be used, but in terms of simplicity the gradient descent algorithm should be the best choice. From this last choice and starting from an initial quarternion $^b_a \bar{q}_0$ it is possible to write the quarternion correction factor $^b_a \bar{q}_{k+1}$ linked to step $(k+1)^{th}$ as
+\noindent and $^{*}$ in (\ref{eq4_06}) denotes the conjugate operator of a quaternion $q = [q_1 \quad q_2 \quad q_3 \quad q_4]$ as $q^* = [q_1 \quad -q_2 \quad -q_3 \quad -q_4]$. To solve problem in (\ref{eq4_05}) many algorithms can be used. However, for the problem at hand, a gradient descent strategy appeared a satisfactory choice in terms of low computational burden and efficiency. With this choice and starting from an initial (guess) quaternion $^b_a \bar{q}_0$, it is possible to write the quaternion correction factor $^b_a \bar{q}_{k+1}$ linked to step $(k+1)^{th}$ as follows
 
 \begin{equation}
 \label{eq4_10}
 ^b_a q_{k+1} = ^b_a \bar{q}_k - \beta \frac{\nabla f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s})}{\vert \vert \nabla f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s}) \vert \vert}, \quad k = 0,1,2 \dots n,
 \end{equation}
 
-\noindent where 
+\noindent where
 \begin{equation}
 \label{eq4_10bis}
 ^b_a \bar{q}_k = \frac{1}{2} {^b_a \bar{q}_{k-1}} \otimes ^b{\Omega_k},  \quad k = 1,2,3 \dots n,
@@ -99,37 +93,37 @@ f(^b_a \bar{q},^a \bar{d}, ^b \bar{s}) = ^b_a \bar{q}^{*} \otimes ^a \bar{d} \ot
 \begin{equation}
 \label{eq4_12}
 \begin{split}
-f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s}) = 
-\left [ \begin{array}{c} 
-2d_x(\frac{1}{2} - q_3^2 - q_4^2) + 2d_y(q_1q_4 + q_2 q_3) + \\ 
-2d_x(q_2 q_3 - q_1 q_4) + 2d_y(\frac{1}{2} - q_2^2 - q_4^2) + \\ 
+f(^b_a \bar{q}_k, ^a \bar{d}, ^b \bar{s}) =
+\left [ \begin{array}{c}
+2d_x(\frac{1}{2} - q_3^2 - q_4^2) + 2d_y(q_1q_4 + q_2 q_3) + \\
+2d_x(q_2 q_3 - q_1 q_4) + 2d_y(\frac{1}{2} - q_2^2 - q_4^2) + \\
 2d_x(q_1 q_3 + q_2 q_4) + 2d_y(q_3 q_4 - q_1 q_2) + \end{array} \right. \\
 \left. \begin{array}{r}
 2 d_z(q_2q_4 - q_1q_3) - s_x \\
 2d_z(q_1q_2 + q_3 q_4) - s_y \\
-2d_z(\frac{1}{2} - q_2^2 - q_3^2) - s_z  
-\end{array} \right ] \end{split}, 
+2d_z(\frac{1}{2} - q_2^2 - q_3^2) - s_z
+\end{array} \right ] \end{split},
 \end{equation}
 
 \begin{equation}
 \label{eq4_13}
 \begin{split}
-J(^b_a \bar{q}_k, ^a \bar{d}) = 
-\left [ \begin{array}{cc} 
-2d_yq_4 - 2d_zq_3 & 2d_yq_3+ 2d_zq_4\\ 
--2d_xq_4 + 2d_zq_2 & 2d_xq_3 - 4d_yq_2 + 2d_zq1 \\ 
+J(^b_a \bar{q}_k, ^a \bar{d}) =
+\left [ \begin{array}{cc}
+2d_yq_4 - 2d_zq_3 & 2d_yq_3+ 2d_zq_4\\
+-2d_xq_4 + 2d_zq_2 & 2d_xq_3 - 4d_yq_2 + 2d_zq1 \\
 2d_xq_3 - 2d_yq_2 & 2d_xq_4 - 2d_yq_1 - 4d_zq_2 \end{array} \right. \\
 \left. \begin{array}{rr}
 -4d_x q_3 2d_y q_2 - 2d_z q_1 & -4d_x q_4 2d_y q_1 + 2d_z q_2\\
 2d_x q_2 + 2d_z q_4 &  -2d_x q_1 - 4d_y q_4 + 2d_z q_3\\
-2d_x q_1 + 2 d_y q_4 - 4 d_z q_3 & 2 d_x q_2 + 2d_y q_3  
-\end{array} \right ] \end{split}, 
+2d_x q_1 + 2 d_y q_4 - 4 d_z q_3 & 2 d_x q_2 + 2d_y q_3
+\end{array} \right ] \end{split},
 \end{equation}
 
-\noindent where $\beta$ denotes the step size, while $J^T$ denotes the transpose of the Jacobian matrix from the objective function $f$. 
+\noindent where $\beta$ denotes the step size, while $J^T$ denotes the transpose of the Jacobian matrix of the objective function $f$.
 
-Problem described in eq. (\ref{eq4_05}) is a general alignement problem, so considering measurements read from accelerometers and from magnetormeters, it is possible to write two different problems, the first one from accelerometers data $f_g(^b_a \overline{q}_k, ^a \overline{g}_a, ^b \overline{g}_b)$ where $^a\overline{g}_a = \overline{g}_a$ is the gravity field measured in the inertial frame while $^b \overline{g}_b = \overline{g}_b$ is the gravity field in the sensor frame. In the same manner the second problem is $f_m(^b_a \overline{q}_k, ^a \overline{m}_a, ^b \overline{m}_b)$ with $^a\overline{m}_a = \overline{m}_a$ magnetic field read in the inertial frame and $^s \overline{m}_b = \overline{m}_b$ magnetic field read in the sensor frame.
-Combining the two optimization problems as
+Problem described in eq. (\ref{eq4_05}) is a general alignement problem. Therefore, by considering measurements read from accelerometers and from magnetormeters, it is possible to write two different problems: the first one from accelerometers data $f_g(^b_a \overline{q}_k, ^a \overline{g}_a, ^b \overline{g}_b)$ where $^a\overline{g}_a = \overline{g}_a$ is the gravity field measured in the inertial frame while $^b \overline{g}_b = \overline{g}_b$ is the gravity field in the sensor frame; in a similar manner, the second problem is $f_m(^b_a \overline{q}_k, ^a \overline{m}_a, ^b \overline{m}_b)$ with $^a\overline{m}_a = \overline{m}_a$ magnetic field read in the inertial frame and $^s \overline{m}_b = \overline{m}_b$ magnetic field read in the sensor frame.
+Combining the two optimization problems as follows
 
 \begin{equation}
 \label{eq4_14}
@@ -141,7 +135,7 @@ f_{g,m}(^b_a \overline{q},\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline
 \begin{equation}
 \label{eq4_15}
 ^b_a q_{k+1} = ^b_a \overline{q}_k - \beta \frac{\nabla f_{g,m}(^b_a \overline{q}_k,\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline{m}_b) }{\vert \vert \nabla f_{g,m}(^b_a \overline{q}_k,\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline{m}_b)  \vert \vert}, \quad k = 0,1,2 \dots n,
-\end{equation} 
+\end{equation}
 
 \noindent with
 
@@ -158,15 +152,15 @@ f_{g,m}(^b_a \overline{q},\overline{g}_a,\overline{g}_b,\overline{m}_a,\overline
 \label{eq4_17}
 J_{g,m}^T(^b_a \overline{q}_k, \overline{g_a}, \overline{m_a}) = \left [ \begin{array}{c} J_g(^b_a \overline{q}_k,\overline{g}_a) \\ J_m(^b_a \overline{q}_k, \overline{m}_a) \end{array} \right ]
 \end{equation}
- 
+
 \noindent where $J_g$ and $J_m$ respectvily the Jacobians of the function $f_g$ and $f_m$.
 
-In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, while algorithm \ref{MadgwickAlg} details the steps followed to obtain the orientation quaternion using its previous estimation and data read from IMU, using $g_a$ and $m_a$ to denote respectively the gravity and the magnetic field in the inertial frame. In particular the gravity field commonly is set as $g_a = [0 \quad 0 \quad 0 \quad 1]$, or rather using a North-East-Down convention. For the earth magnetic field it can be considered to have two components in one horizontal axis and the vertical axis, with its vertical component due to the inclination of the field depending by the latitude and it is about $1\degree$ to the horizontal in Pisa, so $m_a = [0 \quad m_{a_x} \quad 0 \quad m_{a_z}]$.
+In Figure~\ref{BlockDiagram}, the block diagram of the Madgwick filter is depicted. Algorithm~\ref{MadgwickAlg} details the steps followed to obtain the orientation quaternion using its previous estimation and the data read from IMU, using $g_a$ and $m_a$ to denote, respectively, the gravity and the magnetic field in the inertial frame. In particular, the gravity field is commonly set as $g_a = [0 \quad 0 \quad 0 \quad 1]$, or rather, using a North-East-Down convention. The earth magnetic field can be considered to have two components: one along the horizontal axis and one in the vertical axis, with its vertical component due to the inclination of the field depending by the latitude. In Pisa, for example, it is about $1\degree$ w.r.t. the horizontal, so $m_a = [0 \quad m_{a_x} \quad 0 \quad m_{a_z}]$.
 
 \begin{figure}[t]
 \includegraphics[scale=0.45]{Madgwick_Block_Diagram}
 \caption{Block diagram of the Madgwick passive complementary filter}
-\label{BlockDiagram} 
+\label{BlockDiagram}
 \end{figure}
 
 \begin{algorithm}
@@ -180,7 +174,7 @@ In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, 
 \STATE Computing the correction terms $c_n =  \beta \frac{\nabla f}{\vert \vert \nabla f \vert \vert}$ using equation (\ref{eq4_16})
 \STATE Computing the orientation quaternion time variation $^b_a \hat{q}_{d_n} =  (\frac{1}{2} {^b_a\hat{\overline{q}}_{n-1}} \otimes \Omega_{b_n}) - c_n$
 \STATE Computing the new orientation quaternion estimation given by its previouly one and its current time variation $^b_a \hat{q}_n = ^b_a\hat{\overline{q}}_{n-1} + ^b_a \hat{q}_{d_n} \Delta t$
-\STATE Normalizing the new estimated quarternion $^b_a \hat{\overline{q}}_n = \frac{^b_a \hat{q}_n}{\vert \vert ^b_a \hat{q}_n \vert \vert}$ 
+\STATE Normalizing the new estimated quarternion $^b_a \hat{\overline{q}}_n = \frac{^b_a \hat{q}_n}{\vert \vert ^b_a \hat{q}_n \vert \vert}$
 \end{algorithmic}
 \end{algorithm}
 
@@ -194,32 +188,30 @@ In figure \ref{BlockDiagram} is shown the block diagram of the Madgwick filter, 
 \subparagraph{Orientation between two IMUs}
 %\noindent $\bullet$ \textbf{Orientation betwenn two IMUs}
 
-Using two different IMUs in a configuration as shown in figure \ref{TwoLinksOneJoint} these will return two different set of measurements ($r_1,r_2$) referred to their body frame $\{ B_1 \}$ and $\{ B_2 \}$. Applying the Madgwick filter to $r_1$ this one will return $^{b{_1}}_a \hat{\overline{q}}$ ,or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_1 \}$, while from $r_2$ the filter will return $^{b{_2}}_a \hat{\overline{q}}$, or rather the orientation quaternion of the inertial frame with respect the frame $\{ B_2 \}$. Trivially the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame $\{ B_1 \}$ is given by
-
-
+When employing two different IMUs in a configuration as shown in Figure~\ref{TwoLinksOneJoint}, these will return two different sets of measurements ($r_1,r_2$) referred to their body frame $\{ B_1 \}$ and $\{ B_2 \}$. Applying the Madgwick filter to $r_1$, one will get $^{b{_1}}_a \hat{\overline{q}}$ or, rather, the orientation quaternion of the inertial frame with respect to frame $\{ B_1 \}$, while from $r_2$ the filter will return $^{b{_2}}_a \hat{\overline{q}}$ or, rather, the orientation quaternion of the inertial frame with respect to frame $\{ B_2 \}$. Trivially, the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame $\{ B_1 \}$ is given by
 
 \begin{equation}
 \label{eq4_18}
 {^{b_1}_{b_2}\hat{\overline{q}}} = {_{a}^{b_2}\hat{\overline{q}}^{*}} \otimes {_{a}^{b_1}\hat{\overline{q}}}.
-\end{equation}   
+\end{equation}
 
 However, as seen for the Mahony-Hamel filter, it is possible to apply in a suitable way the Madgwick filter to data read from the two IMUs, to obtain ${^{b_1}_{b_2}\hat{\overline{q}}}$.
 
-Starting from the IMUs measurements where $\overline{g}_{b_1}$, $^{b_1} \Omega$ and $\overline{m}_{b_1}$ denotes respectively accelerometer, gyroscope and magnetometer measurements in $\{ B_1 \}$,  while $\overline{g}_{b_2}$, $^{b_2} \Omega$ and $\overline{m}_{b_2}$ denotes respectively accelerometer, gyroscope and magnetometer measurements in $\{ B_2 \}$, the first term the correction factor (\ref{eq4_10}), written in (\ref{eq4_10bis}) become
+Starting from the IMUs measurements where $\overline{g}_{b_1}$, $^{b_1} \Omega$ and $\overline{m}_{b_1}$ denotes respectively accelerometer, gyroscope and magnetometer measurements in $\{ B_1 \}$,  while $\overline{g}_{b_2}$, $^{b_2} \Omega$ and $\overline{m}_{b_2}$ denotes respectively accelerometer, gyroscope and magnetometer measurements in $\{ B_2 \}$, the first term of the correction factor (\ref{eq4_10}), as written in (\ref{eq4_10bis}), becomes
 
 \begin{equation}
 \label{eq4_19}
 ^{b_1}_{b_2} \bar{q}_k = \frac{1}{2} {^{b_1}_{b_2} \bar{q}_{k-1}} \otimes {^{b_1}_{b_2} \Omega_k},  \quad k = 1,2,3 \dots n,
 \end{equation}
 
-\noindent where 
+\noindent where
 
 \begin{equation}
 \label{eq4_20}
 {^{b_1}_{b_2} \Omega_k} = {^{b_2} \Omega_k} - {^{b_1}_{b_2} \bar{q}_{k-1}} \otimes {^{b_1} \Omega_k} \otimes {^{b_1}_{b_2} \bar{q}^{*}_{k-1}},
 \end{equation}
 
-\noindent is the angular rate of the frame $\{ B_2 \}$ attached to the $IMU_2$ with respect the frame $\{ B_1 \}$ attached to $IMU_1$. The second term of the correction factor, in (\ref{eq4_16}) become
+\noindent is the angular rate of frame $\{ B_2 \}$ (attached to the $\text{IMU}_2$) with respect the frame $\{ B_1 \}$ (attached to $\text{IMU}_1$). The second term of the correction factor, in (\ref{eq4_16}), becomes
 
 \begin{equation}
 \begin{split}
@@ -228,14 +220,14 @@ Starting from the IMUs measurements where $\overline{g}_{b_1}$, $^{b_1} \Omega$ 
 \end{split}
 \end{equation}
 
-\noindent So the orientation quaternion of the frame $\{ B_2 \}$ with respect the frame ${\{ B_1 \}}$ at step $(k+1)^{th}$ is given by
+\noindent Thus, the orientation quaternion of the frame $\{ B_2 \}$, with respect the frame ${\{ B_1 \}}$, at step $(k+1)^{th}$, is given by
 
 \begin{equation}
 \label{eq4_22}
 ^{b_1}_{b_2} q_{k+1} = ^{b_1}_{b_2} \bar{q}_k - \beta \frac{\nabla f_{g,m}(^{b_1}_{b_2} \bar{q}_k,\bar{g}_{b_2},\bar{g}_{b_1},\bar{m}_{b_2},\bar{m}_{b_1}) }{\vert \vert \nabla f_{g,m}(^{b_1}_{b_2} \bar{q}_k,\bar{g}_{b_2},\bar{g}_{b_1},\bar{m}_{b_2},\bar{m}_{b_1})  \vert \vert}, \quad k = 0,1,2 \dots n.
-\end{equation} 
+\end{equation}
 
-In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orientation quaternion of a frame $\{ B_2 \}$ with respect frame $\{ B_1 \}$. 
+In algorithm~\ref{MadgwickAlgTwo} the steps followed to obtain the orientation quaternion of a frame $\{ B_2 \}$ with respect frame $\{ B_1 \}$ are presented.
 
 \begin{algorithm}
 \caption{Two IMUs Madgwick Discrete Filter at $n^{th}$ step}
@@ -250,15 +242,15 @@ In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orienta
 \STATE Computing the correction terms $c_n =  \beta \frac{\nabla f}{\vert \vert \nabla f \vert \vert}$ using equation (\ref{eq4_16})
 \STATE Computing the orientation quaternion time variation $^{b_1}_{b_2} \hat{q}_{d_n} =  (\frac{1}{2} {^{b_1}_{b_2}\hat{\overline{q}}_{n-1}} \otimes {^{b_1}_{b_2} \Omega_k}) - c_n$ using (\ref{eq4_20})
 \STATE Computing the new orientation quaternion estimation given by its previouly one and its current time variation $^{b_1}_{b_2} \hat{q}_n = ^{b_1}_{b_2}\hat{\overline{q}}_{n-1} + ^{b_1}_{b_2} \hat{q}_{d_n} \Delta t$
-\STATE Normalizing the new estimated quarternion $^{b_1}_{b_2} \hat{\overline{q}}_n = \frac{^{b_1}_{b_2} \hat{q}_n}{\vert \vert ^{b_1}_{b_2} \hat{q}_n \vert \vert}$ 
+\STATE Normalizing the new estimated quarternion $^{b_1}_{b_2} \hat{\overline{q}}_n = \frac{^{b_1}_{b_2} \hat{q}_n}{\vert \vert ^{b_1}_{b_2} \hat{q}_n \vert \vert}$
 \end{algorithmic}
 \end{algorithm}
 
 \paragraph{(b) Hardware}
 
-In this section are described the sensors used and how these ones are managed and used by the filter. Information about acceleration, angular rate and  magnetic field are read by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these sensors opens up a wide range of solution. To reconstruct the hand posture 17 IMU are rigidly constrain to a glove dressed by the hand. In particular is mounted one device for each phalanges of the fingers ($3x5=15$), one on the palm and the last one on the wrist of the glove. 
+In this section, the sensors used are described along with their interrogation and management by the filter. Information about acceleration, angular rate and  magnetic field are read by an IMU (Inertial Measurements Unit).  The low-consuption, lightweight and potential for low-cost manufacture of these sensors opens up a wide range of solution. To reconstruct the hand posture 17 IMUs are rigidly attached to a glove that is worn by the hand. In particular, one device in mounted on each phalanx of each finger ($3x5=15$), one is mounted on the hand palm, and the last one is attached to the wrist of the glove.
 
-Although the size of a generic IMU is very small, an accurate selection of the sensors to better assembly the glove, led us to choose the device MPU-9250 by Invensence \cite{MPU9250}.  \\
+Although the size of a generic IMU is very small, an accurate selection of the sensors to better assembly the glove, led us to choose the device MPU-9250 by InvenSense~\cite{MPU9250}.  \\
 
 \subparagraph{MPU-9250}
 
@@ -269,37 +261,37 @@ Although the size of a generic IMU is very small, an accurate selection of the s
 \label{fig:mpu9250}
 \end{figure}
 
-The MPU-9250 is a System in Package device (SiP) that combines two chip: the MPU-6500 device (used in the first feasibility study \cite{Santaera:ICRA:2015}) containing a 3-axis gyroscope and a 3-axis accelerometer, and the AK8963  a market leading 3-axis digital compass. In particular:
+The MPU-9250 is a System in Package device (SiP) that combines two chips: the MPU-6500 device (used in the first feasibility study \cite{Santaera:ICRA:2015}) containing a 3-axis gyroscope and a 3-axis accelerometer, and the AK8963, a market leading 3-axis digital compass. In particular:
 
 \begin{itemize}
-\item[$\cdot$] \textit{Accelerometer}: Use separate proof masses for each axis. Acceleration along a particular axis induces displacement on the corresponding proof mass, and capacitive sensors detect the displacement differentially. The 3-analog informations are digitized using individual on-chip 16-bit Analog-to-Digital Converers(ADCs) to sample each axis;
+\item[$\cdot$] \textit{Accelerometer}: Use separate proof masses for each axis. Acceleration along a particular axis induces displacement on the corresponding proof mass, and capacitive sensors detect the displacement differentially. The 3-analog information is digitized using individual on-chip 16-bit Analog-to-Digital Converters (ADCs) to sample each axis;
 
- \item[$\cdot$] \textit{Gyroscope}: There are three indipendet vibratory rate gyroscopes, wich detect rotation about the X, Y and Z axes. When the gyroscope are rotated about any of sense axes, the Coriolis Effect causes a vibration that is detected by a capacitive pickoff. The resulting signal is amplified, demodulated and filtered to produce a voltage proportional to the angular rate. This voltage, as for the accelerometer, pass thorugh a ADC providing digital outputs.
+ \item[$\cdot$] \textit{Gyroscope}: There are three indipendet vibratory rate gyroscopes, wich detect rotation about the X, Y and Z axes. When the gyroscope are rotated about any of sense axes, the Coriolis force causes a vibration that is detected by a capacitive pickoff. The resulting signal is amplified, demodulated and filtered to produce a voltage proportional to the angular rate. This voltage, as for the accelerometer, pass thorugh a ADC providing digital outputs.
 
- \item[$\cdot$] \textit{Magnetometer}: The 3-axis magnetometer uses higly sensitive Hall sensor technology. It detects a magnetic field in the X, Y and Z axes. As the other, each ADC has 16-bit resolution. 
+ \item[$\cdot$] \textit{Magnetometer}: The 3-axis magnetometer uses higly sensitive Hall sensor technology. It detects a magnetic field in the X, Y and Z axes. As the other, each ADC has 16-bit resolution.
 \end{itemize}
 
-\noindent The MPU-9250's technical features are summarized in the table \ref{tab:mpu}.
+\noindent The MPU-9250's technical features are summarized in the Table \ref{tab:mpu}.
 \begin{table}[tb]\footnotesize
 \caption{MPU-9250 features}
 \centering
 \label{tab:mpu}
 \begin{tabular}{l | c | l}
 \textbf{Part} & \textbf{Unit} &  \\ \hline \hline
-Gyro Full Scale Range & (deg/sec) &  $\begin{array}{l}   \pm 250 \\  \pm 500  \\ \pm 1000 \\ \pm \textbf{2000} \end{array}$  \\   
-\rowcolor [gray]{.8}  \text{Gyro Rate Noise} &  (\text{dps}/$\sqrt{\text{Hz}}$)  & $\begin{array}{l}   0.01 \end{array}$  \\ 
-\text{Accel Full Scale Range} & (\text{g}) & $\begin{array}{l}   \pm 2 \\  \pm 4 \\  \pm \textbf{8} \\ \pm 16 \end{array}$ \\ 
-\rowcolor [gray]{.8} \text{Compass Full Scale Range} &($\mu\text{T}$) & $\begin{array}{l}   \pm \textbf{4800} \end{array} $\\ 
-\text{Digital Output} &  & $\begin{array}{l} \text{I}^2\text{C} \\ \textbf{SPI}   \end{array} $ \\  
-\rowcolor [gray]{.8} \text{Logic Supply Voltage } & (\text{V}) & $\begin{array}{l} 1.7\text{V}\text{to}\text{VDD} \\ \textbf{VDD}   \end{array} $\\ 
-\text{Package Size} & (\text{mm}) & $\begin{array}{l} 3\text{x}3\text{x}1   \end{array}$ 
+Gyro Full Scale Range & (deg/sec) &  $\begin{array}{l}   \pm 250 \\  \pm 500  \\ \pm 1000 \\ \pm \textbf{2000} \end{array}$  \\
+\rowcolor [gray]{.8}  \text{Gyro Rate Noise} &  (\text{dps}/$\sqrt{\text{Hz}}$)  & $\begin{array}{l}   0.01 \end{array}$  \\
+\text{Accel Full Scale Range} & (\text{g}) & $\begin{array}{l}   \pm 2 \\  \pm 4 \\  \pm \textbf{8} \\ \pm 16 \end{array}$ \\
+\rowcolor [gray]{.8} \text{Compass Full Scale Range} &($\mu\text{T}$) & $\begin{array}{l}   \pm \textbf{4800} \end{array} $\\
+\text{Digital Output} &  & $\begin{array}{l} \text{I}^2\text{C} \\ \textbf{SPI}   \end{array} $ \\
+\rowcolor [gray]{.8} \text{Logic Supply Voltage } & (\text{V}) & $\begin{array}{l} 1.7\text{V}\text{to}\text{VDD} \\ \textbf{VDD}   \end{array} $\\
+\text{Package Size} & (\text{mm}) & $\begin{array}{l} 3\text{x}3\text{x}1   \end{array}$
 \end{tabular}
 \end{table}
 
 
-The output data from  axes sensors can be read,  in digital way, from a 8-bit  register of the device.  Each axis sensor presents two registers,   up  and  low register. Thus a complete information from a specific sensor occupies 48-bit, considering for exaple the accelerometer there 16-bit for the x axis, 16-bit for the y axis and 16-bit for the z axis. 
+The output data from  axes sensors can be read,  in digital way, from a 8-bit  register of the device.  Each axis sensor presents two registers: the  up  and the low register. Thus, a complete information from a specific sensor occupies 48-bit.  Considering, for example, the accelerometer there are 16-bit for the x axis, 16-bit for the y axis and 16-bit for the z axis.
 
-The figure \ref{fig:axes} shows the orientation of the axes of sensitivity and the polarity of rotation.
+Figure~\ref{fig:axes} shows the orientation of the axes of sensitivity and the polarity of rotation.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{axes_orientation.png}
@@ -307,9 +299,9 @@ The figure \ref{fig:axes} shows the orientation of the axes of sensitivity and t
 \label{fig:axes}
 \end{figure}
 
-As said a complete sensorization of the glove and then of the hand needs 17 IMU, so in terms of system time response the communication between a master processing unit and each IMU becomes a crucial aspect. The MPU-9250 supports two  different type of digital communication; I$^2$C (Inter Integreted Circuit) and SPI (Serial Peripheral Interface). The I$^2$C maximum working frequency is 400Hz while the SPI works on 1Mhz. So the SPI allows a faster communication and using the a futher pin (Slave-Select pin) allows the user to use a single bus overcoming to the problem of set an unique address for each sensor. 
+As already mentioned, a complete sensorization of the glove and, therefore, of the hand needs 17 IMUs. This means that for keeping the time response of the system low, the communication between a master processing unit and each IMU becomes a crucial aspect. The MPU-9250 supports two different types of digital communication: I$^2$C (Inter Integreted Circuit) and SPI (Serial Peripheral Interface). The I$^2$C maximum working frequency is 400Hz, while the SPI works on 1Mhz. Therefore, the SPI allows a faster communication and using the a further pin (Slave-Select pin) allows the user to use a single bus overcoming to the problem of set an unique address for each sensor.
 
-In the figure \ref{fig:spi} is showed the pin-out of a generic SPI cominication. In particular the SPI is a 4-wire synchronous serial interface that uses two control lines and two data lines:
+In Figure~\ref{fig:spi}, the pin-out of a generic SPI communication is shown. In particular, the SPI is a 4-wire synchronous serial interface that uses two control lines and two data lines:
 \begin{itemize}
 \item[-] SCLK, clock - control line;
 \item[-] MOSI, master-output slave-input - data line;
@@ -324,7 +316,7 @@ In the figure \ref{fig:spi} is showed the pin-out of a generic SPI cominication.
 \label{fig:spi}
 \end{figure}
 
-In our work MPU-9250 always operates as a Slave device during standard Master-Slave SPI operation. To speed up communication between master and sensors in our works three SPI bus are used (ref{fig:firmwarepage1}, \ref{fig:IMU_Glove_bus}).  In each bus the SCLK, the MISO and the MOSI pin are shared by all slaves devices, while each slave devices requires its own SS line to communicate with the master. The SS pin goes low, \textit(active) when the transmission start and goes back high \textit(inactive) at the end, so only one SS line is active at a time, ensuring that only one slave is selected at any given time.   
+In our work, the MPU-9250 always operates as a Slave device during standard Master-Slave SPI operation. To speed up communication between master and sensors, in our work three SPI bus are used (\ref{fig:firmwarepage1}, \ref{fig:IMU_Glove_bus}).  In each bus the SCLK, the MISO and the MOSI pin are shared by all slaves devices, while each slave devices requires its own SS line to communicate with the master. The SS pin goes low, (\textit{active}) when the transmission start, and comes back high (\textit{inactive}) at the end, so only one SS line is active at a time, ensuring that only one slave is selected at any given time.
 
 \begin{figure}[h]
 \centering
@@ -333,17 +325,17 @@ In our work MPU-9250 always operates as a Slave device during standard Master-Sl
 \label{fig:IMU_Glove_bus}
 \end{figure}
 
-Usually the master is a microcontroller  or any processing unit that support SPI communication. To manage all 17 slave devices,  it is necessary a microcontroller with sufficient number of pins. The microcontroller must be able not only to read the correct data from the IMUs but also it must send  data packages to the PC, where the Magdwick Filter is implemented.   \\
+Usually the master is a microcontroller  or any processing unit that support SPI communication. To manage all 17 slave devices,  a microcontroller with a sufficient number of pins is needed. The microcontroller must be able not only to read the correct data from the IMUs but also it must be able to send  data packages to the PC, where the Magdwick Filter is implemented.   \\
 \newline
 
 \subparagraph{PSoC 5LP}
 
 The processing unit used is a PSoC mounted on the \textit{PSoC 5LP} board developed by Cypress Semiconductor \cite{PSOC5LP}. The PSoC is a low power ARM \textsuperscript \textregistered Cortex - M3 based programmable system on chip devices offering unmatched high-precision analog and the flexibility to design custom system solutions. Combined with the free PSoC software development tools (PSoC Creator and
-PSoC Programmer) from Cypress, this board is a good solution for applications who need different hardware devices and good time response. %in able to offer a large range of internal devices and solutions necessary to our application. 
+PSoC Programmer) from Cypress, this board is a good solution for applications who need different hardware devices and good time response. %in able to offer a large range of internal devices and solutions necessary to our application.
 
 %more than sufficient for creating anything from basic microcontroller with embedded analog and digital functions to a highly complex system controller. Both the hardware system architecture and the software are supported by the PSoC
-%software tools. 
-The PSoC integrated circuit is composed of a core, configurable analog and digital blocks, and programmable routing and interconnect. The configurable blocks in a PSoC are the biggest different from other microcontrollers, for this reason can be associated to the FPGA microcontroller family (Field-Programmable Gate Array). 
+%software tools.
+The PSoC integrated circuit is composed of a core, configurable analog and digital blocks, and programmable routing and interconnect. The configurable blocks in a PSoC are the biggest difference from other microcontrollers: for this reason it can be associated to the FPGA microcontroller family (Field-Programmable Gate Array).
 %\begin{figure}[h]
 %\centering
 %\includegraphics[scale=0.5]{psoc.png}
@@ -351,11 +343,11 @@ The PSoC integrated circuit is composed of a core, configurable analog and digit
 %\label{fig:psoc}
 %\end{figure}
 
-By using configurable analog and digital blocks, it is possible to  create and change mixed-signal embedded applications. These blocks are designed by PSoC-Creator, an Integreted Design Environment (IDE).  
-%The development of the PSoC 5LP  and PSoC-Creator has permitted to managed  the IMUs easily. 
+By using configurable analog and digital blocks, it is possible to  create and change mixed-signal embedded applications. These blocks are designed by PSoC-Creator, an Integreted Design Environment (IDE).
+%The development of the PSoC 5LP  and PSoC-Creator has permitted to managed  the IMUs easily.
 %In our work the PSoC is used first to communicare with IMU then to send data read from sensors to computer.
 
-The first task of the microcontroller is to read data from the slave devices allowing a SPI communication. The SPI bus could be only one, but were preferred three separated bus to have a greater control on the hardware system and to speed up the communication. 
+The first task of the microcontroller is to read data from the slave devices allowing a SPI communication. The SPI bus could be only one, but three separated bus were preferred to have greater control on the hardware system and to speed up the communication.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{psoc.png}
@@ -363,9 +355,9 @@ The first task of the microcontroller is to read data from the slave devices all
 \label{fig:spibuses}
 \end{figure}
 
-After read all IMUs data read these ones are stored in the EEPROM of the PSoC5 and are ready to be send to the PC. To communicate with the PC the PSoC5 has a dual-channel USB. A first channel \textit{A} %of the highspeed USB interface is
-connected to the PSoC 5 in FIFO parallel mode to allow a fastest transfers between the USB host PC and the PSoC 5 and a channel \textit{B} connected to the PSoC 5 in serial mode to allow a standard UART communication between the host PC and the PSoC5. However the channel A, commonly used to implement fast a communication, has a little communication buffer composed by 64 byte, while to send all IMU data to PC we need more than 450 byte. The channel B instead is a serial RS-232 channel and need a Serial-USB conveter to be connected to the PC. The PSoC 5LP mount on board an internal Serial-USB converter but its maximum speed is 115200 baud while we need more than 900000 baud.
-Starting from this considerations a further solution was implemented using on PSoC a standard serial communication and an external Serial-USB module to connected PSoC board to PC.     
+After all IMU data are read, the data are stored in the EEPROM of the PSoC5 and are ready to be send to the PC. To communicate with the PC, the PSoC5 has a dual-channel USB. A first channel \textit{A} %of the highspeed USB interface is
+is connected to the PSoC 5 in FIFO parallel mode to allow a fastest transfers between the USB host PC and the PSoC 5. A second channel \textit{B} is connected to the PSoC 5 in serial mode to allow a standard UART communication between the host PC and the PSoC5. However, channel A, commonly used to implement fast a communication, has a little communication buffer composed by 64 byte, while to send all IMU data to PC we need more than 450 bytes. The channel B is instead a serial RS-232 channel and needs a Serial-USB converter to be connected to the PC. The PSoC 5LP mount on board presents an internal Serial-USB converter but its maximum speed is 115200 baud while we need more than 900000 baud.
+Starting from these considerations, a different solution was implemented using on PSoC a standard serial communication and an external Serial-USB module to connected PSoC board to PC.
 
 \subparagraph{Serial Communication}
 
@@ -376,7 +368,7 @@ The communication between PSocC5 and PC was created exploiting the serial adapte
 \caption{Serial adapter}
 \label{fig:serial_adapter}
 \end{figure}
-two led visualize input-output data of serial port, very useful to control data stream, escaping possible software/hardware problems. The device is USB 2.0 compatible and it allows all velocity to 1Mb. 
+two led visualize input-output data of serial port, very useful to control data stream, avoiding possible software/hardware problems. The device is USB 2.0 compatible and it allows full speed of 1Mb.
 
 \begin{figure}[h]
 \centering
@@ -390,35 +382,32 @@ two led visualize input-output data of serial port, very useful to control data 
 
 To reconstruct the hand complete posture using the IMU glove two different software are written. The first one, written in C, running on the PSoC is its firmware and this one as described read all IMU measurements and then send data to a PC.
 The second software, written in C++, running on a PC reads data from PSoC and applies in a suitable way the Madgwick filter to data from two subsequent IMU.
-%The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.  
+%The hardware described was managed in two fundamental step.  From one side there was the necessity to read IMU data and send its to computer, from the other side the sensor informations must be used to implement the algorithm for the  hand posture reconstruction.
 %This was possible exploiting the PSoC5L where the \textit{Firmware} was installed and the \textit{Software} written in C++ in a Personal-Computer.
 
 \subparagraph{Firmware on PSoC}
 
-The firmware is written using the PSoC creator IDE developed by Cypress. This one offers an intuitively GUI to
-%First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It 
-managed the internal PSoC devices represented as code blocks, to configure the PSoC input/output and to write the code necessary to connect and work PSoC internal device and pin.% so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.   
-In figure \ref{fig:firmwarepage1} is showed how the three SPI bus are configurated and the relative pin used.%How the SPI communication was implemented is possible to view in the figure 
+The firmware is written using the PSoC creator IDE developed by Cypress. This one offers an intuitive GUI to
+%First of all the SPI communication was created between PSoC5L and the IMUs via software, where the PSoC5L  was the master and the IMUs the salves.  This was possible exploiting PSoC Creator, the software developed by Cypress. It
+manage the internal PSoC devices represented as code blocks, to configure the PSoC input/output, and to write the code necessary to connect and work PSoC internal device and pin. % so all necessary pins of the PSoC's board were configured take advantage of the GUI offers by the IDE.
+Figure~\ref{fig:firmwarepage1} shows how the three SPI bus are configurated and the relative pin used.%How the SPI communication was implemented is possible to view in the figure
 
-\ref{fig:firmwarepage1}
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.7]{Fimware_Page1.png}
 \caption{SPI blocks in the IDE}
 \label{fig:firmwarepage1}
-\end{figure}  
+\end{figure}
 
-In figure \ref{fig:psocfirmware} is showed how the firmware manages IMUs %Guaranteed the communication between the sensor and the PSoc5L,  the firmware was written in the memory of the board, figure \ref{fig:psocfirmware}. 
-
+Figure~\ref{fig:psocfirmware} shows how the firmware manages the IMUs. %Guaranteed the communication between the sensor and the PSoc5L,  the firmware was written in the memory of the board, figure \ref{fig:psocfirmware}.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{firmware.png}
 \caption{Scheme of Firmaware written in the PSoC5L}
 \label{fig:psocfirmware}
-\end{figure}  
-
-In particular there is an initalization phase \textit{Init}, who sets all IMU internal registers. This means configure e.g. internal clock, type of communication, accelerometer and gyro full scale range, ecc. 
-After the initialization phase firmware could run in two different way. The \textit{Magnetometer Config}, performed whenever there are new IMU, helps to know sensitivity adjustment data for each magnetometer axis. In fact, due to constructive inaccuracies during the magnetometer installation on the MEMS, the magnetometer axis pose or orientation can be different between two IMU. So the manufacturer store in three different IMU 8-bit register three number, one for each axes, to uniform magnetic measures between two o more IMU. In particular these registers are:
+\end{figure}
+In particular, there is an initalization phase \textit{Init}, where all IMU internal registers are set. This means configure, e.g. internal clock, type of communication, accelerometer, gyro full scale range, etc.
+After the initialization phase firmware could run in two different ways. The \textit{Magnetometer Config}, performed whenever there are new IMUs, helps to know sensitivity adjustment data for each magnetometer axis. In fact, due to constructive inaccuracies during the magnetometer installation on the MEMS, the magnetometer axis pose or orientation can be different between two IMUs. Therefore, the manufacturer stores in each IMU 8-bit register, three numbers (one for each axis), to equalize magnetic measurements between two o more IMU. In particular, these registers are:
 
 \begin{enumerate}
 \item[$\cdot$] $ASA_x[7:0]$: Magnetic sensor X-axis sensitivity adjustment value
@@ -430,36 +419,36 @@ Read the three sensivity registers the sensitivity factor corrector $s_a$ is giv
 
 \begin{equation}
 s_a  = \frac{ 0.5(ASA_a - 128)}{128} + 1,
-\end{equation} 
+\end{equation}
 
 \noindent and for example the exact magnetic field on the $x$-axes is given
 
 \begin{equation}
 H_{{adj}_x} = H_x s_x,
-\end{equation} 
+\end{equation}
 
-\noindent where $H_x$ is the current data read from the measurement data register, $ASA_x$ is the sensitivity $x$-axes correction factor and $H_{{adj}_x}$ is the real measurement. 
-%To Each values is possible to view on the LCD module on the PsoC's board via I2C. 
-After the all magnetometer correction factors are computed, these ones are store on the PC hard disk and then are used to correct the current data read from PSoC. %The magnetometer config step runs only one time, because  the adjustment parameters, once known, are stored by the user in the C++ code in the Personal-Computer. 
+\noindent where $H_x$ is the current data read from the measurement data register, $ASA_x$ is the sensitivity $x$-axes correction factor and $H_{{adj}_x}$ is the real measurement.
+%To Each values is possible to view on the LCD module on the PsoC's board via I2C.
+After the all magnetometer correction factors are computed, these ones are store on the PC hard disk and then are used to correct the current data read from PSoC. %The magnetometer config step runs only one time, because  the adjustment parameters, once known, are stored by the user in the C++ code in the Personal-Computer.
 
-If all magnetometer corrector factors are been computed after the initi phase, firmware will run \textit{Infinite loop} phase. It is subdivided in two independent section
+If all magnetometer corrector factors have been computed after the initialization phase, firmware will run \textit{Infinite loop} phase. This is subdivided in two independent sections
 \begin{enumerate}
-\item[$\cdot$] \textit{Read IMUs}: An internal counter each $20$ms (50Hz) generates an interrupt where IMU are sequentially read and the output data stored in 3 different matrix
+\item[$\cdot$] \textit{Read IMUs}: An internal counter each $20$ms (50Hz) generates an interrupt where IMU are sequentially read and the output data stored in 3 different matrices
                           \begin{enumerate}
                           \item[-] Acc $\in \Re ^{17 \text{x} 3}$
                           \item[-] Gyro $\in \Re ^{17 \text{x} 3}$
                           \item[-] Mag $\in \Re ^{17 \text{x} 3}$
                           \end{enumerate}
                           The maximum read frequency is the lowest one among the three sensors, and in particular the magnetomer has the lowest refresh frequency 100Hz.
-\item[$\cdot$] \textit{Create Package Data}:  Between two subsequent interrupt data stored in the three matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in the figure \ref{fig:package}  
+\item[$\cdot$] \textit{Create Package Data}:  Between two subsequent interrupt data stored in the three matrices are reorganized in a package ready to be sent to the PC. The package  is summarized in Figure~\ref{fig:package}
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{datapackage.png}
 \caption{Data package sent to  the PC}
 \label{fig:package}
-\end{figure}  
- 
-\noindent where its length is 
+\end{figure}
+
+\noindent where its length is
 \begin{equation*}
 \displaystyle  \left. \begin{array}{lccc}
 \text{int} & \text{ax},\quad \cdots, \quad \text{mz}  & = & 2 \text{byte} \\
@@ -468,16 +457,16 @@ If all magnetometer corrector factors are been computed after the initi phase, f
 \text{char} & ; & = & 1 \text{byte} \\
 \text{char} & \backslash \text{r} & = & 1 \text{byte} \\
 \text{char} & \backslash \text{n} & = & 1 \text{byte}
-\end{array} \right\rbrace \; 
+\end{array} \right\rbrace \;
 \begin{array}{lcl}
 \textcolor{blue}{\text{int}} \; = \; 9 \; \cdot \; 17 \; & = & 306 \; \text{byte} \\
-\textcolor{blue}{\text{char}} \; = \; 8  \; \cdot \;+\; \; \textcolor{red}{\text{char}} \; \cdot \; 20  & = & 156 \; \text{byte}  \\ 
-& & \\ \hline 
+\textcolor{blue}{\text{char}} \; = \; 8  \; \cdot \;+\; \; \textcolor{red}{\text{char}} \; \cdot \; 20  & = & 156 \; \text{byte}  \\
+& & \\ \hline
  & & \text{462 byte}
-\end{array} 
+\end{array}
 \end{equation*}
 
-\noindent The interrupt who defines the IMU read and data send time is generated using an PWM block, while the communication with computer is implemented using an UART block, as shown in the figure \ref{fig:firmwarepage1}
+\noindent The interrupt that defines the IMU read and data send time is generated using an PWM block, while the communication with the computer is implemented using an UART block, as shown in Figure~\ref{fig:firmwarepage1}
 
 %The sent of this package is regulated by an interrupt every 50Hz via Serial bus.  The serial bus is managed developing PSoC Creator too. The frequency of interrupt is created by PWM block while for the serial communication a UART block is implemented, figure \ref{fig:firmwarepage1}.
 
@@ -486,52 +475,52 @@ If all magnetometer corrector factors are been computed after the initi phase, f
 \includegraphics[scale=0.8]{Fimware_Page2.png}
 \caption{Interrupt and UART blocks in the IDE}
 \label{fig:firmwarepage1}
-\end{figure}  
-\end{enumerate} 
+\end{figure}
+\end{enumerate}
 
 \subparagraph{C++ code on PC}
-The code on PC implements, from data read by PSoC, the Madgwick algorithm between two IMUs, a scheme of code is shown in the figure \ref{fig:code_c}.  
+The code on PC implements, from data read by PSoC, the Madgwick algorithm between two IMUs. A scheme of the code is shown in Figure~\ref{fig:code_c}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{code_c.png}
 \caption{Code C++ implemented in the PC}
 \label{fig:code_c}
-\end{figure}  
+\end{figure}
 
-During an initial phase the communication with the PSoC is configured, then user can decide whether to change the magnetometer calibration factors or no. If user decide to change the magnetometer calibration factors a special function 
-to calibrate correctly magnetometer will run and the new compass correction parameter are stored in a file.txt to be load in the future. Magnetometer calibration spends about 50-60 seconds to compute all magnetometer corrector factors. 
-If user decide to mantain the old magnetometer corrector factors, software applies the Madgwick filter to data read from the IMU to compute the offset angles between IMUs due to glove mounting inaccuracies. Then after these initiali stages software entries in a infinite loop where runs computing at each time the joint angles values from the current IMU measurements. 
+During an initial phase, the communication with the PSoC is configured, then the user can decide whether to change or not the magnetometer calibration factors. If the user decides to change the magnetometer calibration factors, a special function
+to calibrate correctly magnetometer will run, and the new compass correction parameter will be stored in a file.txt to be load in the future. Magnetometer calibration takes about 50-60 seconds to compute all magnetometer correction factors.
+If the user decides to keep the previous magnetometer corrector factors, software applies the Madgwick filter to data read from the IMU to compute the offset angles between IMUs due to glove mounting inaccuracies. Then, after these initial stages, software enters in a infinite loop where it keeps computing, at each time instant, the joint angles values from the current IMU measurements.
 
-Once detected the offset quaternions, the infinite loop starts calculating the desired joint angles.
- 
+Once the offset quaternion is detected, the infinite loop starts calculating the desired joint angles.
+
 \paragraph{(d) Validation}
 
-In order to validate the hand posture, using the IMU glove, and to demonstrate the ability for a robot to recognize a grasped object from the knowledge of its hand posture some simple experiments were performed.
-To validate the hand posture, a Pisa/IIT SoftHand is dressed with the IMU glove. On line visualization of the hand posture is programmed wth ROS (Robot Operating System) \cite{Ros_homepage}. Figs. \ref{fig:hand_reconstruction_1}, \ref{fig:hand_reconstruction_2} and \ref{fig:hand_reconstruction_3} show three different examples of hand posture reconstruction, while the two videos show the hand postrure reconstruction respectivily in the \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{static} and \href{https://www.youtube.com/watch?v=bceOXa990-Q}{dynamic} case.
+In order to validate the hand posture reconstructed using the IMU glove, and to demonstrate the ability for a robot to recognize a grasped object from the knowledge of its hand posture, some simple experiments have been performed.
+To validate the hand posture, a Pisa/IIT SoftHand is dressed with the IMU glove. On line visualization of the hand posture is programmed wth ROS (Robot Operating System) \cite{Ros_homepage}. Figs. \ref{fig:hand_reconstruction_1}, \ref{fig:hand_reconstruction_2} and \ref{fig:hand_reconstruction_3} show three different examples of hand posture reconstruction, while the two videos show the hand posture reconstruction, respectively, in \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{static} and \href{https://www.youtube.com/watch?v=bceOXa990-Q}{dynamic} case.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.20]{Hand_Movement_1.png}
 \caption{Hand Posture Reconstruction Example}
 \label{fig:hand_reconstruction_1}
-\end{figure} 
+\end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.20]{Hand_Movement_2.png}
 \caption{Hand Posture Reconstruction Example}
 \label{fig:hand_reconstruction_2}
-\end{figure} 
+\end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.20]{Hand_Movement_3.png}
 \caption{Hand Posture Reconstruction Example}
 \label{fig:hand_reconstruction_3}
-\end{figure} 
+\end{figure}
 
-To study the ability of a robot to recognize a grasped object knowing the posture of its hand, a set of five cups are used. Four of the five cups come from the PaCMan object database. All cups have different diameters as shown in table \ref{tab:cups}:
+To study the ability of a robot to recognize a grasped object knowing the posture of its hand, a set of five cups are used. Four of the five cups come from the PaCMan object database. All cups have different diameters as shown in Table~\ref{tab:cups}.
 
 \begin{table}[tb]\footnotesize
 \begin{tabular}{cc} \hline \hline
@@ -546,48 +535,44 @@ Cups Number & Diamter \\ \hline
 \label{tab:cups}
 \end{table}
 
-The object recognition experiments is composed by two different steps: \textit{Learn} and \textit{Recognize}. During the two phases the hand is used as a probe. 
-The hand movements (open/close) are managed by a simple PID controller, so in this first phase the $K_p$, $K_d$ and $K_i$ parameters of the PID controller are reduced in order to reduced the hand full torque. In these condictions the hand is not able to grasp an object and works as a probe robot. 
+The object recognition experiments is composed by two different steps: \textit{Learn} and \textit{Recognize}. During the two phases the hand is used as a probe.
+The hand movements (open/close) are managed by a simple PID controller. In this first phase, the $K_p$, $K_d$ and $K_i$ parameters of the PID controller are set to values such that the hand squeezing force is kept low. In these conditions, the hand is not able to grasp an object, but behaves as a probe.
 
-In the learning phase when the hand probes an object, the software runnig on the PC appends in a matrix, saved in a text file, a twenty elements row. This row is composed by a first number which indentifies the object and by other nineteen elements which report the current joint angles values (4 for little, 4 for ring, 4 for middle, 4 index and 3 for thumb). 
+In the learning phase, when the hand probes an object, the software running on the PC appends in a matrix format  (saved in a text file) a twenty elements row. This row is composed by a first number which identifies the object and by other nineteen elements which report the current joint angles values (4 for little, 4 for ring, 4 for middle, 4 index and 3 for thumb).
 
-In the recognition phase the software reads the text file where the learning data are saved and creates a matrix $O_{bj} \in \mathbb{R}^{n \times 20}$, where $n$ is the number of learned objects.
-Then the hand in closing probes the current object and software compares the current joint angles values with the values recorded during the learning phase. 
+In the recognition phase, the software reads the text file where the learning data are saved and creates a matrix $O_{bj} \in \mathbb{R}^{n \times 20}$, where $n$ is the number of learned objects.
+Then, the hand in closing, probes the current object and software compares the current joint angles values with the values recorded during the learning phase.
 
-To match the joint angles values an simple root mean squares was implemented, the software returns $n$ different minimization numbers $m_n$ and trivially the object in database nearest to the current one has the smallest $m_n$ number. 
-For each learned object $m_n$ is given by
+To start off to match the joint angles values, a brute force root mean squares error minimizer was considered. Here, the software returns $n$ different numbers $m_n$ representing the distance of each of the $n$ hand recorded poses to the current hand pose. Trivially, the object in database whose hand pose signature is  closest to the current one, has the smallest $m_n$ number.
+For each learned object, $m_n$ is given by
 
 \begin{equation}
 m_n = \sqrt{(C_{angle_{1}} - O_{n_{angle_{1}}})^2 + \cdots + (C_{angle_{19}} - O_{n_{angle_{19}}})^2 },
 \end{equation}
-       
-\noindent where $C_{angle_{k}}$ is the $k^{th}$ hand current joint angles value, $O_{n_{angle_{k}}}$ is the $k^{th}$ joint angles value of the object $n$ and $k=1, 2 , \cdots , 19$.
-   
-With a large number of learned object ($n$) this object recognition strategy could require a large time to match current joints angles values with values recorded in the object database. In future works we study new strategies to better match the current joint angles values with the recorded ones and how to increase object database data, considering for example the grasp forces.
 
-The Figs. \ref{fig:Object_1}, \ref{fig:Object_3} and \ref{fig:Object_5} show three different examples of objects recognition, while the videos show objects recognition procedure respectivily for the \href{https://www.youtube.com/watch?v=d_WPQ3WmHRg}{Object 1}, \href{https://www.youtube.com/watch?v=PG38VObdl6o}{Object 2}, \href{https://www.youtube.com/watch?v=bIYhLXm90hc}{Object $3_a$}, \href{https://www.youtube.com/watch?v=IXVlBAoGKho}{Object $3_b$}, \href{https://www.youtube.com/watch?v=Efmm6-JHcxU}{Object $4_a$}, \href{https://www.youtube.com/watch?v=NZElSV_AnJ4}{Object $4_b$}, \href{https://www.youtube.com/watch?v=mDDb5oTaHzM}{Object $5_a$} and \href{https://www.youtube.com/watch?v=sLzU39zffFY}{Object $5_b$}, where the subscripts $_a$ or $_b$ denote if the hand probes the cup handle or no, in this case the cup is recorded as two different objects. 
+\noindent where $C_{angle_{k}}$ is the $k^{th}$ hand current joint angles value, $O_{n_{angle_{k}}}$ is the $k^{th}$ joint angles value of the object $n$ and $k=1, 2 , \cdots , 19$.
+
+With a large number of learned object ($n$) this object recognition strategy could require a large time to match current joints angles values with values recorded in the object database. In future work, we will investigate more efficient strategies (with respect to the current brute force search) to quickly match the current joint angles values with the recorded ones, and to being able to increase object database data types considering, for example, also grasping forces as features.
+
+Figs. \ref{fig:Object_1}, \ref{fig:Object_3} and \ref{fig:Object_5} show three different examples of objects recognition, while the videos show objects recognition procedure respectively for the \href{https://www.youtube.com/watch?v=d_WPQ3WmHRg}{Object 1}, \href{https://www.youtube.com/watch?v=PG38VObdl6o}{Object 2}, \href{https://www.youtube.com/watch?v=bIYhLXm90hc}{Object $3_a$}, \href{https://www.youtube.com/watch?v=IXVlBAoGKho}{Object $3_b$}, \href{https://www.youtube.com/watch?v=Efmm6-JHcxU}{Object $4_a$}, \href{https://www.youtube.com/watch?v=NZElSV_AnJ4}{Object $4_b$}, \href{https://www.youtube.com/watch?v=mDDb5oTaHzM}{Object $5_a$} and \href{https://www.youtube.com/watch?v=sLzU39zffFY}{Object $5_b$}, where the subscripts $_a$ or $_b$ denote if the hand probes the cup handle or no, in this case the cup is recorded as two different objects.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.30]{Object_1.png}
 \caption{Object Recognition Example}
 \label{fig:Object_1}
-\end{figure} 
+\end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.30]{Object_3.png}
 \caption{Object Recognition Example}
 \label{fig:Object_3}
-\end{figure} 
+\end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.30]{Object_5.png}
 \caption{Object Recognition Example}
 \label{fig:Object_5}
-\end{figure}  
-
-
-
-More details can be found in the attached paper~\cite{Santaera:ICRA:2015} available at this~\href{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}{link}.
+\end{figure}
