@@ -258,7 +258,7 @@ In algorithm \ref{MadgwickAlgTwo} are shown steps followed to obtain the orienta
 
 In this section are described the sensors used and how these ones are managed and used by the filter. Information about acceleration, angular rate and  magnetic field are read by an IMU (Inertial Measurements Unit).  The low power, light weight and potential for low cost manufacture of these sensors opens up a wide range of solution. To reconstruct the hand posture 17 IMU are rigidly constrain to a glove dressed by the hand. In particular is mounted one device for each phalanges of the fingers ($3x5=15$), one on the palm and the last one on the wrist of the glove. 
 
-Although the size of a generic IMU is very small, an accurate selection of the sensors to better assembly the glove, led us to choose the device MPU-9250 by Invensence \cite{riferimento}.  \\
+Although the size of a generic IMU is very small, an accurate selection of the sensors to better assembly the glove, led us to choose the device MPU-9250 by Invensence \cite{MPU9250}.  \\
 
 \subparagraph{MPU-9250}
 
@@ -324,15 +324,21 @@ In the figure \ref{fig:spi} is showed the pin-out of a generic SPI cominication.
 \label{fig:spi}
 \end{figure}
 
-In our work MPU-9250 always operates as a Slave device during standard Master-Slave SPI operation. To speed up communication between master and sensors in our works three SPI bus are used (ref{fig:firmwarepage1}, \ref{riferimento}).  
-In each bus the SCLK, the MISO and the MOSI pin are shared by all slaves devices, while each slave devices requires its own SS line to communicate with the master. The SS pin goes low, \textit(active) when the transmission start and goes back high \textit(inactive) at the end, so only one SS line is active at a time, ensuring that only one slave is selected at any given time.   
+In our work MPU-9250 always operates as a Slave device during standard Master-Slave SPI operation. To speed up communication between master and sensors in our works three SPI bus are used (ref{fig:firmwarepage1}, \ref{fig:IMU_Glove_bus}).  In each bus the SCLK, the MISO and the MOSI pin are shared by all slaves devices, while each slave devices requires its own SS line to communicate with the master. The SS pin goes low, \textit(active) when the transmission start and goes back high \textit(inactive) at the end, so only one SS line is active at a time, ensuring that only one slave is selected at any given time.   
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.4]{Glove_IMU_SPI.png}
+\caption{SPI bus used in the IMU Glove}
+\label{fig:IMU_Glove_bus}
+\end{figure}
 
 Usually the master is a microcontroller  or any processing unit that support SPI communication. To manage all 17 slave devices,  it is necessary a microcontroller with sufficient number of pins. The microcontroller must be able not only to read the correct data from the IMUs but also it must send  data packages to the PC, where the Magdwick Filter is implemented.   \\
 \newline
 
 \subparagraph{PSoC 5LP}
 
-The processing unit used is a PSoC mounted on the \textit{PSoC 5LP} board developed by Cypress Semiconductor \cite{riferimento}. The PSoC is a low power ARM \textsuperscript \textregistered Cortex - M3 based programmable system on chip devices offering unmatched high-precision analog and the flexibility to design custom system solutions. Combined with the free PSoC software development tools (PSoC Creator and
+The processing unit used is a PSoC mounted on the \textit{PSoC 5LP} board developed by Cypress Semiconductor \cite{PSOC5LP}. The PSoC is a low power ARM \textsuperscript \textregistered Cortex - M3 based programmable system on chip devices offering unmatched high-precision analog and the flexibility to design custom system solutions. Combined with the free PSoC software development tools (PSoC Creator and
 PSoC Programmer) from Cypress, this board is a good solution for applications who need different hardware devices and good time response. %in able to offer a large range of internal devices and solutions necessary to our application. 
 
 %more than sufficient for creating anything from basic microcontroller with embedded analog and digital functions to a highly complex system controller. Both the hardware system architecture and the software are supported by the PSoC
@@ -363,7 +369,7 @@ Starting from this considerations a further solution was implemented using on PS
 
 \subparagraph{Serial Communication}
 
-The communication between PSocC5 and PC was created exploiting the serial adapter 990 004 \cite{riferimento}. It is optimum to connect microcontroller and logic circuit to a PC with an high rate trasfer data. The heart of the module is the chip FT232R distributed by FTDI \cite{riferimento} which works with a supply tension of 3.3V, thus it possible to connect the device to another TTL peripheral o microcontroller in the range of 3.3V-5V without the problem to convert the signal RS232 to  the TTL. The size of the circuit are very small, 25x18 mm and
+The communication between PSocC5 and PC was created exploiting the serial adapter 990 004 \cite{Serial_USB}. It is optimum to connect microcontroller and logic circuit to a PC with an high rate trasfer data. The heart of the module is the chip FT232R distributed by FTDI \cite{FTDI_homepage} which works with a supply tension of 3.3V, thus it possible to connect the device to another TTL peripheral o microcontroller in the range of 3.3V-5V without the problem to convert the signal RS232 to  the TTL. The size of the circuit are very small, 25x18 mm and
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{usb_serial.png}
@@ -502,7 +508,7 @@ Once detected the offset quaternions, the infinite loop starts calculating the d
 \paragraph{(d) Validation}
 
 In order to validate the hand posture, using the IMU glove, and to demonstrate the ability for a robot to recognize a grasped object from the knowledge of its hand posture some simple experiments were performed.
-To validate the hand posture, a Pisa/IIT SoftHand is dressed with the IMU glove. On line visualization of the hand posture is programmed wth ROS (Robot Operating System) \cite{riferimento}. Figs. \ref{fig:hand_reconstruction_1}, \ref{fig:hand_reconstruction_2} and \ref{fig:hand_reconstruction_3} show three different examples of hand posture reconstruction, while the two videos show the hand postrure reconstruction respectivily in the \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{static} and \href{https://www.youtube.com/watch?v=bceOXa990-Q}{dynamic} case.
+To validate the hand posture, a Pisa/IIT SoftHand is dressed with the IMU glove. On line visualization of the hand posture is programmed wth ROS (Robot Operating System) \cite{Ros_homepage}. Figs. \ref{fig:hand_reconstruction_1}, \ref{fig:hand_reconstruction_2} and \ref{fig:hand_reconstruction_3} show three different examples of hand posture reconstruction, while the two videos show the hand postrure reconstruction respectivily in the \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{static} and \href{https://www.youtube.com/watch?v=bceOXa990-Q}{dynamic} case.
 
 \begin{figure}[h]
 \centering
