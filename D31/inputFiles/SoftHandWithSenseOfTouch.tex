@@ -525,7 +525,7 @@ To validate the hand posture, a Pisa/IIT SoftHand is dressed with the IMU glove.
 \label{fig:hand_reconstruction_3}
 \end{figure} 
 
-To study the ability of a robot to recognize a grasped object knowing the posture of its hand, a set of five cups are used. Four of the five cups come from the PaCMan object database and all cups are different diameters as shown in \ref{tab:cups}:
+To study the ability of a robot to recognize a grasped object knowing the posture of its hand, a set of five cups are used. Four of the five cups come from the PaCMan object database. All cups have different diameters as shown in \ref{tab:cups}:
 
 \begin{table}[tb]\footnotesize
 \begin{tabular}{cc} \hline \hline
@@ -539,6 +539,49 @@ Cups Number & Diamter \\ \hline
 \caption{Probed Cups}
 \label{tab:cups}
 \end{table}
+
+The object recognition experiments is composed by two different steps: \textit{Learn} and \textit{Recognize} and during the two phases the hand is used as a probe. 
+The hand movements (open/close) are managed by a simple PID controller, so in this first phase the $K_p$, $K_d$ and $K_i$ parameters of the PID controller are reduced in order to reduced the hand full torque. In these condictions the hand is not able to grasp an object and works as a probe robot. 
+
+During the learning phase when the hand probes an object, the software runnig on the PC appends in a matrix, saved in a text file, a twenty elements row. This row is composed by a first number which indentifies the object and by other nineteen elements which report the current joint angles values (4 for little, 4 for ring, 4 for middle, 4 index and 3 for thumb). 
+
+In the recognition phase the software reads the text file where the learning data are saved and creates a matrix $O_{bj} \in \mathbb{R}^{n \times 20}$, where $n$ is the number of learned objects.
+Then the hand in closing probes the current object and software compares the current joint angles values with the values recorded during the learning phase. 
+
+To match the joint angles values an simple root mean squares was implemented, the software returns $n$ different minimization numbers $m_s$ and trivially the object in database nearest to the current one has the smallest $m_n$ number. 
+For each learned object $m_n$ is given by
+
+\begin{equation}
+m_n = \sqrt{(C_{angle_{1}} - O_{n_{angle_{1}}})^2 + (C_{angle_{2}} - O_{n_{angle_{2}}})^2 + \cdots + (C_{angle_{19}} - O_{n_{angle_{19}}})^2 },
+\end{equation}
+       
+\noindent where $C_{angle_{k}}$ is the $k^{th}$ hand current joint angles value, $O_{n_{angle_{k}}}$ is the $k^{th}$ joint angles value of the object $n$ and $k=1, 2 , \cdots , 19$.
+   
+With a large number of learned object $n$ this object recognition strategy could require a large time to match current joints angles with values recorded in the object database. In future works we study new strategies to match the current joint angles values with the recorded ones and how to increase object database data, considering for example the grasp forces.
+
+The Figs. \ref{fig:Object_1}, \ref{fig:Object_3} and \ref{fig:Object_5} show three different examples object recognition, while the videos show object recognition procedure respectivily for the \href{https://www.youtube.com/watch?v=d_WPQ3WmHRg}{Object 1}, \href{https://www.youtube.com/watch?v=PG38VObdl6o}{Object 2}, \href{https://www.youtube.com/watch?v=bIYhLXm90hc}{Object $3_a$}, \href{https://www.youtube.com/watch?v=IXVlBAoGKho}{Object $3_b$}, \href{https://www.youtube.com/watch?v=Efmm6-JHcxU}{Object $4_a$}, \href{https://www.youtube.com/watch?v=NZElSV_AnJ4}{Object $4_b$}, \href{https://www.youtube.com/watch?v=mDDb5oTaHzM}{Object $5_a$} and \href{https://www.youtube.com/watch?v=sLzU39zffFY}{Object $5_b$}, where the subscripts $_a$ or $_b$ denote if the hand probes the cup handle or no, in this case the cup is recorded as two different objects. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.30]{Object_1.png}
+\caption{Object Recognition Example}
+\label{fig:Object_1}
+\end{figure} 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.30]{Object_3.png}
+\caption{Object Recognition Example}
+\label{fig:Object_3}
+\end{figure} 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.30]{Object_5.png}
+\caption{Object Recognition Example}
+\label{fig:Object_5}
+\end{figure}  
+
 
 
 More details can be found in the attached paper~\cite{Santaera:ICRA:2015} available at this~\href{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}{link}.
