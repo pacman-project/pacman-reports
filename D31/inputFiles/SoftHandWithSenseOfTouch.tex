@@ -369,7 +369,7 @@ Starting from this considerations a further solution was implemented using on PS
 
 \subparagraph{Serial Communication}
 
-The communication between PSocC5 and PC was created exploiting the serial adapter 990 004 \cite{Serial_USB}. It is optimum to connect microcontroller and logic circuit to a PC with an high rate trasfer data. The heart of the module is the chip FT232R distributed by FTDI \cite{FTDI_homepage} which works with a supply tension of 3.3V, thus it possible to connect the device to another TTL peripheral o microcontroller in the range of 3.3V-5V without the problem to convert the signal RS232 to  the TTL. The size of the circuit are very small, 25x18 mm and
+The communication between PSocC5 and PC was created exploiting the serial adapter 990 004 \cite{Serial_USB}. It is optimum to connect microcontroller and logic circuit to a PC with an high rate trasfer data. The heart of the module is the chip FT232R distributed by FTDI \cite{FDTI_homepage} which works with a supply tension of 3.3V, thus it possible to connect the device to another TTL peripheral o microcontroller in the range of 3.3V-5V without the problem to convert the signal RS232 to  the TTL. The size of the circuit are very small, 25x18 mm and
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.3]{usb_serial.png}
@@ -462,7 +462,7 @@ If all magnetometer corrector factors are been computed after the initi phase, f
 \noindent where its length is 
 \begin{equation*}
 \displaystyle  \left. \begin{array}{lccc}
-\text{int} & \text{ax},\text{ay},\text{az},\text{gx},\text{gy},\text{gz},\text{mx},\text{my},\text{mz}  & = & 2 \text{byte} \\
+\text{int} & \text{ax},\text{ay}, $cdots$,\text{mz}  & = & 2 \text{byte} \\
 \text{char} & , & = & 1 \text{byte} \\
 \text{char} & : & = & 1 \text{byte} \\
 \text{char} & ; & = & 1 \text{byte} \\
