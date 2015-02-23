@@ -1,12 +1,11 @@
-%%% A Computational Framework for Environment-Aware Robotic Manipulation
-%%% Planning
+%%% Grasping under Uncertainty
 
 \subsubsection{Grasping under Uncertainty}
 \label{sec:GraspingUncertainty}
 
  This work extends that of \cite{bib:platt_csail_2011}, which offers a way to avoid the complexity of planning in a high dimensional belief space. It does this in two ways, i) by approximating the informational value of actions from a low-dimensional subspace of the belief state; and ii) by embedding that informational value into the physical space. Whereas Platt employed a 2DoF arm with a laser sensor, our extension allows reasoning about a 21 DoF arm-hand system with tactile observations. 
 
-In our previous work~\cite{bib:zito_workshop_iros2012, bib:zito_iros_2013} we proposed a information gain re-planning strategy to improve the reliability of grasping under uncertainty. We achieved this by using a hierarchical sample-based path planner, here a Probabilistic Roadmap (PRM) planner, which explicitly encodes expected information gain (using a low-dimensional approximation of the belief state) along each of its trajectory segments. This extended the work in~\cite{bib:platt_csail_2011}. A particular contribution of our approach is refining the belief state for the object pose using an observation model for tactile sensing by a multi-finger hand that can palpate the object to be grasped. 
+In our previous work~\cite{bib:zito_workshop_iros2012,bib:zito_iros_2013} we proposed a information gain re-planning strategy to improve the reliability of grasping under uncertainty. We achieved this by using a hierarchical sample-based path planner, here a Probabilistic Roadmap (PRM) planner, which explicitly encodes expected information gain (using a low-dimensional approximation of the belief state) along each of its trajectory segments. This extended the work in~\cite{bib:platt_csail_2011}. A particular contribution of our approach is refining the belief state for the object pose using an observation model for tactile sensing by a multi-finger hand that can palpate the object to be grasped. 
 
 We have extended our previous work in four ways. First we now employ as the target grasp, one of the grasp candidates from the work on grasping of novel objects described elsewhere in this deliverable. Second we now enable re-planning from the configuration of the robot at the point where an unexpected contact occurs. This is instead of moving the hand away from the contact to a safe configuration. Third, we now plan dexterous grasping trajectories for non-convex object shapes by implementing an efficient collision detection method which reasons directly with sensed point clouds rather than derived representations of object shape such as mesh representations. Fourth, we now use an active compliant controller to ensure that continued contact(s) between the hand and the object minimise the risk of perturbing the system.
 

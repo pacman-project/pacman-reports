@@ -7,5 +7,5 @@ ADD_LATEX_DOCUMENT(
     MS42.tex
     IMAGE_DIRS images/plots  images ../shared_images
     INPUTS ${input_files}
-    #BIBFILES bibliography.bib
+    BIBFILES bibliography/MS42.bib ../shared_bibliography/abbreviations.bib
     )
