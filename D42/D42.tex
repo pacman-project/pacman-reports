@@ -2,6 +2,8 @@
 
 \usepackage{helvet}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
 \graphicspath{{images/}{../shared_images/}}
 
 % The following is used to make packages hyperref and cite work together
@@ -104,6 +106,8 @@ For the reasons mentioned above, the work that is presented in this report is mo
 
 In Sec.~\ref{sec:GraspingWithSoftHands}, we present our approach to define successful synthetic poses for the Pisa/IIT SoftHand in grasping the PaCMan object database. In Sec.~\ref{sec:GraspPlanningBoundingBoxes}, the previous approach is sharpened by employing a custom decomposition into cuboids of the object point cloud. Each cuboid suggests a number of grasps to be performed on the object. These grasps are used to warm start the search for successful grasps to be synthetically found in the simulation environment and to be attached to that object's grasp database. The feasibility of using this approach on-line to find graspable parts on objects in the scene with partial point cloud information and irrespective to their prior recognition is under investigation.
 
+In Sec.~\ref{sec:GraspingNovelObjects}, we shift our attention onto the generalization and adaptation ability of the previously reported grasp planning algorithm for fully actuated hands showing, in experiments using the DLR-HIT Hand II, how it is possible to just use a few exemplary taught grasps in order to be able to transfer this knowledge to unknown, even partially visible objects.
+
 Sec.~\ref{sec:SampleBasedMotionPlanningSoftRobots} presents a new approach to planning for soft robot manipulators under task constraints. This piece of work is central to motion planning in dual arm configurations, e.g. when an object is held simultaneously with two compliant underactuated hands. The corresponding control problem, which makes use of a geometric formulation and is based on a noninteracting scheme, is tested on a dual-arm (closed kinematic loop) configuration.
 
 Sec.~\ref{sec:HighLevelPlanningDualArm} presents our approach to solve high-level planning for grasping an object and passing it from one hand to another. This work constitutes the theoretical foundation for the high-level planning needed to perform the Task 5.3.
@@ -135,6 +139,12 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% To be prepared by: UoB and adapted by Hamal Marino
+% Grasp Novel Objects
+\input{./inputFiles/GraspingNovelObjects.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % To be prepared by: Marco Gabiccini
 % Sample-Based Motion Planning for Soft Robot Manipulators
 % Under Task Constraints
@@ -145,7 +155,7 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 % To be prepared by: Marco Gabiccini
 % Integrated Constrained Motion Planning and Control for
 % Compliant Robots
-\input{./inputFiles/ConstrainedMotionPlanningAndControl.tex}
+%\input{./inputFiles/ConstrainedMotionPlanningAndControl.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
