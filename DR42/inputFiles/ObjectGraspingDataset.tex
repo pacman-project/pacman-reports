@@ -6,18 +6,48 @@
 In this section we present an object grasping dataset, collected at the University of Pisa, to be used within the PaCMan project as a tool to perform high level planning and grasping.
 The goal of this dataset is to provide a grasp database for each object so that the relative pose between object and hand is always known during the grasp. This information can be later 
 exploited to reproduce the grasp autonomously. 
-The dataset contains a series of grasps performed on kitchen environment objects by a human operator with the aid of the Pisa/IIT SoftHand. The operator wears
-a motorized handle on his right arm, which supports and operates the SoftHand, while it performs grasps on objects put on a table. Several different grasp types were performed and recorded for every object, each composed by
-a pre-grasp phase, in which the hand moves towards the object and starts closing on it, and the actual grasp phase, in which the SoftHand closes on the object and lift it up for a few seconds.
-The dataset is then populated by 8-10 seconds long records, on each the user has constant access to relative and/or absolute hand posture, object pose, hand joints positions 
-and point clouds of the whole scene. The remainder of the section describes which hardware was used during records and how it was configured, which software was used and finally a description and usage of data.%expand/modify?
+The dataset is composed by sub-datasets, each one containing a series of grasps performed on a kitchen environment object. The grasps are performed by a human operator, wearing
+a motorized handle on his right arm, which supports and operates the Pisa/IIT SoftHand, the operator drives the SoftHand to grasp the object put on a table. 
+\begin{figure}[!tb]
+  \centering
+  \includegraphics[width=0.955\textwidth]{GRP_subdb1.png}
+  \caption{Pictures taken during the recording of the jug sub-dataset. The operator drives the SoftHand towards the object, then grasps and lifts it, while sensor data is being recorded.}
+  \label{fig:grasp:subdb1}
+\end{figure}
+Figure~\ref{fig:grasp:subdb1} show photographs taken during the acquisition of a sub-dataset.
+In each sub-dataset several different grasp types were performed, according to the object shape. A goal we kept in mind was to mimic human behaviour in grasping everyday objects, for instance a cup was grasped by the handle, 
+by the top without putting fingers inside it or by the sides and so on\ldots
+Each grasp recorded is composed by a pre-grasp phase and an actual grasp phase. In the first the operator moves the SoftHand towards the object and starts closing over the designated spot and in the latter the SoftHand 
+closes on the object and it is lifted up for a few seconds, then the object is put back on the table and the record stops. The user is able to distinguish between these two phases by reading sensor data: for instance joint positions
+of each SoftHand finger is being recorded, so one can notice when the hand starts closing on the object or when it is just moving towards it.
+The dataset is then populated by 8-10 seconds long records, each classified in sub-datasets according to the object that is grasped. On each record the user has constant access to relative and/or absolute hand posture, object pose,
+hand joints positions and point clouds of the whole scene. In fact the philosophy of the dataset was to collect as much data as possible during the grasp and then give the user the flexibility to chose which data to use for his application.
+The remainder of the section describes which hardware was used during records and how it was configured, which software was used and finally a description and usage of data.
 
 \paragraph{(a) Hardware setup used during dataset recording:}
 %description of various hardware used
-The whole system used to capture grasp recordings is composed by the following:
-\begin{description}
-  \item[PhaseSpace Impulse Motion Tracking System] %TODO
-\end{description}<++>
+The whole system used to capture grasp recordings is composed by the following subsystems:
+\begin{itemize}
+  \item PhaseSpace Impulse Motion Tracking System.
+  \item Pisa/IIT SoftHand.
+  \item Handle for SoftHand.
+  \item Flexi Force glove for SoftHand.
+  \item Asus Xtion Pro Live.
+\end{itemize}
+
+The PhaseSpace Impulse system captures real-time motion by using cameras and LEDs.
+The cameras detect the positions of the LEDs, which can be identified via an ID, and transmit the position of each LED in real-time at a frequency of 480Hz.
+The main use of this system is to track the position of the SoftHand and the object to be grasped, so that the user has access to these data. 
+To accomplish this feature two star-like prints were created to hold five LEDs each, one star was fixed to the SoftHand, the other on the object to be grasped.
+Once calibrated the system identifies the two stars and attach a local reference system to them, which they give, respectively, the pose of the SoftHand and the object in space. %maybe explain better
+In Figure~\ref{fig:grasp:star} pictures of the stars attached to the object and the SoftHand are visible.
+\begin{figure}[b!]
+  \centering
+  \includegraphics[width=0.95\textwidth]{GRP_star}
+  \caption{The star with five LEDs used to track the pose of objects (left). The star used to track the SoftHand (right). The five unique LED IDs and their relative position, identify a local reference system for each star, which are then tracked by the PhaseSpace system.}
+  \label{fig:grasp:star}
+\end{figure}
+
 \paragraph{(b) Software setup used during dataset recording:}
 %1mention we used ROS to sync various hardware
 %2talk about calibration steps
