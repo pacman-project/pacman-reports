@@ -541,7 +541,6 @@ FUNCTION(ADD_LATEX_TARGETS_INTERNAL)
         ${output_dir}/${LATEX_TARGET}.dvi
         ${output_dir}/${LATEX_TARGET}.ps
         ${output_dir}/${LATEX_TARGET}.pdf
-        ${CMAKE_SOURCE_DIR}/pdf/${LATEX_TARGET}.pdf
         )
 
     SET(image_list ${LATEX_IMAGES})
@@ -680,10 +679,16 @@ FUNCTION(ADD_LATEX_TARGETS_INTERNAL)
         COMMAND ${CMAKE_COMMAND} -E remove ${auxiliary_clean_files}
         )
 
+    # just copy the PDFs to a clean folder
     ADD_CUSTOM_COMMAND(TARGET ${LATEX_TARGET} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy
                        ${CMAKE_CURRENT_BINARY_DIR}/${LATEX_TARGET}.pdf
                        ${CMAKE_SOURCE_DIR}/pdf/${LATEX_TARGET}.pdf)
+
+    ADD_CUSTOM_COMMAND(TARGET ${LATEX_TARGET} POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_CURRENT_BINARY_DIR}/attachedPapers/
+                       ${CMAKE_SOURCE_DIR}/pdf/attachedPapers/)
 
 ENDFUNCTION(ADD_LATEX_TARGETS_INTERNAL)
 
