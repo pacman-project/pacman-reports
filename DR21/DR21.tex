@@ -1,11 +1,24 @@
-\documentclass[a4paper,11pt,pdf]{../templates/pacmanreport}
+\documentclass[a4paper,11pt,pdf]{pacmanreport}
 
 \usepackage{helvet}
 
-\usepackage{natbib}
-\setcitestyle{round}
+%\usepackage{natbib}
+%\setcitestyle{round}
 \usepackage{hyperref}
 \usepackage{pdfpages}
+\usepackage{graphicx}
+\graphicspath{{images/}{../shared_images/}}
+
+\usepackage[bookmarks=true,hyperfootnotes=true]{hyperref}
+\hypersetup{
+			colorlinks=true,
+			linkcolor=blue,
+			anchorcolor=blue,
+			citecolor=blue,
+			urlcolor=blue,
+            filecolor=blue,
+			pdftitle={Deliverable 2.1}
+}
 
 %% ================================
 %% PROJECT INFO 
@@ -34,7 +47,7 @@
 
 
 %% UNCOMMENT: to get the logo; if you've copied this file to a directory yearX/wpY/ then this should work
-\reportlogo{../templates/logos/pacmanlogo}
+\reportlogo{pacmanlogo}
 
 
 \begin{document}
@@ -223,8 +236,8 @@ In the state-of-the-art methods for part-based object recognition \cite{part2},\
 
 \newpage
 
-\bibliographystyle{plainnat}
-\bibliography{refs}	
+\bibliographystyle{IEEEtran}
+\bibliography{../shared_bibliography/abbreviations,./bibliography/DR21}
 
 \newpage 
 
@@ -276,9 +289,9 @@ The technical report introduces a method for associating grasp templates to obje
 
 \newpage 
  
-\includepdf[pages=-]{rezapouretal-icra2015.pdf}
-\includepdf[pages=-]{rezapouretal-cvpr2015.pdf}
-\includepdf[pages=-]{rezapouretal-Tech2015.pdf}
-\includepdf[pages=-]{rietzeler-techReport.pdf}
+\includepdf[pages=-]{./attachedPapers/rezapouretal-icra2015.pdf}
+\includepdf[pages=-]{./attachedPapers/rezapouretal-cvpr2015.pdf}
+\includepdf[pages=-]{./attachedPapers/rezapouretal-Tech2015.pdf}
+\includepdf[pages=-]{./attachedPapers/rietzeler-techReport.pdf}
 
 \end{document}
