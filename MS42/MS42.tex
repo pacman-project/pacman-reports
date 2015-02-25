@@ -42,17 +42,16 @@
 
 \title{Reactive haptic exploration control strategies ready for integration with planning}
 \deliverableid{Milestone 4.2}
-\author{M. Bonilla, C. Rosales, F. Spinelli, M. Gabiccini}
+\author{M. Bonilla, C. Rosales, M. Gabiccini}
 \address{Centro di Ricerca ``E. Piaggio'', Universit\`{a} di Pisa}
 \email{manuel.bonilla@centropiaggio.unipi.t}
 \headertitle{Exploration strategies}
-\headerauthor{M. Bonilla, C. Rosales, F. Spinelli, M. Gabiccini}
+\headerauthor{M. Bonilla, C. Rosales, M. Gabiccini}
 \duedate{2015-02-28}
 \submissiondate{2014-02-28}
 \leadpartner{Universit\`{a} di Pisa}
 \revision{draft}
 \disseminationlevel{PU}
-
 
 %% UNCOMMENT: to get the logo; if you've copied this file to a directory yearX/wpY/ then this should work
 \reportlogo{pacmanlogo.png}
@@ -65,7 +64,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent In this milestone we explain the work performed to integrate planning and execution phases involving grasping and object exploration tasks. 
+\noindent This milestone detail the work performed to integrate planning and execution phases involving object exploration and grasping, and potentially gaze control. 
 \end{abstract}
 
 
@@ -83,11 +82,29 @@
 
 \section{Milestone Summary and Context}
 
-This milestone report describes the work performed to integrate planning and execution phases regarding to grasping and object exploration (milestone 4.2). The main contributions are 1) the technical implementation of hardware interfaces to command the KUKA LWR arm using ROS and 2)  the implementation of different classical controllers to move the robot using torque references.
+This milestone describes the work performed to integrate planning and execution phases concerning object exploration and grasping using a bimanual robot.
 
-The first contribution is useful to command the robot using torque commands easier that using the actual KUKA FRI interface. The second helps to execute trajectories coming from planning phase, and to move the robot to desired references under different situations such as dynamic model uncertainty and different redundancy resolution at kinematic and dynamic levels. These contributions have impact in the implementation of the PaCMan Scenarios and demos and will be used for high-level exploration planning.
+%The main contributions are 1) the technical implementation of hardware interfaces to command the KUKA LWR arm using ROS and 2)  the implementation of different classical controllers to move the robot using torque references.
+
+%The first contribution is useful to command the robot using torque commands easier that using the actual KUKA FRI interface. The second helps to execute trajectories coming from planning phase, and to move the robot to desired references under different situations such as dynamic model uncertainty and different redundancy resolution at kinematic and dynamic levels. 
+
+The platform presented in this milestone should be of great importance in the implementation, testing and validation of the development algorithms within the PaCMan project.
+
+
+%In recent years, there has been growing interest in the development of a standardized framework for robotic implementations, where the robots interdisciplinary code and software could be easy to write and accessible to everyone. This is the philosophy of the \textit{Robot Operating System} (\textbf{ROS}), a flexible framework which provides all the instruments to develop and build robust and robot-independent applications, allowing researchers from different fields of robotics to share each others works with the great result of spreading the know-how.
+
+Since ROS is the software framework used in PaCMan we developed a hardware interface for the robots used in the experimental platforms. However, this interface is just useful to command the robot using torque references. There are different strategies to generate the torque references to move a robot manipulator, they are designed for different situation for example under uncertainty, which main problem faced in PaCMan Project, in this case in the robot dynamics. Other strategies to deal with multi-goal references at kinematic and dynamic level were also implemented.
 
 % What was the milestone that you are examining? What were the criteria for achieving it? What role does achievement of the milestone play in the whole project? How will its achievement as presented in this report contribute to the PaCMan scenarios and prototypes? 
+
+% \subsection{Project Goals}
+
+% The aim of this milestone report is focused on the development of a ROS-enabled software environment for controlling the manipulator KUKA LWR IV, used in the PaCMan platforms. 
+
+After a first phase of studying and analyzing some of the novel approaches for robot control, the default control strategies provided by the manufacturer has been extended, implementing a new set of controllers.
+The development of the controllers, including tuning and debugging, has been realized with the support of \textit{Gazebo}, a high performance realistic simulator which, interacting with ROS, gives the opportunity to test the efficiency of user-implemented control algorithms. 
+
+%Finally, the last phase consisted in pursuing experiments to test the implemented control strategies on the physical robot, arising a variety of practical issues which don't come out in simulation, that are explained in detail in this document.
 
 
 % \newpage
@@ -103,13 +120,12 @@ The first contribution is useful to command the robot using torque commands easi
 
 
 \input{./inputFiles/tikz_definitions}
-\input{./inputFiles/intro}
+\input{./inputFiles/environment}
+\input{./inputFiles/vito}
 \input{./inputFiles/kuka}
-\input{./inputFiles/software}
-\input{./inputFiles/controllers}
-\input{./inputFiles/hwinterface}
+\input{./inputFiles/softHand}
+\input{./inputFiles/kitHead}
 \input{./inputFiles/conclusions}
-
 
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,bibliography/MS42}
