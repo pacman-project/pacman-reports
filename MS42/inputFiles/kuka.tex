@@ -1,17 +1,19 @@
 \subsection{Kuka LWR4+}
 \label{sec:kuka}
 
-The robot used in the experimental platforms of PaCMan project is the \textit{KUKA Lightweight Robot IV} \cite{webkuka},  a 7-axis industrial manipulator which finds a wide employment in the field of the robotics research due to its flexibility and modularity, including a payload capacity of 7 Kg. In addition, the seventh axis makes the robot redundant, which mean that, for a given position and orientation of the end effector, there exist multiple configurations in the joints space. Each joint is equipped with a position and a torque sensor, allowing the robot to be operated with position, velocity and torque control. 
-
-\begin{figure}[h]
+The KUKA Lightweight Robot IV shown in Fig.~\ref{fig:kuka_arm} is a 7-axis industrial manipulator which finds a wide employment in robotic research due to its flexibility and modularity.
+%, including a payload capacity of 7 Kg. 
+%In addition, the seventh axis makes the robot redundant, which mean that, for a given position and orientation of the end effector, there exist multiple configurations in the joints space. 
+Each joint is equipped with a position and a torque sensor, which allow the robot to be regulated using position, velocity and torque commands.
+\begin{figure}
 \centering
-\includegraphics[scale=0.7]{kuka}
-\caption{KUKA Lightweight Robot IV arm}
+\includegraphics[width=0.4\textwidth]{kuka}
+\caption{KUKA Lightweight Robot IV.}
+\label{fig:kuka_arm}
 \end{figure}
 
-
 \subsubsection{Hardware interface}
-The robot provides three different control strategies as default setting, which are described below \cite{kukafri}.
+The robot provides three different control strategies as default setting, which are described below~\cite{kukafri}.
 
 \paragraph{Position Controller}
 Desired joint positions are regulated through the use of an internal \textit{PID} as
@@ -39,26 +41,7 @@ where $\tau_{cmd}\in \mathbb{R}^7$ is the control torque, $q_{FRI}\in\mathbb{R}^
 
 It is worth noting that, $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$ is actually $f_{dynamics}(q)\in\mathbb{R}^7$ in all cases.
 
-As seen in Fig.~\ref{fig:rosgazebointeraction}, there are two hardware interfaces developed for the Kuka LWR IV, that is, the one that connects to the simulated robot and the one that connects to the real robot. We decided to use the Axis-specific Stiffness Controller described before since it provides the more general setup. To this end, position and effort commands are possible using the same strategy, hence only one hardware interface is required. The real hardware interface uses the \textit{Fast Research Interface} (FRI), a real-time proprietary software interface provided by Kuka able to read and write system variables of the robot and execute user-programs. The simulated hardware interface implements the Axis-specific Stiffness Controller, where it adds~$f_{dynamics}$ computed from the URDF model of the robot and the current joint values measured from the simulation. This way, any controller can switch between real and simulated hardware with very low extra effort.
-
-\subsubsection{Joint state estimation}
-
-The major problem during the implementation regards the presence of sensors for joint velocities measurements. In fact, while Gazebo provides them accurately through simulated sensors, the KUKA LWR arm is only equipped with position and torque sensors. This, indeed, arises the need to derive the velocities from the measured positions through a process of online differentiation, with the following methods being analyzed
-
-\paragraph{Euler Method}
-This is one of the most basic techniques to compute numerical differentiation and its formulation is
-\begin{equation}
-\dot{q}_n = \frac{q_n - q_{n-1}}{h}
-\end{equation}
-where $h$ is the sampling time. Since the output of this differentiator is usually a bit noisy, it's convenient to pass it through an exponential smoothing filter, which is basically a weighted average between the last computed velocity value and the previous one
-\begin{equation}
-\tilde{\dot{q}}_n = \alpha\dot{q}_n + (1-\alpha)\tilde{\dot{q}}_{n-1} 
-\end{equation}
-where $\tilde{\dot{q}}$ denotes the smoothed value and $\alpha\in(0,1)$ is the smoothing factor.
-
-\paragraph{Levant Robust Differentiator}
-This method is based on the sliding mode theory and gives asymptotically exact derivatives \cite{levant06}. In comparison with Euler, Levant differentiator performs significantly better in terms of noise rejection and derivation of signals, but the major flaw which led this method to be discarded is that introduces a relevant phase shift.\\[1em]
-So, according to the tests conducted and evaluating a trade-off between exact but out-of-phase signals and noisy but coherent signals, the best method resulted the Euler one.
+As seen in Fig.~\ref{fig:rosgazebointeraction}, there are two hardware interfaces developed for the Kuka LWR IV, that is, one that connects to the simulated and one that connects to the real robot, respectively. We decided to use the Axis-specific Stiffness Controller described above as the default strategy since it provides the more general setup. To this end, position and effort commands are possible using the same interface. The real hardware interface uses the \textit{Fast Research Interface} (FRI), a real-time proprietary software interface provided by Kuka able to read and write system variables of the robot and execute user-programs. The simulated hardware interface implements the Axis-specific Stiffness Controller, where it adds~$f_{dynamics}$ computed from the URDF model of the robot and the current joint values measured from the simulation. This way, any controller can switch between real and simulated hardware with very low extra effort.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -199,12 +182,13 @@ P_i = P_{i-1} + (J_{i}P_{i-1})^{\dagger}(J_{i}P_{i-1})
 \end{equation}
 where $P_i$ is the projection operator onto the null-space of $J_i$ and the robot joint velocity realizing all the tasks is $\dot{q}=\dot{q}_k$. This way, all the tasks are decoupled from each other and if a task won't be feasible it will be executed only at its best without disturbing the higher priority tasks.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{hik}
 \caption{Simulated robot performing two tasks at different priority levels using Hierarchical Inverse Kinematics.}
 \end{figure}
-\begin{figure}[H]
+
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth]{invkin}
 \caption{Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Kinematics.}
@@ -258,14 +242,16 @@ Equation \eqref{eq:onetaskinversedynamics} implements the inverse dynamics contr
 \end{dcases}
 \end{equation}
 where $\Lambda_{i\vert i-1} = {\Omega_{i\vert i-1}}^{-1}$ and ${\Omega_{i\vert i-1}} = {J_i}^{T}M^{-1}{N_{i-1}}^TJ_i$. The projection operator is ${N_i}^T$ and the control $\tau$ applied to the robot is $\tau_k$.
-\begin{figure}[H]
+
+\begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{hid}
 \caption{Simulated robot performing two tasks at different priority levels using Hierarchical Inverse Dynamics.}
 \end{figure}
-\begin{figure}[H]
+
+\begin{figure}
 \centering
-\includegraphics[width=\textwidth]{invdyn}
+\includegraphics[width=0.9\textwidth]{invdyn}
 \caption[Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Dynamics.]{Evolution of the Mean Square Error (MSE) of two tasks controlled through Hierarchical Inverse Dynamics. Notice in the zoomed plot how the higher priority task converges to zero faster.}
 \end{figure}
 
@@ -278,25 +264,24 @@ Another way to take advantage of the redundant DOFs, other than performing addit
 \end{equation}
 where in general $\tau_{null} = \nabla_{q}H(q)$ and $H(q)$ is a differentiable objective funcion to be maximized, implementing a specific criterion with the goal of moving the manipulator in its gradient direction. Taking inspiration from human manipulation, it is possible to reproduce those natural motions in an efficient way, setting the objective function $H(q) = g(q)^{T}Wg(q)$, where $g(q)$ is the gravitational force vector as in \eqref{eq:robotdynamics} and $W$ is a constant diagonal weighting matrix \cite{ajoudani13}. This way, control law \eqref{eq:projectednullspaceobjective} will minimize joint masses and payload gravitational forces while guaranteeing asymptotic stability of the system and not affecting the primary motion task referenced by $\ddot{e}^*$.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{minimumeffort_rviz}
-\caption{Simulated robot tracking a circle figure using Minimum Effort Control.}
+\caption{Simulated robot tracking a circle figure using the Minimum Effort Controller.}
 \end{figure}
-\begin{figure}[H]
+
+\begin{figure}
 	\centering
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{minimumeffort_X}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\includegraphics[width=\textwidth]{minimumeffort_X}
 		\subcaption{X-Axis}
 	\end{subfigure}
-	\\
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{minimumeffort_Y}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\includegraphics[width=\textwidth]{minimumeffort_Y}
 		\subcaption{Y-Axis}
 	\end{subfigure}
-	\\
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{minimumeffort_Z}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\includegraphics[width=\textwidth]{minimumeffort_Z}
 		\subcaption{Z-Axis}
 	\end{subfigure}
 	\caption{Axis-specific end-effector trajectories tracking a circle figure using Minimum Effort Control.}
@@ -321,11 +306,13 @@ and that a Lyapunov function $V(\xi_1)$ is postulated such that
 \dot{V}(\xi_1) = V_{\xi_1}(f + g\Gamma)
 \end{equation}
 is at least negative semi-definite, with $V_{\xi_1} = \frac{\partial{V}}{\partial{\xi_1}}$. So, the control of the whole system \eqref{eq:backsteppingsystem} is obtained making $\xi_2$ to track the value of $u'=\Gamma(\xi_1)$.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{backstepping_rviz}
 	\caption{Simulated robot tracking a 8 figure using Backstepping Control.}
 \end{figure}
+
 The backstepping control method can be applied to a robotic manipulator described by its dynamic model \eqref{eq:robotdynamics}, designing the joint torques $\tau$ that track the trajectory $q_d(t)$. Defining the tracking error $e=q-q_d$ and its derivative $\dot{e}=w$, it is possible to consider the following system
 \begin{equation}
 \begin{dcases}
@@ -346,20 +333,21 @@ s &= \dot{e} + \Lambda{e}\\
 \end{align*}
 and $\dot{q}_r$ is the so-called reference velocity. 
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{backstepping_X}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{backstepping_X}
 		\subcaption{X-Axis}
 	\end{subfigure}
-	\\
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{backstepping_Y}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{backstepping_Y}
 		\subcaption{Y-Axis}
 	\end{subfigure}
-	\\
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{backstepping_Z}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{backstepping_Z}
 		\subcaption{Z-Axis}
 	\end{subfigure}
 	\caption{Axis-specific end-effector trajectories tracking a 8 figure using Backstepping Control.}
@@ -395,32 +383,51 @@ where $K_d\in\mathbb{R}^{n \times n}$ is a diagonal symmetric positive definite 
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{slidingmode_j1}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{slidingmode_j1}
 		\subcaption{Joint 1}
 	\end{subfigure}
-	\\
-	\begin{subfigure}[t]{\textwidth}
-		\includegraphics[height=0.275\textheight]{slidingmode_j3}
+	\begin{subfigure}[t]{0.9\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{slidingmode_j3}
 		\subcaption{Joint 3}
 	\end{subfigure}
 	\caption{Joint-specific sine waves trajectories tracking using Dynamic Sliding PID Control.}
 \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Controller design issues}
-During the process of controllers design, certainly one requirement that has to be met is to reach an efficient complexity in terms of computational resources. In the sequel it's analyzed a category of control strategies which requires, at least in this case study, the exploitation of a big amount of resources that unfortunately weren't available on the machines used for experiments.
+\subsubsection{Joint state estimation}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Adaptive Control}
-In this section it has been assumed that the dynamic model of the robot is perfectly known at any instant of time, but, in practice, this can't be always true. In fact there exist some model uncertainties depending on the robot configuration, mainly mechanical parameters like inertia matrices and masses for the single links or those related to the robot payload. To overcome this intrinsic problem, it is always possible to write the dynamic model of the robot \eqref{eq:robotdynamics} through a linear parametrization
+One issue found during the implementation of controllers is the absence of joint velocity values. While the simulated hardware interface takes the joint velocity from simulation, the KUKA LWR arm is equipped with position and torque sensors. Thus, the need to derive the velocities from the position values through a process of online differentiation is prominent. The following methods were visited.
+
+\paragraph{Levant Robust Differentiator}
+This method is based on the sliding mode theory and gives asymptotically exact derivatives~\cite{levant06}. In comparison with the Euler method, Levant differentiator performs significantly better in terms of noise rejection and derivation of signals, but the major flaw which led this method to be discarded is that introduces a relevant phase shift. 
+\paragraph{Euler method}
+This is one of the most basic techniques to compute numerical differentiation and follows the equation
 \begin{equation}
-M(q)\ddot{q} + C(q,\dot{q})\dot{q} + g(q) = Y(q,\dot{q},\ddot{q})\pi = \tau
+\dot{q}_n = \frac{q_n - q_{n-1}}{h},
 \end{equation}
-where the vector $\pi\in\mathbb{R}^r$ contains the combinations of the aforementioned physical parameters and $Y(q,\dot{q},\ddot{q})\in\mathbb{R}^{n\times r}$ is called the \textit{regressor} matrix. In brief, this sums up the aim of the \textit{Adaptive Control}, which, as the name suggests, makes the control law to adapt to the variations of the unknown robot model parameters. Recently, an analytic closed formula for the regressor has been derived from the Lagrange equations, in terms of the Denavit-Hartenberg parameters and the joints configurations  $q,\dot{q},\ddot{q}$, and implemented in \textit{Mathematica} environment \cite{gabiccini09}. For a 7-links manipulator like KUKA LWR, the resulting regressor matrix has dimensions $7$x$70$ in its unsimplified form, making literally impossible to handle an adaptive control with the owned instruments.
+where $h$ is the sampling time. Since the output of this differentiator is usually noisy, typically, a exponential smoothing filter is used as the post-process signal processing as
+\begin{equation}
+\tilde{\dot{q}}_n = \alpha\dot{q}_n + (1-\alpha)\tilde{\dot{q}}_{n-1},
+\end{equation}
+where $\tilde{\dot{q}}$ denotes the smoothed value and $\alpha\in(0,1)$ is the smoothing factor. This is the current joint state estimation method for the arm.
+%So, according to the tests conducted and evaluating a trade-off between exact but out-of-phase signals and noisy but coherent signals, the best method resulted the Euler one.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\paragraph{Gravity Compensation}
-Recalling the built-in controllers \eqref{eq:cartesianstiffnesscontroller},\eqref{eq:axisspecificstiffnesscontroller} of the KUKA LWR arm, the term $f_{dynamics}(q,\dot{q},\ddot{q})$ must be analyzed. It refers to the gravity compensation performed internally by the robot, in a way that the commanded torque isn't indeed affected by the gravitational field. This, unfortunately, generates a conflict between the internal compensation and the whole control law, which at dynamic level requires the knowledge of the gravitational force to compute the input torques. Since such term can't be forced to zero, one workaround could be that of not considering the gravity ($g(q)=0$) in all model-based controller, introducing a really negligible error.
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsubsection{Controller design issues}
+% During the process of controllers design, certainly one requirement that has to be met is to reach an efficient complexity in terms of computational resources. In the sequel it's analyzed a category of control strategies which requires, at least in this case study, the exploitation of a big amount of resources that unfortunately weren't available on the machines used for experiments.
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \paragraph{Adaptive Control}
+% In this section it has been assumed that the dynamic model of the robot is perfectly known at any instant of time, but, in practice, this can't be always true. In fact there exist some model uncertainties depending on the robot configuration, mainly mechanical parameters like inertia matrices and masses for the single links or those related to the robot payload. To overcome this intrinsic problem, it is always possible to write the dynamic model of the robot \eqref{eq:robotdynamics} through a linear parametrization
+% \begin{equation}
+% M(q)\ddot{q} + C(q,\dot{q})\dot{q} + g(q) = Y(q,\dot{q},\ddot{q})\pi = \tau
+% \end{equation}
+% where the vector $\pi\in\mathbb{R}^r$ contains the combinations of the aforementioned physical parameters and $Y(q,\dot{q},\ddot{q})\in\mathbb{R}^{n\times r}$ is called the \textit{regressor} matrix. In brief, this sums up the aim of the \textit{Adaptive Control}, which, as the name suggests, makes the control law to adapt to the variations of the unknown robot model parameters. Recently, an analytic closed formula for the regressor has been derived from the Lagrange equations, in terms of the Denavit-Hartenberg parameters and the joints configurations  $q,\dot{q},\ddot{q}$, and implemented in \textit{Mathematica} environment \cite{gabiccini09}. For a 7-links manipulator like KUKA LWR, the resulting regressor matrix has dimensions $7$x$70$ in its unsimplified form, making literally impossible to handle an adaptive control with the owned instruments.
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \paragraph{Gravity Compensation}
+% Recalling the built-in controllers \eqref{eq:cartesianstiffnesscontroller}, \eqref{eq:axisspecificstiffnesscontroller} of the KUKA LWR arm, the term $f_{dynamics}(q,\dot{q},\ddot{q})$ must be analyzed. It refers to the gravity compensation performed internally by the robot, in a way that the commanded torque isn't indeed affected by the gravitational field. This, unfortunately, generates a conflict between the internal compensation and the whole control law, which at dynamic level requires the knowledge of the gravitational force to compute the input torques. Since such term can't be forced to zero, one workaround could be that of not considering the gravity ($g(q)=0$) in all model-based controller, introducing a really negligible error.

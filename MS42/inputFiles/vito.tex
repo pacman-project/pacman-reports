@@ -1,7 +1,14 @@
 \subsection{Vito, the UNIPI robot}
 \label{sec:vito}
 
-Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and UoB robots, respectively. It is a bi-manual robot with a high quality head on top provided by Karlsruhe Institue of Technology. The difference with the other robots is that Vito uses both Pisa/IIT SoftHands as end-effectors as the default setup. However, its modularity allows him to exchange tools such as a DLR hand, an intrinsic tactile sensors like the one used in DR 3.1, or as an object scanner when using an RGB-D camera and a turntable.
+Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and UoB robots, respectively. It is a bi-manual robot with a high quality head on top provided by Karlsruhe Institue of Technology. The difference with the other two robots is that Vito uses both Pisa/IIT SoftHands as end-effectors as the default setup. However, its modularity allows him to exchange tools such as a DLR hand, an intrinsic tactile sensors like the one used in DR 3.1, or as an object scanner when using an RGB-D camera and a turntable. Fig.~\ref{fig:vito_gazebo} shows Vito uploaded in the Gazebo environment.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{vito_gazebo.png}
+\caption{Vito, the UNIPI robot, in the ROS/Gazebo simulation.}
+\label{fig:vito_gazebo}
+\end{figure}
 
 \subsubsection{Models and modularity}
 
@@ -93,9 +100,29 @@ All modules, namely arm, hand and head, were developed in such manner that they 
 \end{figure}
 
 
-\subsubsection{From planning to action}
+\subsubsection{Real/Simulation planning and control framework}
 
-Each module implements an interface to the real or the simulated hardware, looking for maximum similarities between the two scenarios to have a switch between reality and simulation as effortless as possible. Both hardware interfaces expose the joints as resources that can be controlled using effort, position, or even velocity commands. This depends on the available hardware. Moreover, controllers that are compatible with the resources exposed by the hardware interface can be used indistinctly. All controllers are gathered in a configuration file that defines its functional parameters, such as the proportional, derivative and integral gains in a PID controller. Such controllers are listed as the way a group of joints can be moved in a regulated way to execute trajectories, perform exploration, or move to any desired position in the workspace. Given the fact that the main PaCMan contribution is not on trajectory planning, we decided to use the MoveIt! library to tackle this aspect.
+The planning framework is heavily based on the MoveIt! package, since motion planning is not within the goals of the project. It is worth to mention that Section ``High-Level Planning for Dual Arm Goal-Oriented Task'' in DR 4.2 interfaces with the core planning functions of the package to generate and use the transition graph.
 
-Particularly, the arm~(see Sec.~\ref{sec:kuka}) works with both effort and position using the same hardware interface, and the hand (see Sec.~\ref{sec:softhand}) and head~(see Sec.~\ref{sec:kithead}) offer only position controlled motors. Next, we describe more details on the hardware interface of each module, and in the case of the arm, implementations of additional controllers that act on the available hardware interface to execute planned trajectories, while making the most of the arm capabilities. 
+For the control framework, each module implements an interface to the real or the simulated hardware, looking for maximum similarities between the two scenarios to have a switch between reality and simulation as effortless as possible. Both hardware interfaces expose the joints as resources that can be controlled using effort, position, or even velocity commands. This depends on the available hardware. Moreover, controllers that are compatible with the resources exposed by the hardware interface can be used indistinctly. All controllers are gathered in a configuration file that defines its functional parameters, such as the proportional, derivative and integral gains in a PID controller. Such controllers are listed as the way a group of joints can be moved in a regulated way to execute trajectories, perform exploration, or move to any desired position in the workspace. Given the fact that the main PaCMan contribution is not on trajectory planning, we decided to use the MoveIt! library to tackle this aspect.
+
+The plan-to-action framework can be summarized in Fig.~\ref{fig:framework}. The link between the two figures is the controllers, in the sense that they must understand the planning output, typically joint trajectories, and the commanded values must be compatible with the hardware resource types, typically position and effort commands.
+
+\begin{figure}
+\centering
+\begin{subfigure}[t]{0.58\textwidth}
+\centerline{\includegraphics[width=\textwidth]{ros+gazebo.png}}
+\caption{ROS/Gazebo framework.}
+\label{fig:rosgazebointeraction}
+\end{subfigure}
+\begin{subfigure}[t]{0.4\textwidth}
+\centerline{\includegraphics[width=\textwidth]{moveit_highlevel.png}}
+\caption{MoveIt! framework.}
+\label{fig:planning}
+\end{subfigure}
+\caption{Real/Simulation planning and control framework}
+\label{fig:framework}
+\end{figure}
+
+Particularly, the arm~(see Sec.~\ref{sec:kuka}) works with both effort and position using the same hardware interface in both real and simulation, and the hand (see Sec.~\ref{sec:softhand}) and head~(see Sec.~\ref{sec:kithead}) offer only position controlled motors. Next, we describe more details on the hardware interface of each module. In the case of the arm, special attention is given to the implementation of additional controllers that make the most of the arm capabilities for the required tasks within the project. In the case of the hand, special attention is given to the implementation of the adaptive synergy transmission to replicate in simulation the adaptivity the hand has in reality.
 %With this in mind, the planning and execution phase  at a robust object exploration and grasping.
