@@ -466,11 +466,12 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
     \centering
     \label{fig:curvature}
     \mbox{
-    \includegraphics[width=.32\linewidth]{plane}
-    \includegraphics[width=.32\linewidth]{cylinder}
-    \includegraphics[width=.32\linewidth]{basketball}
+    \includegraphics[width=.33\linewidth]{plane}
+    \includegraphics[width=.33\linewidth]{cylinder}
+    \includegraphics[width=.33\linewidth]{basketball}
     }
     \caption{Test objects for curvature estimation test on a plane (left), a cylinder (middle), and a sphere (right).}
+    \vspace{9pt}
 \end{figure}
 
 
@@ -480,13 +481,13 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
 
 \begin{figure}[!b]
   \begin{center}
-    \includegraphics[width=0.95\linewidth]{sliding}
+    \includegraphics[width=1.0\linewidth]{sliding}
   \end{center}
   \caption{The shape is acquired by an RGBD sensor and the friction coefficients by the intrinsic tactile sensor, both shape~$f(\mathbf{x})$ and friction~$m(\mathbf{x})$ functions are represented as a Gaussian Process $\mathcal{GP}(0,k(\cdot))$. The exploration follows geodesic flows~$\gamma_i$ on the surface of a fixed object using a compliant behavior.}
   \label{fig:schema}
 \end{figure}
 
-The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both, shape and fiction coefficient, and it was successfully exploited to generate exploration trajectories on the object surface with arbitrary shapes. The normal contact force was used to discriminate the contact states from the non-contact state. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection. only sliding controller was used since the friction coefficient is simpler to retrive using that primitive. More details on the whole methodology can be found in the attached paper~\cite{Active2014Rosales} available at~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{this link}.
+The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection. Only sliding controller was used since the friction coefficient is simpler to retrive using that primitive. More details on the methodology can be found in the attached paper~\cite{Active2014Rosales} available at~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{this link}.
 
 % \begin{figure}[th]
 %     \centering
