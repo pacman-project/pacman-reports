@@ -9,17 +9,17 @@ The robot used in the experimental platforms of PaCMan project is the \textit{KU
 \caption{KUKA Lightweight Robot IV arm}
 \end{figure}
 
-The communication between the robot and an external computer is handled by the \textit{Fast Research Interface} (FRI), a real-time proprietary software interface able to read and write system variables of the robot and execute user-programs.
 
-\subsubsection{Built-in control strategies}
+\subsubsection{Hardware interface}
 The robot provides three different control strategies as default setting, which are described below \cite{kukafri}.
 
 \paragraph{Position Controller}
 Desired joint positions are regulated through the use of an internal \textit{PID} as
 \begin{equation}
-\mathbf{q}_{LBR} = \mathbf{q}_{FRI}.
+\mathbf{q}_{LBR} = \mathbf{q}_{FRI},
 \label{eq:positioncontroller}
 \end{equation}
+where $\mathbf{q}_{FRI}$ is the commanded joint positions.
 
 \paragraph{Cartesian Stiffness Controller}
 The Cartesian stiffness controller is characterized by the following control law:
@@ -27,16 +27,7 @@ The Cartesian stiffness controller is characterized by the following control law
 \tau_{cmd} = J^T(k_c(x_{FRI} - x_{msr}) + F_{FRI}) + D(d_c) + f_{dynamics}(q,\dot{q},\ddot{q})
 \label{eq:cartesianstiffnesscontroller}
 \end{equation}
-where:
-\begin{itemize}
-\item $\tau_{cmd}\in\mathbb{R}^7$: control torque;
-\item $x_{FRI}\in\mathbb{R}^{12}$: commanded cartesian set-point position;
-\item $x_{msr}\in\mathbb{R}^{12}$: measured cartesian position;
-\item $k_c\in\mathbb{R}^{7\times 7}$: cartesian stiffness;
-\item $D(d_c)\in\mathbb{R}^7$: damping term;
-\item $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$: the dynamic compensation;
-\item $F_{FRI}\in\mathbb{R}^7$: the cartesian external force.
-\end{itemize}
+where $\tau_{cmd}\in\mathbb{R}^7$ is the  control torque, $x_{FRI}\in\mathbb{R}^{12}$ is the commanded cartesian position, $x_{msr}\in\mathbb{R}^{12}$ is the measured cartesian position, $k_c\in\mathbb{R}^{7\times 7}$is the commanded cartesian stiffness, $D(d_c)\in\mathbb{R}^7$ is the commanded damping term, $F_{FRI}\in\mathbb{R}^6$ is the commanded cartesian force, and $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$ is the gravity compensation term.
 
 \paragraph{Axis-specific Stiffness Controller}
 The axis-specific stiffness controller is similar to the cartesian stiffness controller, but it takes commands in joints space:
@@ -44,25 +35,11 @@ The axis-specific stiffness controller is similar to the cartesian stiffness con
 \tau_{cmd} = k_j(q_{FRI} - q_{msr}) + D(d_j) + \tau_{FRI} + f_{dynamics}(q,\dot{q},\ddot{q})
 \label{eq:axisspecificstiffnesscontroller}
 \end{equation}
-where:
-\begin{itemize}
-\item $\tau_{cmd}\in \mathbb{R}^7$: control torque;
-\item $q_{FRI}\in\mathbb{R}^7$: commanded joint set-point position;
-\item $q_{msr}\in\mathbb{R}^7$: measured joint position;
-\item $k_j\in\mathbb{R}^{7\times 7}$: joint stiffness;
-\item $D(d_j)\in\mathbb{R}^7$: damping term;
-\item $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$: the dynamic compensation;
-\item $\tau_{FRI}\in\mathbb{R}^7$: the joint external force.
-\end{itemize}
+where $\tau_{cmd}\in \mathbb{R}^7$ is the control torque, $q_{FRI}\in\mathbb{R}^7$ is the commanded joint position (reference position of a torsional spring), $q_{msr}\in\mathbb{R}^7$is the measured joint positions, $k_j\in\mathbb{R}^{7\times 7}$ is the commanded joint stiffnesses, $D(d_j)\in\mathbb{R}^7$ is the commanded damping term, $\tau_{FRI}\in\mathbb{R}^7$ is the added the joint effort, and $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$ is the gravity compensation as before.
 
+It is worth noting that, $f_{dynamics}(q,\dot{q},\ddot{q})\in\mathbb{R}^7$ is actually $f_{dynamics}(q)\in\mathbb{R}^7$ in all cases.
 
-\subsubsection{Hardware interface}
-The purpose of the development of robotics applications in a simulated environment is exactly to test and debug the software produced before loading it on the physical robot. To make this passage smooth and seamless, it has been implemented a hardware interface layer which provides an abstraction of the robot components, as shown in \autoref{fig:rosgazebointeraction}.
-\begin{figure}[H]
-\centerline{\includegraphics[scale=0.6]{ros+gazebo}}
-\caption[Scheme of the interaction between ROS and Gazebo.]{Scheme of the interaction between ROS and Gazebo, with particulars on simulated and real robot.}
-\label{fig:rosgazebointeraction}
-\end{figure}
+As seen in Fig.~\ref{fig:rosgazebointeraction}, there are two hardware interfaces developed for the Kuka LWR IV, that is, the one that connects to the simulated robot and the one that connects to the real robot. We decided to use the Axis-specific Stiffness Controller described before since it provides the more general setup. To this end, position and effort commands are possible using the same strategy, hence only one hardware interface is required. The real hardware interface uses the \textit{Fast Research Interface} (FRI), a real-time proprietary software interface provided by Kuka able to read and write system variables of the robot and execute user-programs. The simulated hardware interface implements the Axis-specific Stiffness Controller, where it adds~$f_{dynamics}$ computed from the URDF model of the robot and the current joint values measured from the simulation. This way, any controller can switch between real and simulated hardware with very low extra effort.
 
 \subsubsection{Joint state estimation}
 
@@ -433,7 +410,7 @@ where $K_d\in\mathbb{R}^{n \times n}$ is a diagonal symmetric positive definite 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Controllers Design Issues}
+\subsubsection{Controller design issues}
 During the process of controllers design, certainly one requirement that has to be met is to reach an efficient complexity in terms of computational resources. In the sequel it's analyzed a category of control strategies which requires, at least in this case study, the exploitation of a big amount of resources that unfortunately weren't available on the machines used for experiments.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
