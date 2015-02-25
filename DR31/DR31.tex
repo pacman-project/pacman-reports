@@ -63,17 +63,15 @@
 \revision{draft}
 \disseminationlevel{PU}
 
-
 %% UNCOMMENT: to get the logo; if you've copied this file to a directory yearX/wpY/ then this should work
 \reportlogo{pacmanlogo.png}
-
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-\noindent This report describes activities related to the development of haptic object exploration methodologies. Object shape refinement and friction coefficient estimation require low-level controllers that allow contour tracing interaction as well as a sophisticated sensorization of the exploratory probe. This report presents the efforts on providing controllers to perform sliding and rolling of a fingertip over a surface, integrating controller strategy with vision, implementing a robust testbed to simulate results, and last but not least, specifying the designs on the sensorization of the Pisa/IIT SoftHand.
+\noindent This report describes activities related to the development of haptic object exploration methodologies. Object shape refinement and friction coefficient estimation require low-level controllers that allow contour tracing interaction as well as a sophisticated sensorization of the exploratory probe. This report presents the efforts on providing controllers to perform sliding and rolling of a fingertip over a surface, integrating controller strategies with vision, implementing a robust testbed to simulate results, and last but not least, specifying the designs on the sensorization of the Pisa/IIT SoftHand.
 \end{abstract}
 
 \vspace{.2em}
@@ -88,12 +86,11 @@
 \newpage
 
 \section*{Executive Summary}
-%\includegraphics[height=80pt]{pacmanlogo.png}\\
-This report describes the activities within the PaCMan consortium to define methodologies for \emph{haptic object exploration}. The material included in this report shows the results of Task 3.1 (M 1-24). Aside, progress of Task 3.2 (M 1-36) is presented, as well as the envision of a promising approach to tackle the problem of information gathering for unknown objects or in the case where partial information is available.
+This report describes the activities within the PaCMan consortium to define methodologies for \emph{haptic object exploration}. The material included in this report shows the results of Task 3.1 (M 1-24). Aside, progress of Task 3.2 (M 18-36) along with the envision of a promising approach to tackle the problem of information gathering for unknown objects. Developments of Task 3.3 (M 1-30) and its relation with WP4 is also reported.
 
 \section*{Role of haptic object exploration in PaCMan}
 
-This deliverable reports the research done on finding a methodology to explore objects and gather their haptic properties such as the static and dynamic friction coefficient.
+This deliverable reports the research done on finding a methodology to explore objects by touch and vision, and gather their haptic properties such as the static and dynamic friction coefficient.
 %To this end, \emph{control algorithms} and \emph{innovative sensors} are developed.
 
 \section*{Contribution to the PaCMan scenario}
@@ -101,7 +98,7 @@ This deliverable reports the research done on finding a methodology to explore o
 The multi-modal object representation to be reported in WP2 requires information about the shape and haptic properties of an object.
 The active acquisition of such information is essential to build the representation of a particular object. The exploratory strategies which combine low-level control algorithms developed by the UNIPI team, high-level decision making strategies to be completed by UoB team, together with a sensorized adaptive hand as proposed from the UNIPI team, make this possible.
 
-Additionally, the developed algorithms make no assumption on how the gathered information is encoded. This provides a versatile testbed to contrast the representation coming from WP2 with other approaches.
+Additionally, the developed algorithms make no assumption on how the gathered information is encoded. This provides a flexible testbed to contrast the representation coming from WP2 with approaches external to the project.
 
 \newpage
 
@@ -109,23 +106,23 @@ Additionally, the developed algorithms make no assumption on how the gathered in
 
 \subsection{Planned work}
 
-This report must show the results of Task 3.1. Particularly, it should describe reactive control strategies for haptic exploration of an object by a robotic hand, consisting of contour tracing of the object surface and finger rolling over the object surface, as well as strategies for extracting higher-order geometric features and frictional properties.
+This report must show the results of Task 3.1. Particularly, it should describe reactive control strategies for haptic exploration of an object by a robotic hand, consisting of contour tracing of the object surface and finger rolling over the object surface, as well as strategies for extracting higher-order geometric features and frictional properties. 
 
-In Task 3.3 we planned to implement the active gaze model we presented in year 1 in the robot platform. This was intended to be used in the demonstration 5.2. The hypothesis to be tested is whether a reward based framework for active gaze control for grasping under positional uncertainty can be extended to work on real objects. The initial assumption was that the active gaze control model would work with a prior model of the object shape. The overall goal was to show that active gaze can improve the reliability of grasping and manipulation.
+% In Task 3.3 we planned to implement the active gaze model we presented in year 1 in the robot platform. This was intended to be used in the demonstration 5.2. The hypothesis to be tested is whether a reward based framework for active gaze control for grasping under positional uncertainty can be extended to work on real objects. The initial assumption was that the active gaze control model would work with a prior model of the object shape. The overall goal was to show that active gaze can improve the reliability of grasping and manipulation.
 
 \subsection{Actual work performed}
 
-We can proudly say that Task 3.1 has been accomplished, and Sec.~\ref{sec:ControlAlgorithms} summarizes the results following the planned activities accurately.
+We can proudly say that Task 3.1 has been accomplished, and Sec.~\ref{sec:ControlAlgorithms} summarizes the results following the planned activities step by step.
 
 %Sec.~\ref{sec:Simulation} describes the simulation environment that will be used to test the results of Tasks~3.1 and~3.2. The reason behind implementing another simulation environment different from the one presented in Sec.~\ref{sec:ControlAlgorithms} is the integration with vision and to the expected results from Task~3.2, which was acknowledge after obtaining the results of Task~3.1.
 
-The fact that the object shape uncertainty is reduced by making contact with the object, combined with the adaptability of the Pisa/IIT SoftHand to any kind of surface, shaped the idea of using the hand as sophisticated exploratory probe. Sec.~\ref{sec:IMUGlove} and~\ref{sec:SenseOfTouch} provide glove-inspired solutions to read the hand configuration as well as the contact information to estimate accurately the object shape as the result of grasping the object. The solution can help greatly in situations where only partial visual information is available, as challenged in Task 3.2, thus we believe that this research line deserves further attention as seems beneficial to accomplish the project goals.
+The fact that the object shape uncertainty is reduced by making contact with the object, combined with the adaptability of the Pisa/IIT SoftHand to any object shape, influenced the idea of using the hand as sophisticated exploratory probe. Sec.~\ref{sec:IMUGlove} and~\ref{sec:SenseOfTouch} provide glove-inspired solutions to read the hand configuration as well as the contact information to estimate accurately the object shape as the result of object grasping action. We believe that the proposed solution will be of great help in situations where only partial visual information is available, as challenged in Task 3.2. Thus, we dedicated efforts to continue on this research as it seems beneficial to accomplish the project goals with an alternative methodology.
 
-Work on grasping of novel objects in WP4 progressed much faster than we expected. Thus this was taken as the grasping method to be combined with active gaze. The active gaze approach taken has been informed by the fact that experiments in our IJRR submission for WP4 have shown us that grasp failure is typically driven by the incompleteness of the point cloud near to suggested grasp points and along the final grasp trajectory. In addition, tests with differing numbers of views of the test object prior to grasping showed that the more views one has from an object, the greater the probability of grasping success for this object. In addition, we have used a wrist mounted depth camera for the active gaze method.
-
-We are extending the reward based method from~\cite{nunez2013models} to the case of incomplete point clouds. We require a measure of the proportion of the total possible coverage given by the incomplete object model. To this end, we are currently investigating the use of an octree representation, called octomap~\cite{hornung13auro}, for online object modelling and sensor data fusion. The octomap of a given object allows the representation of occupied (known voxels belonging to a segmented object), free (voxels that do not belong to an object), and unknown areas of the scene, which might belong to the object if they are near known and occupied voxels. We are now implementing a method for estimation of the safety of a grasp trajectory given this octomap. We are also testing different measures of the coverage of the object pertinent to a candidate grasp given the point cloud and the octomap representations.
-
-Previously, in year one, we presented an algorithm for active gaze in the case where the object model is known, and the pose is uncertain. This was tested in simulation, and shown to fit human data. Relevant work on grasping under incomplete information is that by Bohg and Kragic \cite{bohg:icra11}. There the approach is not active gaze to fill in information, but to use a symmetry prior to complete missing object parts. An active vision system for grasping is described in \cite{gratal:irosws10}, but in this the main task of gaze control is to find and fixate on the object to support a visual servoing routine. A recent workshop at RSS 2014 on active information gathering for grasping was notable in that none of the papers considered active vision, but instead focussed on the type of approaches we study Task 4.4. Thus the area is underexplored.
+Concerning Task 3.3, we must say the the work on grasping of novel objects in WP4 progressed much faster than expected. 
+%Thus, this was taken as the grasping method to be combined with active gaze. 
+The active gaze approach taken has been informed by the fact that experiments in our IJRR submission for WP4 has shown us that grasp failure is typically driven by the incompleteness of the point cloud near to suggested grasp points and along the final grasp trajectory. In addition, tests with differing numbers of views of the test object prior to grasping showed that the more views one has from an object, the greater the probability of grasping success for this object. In addition, we have used a wrist mounted depth camera for the active gaze method. We are extending the reward-based method from~\cite{nunez2013models} to the case of incomplete point clouds. We require a measure of the proportion of the total possible coverage given by the incomplete object model. To this end, we are currently investigating the use of an octree representation, called octomap~\cite{hornung13auro}, for online object modelling and sensor data fusion. The octomap of a given object allows the representation of occupied (known voxels belonging to a segmented object), free (voxels that do not belong to an object), and unknown areas of the scene, which might belong to the object if they are near known and occupied voxels. We are now implementing a method to estimate the safety of a grasp trajectory given this octomap. We are also testing different measures of the coverage of the object pertinent to a candidate grasp given the point cloud and the octomap representations.
+%In year 1, we presented an algorithm for active gaze in the case where the object model is known, and the pose is uncertain. This was tested in simulation, and shown to fit human data. Relevant work on grasping under incomplete information is that by Bohg and Kragic \cite{bohg:icra11}. There the approach is not active gaze to fill in information, but to use a symmetry prior to complete missing object parts. An active vision system for grasping is described in \cite{gratal:irosws10}, but in this 
+%The main goal of gaze control is to find and fixate on the object to support a visual servoing routine. A recent workshop at RSS 2014 on active information gathering for grasping was notable in that none of the papers considered active vision, but instead focussed on the type of approaches we study Task 4.4. Thus the area is underexplored.
 
 % \subsection{Relation to the state-of-the-art}
 % How are the obtained results related to the state-of-the-art?
@@ -145,9 +142,10 @@ Previously, in year one, we presented an algorithm for active gaze in the case w
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% To be prepared by: Carlos
-% SimulationEnvironment moving the gazebo part to here, since testing in simulation is advised by the Tasks.
-% \input{./inputFiles/SimulationEnvironment.tex}
+% To be prepared by: Marco Gabiccini
+% Low-cost, Fast and Accurate Reconstruction of Robotic and Human Postures
+% via IMU Measurements
+\input{./inputFiles/ReconstructionPosturesImuMeasurements.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -157,20 +155,13 @@ Previously, in year one, we presented an algorithm for active gaze in the case w
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% To be prepared by: Marco Gabiccini
-% Low-cost, Fast and Accurate Reconstruction of Robotic and Human Postures
-% via IMU Measurements
-\input{./inputFiles/ReconstructionPosturesImuMeasurements.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % To be prepared by: Jeremy Wyatt
 % Active Gaze
 % \input{./inputFiles/ActiveGaze.tex}
 
-\section{Annexes}
+%\section{Annexes}
 
-Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed.
+% Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed.
 
 
 \bibliographystyle{IEEEtran}

@@ -9,6 +9,7 @@ set(CMAKE_MODULE_PATH
 
 include(UseLATEX)
 
+add_subdirectory(DR21)
 add_subdirectory(DR31)
 add_subdirectory(DR42)
 add_subdirectory(MS42)
