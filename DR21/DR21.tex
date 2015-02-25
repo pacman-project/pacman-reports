@@ -70,9 +70,11 @@
 
 \section*{Executive Summary}
 
-This report presents work carried out in WP2 on multi-modal compositional hierarchies of object categories, using both visual and non-visual features. The work addresses the intermediate results of Tasks 2.1, 2.2 and 2.3. We describe an approach for integrating non-visual features into the compositional hierarchy, as defined in Task 2.1, which is presented in detail in Annex \ref{ann:techReport}. 
+This report presents work carried out in WP2 on multi-modal compositional hierarchies of object categories, using both visual and non-visual features. The work addresses the intermediate results of Tasks 2.1, 2.2 and 2.3. We describe an approach for integrating non-visual features into the compositional hierarchy, as defined in Task 2.1.
+%, which is presented in detail in Annex \ref{ann:techReport}. 
 
-Next, we present the association of graspability to object parts formed using a hierarchical representation, according to Task 2.2. In addition, we propose a method for structuring compositional object models into semantically meaningful parts, guided by their graspability, which is described in a submitted conference paper included in Annex \ref{ann:icra}.
+Next, we present the association of graspability to object parts formed using a hierarchical representation, according to Task 2.2. In addition, we propose a method for structuring compositional object models into semantically meaningful parts, guided by their graspability.
+%, which is described in a submitted conference paper included in Annex \ref{ann:icra}.
 
 \section*{Role of the Multi-modal compositional hierarchies in PaCMan}
 
@@ -101,17 +103,15 @@ as object models described by their pose, as well as any visual, haptic and gras
 
 \subsection{Actual work performed}
 
-In this section, the main achievements related to the topic of this deliverable are briefly described. For detailed descriptions of the work performed, the reader is referred to the papers and technical reports in Annex \ref{ann} of this deliverable.
-
-We chose to introduce first Task 2.3, as it describes the developed compositional model which is used in Tasks 2.1, 2.2 and 2.4, facilitating a better understanding of the performed work.
+In this section, the main achievements related to the topic of this deliverable are briefly described. 
+%For detailed descriptions of the work performed, the reader is referred to the papers and technical reports in Annex \ref{ann} of this deliverable.
+We choose to introduce first Task 2.3, as it describes the developed compositional model which is used in Tasks 2.1, 2.2 and 2.4, facilitating a better understanding of the performed work.
 
 \subsubsection{Task 2.3 Structuring 3D compositional models according to grasp affordances}
 
 We designed and implemented a method for structuring the 3D compositional models according to object part graspability.
 
 In order to associate graspability to an object part and to integrate it with tactile information, this work uses a hierarchical method model that explicitly seeks to construct semantically-meaningful parts, rather than the bottom-up approach developed in Task 1.2 in WP1. We are now also investigating the attachment of grasps to 3D parts developed using the bottom-up approach of WP1.
-
-Next, we briefly explain our part-based compositional object model, while more details can be found in Annexes \ref{ann:icra} and \ref{ann:cvpr}. 
 
 Object are represented in a compositional hierarchy where their parts are described by the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent patches. 
 
@@ -172,11 +172,15 @@ The novelty of our approach is two-fold. First, the proposed algorithm forms sem
 
 We evaluated our method on our collected Ikea Object Dataset and on the RGB-D Washington dataset \cite{rgbd-dataset}. Our approach achieved promising results, outperforming competing methods \cite{rel7}.
 
+%More details can be found in Annexes \ref{ann:icra} and \ref{ann:cvpr}. 
+
+More details can be found in the attached papers~\cite{Rezapour2015LearningCVPR} and~\cite{Rezapour2015LearningICRA}, available at~\href{./attachedPapers/rezapouretal-cvpr2015.pdf}{this link} and~\href{./attachedPapers/rezapouretal-icra2015.pdf}{this link}, respectively.
+
 \subsubsection{Task 2.1 Integrating haptics into 3D compositional models}
 
 To achieve the objectives of Task 2.1, we have taken several steps. First, we implemented a framework for acquiring tactile information simultaneously with visual data, using our robotic framework. 
 
-Next, we recorded a dataset of Ikea objects, consisting of RGB and depth data, grasping information and tactile readings corresponding to the grasped patches of the object. In these experiments we used a parametrization suitable for our Schunk hand. Furthermore, using our developed compositional framework presented in \ref{ann:cvpr}, we decompose an object into its constituent parts and associate the corresponding tactile features. The integration of visual and non-visual features was done in a probabilistic manner, as described in the technical report included in Annex \ref{ann:techReport}. One application of the proposed representation is object class recognition under uncertainty.
+Next, we recorded a dataset of Ikea objects, consisting of RGB and depth data, grasping information and tactile readings corresponding to the grasped patches of the object. In these experiments we used a parametrization suitable for our Schunk hand. Furthermore, using our developed compositional framework presented in~\cite{Rezapour2015LearningCVPR}, we decompose an object into its constituent parts and associate the corresponding tactile features. The integration of visual and non-visual features was done in a probabilistic manner, as described in the technical report~\cite{Rezapour2015Multi}, available at~\href{./attachedPapers/rezapouretal-Tech2015.pdf}{this link}. One application of the proposed representation is object class recognition under uncertainty.
 
 The actual steps required for extracting tactile features and fusing them with visual features are:
 \begin{enumerate}
@@ -193,7 +197,7 @@ The actual steps required for extracting tactile features and fusing them with v
 
 \subsubsection{Task 2.2 Integrating graspability into 3D compositional models}
 
-We associated grasps to object parts, obtained using our proposed compositional framework. This approach facilitates grasping unknown objects, which are composed of parts similar to those learned by our hierarchical model. To facilitate this task, we have designed and implemented a compositional framework which is described in detail in Annex \ref{ann:cvpr}. The description of the grasp representation and of the experimental setup is presented in Annex \ref{ann:techReportAlex}.
+We associated grasps to object parts, obtained using our proposed compositional framework. This approach facilitates grasping unknown objects, which are composed of parts similar to those learned by our hierarchical model. To facilitate this task, we have designed and implemented a compositional framework which is described in detail in~\cite{Rezapour2015LearningCVPR}. The description of the grasp representation and of the experimental setup is presented in~\cite{Rietzler2015Compositional}, available at~\href{./attachedPapers/rietzeler-techReport.pdf}{this link}.
 
 The steps performed to associate grasps to object parts are:
 
@@ -205,7 +209,7 @@ The steps performed to associate grasps to object parts are:
 \item Evaluate the association of grasps to object parts, by performing robotic experiments on a test set containing objects partially similar to the ones in the training set.
 \end{enumerate}
 
-The grasp template alignment procedure is based on our pose estimation algorithm \cite{detry2010ac}, where the 6D pose dependent cross correlation between the shape distribution of the scene and a template is computed. 
+The grasp template alignment procedure is based on our pose estimation algorithm~\cite{detry2010ac}, where the 6D pose dependent cross correlation between the shape distribution of the scene and a template is computed. 
 
 Next, in order to find a single best grasp for each template, we have developed a grasp inference algorithm which searches over a large number of hypothesis, while performing collision checking with the environment and checking inverse kinematics reachability of the gripper wrist pose hypothesis.
 
@@ -215,7 +219,7 @@ Next, in order to find a single best grasp for each template, we have developed 
 
 Reasoning about a scene can be very useful for action planning or grasp planning in the presence of clutter. Visual information plays the most important role, while additional information such as object graspability and non-visual features such as haptics, can be also useful for obtaining an improved and refined representation of the work space.
 
-Therefore, we have analyzed first the performance of our developed 3D compositional model mainly on two aspects: part recognition for novel objects and object classification and localization. A detailed description of the achieved results is included in Annex \ref{ann:cvpr}, while we present next a brief discussion of our main contributions.
+Therefore, we have analyzed first the performance of our developed 3D compositional model mainly on two aspects: part recognition for novel objects and object classification and localization. A detailed description of the achieved results is included in~\cite{Rezapour2015LearningCVPR}, while we present next a brief discussion of our main contributions.
 
 Due to the compositionality nature of our object representation, we were able to obtain a very high recognition rate on novel object instances, composed of parts different from the ones in the training set. The generalization property of our model is due to the fact that we learn the relations between adjacent parts in an object and therefore our method is not fully dependant on the structure of a part. Furthermore, our approach outperformed state-of-the-art methods \cite{vfh}, which achieved poor results for novel object instances.
 
@@ -238,55 +242,55 @@ In the state-of-the-art methods for part-based object recognition \cite{part2},\
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR21}
 
-\newpage 
+%\newpage 
 
-\section{Annexes}
-\label{ann}
-%Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
+% \section{Annexes}
+% \label{ann}
+% %Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
 
-\subsection{Learning 3D Object Parts through Grasping}
-\label{ann:icra} 
-\textbf{Bibliography} Safoura Rezapour Lakani, Mirela Popa, Antonio J. Rodriguez-Sanchez and Justus Piater “Learning 3D Object Parts through Grasping”, submitted to IEEE Computer Vision and Pattern Recognition (ICRA), 2015.
+% \subsection{Learning 3D Object Parts through Grasping}
+% \label{ann:icra} 
+% \textbf{Bibliography} Safoura Rezapour Lakani, Mirela Popa, Antonio J. Rodriguez-Sanchez and Justus Piater “Learning 3D Object Parts through Grasping”, submitted to IEEE Computer Vision and Pattern Recognition (ICRA), 2015.
  
-\textbf{Abstract} Most objects are composed of parts which have a semantic meaning. A handle can have many different shapes and be present in quite different objects, but there is only one semantic meaning to a handle, which is "a part that is designed especially to be grasped by the hand". We introduce here a novel 3D algorithm for the decomposition of objects into their semantically meaningful parts. These meaningful parts are learned from experiments where a robot grasps different objects. Object are represented in a compositional graph hierarchy where their parts are represented as the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent regions. Unlike other 2D compositional approaches, the importance of our 3D oriented method relies on the relationship between adjacent regions and sub-parts and where the composition at each level of the hierarchy is learned from grasping experience. We evaluate the validity of our compositional approach in three different scenarios, where we test the importance of the extracted relationships, its robustness to scale and more importantly, the recognition of parts from previously unseen objects. 
+% \textbf{Abstract} Most objects are composed of parts which have a semantic meaning. A handle can have many different shapes and be present in quite different objects, but there is only one semantic meaning to a handle, which is "a part that is designed especially to be grasped by the hand". We introduce here a novel 3D algorithm for the decomposition of objects into their semantically meaningful parts. These meaningful parts are learned from experiments where a robot grasps different objects. Object are represented in a compositional graph hierarchy where their parts are represented as the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent regions. Unlike other 2D compositional approaches, the importance of our 3D oriented method relies on the relationship between adjacent regions and sub-parts and where the composition at each level of the hierarchy is learned from grasping experience. We evaluate the validity of our compositional approach in three different scenarios, where we test the importance of the extracted relationships, its robustness to scale and more importantly, the recognition of parts from previously unseen objects. 
 
-\textbf{Relation to WP}
-The paper addresses Task 2.3 by introducing a method for learning objects parts in a bottom-up way, from robotic experiments of grasping objects.
+% \textbf{Relation to WP}
+% The paper addresses Task 2.3 by introducing a method for learning objects parts in a bottom-up way, from robotic experiments of grasping objects.
  
- \newpage
+%  \newpage
  
-\subsection{Learning Part-Based 3D Compositional Object Representations}
-\label{ann:cvpr} 
-\textbf{Bibliography} Safoura Rezapour Lakani, Antonio J. Rodriguez-Sanchez and Justus Piater, “Learning Part-Based 3D Compositional Object Representations”, submitted to IEEE Computer Vision and Pattern Recognition (CVPR), 2015.
+% \subsection{Learning Part-Based 3D Compositional Object Representations}
+% \label{ann:cvpr} 
+% \textbf{Bibliography} Safoura Rezapour Lakani, Antonio J. Rodriguez-Sanchez and Justus Piater, “Learning Part-Based 3D Compositional Object Representations”, submitted to IEEE Computer Vision and Pattern Recognition (CVPR), 2015.
  
-\textbf{Abstract} This paper presents a novel approach to parts-based object representation from depth images. We propose a bottom-up compositional model for representing object classes. Our model uses a probabilistic approach to build object representations starting from small patches that are successively built up into regions, and finally meaningful (possibly graspable) parts . Parts represented this way are the main representatives of the identity of an object class. We have evaluated our method at parts recognition and object categorization, outperforming competing methods.
+% \textbf{Abstract} This paper presents a novel approach to parts-based object representation from depth images. We propose a bottom-up compositional model for representing object classes. Our model uses a probabilistic approach to build object representations starting from small patches that are successively built up into regions, and finally meaningful (possibly graspable) parts . Parts represented this way are the main representatives of the identity of an object class. We have evaluated our method at parts recognition and object categorization, outperforming competing methods.
 
-\textbf{Relation to WP}
-The paper presents a probabilistic model for learning object representations in a hierarchical manner. This representation is useful for all the tasks, as it enables forming objects by graspability (Task 2.3), it allows integration of non-visual features (Task 2.1), and it can be used for a refined scene description (Task 2.4).
+% \textbf{Relation to WP}
+% The paper presents a probabilistic model for learning object representations in a hierarchical manner. This representation is useful for all the tasks, as it enables forming objects by graspability (Task 2.3), it allows integration of non-visual features (Task 2.1), and it can be used for a refined scene description (Task 2.4).
 
-\newpage
+% \newpage
  
-\subsection{Multi-Modal Compositional Object Representation}
-\label{ann:techReport} 
-\textbf{Bibliography} Safoura Rezapour Lakani and Justus Piater, “Multi-Modal Compositional Object Representation”, Technical report, 2015.
+% \subsection{Multi-Modal Compositional Object Representation}
+% \label{ann:techReport} 
+% \textbf{Bibliography} Safoura Rezapour Lakani and Justus Piater, “Multi-Modal Compositional Object Representation”, Technical report, 2015.
  
-\textbf{Abstract} The objective of this technical report is to introduce an object representation based on both visual and non-visual features such as haptics features. The multi-modal representation will allow us to infer visual information based on haptics information and vice-versa. The non-visual features are useful at object recognition in case of missing or incomplete visual observations. We have developed a 3D compositional part-based object representation, where the non-visual features are represented by tactile information after grasping an object.
+% \textbf{Abstract} The objective of this technical report is to introduce an object representation based on both visual and non-visual features such as haptics features. The multi-modal representation will allow us to infer visual information based on haptics information and vice-versa. The non-visual features are useful at object recognition in case of missing or incomplete visual observations. We have developed a 3D compositional part-based object representation, where the non-visual features are represented by tactile information after grasping an object.
 
-\textbf{Relation to WP}
-The technical report introduces a multi-modal representation which incorporates both visual and non-visual features.
+% \textbf{Relation to WP}
+% The technical report introduces a multi-modal representation which incorporates both visual and non-visual features.
 
-\newpage
+% \newpage
 
-\subsection{3D Compositional Models associated with Grasp Templates and Haptic Data}
-\label{ann:techReportAlex} 
-\textbf{Bibliography} Alexander Rietzler, “3D Compositional Models associated with Grasp Templates and Haptic Data”, Technical report, 2015.
+% \subsection{3D Compositional Models associated with Grasp Templates and Haptic Data}
+% \label{ann:techReportAlex} 
+% \textbf{Bibliography} Alexander Rietzler, “3D Compositional Models associated with Grasp Templates and Haptic Data”, Technical report, 2015.
  
-\textbf{Abstract} The objective of this technical report is to associate graspability and haptic characteristics to object parts produced by a 3D compositional model. The advantage of the proposed method resides in the ability to perform robust grasping of novel object instances, composed of parts similar to the ones existing in the training set.
+% \textbf{Abstract} The objective of this technical report is to associate graspability and haptic characteristics to object parts produced by a 3D compositional model. The advantage of the proposed method resides in the ability to perform robust grasping of novel object instances, composed of parts similar to the ones existing in the training set.
 
-\textbf{Relation to WP}
-The technical report introduces a method for associating grasp templates to object parts obtained using the 3D compositional model presented in Task 2.3.
+% \textbf{Relation to WP}
+% The technical report introduces a method for associating grasp templates to object parts obtained using the 3D compositional model presented in Task 2.3.
 
-\newpage 
+% \newpage 
  
 %\includepdf[pages=-]{./attachedPapers/rezapouretal-icra2015.pdf}
 %\includepdf[pages=-]{./attachedPapers/rezapouretal-cvpr2015.pdf}
