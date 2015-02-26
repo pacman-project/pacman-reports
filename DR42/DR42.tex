@@ -35,11 +35,11 @@
 
 \title{Methodologies for incipient grasp evaluation}
 \deliverableid{DR 4.2}
-\author{H. Marino, M. Bonilla, C. Rosales, M. Gabiccini}
+\author{H. Marino, M. Bonilla, C. Rosales, M. Kopicki, C. Zito, J.L.~Wyatt, M. Gabiccini}
 \address{Universit\`{a} di Pisa, Pisa Italy}
-\email{hamal.marino@centropiaggio.unipi.it}
+\email{m.gabiccini@ing.unipi.it}
 \headertitle{Incipient grasp}
-\headerauthor{H. Marino, M. Bonilla, D. Resasco, C. Rosales, M. Gabiccini}
+\headerauthor{H. Marino, M. Bonilla, C. Rosales, M. Kopicki, C. Zito, J. Wyatt, M. Gabiccini}
 
 \duedate{2015-02-28}
 \submissiondate{2015-02-28}
@@ -93,7 +93,7 @@ To our eyes, grasp methodologies that try to cope with pose uncertainty, object 
 
 Humans have no troubles in selecting the correct grasp strategies even if the object to be grasped is unknown or partially visible. On the contrary, though robotics has made significant progress in the field of autonomous grasping, the problem of grasping novel objects in cluttered scenarios has not been completely solved yet. In this report, we document the activities of the consortium to tackle this problem.
 
-The work to be documented in this report regards: ``Metodologies for incipient grasping evaluation''. This should mostly contain the results of Task 4.2 and the progress of Task 4.3 at this stage. In particular, the report should contain a description of the procedures to infer first-order object surface properties and the quality of the associated grasp from fingerpad sensor recordings, and algorithms for local optimization of contact point locations and on-line grasping force optimization.
+The work to be documented in this report regards: ``Methodologies for incipient grasp evaluation''. This should mostly contain the results of Task 4.2 and the progress of Task 4.3 and Task 4.4 at this stage. In particular, the report should contain a description of the procedures to infer first-order object surface properties and the quality of the associated grasp from fingerpad sensor recordings, and algorithms for local optimization of contact point locations and on-line grasping force optimization.
 
 %% Input from Claudio
 % In Task 4.4 we posed the problem of grasping as a problem of motion planning under uncertainty. We planned to implement and evaluate a motion planning algorithm in a physics based simulation, prior to transfer to a real robot. The requirement was for an algorithm that could provide robust reach to grasp trajectories in the face of object pose and shape uncertainty, planning for and taking advantage of tactile contacts. We considered both methods that plan explicitly in belief space, and those that embed information from observations in the physical space. We elected to pursue the latter route.
@@ -109,15 +109,15 @@ For the reasons mentioned above, the work that is presented in this report is mo
 
 In Sec.~\ref{sec:GraspingWithSoftHands}, we present our approach to define successful synthetic poses for the Pisa/IIT SoftHand in grasping the PaCMan object database. In Sec.~\ref{sec:GraspPlanningBoundingBoxes}, the previous approach is sharpened by employing a custom decomposition into cuboids of the object point cloud. Each cuboid suggests a number of grasps to be performed on the object. These grasps are used to warm start the search for successful grasps to be synthetically found in the simulation environment and to be attached to that object's grasp database. The feasibility of using this approach on-line to find graspable parts on objects in the scene with partial point cloud information and irrespective to their prior recognition is under investigation.
 
-In Sec.~\ref{sec:GraspingNovelObjects}, we shift our attention onto the generalization and adaptation ability of the previously reported grasp planning algorithm for fully actuated hands showing, in experiments using the DLR-HIT Hand II, how it is possible to just use a few exemplary taught grasps in order to be able to transfer this knowledge to unknown, even partially visible objects.
+In Sec.~\ref{sec:GraspingNovelObjects}, we shift our attention onto the generalization and adaptation ability of the previously reported grasp planning algorithm for fully actuated hands showing, in experiments using the DLR-HIT Hand II, how it is possible to just use a few example grasps, taught in a kinesthetic manner, in order to be able to transfer this knowledge to unknown, even partially visible objects.
 
-(INPUT FROM CLAUDIO) In Sec.~\ref{sec:GraspingUncertainty}, ...
+In Sec.~\ref{sec:GraspingUncertainty}, we consider the grasps of the previous section as the starting point, but now wish to execute them more reliably than in an essentially open loop fashion. We present the progress on our method for planning tactile information gathering to reduce the uncertainty in the pose of an object. The method works by embedding the information to be gained in the physical space, using it to shorten distances, and thus make information gathering trajectories of lower cost. We show improvement in our results over the previous year.
 
-Sec.~\ref{sec:SampleBasedMotionPlanningSoftRobots} presents a new approach to planning for soft robot manipulators under task constraints. This piece of work is central to motion planning in dual arm configurations, e.g. when an object is held simultaneously with two compliant underactuated hands. The corresponding control problem, which makes use of a geometric formulation and is based on a noninteracting scheme, is tested on a dual-arm (closed kinematic loop) configuration.
+Sec.~\ref{sec:SampleBasedMotionPlanningSoftRobots} presents a new approach to planning for soft robot manipulators under task constraints. This piece of work is central to motion planning in dual arm configurations, e.g. when an object is held simultaneously with two compliant underactuated hands. The corresponding control problem, which makes use of a geometric formulation and is based on a non-interacting scheme, is tested on a dual-arm (closed kinematic loop) configuration.
 
 Sec.~\ref{sec:HighLevelPlanningDualArm} presents our approach to solve high-level planning for grasping an object and passing it from one hand to another. This work constitutes the theoretical foundation for the high-level planning needed to perform the Task 5.3.
 
-In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based on direct trajectory optimization that does not require a-priori specification of the contact sequence and presents the benefits of providing dynamically consistent plans, from the outset, and allowing for opportunistic exploitation of environmental constraints. 
+In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based on direct trajectory optimization that does not require a-priori specification of the contact sequence and presents the benefits of providing dynamically consistent plans, from the outset, and allowing for opportunistic exploitation of environmental constraints.
 
 %TODO add reference and intro to section sec:ObjectGraspingDataset [Federico]
 
@@ -192,7 +192,23 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 
 \section{Annexes}
 
-Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed.
+\begin{enumerate}
+
+\input{./inputFilesAnnexes/GraspingWithSoftHands_Annexes.tex}
+
+\input{./inputFilesAnnexes/GraspPlanningBoundingBoxes_Annexes.tex}
+
+\input{./inputFilesAnnexes/GraspingNovelObjects_Annexes.tex}
+
+\input{./inputFilesAnnexes/GraspingUnderUncertainty_Annexes.tex}
+
+\input{./inputFilesAnnexes/SampleBasedMotionPlanningSoftRobots_Annexes.tex}
+
+\input{./inputFilesAnnexes/HighLevelPlanningDualArm_Annexes.tex}
+
+\input{./inputFilesAnnexes/ComputationalFramework_Annexes.tex}
+
+\end{enumerate}
 
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR42}

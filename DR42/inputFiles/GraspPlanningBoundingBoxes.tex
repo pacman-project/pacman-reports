@@ -1,5 +1,17 @@
 %%% Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object
 %%% Decomposition
 
-\subsubsection{Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object Decomposition} 
-\label{sec:GraspPlanningBoundingBoxes} 
+\subsubsection{Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object Decomposition}
+\label{sec:GraspPlanningBoundingBoxes}
+
+In this section, we summarize the work performed to sharpen the approach of grasp planning and grasp acquisition for adaptive and compliant hands, such as the Pisa/IIT SoftHand. The ability we try to embed in our grasp planner is that of selecting a successful grasp without the need of identifying \emph{a priori} an object, but only based on its composition of shape primitives with known associated grasps, i.e. resorting to \emph{part-based grasps}.
+
+To this sake, we follow a mid-level solution, according to a purely top-down strategy, based on the Minimum Volume Bounding Box (MVBB) \emph{fit-and-split} algorithm to object decomposition that was originally proposed in~\cite{Huebner:ICRA:2008}. The method consists of iteratively building MVBBs of points resulting from splitting the point cloud of the object. The split procedure is performed in such a way that the sum of the two areas (proper box projections) resulting from the convex region of each set of points is minimized.
+
+We propose an improved version of the MVBB algorithm for object decomposition in~\cite{Huebner:ICRA:2008}, as it presents the following properties: (i) it is very efficient and can accomodate scattered 3D points delivered by arbitrary 3D sensors; (ii) the outcome constellation of boxes is quite insensitive to noise. However, with respect to~\cite{Huebner:IROS:2008} and~\cite{Geidenstam:RSS:2009}, where 2D grasp hypotheses are made and evaluated on point projections onto box faces and assume, from the outset, the use of rigid and fully-actuated robotic hands or grippers, in our work we propose a shift of prospective in the creation of grasp hypotheses as we employ a compliant and adaptive hand, the Pisa/IIT SoftHand. We affirm that this contribution represents an advancement with respect to the state of the art.
+
+With a reduced burden to plan detailed finger placements, the box set representation of an object, also ease the mapping of complex actions to box and/or box distribution properties. For example, as also mentioned in~\cite{Huebner:IROS:2008}, in order to \emph{pick-up} an object and place it somewhere, it may intuitively be a good option to grasp the \emph{largest box}. Instead, in order to show the same object to a camera to gather more views, it may be preferable to grasp the object from the \emph{outermost box}, or from a box that allows a pincher grasp, so to minimize occlusions caused by hand parts.
+
+Considering the adaptability of soft hands, we present a strategy to propose grasp postures to grasp a subset of the PaCMan kitchenware object database previously decomposed into MVBBs. The performances of the method are compared with those presented in~\cite{Bonilla:Humanoids:2015} and, through simulations performed with the MBS software ADAMS\texttrademark~\cite{ADAMS:ONLINE}, we show that with the strategy presented in this paper we increase the successful rate of grasps for the same objects.
+
+More details on this new approach and on the achieved results can be found in the attached paper~\cite{Bonilla:IROS:2015} available at this~\href{./attachedPapers/GraspPlanningBoundingBoxes.pdf}{link}. 
