@@ -3,9 +3,9 @@
 \subsubsection{Learning the haptic characteristics of objects by exploration in-hand}
 \label{sec:ControlAlgorithms}
 
-Without loosing generality, this report used fixture device as the supporting hand, and a 7 DOF robot as the exploratory finger. It is worth mentioning that a strategy for concurrent stable object grasping was demonstrated in DR5.1, and assumed to be given for the work presented here.
+This report used a fixture device as the supporting hand, and a 7 DOF robot as the exploratory finger. It is worth mentioning that a strategy for concurrent stable object grasping was demonstrated in DR5.1, and assumed to be given for the work presented here, and here we refer to the haptic exploration strategies only.
 
-\paragraph{(a) Definition of control strategies for concurrent stable object grasping and object surface tracing for haptic exploration:}
+\paragraph{(a) Definition of control strategies for concurrent stable object grasping and object surface tracing for haptic exploration}
 
 An Arimoto-PD regulator provides the required torques to track a reference position. The position control law is
 \begin{equation}
@@ -27,7 +27,7 @@ A PID force controller is required to ensure contact during motion. The force co
 \end{equation}
 where $J$ is the robot Jacobian matrix, $\bm{e_n} = (f_d - f_n)\bm{n_c}$ is the normal force error, $\bm{\tau_{e_n}} = J^T(\bm{q})\bm{e_n}$ is the normal force error in terms of joints torques, $\bm{v_d}$ the desired twist of the end effector, and $\bm{\dot{q}_d} = J^+\bm{v_d}$ the desired rate of angular joints.
 
-Since the motion and force directions are orthogonal as seen in Fig.~\ref{fig:finger_surface}, we can decouple the actions and sum up the contribution of each controller to form a hybrid force/position controller.
+Note that the position and force are to be controlled on the tangent plane and in the direction normal to it, hence due to their orthogonality, we can decouple the actions and sum up the contribution of each controller to form a hybrid force/position controller.
 
 The strategy to slide a finger over a surface consist in assigning a reference velocity on the tangent plane at the contact point, of the same contact point. Let $C$ be the contact point and $\left\lbrace T \right\rbrace$ the frame with $C$ as origin, such that the $y$-$z$ directions form the local tangent plane and the $x$ direction is normal to the fingertip surface and pointing outwards, the desired twist of the fingertip with respect to $C$ written in $\left\lbrace T \right\rbrace$ is
 \begin{equation}
@@ -41,7 +41,7 @@ The strategy to slide a finger over a surface consist in assigning a reference v
         0
     \end{matrix}\right),
 \end{equation}
-where $v_{dy}$ and $v_{dz}$ are scalar components of the desired velocity in the local tangent plane, and $\sqrt{{v_{dy}}^2+{v_{dx}}^2}$ the norm of the assigned velocity.
+where $v_{dy}$ and $v_{dz}$ are scalar components of the desired velocity in the local tangent plane, and $\sqrt{{v_{dy}}^2+{v_{dx}}^2}$ the norm of the assigned velocity. This is called the sliding primitive.
 
 The desired twist of the fingertip center point, $P$, written in the end-effector frame $\left\lbrace E \right\rbrace$ is
 \begin{equation}
@@ -66,7 +66,7 @@ The Jacobian relative to the fingertip center is used to obtain the desired join
     \bm{\dot{q}_d}=J(\bm{q})\bm{^Ev_P}
 \end{equation}
 
-The position controller receives as a set-point the joint angles updated as
+The set-point of the position controller is the updated joint angles
 \begin{equation}
     \bm{q_d}=\bm{\dot{q}_d}\Delta_T+\bm{q},
 \label{anglejointsreference}
@@ -202,7 +202,7 @@ where $\Delta_T$ is the control period.
 
 \paragraph{(b) Definition of control strategies for concurrent stable object grasping and rolling manipulation to acquire second-order object surface properties}
 
-Based on the previous control framework, rolling over a surface is achieved by changing reference velocity of the contact point for a pure revolution about an axis laying on the tangent plane and passing through the contact point. Similar to the previous section, the desired twist of the contact point $C$ written with respect to $\left\lbrace T \right\rbrace$ is
+Based on the previous control framework, rolling over a surface is achieved by defining a reference velocity of the contact point for a pure revolution about an axis laying on the tangent plane and passing through the contact point. Similar to the previous section, the desired twist of the contact point $C$ written with respect to $\left\lbrace T \right\rbrace$ is
 \begin{equation}
     \bm{^Tv_C}=\left(
     \begin{array}{c}
@@ -214,11 +214,11 @@ Based on the previous control framework, rolling over a surface is achieved by c
         \omega_{dz}\\
     \end{array}\right),
 \end{equation}
-where $\omega_{dy}$ and $\omega_{dz}$ are the scalar components of the desired rolling velocity, and $\sqrt{{\omega_{dy}}^2+{\omega_{dx}}^2}$ is the norm of the assigned velocity.
+where $\omega_{dy}$ and $\omega_{dz}$ are the scalar components of the desired rolling velocity, and $\sqrt{{\omega_{dy}}^2+{\omega_{dx}}^2}$ is the norm of the assigned velocity. This is called the rolling primitve.
 
-The desired twist of the fingertip center and the desired joint angle rates rate of joint angles are obtained as above.
+The desired twist of the fingertip center and the desired joint angle rates rate of joint angles are obtained as in the previous paragraph.
 
-To estimate the curvature (a second-order property) of the unknown surface, it's possible to use the Montata's equations for two object in pure rolling contact, namely
+To estimate the curvature of the unknown surface, which is a second-order property, it is possible to use Montata's equations for two object in pure rolling contact, namely
 \begin{equation}
 M_f \dot{\alpha}_f=(K_f+\tilde{K}_0)^{-1}
 \left[
@@ -229,7 +229,7 @@ M_f \dot{\alpha}_f=(K_f+\tilde{K}_0)^{-1}
 \right],
 \label{eq:montana}
 \end{equation}
-where $\dot{\alpha}_f$ is the velocity of the contact point in the local surface chart [measured], $M_f$ is the metric form of the fingertip surface [known], $K_f$ is the curvature form of the fingertip surface [known], $\omega_x$ and $\omega_y$] are the rolling component of the relative angular velocity of the Gauss frame [measured], and $\tilde{K}_0$ is the curvature form of the object surface [to be estimated].
+where $\dot{\alpha}_f$ is the velocity of the contact point in the local surface chart (measured), $M_f$ is the metric form of the fingertip surface (known), $K_f$ is the curvature form of the fingertip surface (known), $\omega_x$ and $\omega_y$] are the rolling component of the relative angular velocity of the Gauss frame (measured), and $\tilde{K}_0$ is the curvature form of the object surface (estimated).
 
 For a finite rolling motion, it is possible to approximate (\ref{eq:montana}) with
 \begin{equation}
@@ -347,24 +347,25 @@ obtain the principal curvature directions given by $\psi$, and principal curvatu
 
 % with $\bar{\bm{W}} \in R^{4N \times 10}$ and $\bar{\bm{y}} \in R^{4N}$
 
-\paragraph{(c) Definition of strategies for frictional coefficient estimation:}
-Using the strategy described in (a), one can compensate for the tangential force generated due to the frictional property of the object. The tangential force can be extract from the measured contact force as
+\paragraph{(c) Definition of strategies for frictional coefficient estimation}
+Using the strategy described in paragraph (a), one can compensate for the tangential force generated due to the frictional property of the object. The tangential force can be extracted from the measured contact force as
 \begin{equation}
-    f_t = (I-n_cv^T_c)f_c,
+    \mathbf{f}_t = (I-\mathbf{n}_{c}\mathbf{n}^T_{c})\mathbf{f}_c,
 \end{equation}
 and the dynamic friction coefficient at the contact point can be readily obtained as
 \begin{equation}
-    \mu_{d} = \lVert{f_t}\rVert/\lVert{f_n}\rVert.
+    \mu_{d} = \lVert{\mathbf{f}_{t}}\rVert/\lVert{\mathbf{f}_{n}}\rVert.
 \end{equation}
 
-Using a look-up table strategy, and knowing the fingertip material, one can query a coefficient table with the pair material-dynamic coefficient and obtain the static as a well as the object material.
+Knowing the fingertip material and using a usal look-up table fo friction coefficients, one can query by the pair material-dynamic coefficient, and thus obtain the static coefficient, as a well as the object material.
 
 Finally, the compensation will be achieved by adding the term
 \begin{equation}
-    \boldsymbol{\tau}_f=-J^T \mathbf{f}_t.
+    \boldsymbol{\tau}_f=-J^T \mathbf{f}_t,
 \end{equation}
+to the force controller.
 
-\paragraph{(d) Testing in simulation:}
+\paragraph{(d) Testing in simulation}
 The simulation framework is heavily based on Adams MSC\copyright, a software for multi-body dynamic simulation and collision management. It uses several contact models based on a penalty formulation on the inter-penetration between meshes. The geometry engine is responsible for detecting contact between two geometries, locating the points of contact, and calculating the common normal at the contact points. Once the contact kinematics are known, contact forces, which are a function of the contact kinematics, are applied to the intersecting bodies. The model adopted is a Hertzian model, named \emph{Impact} by Adams (see Fig.~\ref{fig:contactedmesh}).
 
 Another feature is the capability to export a Simulink block representing the articulated model with inputs (e.g. joint torques) and outputs (e.g. joint angles, contact wrench). Matlab and Simulink were used to implement the control laws and to manage the results.
@@ -375,7 +376,7 @@ Thus, a planar finger with three angular joints was modeled using the parameters
 \centering
 \begin{tabular}{cccccccc}
     \toprule
-    joint & $\theta$ & $d$ [m] & $a$ [m] & $\alpha$ & Mass [Kg] & $I_{zz}$ [Kgm] & CoG [m]\\
+    \textbf{joint} & $\theta$ & $d$ [m] & $a$ [m] & $\alpha$ & \textbf{Mass [Kg]} & $I_{zz}$ [Kgm] & \textbf{CoG [m]}\\
     \toprule
     1 & $q_1$ & $0$ & $0.05$ & 0 & $0.02$ & $5e^{-6}$ & $(0, -0.0250, 0)^{T}$\\
     \midrule
@@ -442,32 +443,35 @@ Fig.~\ref{fig:NormCompContForce} shows the track of the normal component of the 
 \label{fig:TangCompForce}
 \end{figure}
 
-The tests were taken to a real scenario shown in Fig.~\ref{fig:objects}, where the KUKA LWR was equipped with an ATI Nano 17 force torque sensor. The estimated principal curvatures are summarized in Table~\ref{tab:results}. Note that the sphere is a basketball, whose official radius is 11,92-12,07cm, as well as the large values for the plane and one of the pricnipal curvatures on the cylinder.
+The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where the KUKA LWR was equipped with an ATI Nano 17 force torque sensor. The estimated principal curvatures are summarized in Table~\ref{tab:results}. Note that the sphere is a basketball, whose official radius is 11,92-12,07cm, as well as the large values for the plane and one of the pricnipal curvatures on the cylinder.
 
 \begin{table}
 \centering
 \caption{Experimental Results}
 \label{tab:results}
 \begin{tabular}{ccccc}
-    \hline\hline
-    Object / & \multicolumn{2}{c}{Real Princ. Radii} & \multicolumn{2}{c}{Measured Princ. Radii}\\
-    Direction& x (m) & y (m) & x (m) & y (m)\\
-    \hline
+    \toprule
+    & \multicolumn{4}{c}{\textbf{Princial Radii}}\\
+    \textbf{Object} & \multicolumn{2}{c}{\textbf{Real}} & \multicolumn{2}{c}{\textbf{Estimated}}\\
+    \textbf{Direction} & $z$ [m] & $y$ [m] & $z$ [m] & $y$ [m]\\
+    \toprule
     Plane & $\infty$ & $\infty$ & 333 & 500 \\
     Cylinder & $\infty$ & .90 & 500 & .088 \\
-    Sphere & .1207 & .1207 & 0.121 & 0.127
+    Sphere & .1207 & .1207 & 0.121 & 0.127 \\
+    \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{figure}[!h]
     \centering
-    \label{fig:objects}
+    \label{fig:curvature}
     \mbox{
-    \includegraphics[width=.3\linewidth]{plane}
-    \includegraphics[width=.3\linewidth]{cylinder}
-    \includegraphics[width=.3\linewidth]{basketball}
+    \includegraphics[width=.33\linewidth]{plane}
+    \includegraphics[width=.33\linewidth]{cylinder}
+    \includegraphics[width=.33\linewidth]{basketball}
     }
     \caption{Test objects for curvature estimation test on a plane (left), a cylinder (middle), and a sphere (right).}
+    \vspace{9pt}
 \end{figure}
 
 
@@ -477,40 +481,36 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:objects}, where t
 
 \begin{figure}[!b]
   \begin{center}
-    \includegraphics[width=0.7\linewidth]{sliding}
+    \includegraphics[width=1.0\linewidth]{sliding}
   \end{center}
-  \caption{The shape is acquired by an RGBD sensor and the friction coefficients by the intrinsic tactile sensor, both shape~$f(\mathbf{x})$ and friction~$m(\mathbf{x})$ functions are represented as a Gaussian process $\mathcal{GP}(0,k(\cdot))$. The exploration follows geodesic flows~$\gamma_i$ on the surface of a fixed object using a compliant behavior.}
+  \caption{The shape is acquired by an RGBD sensor and the friction coefficients by the intrinsic tactile sensor, both shape~$f(\mathbf{x})$ and friction~$m(\mathbf{x})$ functions are represented as a Gaussian Process $\mathcal{GP}(0,k(\cdot))$. The exploration follows geodesic flows~$\gamma_i$ on the surface of a fixed object using a compliant behavior.}
   \label{fig:schema}
 \end{figure}
 
-The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both, shape and fiction coefficient, and it was successfully exploited to generate exploration trajectories on object surface with arbitrary shapes as illustrated in Fig.~\ref{fig:geodesic_examples}. The normal contact force was used to discriminate the contact states from the non-contact state. In Fig.~\ref{fig:data2}, the results from the box sliding operation are summarized.
+The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection. Only sliding controller was used since the friction coefficient is simpler to retrive using that primitive. More details on the methodology can be found in the attached paper~\cite{Active2014Rosales} available at~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{this link}.
 
-More details on the whole methodology can be found in the attached paper~\cite{Active2014Rosales} available at this~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{link}.
+% \begin{figure}[th]
+%     \centering
+%     \mbox{
+%         \includegraphics[height=0.4\linewidth]{box.png}
+%         \includegraphics[height=0.4\linewidth]{box1.png}
+%         }
+%     \mbox{
+%         \includegraphics[height=0.4\linewidth]{teddy.png}
+%         \includegraphics[height=0.4\linewidth]{teddy2.png}
+%         }
 
+%     \caption{Geodesic flows on object surfaces captured by an RGBD sensor. The color of the flow goes from red, i.e. the initial contact point, to green, i.e. the final position, according to the predefined length of the curve. The box has flat surfaces, hence geodesics are straight lines (top). The teddy bear has a very irregular shape, but still geodesic flows are found (bottom).}
+%     \label{fig:geodesic_examples}
+%     \vspace{-0.02\linewidth}
+% \end{figure}
 
-
-\begin{figure}[th]
-    \centering
-    \mbox{
-        \includegraphics[height=0.4\linewidth]{box.png}
-        \includegraphics[height=0.4\linewidth]{box1.png}
-        }
-    \mbox{
-        \includegraphics[height=0.4\linewidth]{teddy.png}
-        \includegraphics[height=0.4\linewidth]{teddy2.png}
-        }
-
-    \caption{Geodesic flows on object surfaces captured by an RGBD sensor. The color of the flow goes from red, i.e. the initial contact point, to green, i.e. the final position, according to the predefined length of the curve. The box has flat surfaces, hence geodesics are straight lines (top). The teddy bear has a very irregular shape, but still geodesic flows are found (bottom).}
-    \label{fig:geodesic_examples}
-    \vspace{-0.02\linewidth}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \mbox{
-        \includegraphics[width=0.45\linewidth]{FZBOX.png}
-        \includegraphics[width=0.45\linewidth]{MuBOX.png}
-        }
-    \caption{Relevant data recorded during a haptic exploration. Force along $\mathbf{z}_{\text{c}}$ used to detect the contact and non-contact states (top). Friction coefficient $\mu$, the red line marks the mean value during the contact state (bottom). Material: Paperboard.}
-    \label{fig:data2}
-\end{figure} 
+% \begin{figure}
+%   \centering
+%   \mbox{
+%         \includegraphics[width=0.45\linewidth]{FZBOX.png}
+%         \includegraphics[width=0.45\linewidth]{MuBOX.png}
+%         }
+%     \caption{Relevant data recorded during a haptic exploration. Force along $\mathbf{z}_{\text{c}}$ used to detect the contact and non-contact states (top). Friction coefficient $\mu$, the red line marks the mean value during the contact state (bottom). Material: Paperboard.}
+%     \label{fig:data2}
+% \end{figure} 

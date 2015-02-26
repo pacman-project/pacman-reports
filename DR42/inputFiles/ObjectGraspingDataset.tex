@@ -48,19 +48,54 @@ In Figure~\ref{fig:grasp:star} pictures of the stars attached to the object and 
   \label{fig:grasp:star}
 \end{figure}
 
-The Pisa/IIT SoftHand was dressed with a special glove, called Flexi Force Glove, equipped with sensors that measure the angular displacements of SoftHand fingers.
-These readings give a measure of finger bending and consequently joint angle values are estimated to be one third of the finger bending. This is a good approximation considering 
-the SoftHand synergies. Figure~\ref{fig:grasp:hand_glove} shows the SoftHand with and without the glove.
-\begin{figure}[tb!]
+The Pisa/IIT SoftHand was dressed with a special glove, called Flexi Force Glove, also designed at the University of Pisa.
+Glove readings give a measure of finger bending and consequently joint angle values are estimated to be one third of the finger bending. This is a good approximation considering 
+the SoftHand synergies and the type of application. Figure~\ref{fig:grasp:hand_glove} shows the SoftHand with and without the glove.
+\begin{figure}[tbh!]
   \centering
-  \includegraphics[width=0.95\textwidth]{hand_glove}
+  \includegraphics[width=0.95\textwidth]{GRP_hand_glove}
   \caption{The Pisa/IIT SoftHand without the FlexiForce Glove (left) and another one with it (right). Note the sensors alongside the hand fingers that measure the angular displacements.}
   \label{fig:grasp:hand_glove}
 \end{figure}
+
+Additionally, to ease the operator in manoeuvring the SoftHand a special support handle was created and used. This device can be attached to the operator's arm so that he can efficiently move and operate the SoftHand, similarly as he would with his own hand.
+The handle has a lever to open and close the SoftHand with ease, a photograph of this device is visible in Figure~\ref{fig:grasp:handle}.
+\begin{figure}[b!]
+  \centering
+  \includegraphics[width=0.95\textwidth]{GRP_handle}
+  \caption{The handle for SoftHand without (left) and with (right) the operator's arm. The lever to close the hand is located where the operator's hand should rest.}
+  \label{fig:grasp:handle}
+\end{figure}
+
+Finally the Asus Xtion Pro Live RGB-D sensor was used to record point clouds and images of the scene while the grasp was recorded. This not only provides the user with more visual feedback, but it also gives more data that
+could be post processed to analyze the grasp in a perceptual sense.
 \paragraph{(b) Software setup used during dataset recording:}
 %1mention we used ROS to sync various hardware
-%2talk about calibration steps
+%2talk about calibration steps, and pose estimation paper
 %3link and mention github repository where the software is stored
+The software employed was developed under the Robot Operating System (ROS) framework. ROS is an open-source set of software and tools widely used in robotics community,
+that provides structured communications between heterogeneous hardware designed for robotics application in general.
+For our scenario we needed a common platform to communicate with all the various hardware we used and record meaningful data.
+The software is available at \href{https://github.com/CentroEPiaggio/unipi-grasp-datasets/tree/master/scenario1}{our GitHub repository} along with a description of the various packages used and the procedure to replicate the grasp
+recordings and playing them back. %put url in bib and url pacman project url
+As a brief summary the software employs a communication framework like in Figure.~\ref{fig:grasp:software}, %add pic from tf or draw one
+where all devices are configured and calibrated together. 
+Calibration steps for the experiment are also described in detail on the project website %bib link
+and covers:
+\begin{itemize}
+  \item Calibration between PhaseSpace system and Asus Xtion.
+  \item Calibration between first star and SoftHand.
+  \item Calibration between second star and the object to be grasped.
+\end{itemize}
+
+The first one has to performed just once at the initial setup phase of the experiment, the second was done by means of geometric transformations: knowing the SoftHand and star cad models and where the latter was fixed on the hand.
+The last calibration instead is more involving, since it has to be performed every time a new object is selected for grasping. This calibration is performed by knowing the pose of the second star with respect to the PhaseSpace and the
+pose of the object with respect to the Asus camera, now since the two systems are calibrated with each other (from first calibration), the pose of the object with respect to the star is obtained by concatenating known transformations.
+The last calibration remains valid until another object is selected or the star is moved.
+To obtain the pose of the object with respect to the camera we created a procedure to achieve pose estimation with rgb-d vision.
+%brief description of the procedure
+
+
 \paragraph{(c) Data collection and description:}
 %explain exactly what is recorded and bagfiles
 %data format: msgs, tfs, pointclouds
