@@ -1,0 +1,23 @@
+%%% Grasping Novel Objects
+
+\item
+\begin{list}{\quad}{}
+\item \textbf{Paper title}: One shot learning and generation of dexterous grasps for novel objects
+\item \textbf{Paper authors}: M. Kopicki, M. Adjible, R. Stolkin, A. Leonardis, R. Detry, J.L. Wyatt
+\item\textbf{Publication info}: under review
+\item\textbf{Abstract}: 
+This paper presents a method for one-shot learning of dexterous grasps, and grasp generation for novel objects. A model
+of each grasp type is learned from a single kinesthetic demonstration, and several types are taught. These models are used
+to select and generate grasps for unfamiliar objects. Both the learning and generation stages use an incomplete point cloud
+from a depth camera – no prior model of object shape is used. The learned model is a product of experts, in which experts
+are of two types. The first is a contact model and is a density over the pose of a single hand link relative to the local object
+surface. The second is the hand configuration model and is a density over the whole hand configuration. Grasp generation
+for an unfamiliar object optimises the product of these two model types, generating thousands of grasp candidates in under
+30 seconds. The method is robust to incomplete data at both training and testing stages. When several grasp types are
+considered the method selects the highest likelihood grasp across all the types. In an experiment, the training set consisted
+of five different grasps, and the test set of forty-five previously unseen objects. The success rate of the first choice grasp is
+84.4\% or 77.7\% if seven views or a single view of the test object are taken, respectively.
+
+
+\item \textbf{Relation with the deliverable}: A new method is proposed for learning grasps and generalize them to novel objects.
+\end{list}
