@@ -42,11 +42,11 @@
 
 \title{Control algorithms for haptic object exploration}
 \deliverableid{DR 3.1}
-\author{C. Rosales, M. Bonilla, G. Santaera, E. Luberto, M. Gabiccini}
+\author{C. Rosales, M. Bonilla, G. Santaera, E. Luberto, M. Gabiccini, Jeremy L. Wyatt}
 \address{Centro di Ricerca ``E. Piaggio'', Universit\`{a} di Pisa}
 \email{carlos.rosales@for.unipi.it}
 \headertitle{Haptic exploration}
-\headerauthor{C. Rosales, G. Santaera, E. Luberto, M. Gabiccini}
+\headerauthor{C. Rosales, G. Santaera, E. Luberto, M. Gabiccini, J. L. Wyatt}
 
 \duedate{2015-02-28}
 \submissiondate{2014-02-28}
@@ -105,13 +105,64 @@ This report must show the results of Task 3.1. Particularly, it should describe 
 
 \subsubsection{Task 3.1}
 
-We can proudly say that Task 3.1 has been accomplished, and Sec.~\ref{sec:ControlAlgorithms} summarizes the results following the planned activities step by step.
+We can proudly say that Task 3.1 has been accomplished. The results for the planned activites are summarized in the following paragraphs. It must be said that a fixture device is used as the supporting hand, and a 7 DOF robot is used as the exploratory finger, since an strategy for concurrent stable object grasping was demonstrated in DR5.1, and assumed to be given for the development.
 
-%Sec.~\ref{sec:Simulation} describes the simulation environment that will be used to test the results of Tasks~3.1 and~3.2. The reason behind implementing another simulation environment different from the one presented in Sec.~\ref{sec:ControlAlgorithms} is the integration with vision and to the expected results from Task~3.2, which was acknowledge after obtaining the results of Task~3.1.
+% To be prepared by: Carlos
+% Learning the haptic characteristics of objects by exploration in-hand
+\input{./inputFiles/LearningHapticCharacteristicsObjectsExplorationInHand.tex}
 
-The fact that the object shape uncertainty is reduced by making contact with the object, combined with the adaptability of the Pisa/IIT SoftHand to any object shape, influenced the idea of using the hand as sophisticated exploratory probe. Sec.~\ref{sec:IMUGlove} and~\ref{sec:SenseOfTouch} provide glove-inspired solutions to read the hand configuration as well as the contact information to estimate accurately the object shape as the result of object grasping action. We believe that the proposed solution will be of great help in situations where only partial visual information is available, as challenged in Task 3.2. Thus, we dedicated efforts to continue on this research as it seems beneficial to accomplish the project goals with an alternative methodology.
+\subsubsection{Task 3.2}
 
-\subsection{Task 3.3}
+Previous work on object detection assisted by touch comprise typically fully actuated hands, such as the work presented in~\cite{Bimbo2013Combining}. To this end, the initial estimate provided by the visual input must be of high accuracy in order to place precisely the finger areas covered with tactile arrays. This implies solving the object recognition problem as well. In a extreme case, where no visual input is available, the remarkable work by~\cite{Petrovskaya2011Global} propose a Bayesian approach termed Scaling Series, however, the testbed was a robot arm equipped with a single force/torque sensor which allow to compute with high accuracy the contact point w.r.t. to the robot base. The inconvenient of such setup the probing. As said in the paper, each probe took approximately $10$s, and in the meantime, the algorithm, which is not light, was allowed to do computations. 
+
+Thus, the fact that the object shape and localization uncertainty is reduced by making contact, combined with the adaptability of the Pisa/IIT SoftHand to any object shape, influenced the idea of using the hand as sophisticated exploratory probe w.r.t. previous testbeds. Thus, we proposed a glove-inspired solution to read the hand configuration, as well as the contact information in future work, to estimate the object shape as the result of a grasping action. 
+
+We strongly believe that the proposed solution will be of great help in situations where partial or none visual information is available, as challenged in Task 3.2. Thus, we dedicated efforts to continue on this research as it seems beneficial to accomplish the project goals with an alternative methodology than the initially proposed. The following two paragraphs show the preliminary and on-going positive results on this topic, respectively.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Marco Gabiccini
+% Low-cost, Fast and Accurate Reconstruction of Robotic and Human Postures
+% via IMU Measurements
+\input{./inputFiles/ReconstructionPosturesImuMeasurements.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Gaspare and Emanuele
+% Endowing the Pisa/IIT SoftHand with the sense of touch
+%\input{./inputFiles/SoftHandWithSenseOfTouch.tex}
+\paragraph{Endowing the Pisa/IIT SoftHand with the sense of touch}
+
+We succesfully extended the proposed solution above to the case of the five-finger Pisa/IIT SoftHand. We validated the approach by visual inspection as shown in Fig.~\ref{fig:hand_reconstruction_1}. Additional, we suggest watching the video sequences for static \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{static} and a \href{https://www.youtube.com/watch?v=bceOXa990-Q}{dynamic} configurations\footnotetext{External links are readily identified in the PDF and might not be visible in a black\&white hardcopy, plesae, click on the PDF to go to the online site.}.
+
+\begin{figure}
+\centering
+\mbox{
+\includegraphics[width=0.33\linewidth]{Hand_Movement_1.png}
+\includegraphics[width=0.33\linewidth]{Hand_Movement_2.png}
+\includegraphics[width=0.33\linewidth]{Hand_Movement_3.png}
+}
+\caption{Hand posture reconstruction examples}
+\label{fig:hand_reconstruction_1}
+\end{figure}
+
+We used a naive recognizer to test the proposed solution, and we were able to discriminate similar cups in shape but in different sizes as shown in Fig. \ref{fig:Object_1}. For more in-sight on the recognition examples, we suggest to see videos by clicking on \href{https://www.youtube.com/watch?v=d_WPQ3WmHRg}{Object 1}, \href{https://www.youtube.com/watch?v=PG38VObdl6o}{Object 2}, \href{https://www.youtube.com/watch?v=bIYhLXm90hc}{Object $3_a$}, \href{https://www.youtube.com/watch?v=IXVlBAoGKho}{Object $3_b$}, \href{https://www.youtube.com/watch?v=Efmm6-JHcxU}{Object $4_a$}, \href{https://www.youtube.com/watch?v=NZElSV_AnJ4}{Object $4_b$}, \href{https://www.youtube.com/watch?v=mDDb5oTaHzM}{Object $5_a$} and \href{https://www.youtube.com/watch?v=sLzU39zffFY}{Object $5_b$}. For more details on the implementation, refer to Sec.~\ref{sec:imuSoftHand}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\linewidth]{Object_1.png}
+\includegraphics[width=0.8\linewidth]{Object_3.png}
+\includegraphics[width=0.8\linewidth]{Object_5.png}
+\caption{Object recognition examples using the same cup of different sizes.}
+\label{fig:Object_1}
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Task 3.3}
 
 Concerning Task 3.3, we must say the the work on grasping of novel objects in WP4 progressed much faster than expected. The active gaze approach taken has thus been informed by this progress. Specifically the fact that experiments in our IJRR submission for WP4 has shown us that grasp failure is typically driven by the incompleteness of the point cloud near to suggested grasp points and along the final grasp trajectory. In addition, tests with differing numbers of views of the test object prior to grasping showed that the more views one has from an object, the greater the probability of grasping success for this object. In addition, we have used a wrist mounted depth camera for the active gaze method. We are extending the reward-based method from~\cite{nunez2013models} to the case of incomplete point clouds. We require a measure of the proportion of the total possible coverage given by the incomplete object model. To this end, we are currently investigating the use of an octree representation, called octomap~\cite{hornung13auro}, for online object modelling and sensor data fusion. The octomap of a given object allows the representation of occupied (known voxels belonging to a segmented object), free (voxels that do not belong to an object), and unknown areas of the scene, which might belong to the object if they are near known and occupied voxels. We are now implementing a method to estimate the safety of a grasp trajectory given this octomap. We are also testing different measures of the coverage of the object pertinent to a candidate grasp given the point cloud and the octomap representations.
 
@@ -125,33 +176,6 @@ Relevant work on grasping under incomplete information is that by Bohg and Kragi
 % How are the obtained results related to the state-of-the-art?
 % This part is usually discussed in the corresponding subsection. Therefore, % a global 'Relation to the state-of-the-art' is unnecessary
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Work directly into the following .tex files
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% To be prepared by: Carlos
-% Learning the haptic characteristics of objects by exploration in-hand
-\input{./inputFiles/LearningHapticCharacteristicsObjectsExplorationInHand.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% To be prepared by: Marco Gabiccini
-% Low-cost, Fast and Accurate Reconstruction of Robotic and Human Postures
-% via IMU Measurements
-\input{./inputFiles/ReconstructionPosturesImuMeasurements.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% To be prepared by: Gaspare and Emanuele
-% Endowing the Pisa/IIT SoftHand with the sense of touch
-\input{./inputFiles/SoftHandWithSenseOfTouch.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % To be prepared by: Jeremy Wyatt
 % Active Gaze
 % \input{./inputFiles/ActiveGaze.tex}
@@ -159,13 +183,44 @@ Relevant work on grasping under incomplete information is that by Bohg and Kragi
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR31}
 
+\newpage
+\appendix
 \section{Annexes}
 \label{sec:annex}
 
 % Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed.
 
+\subsection{Article: Active Gathering of Frictional Properties from Objects} \label{sec:slidingPointClouds}
+\begin{description}
+	\item[Authors] Carlos Rosales, Arash Ajoudani, Marco Gabiccini, and Antonio Bicchi
+	\item[Info] Published, see~\cite{Rosales2014Active}.
+	\item[Abstract] This work proposes a representation that comprises both shape and friction, as well as the exploration strategy to gather them from an object. The representation is developed under a common probabilistic framework, particularly it uses a Gaussian Process to approximate the distribution of the friction coefficient over the surface, also represented as a Gaussian Process. The surface model is exploited to compute straight lines (geodesic flows) that guide the exploration. The exploration follows these flows by employing an impedance
+controller in pursuance of safety, shape accommodation and contact enforcement, while measuring the necessary data to estimate the friction coefficient. The exploratory probes consist of an RGBD camera and an Intrinsic Tactile sensor (ITs) mounted on a robotic arm. Experimental results give evidence for the effectiveness of the algorithm in the friction coefficient gathering and enrichment of the object representation.
+	\item[Relation with the deliverable] The article succesfully integrate vision with the developed controller for the sliding primitve to refine the object shape and estimate the friction coefficient (static and dynamic), and concludes Task 3.1.
+	\item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}
 
+\subsection{Article: Low-cost, Fast and Accurate Reconstruction of Robotic and Human Postures via IMU Measurements} \label{sec:imu2Fingers}
+\begin{description}
+	\item[Authors] Gaspare Santaera, Emanuele Luberto, Alessandro Serio, Marco Gabiccini, and Antonio Bicchi.
+	\item[Info] Accepted for publication in Proc. of the 2015 IEEE Int. Conf. on Robotics and Automation
+	\item[Abstract] In this paper, we present a method to reconstruct the configurations of kinematic trees of rigid bodies not using
+measurements of relative angles (such as, e.g. rotary encoders at joints) but absolute posture sensors (such as IMUs) along with suitable filter algorithms. We argue that the relatively larger inaccuracies shown by absolute sensors can be compensated by suitable processing, such as a passive complementary filters exploiting the Mahony-Hamel formulation. The proposed method is applicable to  systems where measurements of relative angles is not feasible or convenient, or where the joint kinematics are not lower pairs: for example, human body parts or soft robotic devices. In the paper, we make explicit reference to the reconstruction of posture of the compliant, underactuated Pisa/IIT SoftHand. Quantitative comparisons with ground truth data in grasping tests are used to validate the proposed method. The resulting hardware design is mechanically robust, cheap and can be easily adapted to robotic hands with different structures, as well as to sensorizing gloves for studying human grasping strategies.
+	\item[Relation with the deliverable] The proposed solution in this article is the preliminary result for the next annex.
+	\item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/ReconstructionPosturesImuMeasurements.pdf}
 
+\subsection{Technical report: Endowing the Pisa/IIT SoftHand with the sense of touch} \label{sec:imuSoftHand}
+\begin{description}
+	\item[Authors] Gaspare Santaera, Emanuele Luberto, Marco Gabiccini, and Antonio Bicchi.
+	\item[Info] Internal report, in preparation for submission to a conference.
+	\item[Abstract] A modified version of the Mahony-Hamel passive complementary filter is used to obtain the orientation of a frame $\{ A \}$ with respect to another frame $\{ B \}$, expressed by a rotation matrix and subject to kinematic constraints, to reconstruct a two-finger gripper. We extend that work to the five-finger Pisa/IIT SoftHand and the potential application of object recognition without vision and using a naive recognizer.
+	\item[Relation with the deliverable] The proposed solution in this report aims to tackle the problem of object exploration and recognition in the case where partial or none visual information is available. This scenario is challenged in Task 3.2.
+	\item[Attachment] (following pages)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/imuSoftHand.pdf}
 
 
 \end{document}
