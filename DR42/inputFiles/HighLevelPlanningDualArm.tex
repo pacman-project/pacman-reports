@@ -3,11 +3,13 @@
 \subsubsection{High-Level Planning for Bimanual Object Passing}
 \label{sec:HighLevelPlanningDualArm}
 
-In order to successfully complete Task~5.3 which requires the object to be passed between the hands of the robot, we devise in this section our approach to solve high-level planning for this matter.
+In order to successfully complete Task~5.3, which requires the object to be passed between the hands of the robot, we describe in this section our approach to solve high-level planning for this matter.
 
-Our idea considers the possibility of having the object in a known position which can be recognized using vision, and a higher-level agent (such as a user) decides a target configuration the object has to reach.\\
-From this information, a semantic graph is constructed which has as nodes a grasp id and a workspace id, and as arcs all possible known transitions between nodes.\\
-Once a minimum cost path has been found, it is translated back into cartesian information for collision-free motion planning, grasp commands, etc.
+Our idea considers the possibility of having the object in a known position, which can be recognized using vision, and a higher-level agent (such as a user) decides a target configuration the object has to reach.
+
+From this information, a semantic graph is constructed which has as nodes a grasp id and a workspace id, and as arcs all possible known transitions between nodes.
+
+Once a minimum cost path has been found, it is translated back into Cartesian information for collision-free motion planning, grasp commands, etc.
 
 While there are many previous works on combining high-level semantic reasoning and low-level cartesian path planning (see e.g. \cite{karlsson2012combining, leidner2012things, leidner2013hybrid}) which mostly take advantage of object-specific reasoning introduced in \cite{levison1996connecting}, our main contribution is to include the possibility of passing an object between two end-effectors.
 
