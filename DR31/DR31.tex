@@ -5,9 +5,6 @@
 \usepackage{mhchem} % Package for chemical equation typesetting
 \usepackage{siunitx} % Provides the \SI{}{} command for typesetting SI units
 \usepackage{epstopdf}
-\usepackage{booktabs}
-\usepackage{floatrow}
-
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{colortbl}
@@ -23,8 +20,6 @@
 
 %%=== Local definitions
 % Table float box with bottom caption, box width adjusted to content
-\newfloatcommand{capbtabbox}{table}[][\FBwidth]
-
 \DeclareMathOperator{\rad}{rad}
 
 \graphicspath{{images/}{../shared_images/}}
@@ -105,9 +100,9 @@ This report must show the results of Task 3.1. Particularly, it should describe 
 
 \subsubsection{Task 3.1}
 
-We can proudly say that Task 3.1 has been accomplished. The results from this task crystallized in~\cite{Rosales2014Active}, and more details how the planned activities were followed are described in MS 4.2. 
+We can proudly say that Task 3.1 has been accomplished. The results from this task crystallized in~\cite{Rosales2014Active} which is appended in Sec.~\ref{sec:slidingPointClouds}. Details on how the planned activities were followed are described in MS 4.2.
 
-In more recent works,~\cite{Ilonen2013Fusing} fuses the two sources of information by applying symmetry constraints to reconstruct the complete object shape, and~\cite{Chalon2013Online} uses the contact points to improve the object pose within the hand, initially obtained by vision. Nonetheless, other object properties apart from the shape are hardly explored, perhaps due to the fact that one needs specific sensory systems to measure them and a proper representation to process the information. In this preliminary work, the hardware setup resembles that of~\cite{Bajcsy1984What} (see Fig.~\ref{fig:schema}), but instead of using tactile arrays at the tip of the exploratory probe, we use an ITs because of its capability to retrieve the contact force~\cite{Bicchi1993Contact}, which is necessary to our approach.
+In previous approaches, in general, the friction coefficient is neglected during acquisition when being in contact with the object. For instance,~\cite{Ilonen2013Fusing} fuses the two sources of information, visual and tactile, by applying symmetry constraints to reconstruct the complete object shape, and~\cite{Chalon2013Online} uses the contact points to improve the object pose within the hand, initially obtained by vision. Nonetheless, other object properties apart from the shape are hardly explored, perhaps due to the fact that one needs specific sensory systems to measure them and a proper representation to process the information. In our work, the hardware setup resembles that of~\cite{Bajcsy1984What}, but instead of using tactile arrays at the tip of the exploratory probe, we use an intrinsic tactile sensor based on~\cite{Serio2014Tactile} due to of its capability to retrieve the contact point and force~\cite{Bicchi1993Contact}, which is necessary to our approach. Thus, in the paper we propose a way to estimate the friction coefficient from an object that has been previously detected from vision. The visual information is encoded using a Gaussian Process which then is exploited to generate trajectories over the object surface, which then is explored by means of sliding controllers implemented within the project (see MS 4.2 and Sec~\ref{sec:slidingPointClouds}). The friction coefficient is also encoded using a Gaussian process using both visual and tactile shape measurements. The latter provides a common probabilistic framework for both representations, however, we plan to replace such codification with the output of WP 2 during year 3.
 
 % To be prepared by: Carlos
 % Learning the haptic characteristics of objects by exploration in-hand
@@ -181,7 +176,7 @@ Relevant work on grasping under incomplete information is that by Bohg and Kragi
 % To be prepared by: Jeremy Wyatt
 % Active Gaze
 % \input{./inputFiles/ActiveGaze.tex}
-
+\newpage
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR31}
 

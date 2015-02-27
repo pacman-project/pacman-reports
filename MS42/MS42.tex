@@ -1,11 +1,23 @@
 \documentclass[a4paper,11pt,pdf]{pacmanreport}
 
 %%=== Aditional packages
+\usepackage{bm}
+\usepackage{mhchem} % Package for chemical equation typesetting
+\usepackage{siunitx} % Provides the \SI{}{} command for typesetting SI units
+\usepackage{epstopdf}
+\usepackage{booktabs}
+\usepackage{floatrow}
+
+\usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{colortbl}
+\usepackage{gensymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 \usepackage{mathtools}
-\usepackage{float}
 \usepackage{subcaption}
 
 % The following is used to make packages hyperref and cite work together
@@ -17,6 +29,7 @@
 %%=== Local definitions
 \graphicspath{{images/}{../shared_images/}{images/plots/}}
 
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
 %% ================================
 %% PROJECT INFO 
 
@@ -52,7 +65,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent This milestone detail the work performed to integrate planning and execution phases involving object exploration and grasping, and potentially gaze control. 
+\noindent This milestone details the work performed to integrate planning and execution phases involving object exploration and grasping. It aims to describe in detail the output of WP3, particularly the results of completing Task 3.1.
 \end{abstract}
 
 
@@ -76,7 +89,7 @@ This milestone describes the work performed to integrate planning and execution 
 
 %The first contribution is useful to command the robot using torque commands easier that using the actual KUKA FRI interface. The second helps to execute trajectories coming from planning phase, and to move the robot to desired references under different situations such as dynamic model uncertainty and different redundancy resolution at kinematic and dynamic levels. 
 
-The platform presented in this milestone should be of great importance in the implementation, testing and validation of the development algorithms within the PaCMan project.
+The platform presented in this milestone is of great importance within the PaCMan project the implementation, testing and validation of the development algorithms .
 
 
 %In recent years, there has been growing interest in the development of a standardized framework for robotic implementations, where the robots interdisciplinary code and software could be easy to write and accessible to everyone. This is the philosophy of the \textit{Robot Operating System} (\textbf{ROS}), a flexible framework which provides all the instruments to develop and build robust and robot-independent applications, allowing researchers from different fields of robotics to share each others works with the great result of spreading the know-how.
@@ -94,9 +107,22 @@ The development of the controllers, including tuning and debugging, has been rea
 
 %Finally, the last phase consisted in pursuing experiments to test the implemented control strategies on the physical robot, arising a variety of practical issues which don't come out in simulation, that are explained in detail in this document.
 
-The software here exposed can be found in the project website~\cite{PACMAN_software}.
+Controllers are available within the UNIPI \href{https://github.com/CentroEPiaggio/kuka-lwr}{KUKA LWR ROS package}, which is one of the components required by the Vito robot package freely available in the project website~\cite{PACMAN_software}. All packages within follow a dual implementation for real and simulated hardware, hence the same chosen controller can be tested in both scenarios with few or none extra-effort on the setup. Sec.~\ref{} describes Vito, the UNIPI robot as an alternative testbed for the project development.
 
 \section{Report on Milestone Achievement}
+
+\input{./inputFiles/LearningHapticCharacteristicsObjectsExplorationInHand}
+
+\newpage
+
+\bibliographystyle{IEEEtran}
+\bibliography{../shared_bibliography/abbreviations,bibliography/MS42}
+
+\newpage
+\appendix
+\section{Annexes}
+
+% Here you should briefly describe the papers attached that provide evidence for achievement of the milestone. Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
 
 \input{./inputFiles/tikz_definitions}
 \input{./inputFiles/vito}
@@ -105,14 +131,8 @@ The software here exposed can be found in the project website~\cite{PACMAN_softw
 \input{./inputFiles/kitHead}
 \input{./inputFiles/conclusions}
 
-\bibliographystyle{IEEEtran}
-\bibliography{../shared_bibliography/abbreviations,bibliography/MS42}
-
-% \section{Annexes}
-
-% Here you should briefly describe the papers attached that provide evidence for achievement of the milestone. Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
-
-
-
+\subsection{Technical report: Studio e simulazione in ambiente Adams della Pisa-IIT Softhand - Cap. 2 and 3 } \label{sec:AdamsSoftHand}
+This report is written in Italian, but still figures and equations can be followed readily. It concerns an excerpt of the implementation of the Pisa/IIT SoftHand mechanism in the Adams\copyright, developed as part of requirements to approve one of the classes imparted by Prof. Marco Gabiccini.
+\includepdf[pages=5-26]{./attachedPapers/CristinaPiazzaReport.pdf}
 
 \end{document}

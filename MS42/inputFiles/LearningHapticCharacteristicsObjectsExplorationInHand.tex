@@ -1,6 +1,6 @@
 %%% Learning the haptic characteristics of objects by exploration in-hand
 
-\paragraph{(a) Definition of control strategies for concurrent stable object grasping and object surface tracing for haptic exploration}
+\subsection{Definition of control strategies for concurrent stable object grasping and object surface tracing for haptic exploration}
 
 An Arimoto-PD regulator provides the required torques to track a reference position. The position control law is
 \begin{equation}
@@ -195,7 +195,7 @@ where $\Delta_T$ is the control period.
 % \end{equation}
 % with $\Gamma_f$ and $\Gamma_d$ positive definite matrices.
 
-\paragraph{(b) Definition of control strategies for concurrent stable object grasping and rolling manipulation to acquire second-order object surface properties}
+\subsection{Definition of control strategies for concurrent stable object grasping and rolling manipulation to acquire second-order object surface properties}
 
 Based on the previous control framework, rolling over a surface is achieved by defining a reference velocity of the contact point for a pure revolution about an axis laying on the tangent plane and passing through the contact point. Similar to the previous section, the desired twist of the contact point $C$ written with respect to $\left\lbrace T \right\rbrace$ is
 \begin{equation}
@@ -342,7 +342,7 @@ obtain the principal curvature directions given by $\psi$, and principal curvatu
 
 % with $\bar{\bm{W}} \in R^{4N \times 10}$ and $\bar{\bm{y}} \in R^{4N}$
 
-\paragraph{(c) Definition of strategies for frictional coefficient estimation}
+\subsection{Definition of strategies for frictional coefficient estimation}
 Using the strategy described in paragraph (a), one can compensate for the tangential force generated due to the frictional property of the object. The tangential force can be extracted from the measured contact force as
 \begin{equation}
     \mathbf{f}_t = (I-\mathbf{n}_{c}\mathbf{n}^T_{c})\mathbf{f}_c,
@@ -360,7 +360,7 @@ Finally, the compensation will be achieved by adding the term
 \end{equation}
 to the force controller.
 
-\paragraph{(d) Testing in simulation}
+\subsection{Testing in simulation}
 The simulation framework is heavily based on Adams MSC\copyright, a software for multi-body dynamic simulation and collision management. It uses several contact models based on a penalty formulation on the inter-penetration between meshes. The geometry engine is responsible for detecting contact between two geometries, locating the points of contact, and calculating the common normal at the contact points. Once the contact kinematics are known, contact forces, which are a function of the contact kinematics, are applied to the intersecting bodies. The model adopted is a Hertzian model, named \emph{Impact} by Adams (see Fig.~\ref{fig:contactedmesh}).
 
 Another feature is the capability to export a Simulink block representing the articulated model with inputs (e.g. joint torques) and outputs (e.g. joint angles, contact wrench). Matlab and Simulink were used to implement the control laws and to manage the results.
@@ -472,7 +472,7 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
 
 %This results will be tested again in the new simulation framework presented in~\ref{sec:Simulation}.
 
-\paragraph{(e) Integration of object/part model obtained from vision with the code for reactive haptic exploration strategies}
+\subsection{Integration of object/part model obtained from vision with the code for reactive haptic exploration strategies}
 
 \begin{figure}[!b]
   \begin{center}
@@ -482,23 +482,27 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
   \label{fig:schema}
 \end{figure}
 
-The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection. Only sliding controller was used since the friction coefficient is simpler to retrieve using that primitive. More details on the methodology can be found in Sec.~\ref{sec:slidingPointClouds}.% available at~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{this link}.
+The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes, as shown in Fig~\ref{fig:geodesic_examples}. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection, and previously identified. Only sliding controller was used since the friction coefficient is simpler to retrieve using that primitive. 
 
-% \begin{figure}[th]
-%     \centering
-%     \mbox{
-%         \includegraphics[height=0.4\linewidth]{box.png}
-%         \includegraphics[height=0.4\linewidth]{box1.png}
-%         }
-%     \mbox{
-%         \includegraphics[height=0.4\linewidth]{teddy.png}
-%         \includegraphics[height=0.4\linewidth]{teddy2.png}
-%         }
+% The visual information is encoded using a Gaussian Process which then is exploited to generate trajectories over the object surface, which then is explored by means of sliding controllers implemented within the project (see MS 4.2 and Sec~\ref{sec:slidingPointClouds}). The friction coefficient is also encoded using a Gaussian process using both visual and tactile shape measurements. The latter provides a common probabilistic framework for both representations, however, we plan to replace such codification with the output of WP 2 during year 3.
 
-%     \caption{Geodesic flows on object surfaces captured by an RGBD sensor. The color of the flow goes from red, i.e. the initial contact point, to green, i.e. the final position, according to the predefined length of the curve. The box has flat surfaces, hence geodesics are straight lines (top). The teddy bear has a very irregular shape, but still geodesic flows are found (bottom).}
-%     \label{fig:geodesic_examples}
-%     \vspace{-0.02\linewidth}
-% \end{figure}
+%More details on the methodology can be found in Sec.~\ref{sec:slidingPointClouds}.% available at~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{this link}.
+
+\begin{figure}[th]
+    \centering
+    \mbox{
+        \includegraphics[height=0.4\linewidth]{box.png}
+        \includegraphics[height=0.4\linewidth]{box1.png}
+        }
+    \mbox{
+        \includegraphics[height=0.4\linewidth]{teddy.png}
+        \includegraphics[height=0.4\linewidth]{teddy2.png}
+        }
+
+    \caption{Geodesic flows on object surfaces captured by an RGBD sensor. The color of the flow goes from red, i.e. the initial contact point, to green, i.e. the final position, according to the predefined length of the curve. The box has flat surfaces, hence geodesics are straight lines (top). The teddy bear has a very irregular shape, but still geodesic flows are found (bottom).}
+    \label{fig:geodesic_examples}
+    \vspace{-0.02\linewidth}
+\end{figure}
 
 % \begin{figure}
 %   \centering
