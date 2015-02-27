@@ -1,8 +1,6 @@
 \documentclass[a4paper,11pt,pdf]{pacmanreport}
 
-\usepackage{helvet}
-\usepackage{graphicx}
-\graphicspath{{images/}{../shared_images/}}
+%%=== Aditional packages
 \usepackage{bm}
 \usepackage{mhchem} % Package for chemical equation typesetting
 \usepackage{siunitx} % Provides the \SI{}{} command for typesetting SI units
@@ -17,26 +15,19 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 
-% Table float box with bottom caption, box width adjusted to content
-\newfloatcommand{capbtabbox}{table}[][\FBwidth]
-
 % The following is used to make packages hyperref and cite work together
 \makeatletter
 \let\NAT@parse\undefined
 \makeatother
+\usepackage[bookmarks=true,hyperfootnotes=true,colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,urlcolor=blue,filecolor=blue]{hyperref}
+
+%%=== Local definitions
+% Table float box with bottom caption, box width adjusted to content
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
 
 \DeclareMathOperator{\rad}{rad}
 
-\usepackage[bookmarks=true,hyperfootnotes=true]{hyperref}
-\hypersetup{
-			colorlinks=true,
-			linkcolor=blue,
-			anchorcolor=blue,
-			citecolor=blue,
-			urlcolor=blue,
-            filecolor=blue,
-			pdftitle={Deliverable 3.1}
-}
+\graphicspath{{images/}{../shared_images/}}
 
 %% ================================
 %% PROJECT INFO
@@ -165,13 +156,15 @@ Relevant work on grasping under incomplete information is that by Bohg and Kragi
 % Active Gaze
 % \input{./inputFiles/ActiveGaze.tex}
 
-%\section{Annexes}
+\bibliographystyle{IEEEtran}
+\bibliography{../shared_bibliography/abbreviations,./bibliography/DR31}
+
+\section{Annexes}
+\label{sec:annex}
 
 % Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed.
 
 
-\bibliographystyle{IEEEtran}
-\bibliography{../shared_bibliography/abbreviations,./bibliography/DR31}
 
 
 

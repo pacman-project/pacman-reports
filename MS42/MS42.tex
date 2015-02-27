@@ -1,32 +1,20 @@
 \documentclass[a4paper,11pt,pdf]{pacmanreport}
 
-\usepackage{helvet}
-\usepackage{graphicx}
-
 %%=== Aditional packages
-%\usepackage{hyperref} % references
 \usepackage{amssymb}
 \usepackage{tikz}
-
 \usetikzlibrary{shapes,arrows}
 \usepackage{mathtools}
 \usepackage{float}
 \usepackage{subcaption}
 
-\usepackage[bookmarks=true,hyperfootnotes=true]{hyperref}
-\hypersetup{
-			colorlinks=true,
-			linkcolor=blue,
-			anchorcolor=blue,
-			citecolor=blue,
-			urlcolor=blue,
-            filecolor=blue,
-			pdftitle={Milestone 4.2}
-}
+% The following is used to make packages hyperref and cite work together
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+\usepackage[bookmarks=true,hyperfootnotes=true,colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,urlcolor=blue,filecolor=blue]{hyperref}
 
-%%=====================
-
-
+%%=== Local definitions
 \graphicspath{{images/}{../shared_images/}{images/plots/}}
 
 %% ================================

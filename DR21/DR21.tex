@@ -1,23 +1,16 @@
 \documentclass[a4paper,11pt,pdf]{pacmanreport}
 
-\usepackage{helvet}
-
+%%=== Aditional packages
 %\usepackage{natbib}
 %\setcitestyle{round}
-\usepackage{pdfpages}
-\usepackage{graphicx}
-\graphicspath{{images/}{../shared_images/}}
+% The following is used to make packages hyperref and cite work together
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+\usepackage[bookmarks=true,hyperfootnotes=true,colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,urlcolor=blue,filecolor=blue]{hyperref}
 
-\usepackage[bookmarks=true,hyperfootnotes=true]{hyperref}
-\hypersetup{
-			colorlinks=true,
-			linkcolor=blue,
-			anchorcolor=blue,
-			citecolor=blue,
-			urlcolor=blue,
-            filecolor=blue,
-			pdftitle={Deliverable 2.1}
-}
+%%=== Local definitions
+\graphicspath{{images/}{../shared_images/}}
 
 %% ================================
 %% PROJECT INFO 
@@ -240,66 +233,71 @@ Furthermore, by exploiting the relations between object parts, we were able to r
 
 Moreover, our proposed method performed better at decomposing an object into parts, compared with \cite{rel7}, where the notion of object convexity and concavity was exploited for segmenting an object into parts.
 
-In the state-of-the-art methods for part-based object recognition \cite{part2},\cite{part1},\cite{part3}, parts are manually labeled in the training examples, while the novelty of our approach consists in extracting the region corresponding to a part, from grasping experiments. An object is grasped in different ways, depending on its intended functionality, information which is exploited in our framework for forming semantically meaningful parts.
+In the state-of-the-art methods for part-based object recognition \cite{part2}, \cite{part1}, \cite{part3}, parts are manually labeled in the training examples, while the novelty of our approach consists in extracting the region corresponding to a part, from grasping experiments. An object is grasped in different ways, depending on its intended functionality, information which is exploited in our framework for forming semantically meaningful parts.
 
 \newpage
 
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR21}
 
-%\newpage 
+\newpage 
 
-% \section{Annexes}
-% \label{ann}
-% %Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
+\appendix 
 
-% \subsection{Learning 3D Object Parts through Grasping}
-% \label{ann:icra} 
-% \textbf{Bibliography} Safoura Rezapour Lakani, Mirela Popa, Antonio J. Rodriguez-Sanchez and Justus Piater “Learning 3D Object Parts through Grasping”, submitted to IEEE Computer Vision and Pattern Recognition (ICRA), 2015.
+\section{Annexes}
+
+%Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
+
+\subsection{Article: Learning 3D Object Parts through Grasping} \label{ann:icra}
+\begin{description}
+	\item[Authors] Safoura Rezapour Lakani, Mirela Popa, Antonio J. Rodriguez-Sanchez and Justus Piater
+	\item[Info] Submitted to the 2015 IEEE Computer Vision and Pattern Recognition. \comment{[CR] SHOULDN'T BE ICRA? IF SO, SHOULDN'T YOU HAVE THE DECISION ALREADY?}
+	\item[Abstract] Most objects are composed of parts which have a semantic meaning. A handle can have many different shapes and be present in quite different objects, but there is only one semantic meaning to a handle, which is ``a part that is designed especially to be grasped by the hand''. We introduce here a novel 3D algorithm for the decomposition of objects into their semantically meaningful parts. These meaningful parts are learned from experiments where a robot grasps different objects. Object are represented in a compositional graph hierarchy where their parts are represented as the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent regions. Unlike other 2D compositional approaches, the importance of our 3D oriented method relies on the relationship between adjacent regions and sub-parts and where the composition at each level of the hierarchy is learned from grasping experience. We evaluate the validity of our compositional approach in three different scenarios, where we test the importance of the extracted relationships, its robustness to scale and more importantly, the recognition of parts from previously unseen objects. 
+	\item[Relation with the deliverable] The paper addresses Task 2.3 by introducing a method for learning objects parts in a bottom-up way, from robotic experiments of grasping objects.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/rezapouretal-icra2015.pdf}
+
+\subsection{Learning Part-Based 3D Compositional Object Representations} \label{ann:cvpr} 
+\begin{description}
+	\item[Authors] Safoura Rezapour Lakani, Antonio J. Rodriguez-Sanchez and Justus Piater
+	\item[Info] Submitted to the 2015 IEEE Computer Vision and Pattern Recognition
+	\item[Abstract] This paper presents a novel approach to parts-based object representation from depth images. We propose a bottom-up compositional model for representing object classes. Our model uses a probabilistic approach to build object representations starting from small patches that are successively built up into regions, and finally meaningful (possibly graspable) parts . Parts represented this way are the main representatives of the identity of an object class. We have evaluated our method at parts recognition and object categorization, outperforming competing methods.
+	\item[Relation with the deliverable]
+    \item[Attachment] (following pages until next annex) The paper presents a probabilistic model for learning object representations in a hierarchical manner. This representation is useful for all the tasks, as it enables forming objects by graspability (Task 2.3), it allows integration of non-visual features (Task 2.1), and it can be used for a refined scene description (Task 2.4).
+\end{description}
+\includepdf[pages=-]{./attachedPapers/rezapouretal-cvpr2015.pdf}
+
+\newpage
  
-% \textbf{Abstract} Most objects are composed of parts which have a semantic meaning. A handle can have many different shapes and be present in quite different objects, but there is only one semantic meaning to a handle, which is "a part that is designed especially to be grasped by the hand". We introduce here a novel 3D algorithm for the decomposition of objects into their semantically meaningful parts. These meaningful parts are learned from experiments where a robot grasps different objects. Object are represented in a compositional graph hierarchy where their parts are represented as the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent regions. Unlike other 2D compositional approaches, the importance of our 3D oriented method relies on the relationship between adjacent regions and sub-parts and where the composition at each level of the hierarchy is learned from grasping experience. We evaluate the validity of our compositional approach in three different scenarios, where we test the importance of the extracted relationships, its robustness to scale and more importantly, the recognition of parts from previously unseen objects. 
-
-% \textbf{Relation to WP}
-% The paper addresses Task 2.3 by introducing a method for learning objects parts in a bottom-up way, from robotic experiments of grasping objects.
+\subsection{Multi-Modal Compositional Object Representation}
+\label{ann:techReport} 
+\textbf{Bibliography} Safoura Rezapour Lakani and Justus Piater, “Multi-Modal Compositional Object Representation”, Technical report, 2015.
  
-%  \newpage
+\textbf{Abstract} The objective of this technical report is to introduce an object representation based on both visual and non-visual features such as haptics features. The multi-modal representation will allow us to infer visual information based on haptics information and vice-versa. The non-visual features are useful at object recognition in case of missing or incomplete visual observations. We have developed a 3D compositional part-based object representation, where the non-visual features are represented by tactile information after grasping an object.
+
+\textbf{Relation to WP}
+The technical report introduces a multi-modal representation which incorporates both visual and non-visual features.
+
+\newpage 
+
+\includepdf[pages=-]{./attachedPapers/rezapouretal-Tech2015.pdf}
+
+\newpage
+
+\subsection{3D Compositional Models associated with Grasp Templates and Haptic Data}
+\label{ann:techReportAlex} 
+\textbf{Bibliography} Alexander Rietzler, “3D Compositional Models associated with Grasp Templates and Haptic Data”, Technical report, 2015.
  
-% \subsection{Learning Part-Based 3D Compositional Object Representations}
-% \label{ann:cvpr} 
-% \textbf{Bibliography} Safoura Rezapour Lakani, Antonio J. Rodriguez-Sanchez and Justus Piater, “Learning Part-Based 3D Compositional Object Representations”, submitted to IEEE Computer Vision and Pattern Recognition (CVPR), 2015.
- 
-% \textbf{Abstract} This paper presents a novel approach to parts-based object representation from depth images. We propose a bottom-up compositional model for representing object classes. Our model uses a probabilistic approach to build object representations starting from small patches that are successively built up into regions, and finally meaningful (possibly graspable) parts . Parts represented this way are the main representatives of the identity of an object class. We have evaluated our method at parts recognition and object categorization, outperforming competing methods.
+\textbf{Abstract} The objective of this technical report is to associate graspability and haptic characteristics to object parts produced by a 3D compositional model. The advantage of the proposed method resides in the ability to perform robust grasping of novel object instances, composed of parts similar to the ones existing in the training set.
 
-% \textbf{Relation to WP}
-% The paper presents a probabilistic model for learning object representations in a hierarchical manner. This representation is useful for all the tasks, as it enables forming objects by graspability (Task 2.3), it allows integration of non-visual features (Task 2.1), and it can be used for a refined scene description (Task 2.4).
+\textbf{Relation to WP}
+The technical report introduces a method for associating grasp templates to object parts obtained using the 3D compositional model presented in Task 2.3.
 
-% \newpage
- 
-% \subsection{Multi-Modal Compositional Object Representation}
-% \label{ann:techReport} 
-% \textbf{Bibliography} Safoura Rezapour Lakani and Justus Piater, “Multi-Modal Compositional Object Representation”, Technical report, 2015.
- 
-% \textbf{Abstract} The objective of this technical report is to introduce an object representation based on both visual and non-visual features such as haptics features. The multi-modal representation will allow us to infer visual information based on haptics information and vice-versa. The non-visual features are useful at object recognition in case of missing or incomplete visual observations. We have developed a 3D compositional part-based object representation, where the non-visual features are represented by tactile information after grasping an object.
+\newpage 
 
-% \textbf{Relation to WP}
-% The technical report introduces a multi-modal representation which incorporates both visual and non-visual features.
+\includepdf[pages=-]{./attachedPapers/rietzeler-techReport.pdf}
 
-% \newpage
-
-% \subsection{3D Compositional Models associated with Grasp Templates and Haptic Data}
-% \label{ann:techReportAlex} 
-% \textbf{Bibliography} Alexander Rietzler, “3D Compositional Models associated with Grasp Templates and Haptic Data”, Technical report, 2015.
- 
-% \textbf{Abstract} The objective of this technical report is to associate graspability and haptic characteristics to object parts produced by a 3D compositional model. The advantage of the proposed method resides in the ability to perform robust grasping of novel object instances, composed of parts similar to the ones existing in the training set.
-
-% \textbf{Relation to WP}
-% The technical report introduces a method for associating grasp templates to object parts obtained using the 3D compositional model presented in Task 2.3.
-
-% \newpage 
- 
-%\includepdf[pages=-]{./attachedPapers/rezapouretal-icra2015.pdf}
-%\includepdf[pages=-]{./attachedPapers/rezapouretal-cvpr2015.pdf}
-%\includepdf[pages=-]{./attachedPapers/rezapouretal-Tech2015.pdf}
-%\includepdf[pages=-]{./attachedPapers/rietzeler-techReport.pdf}
+\newpage 
 
 \end{document}
