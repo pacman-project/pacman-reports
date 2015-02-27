@@ -208,7 +208,7 @@ The novelty of our approach is two-fold. First, the proposed algorithm forms sem
 We evaluated our method on our collected Ikea Object Dataset \cite{website} and on the RGB-D Washington dataset \cite{rgbd-dataset}. Our approach achieved promising results, outperforming competing methods \cite{rel7}.
 
 %More details can be found in Annexes \ref{ann:icra} and \ref{ann:cvpr}.
-More details can be found in Sec.~\ref{ann:icra} and~\ref{ann:cvpr}. %, available at~\href{./attachedPapers/rezapouretal-cvpr2015.pdf}{this link} and~\href{./attachedPapers/rezapouretal-icra2015.pdf}{this link}, respectively.
+More details can be found in Sec.~\ref{ann:icvs} and~\ref{ann:cvpr}. %, available at~\href{./attachedPapers/rezapouretal-cvpr2015.pdf}{this link} and~\href{./attachedPapers/rezapouretal-icra2015.pdf}{this link}, respectively.
 
 
 \subsubsection{Task 2.1 Integrating haptics into 3D compositional models}
@@ -265,6 +265,9 @@ To facilitate this task, we have designed and implemented a compositional
 framework which is described in detail in Sec.~\ref{ann:cvpr}. The description 
 of the grasp representation and of the experimental setup is presented in Sec.~\ref{ann:techReportAlex}.
 %, available at~\href{./attachedPapers/rietzeler-techReport.pdf}{this link}.
+As an additional work, we also recorded a dataset of grasps performed by a 
+human operator with the Pisa/IIT SoftHand. Details on this dataset can be 
+found in Sec.~\ref{ann:techReportFederico}.
 
 The steps performed to associate grasps to object parts are:
 \begin{enumerate}
@@ -445,5 +448,20 @@ representation
 \item[Attachment] (following pages)
 \end{description}
 \includepdf[pages=-]{./attachedPapers/kiechle-techReport.pdf}
+
+\subsection{Technical Report: Grasp Dataset performed by humans using the Pisa/IIT SoftHand} \label{ann:techReportFederico}
+\begin{description}
+\item[Authors] Federico Spinelli, Carlos J. Rosales, Edoardo Farnioli
+\item[Info] Internal technical report
+\item[Abstract] This technical report describes a dataset of grasps, performed by a human operator 
+  using the Pisa/IIT SoftHand. Data was recorded using various hardware at
+the University of Pisa and it is composed by several grasps per object. The envisioned 
+use of this dataset is to use the relative pose of the SoftHand, with respect to the object to
+be grasped, so that it is possible to associate grasps with object models.
+\item[Relation with the deliverable] Dataset is useful for Task 2.2, because it provides 
+  to object models an association with grasps performed, so that grasp hypothesis can be built. 
+\item[Attachment] (following pages)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/ObjectGraspingDataset.pdf}
 
 \end{document}
