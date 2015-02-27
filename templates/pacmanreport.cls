@@ -41,9 +41,10 @@
 \typeout{}
 \typeout{PACMANREPORT style, Jeremy L Wyatt Feb 2014, Geert-Jan M. Kruijff, July 2009}
 \typeout{==============================================}
-\RequirePackage{epsfig,tabularx,graphicx}
+\RequirePackage{epsfig,tabularx,graphicx,pdfpages}
 \graphicspath{{shared_images/}{../shared_images/}}
 \usepackage[scaled=0.92]{helvet}
+\usepackage{color}
 %%\RequirePackage{concrete}
 
 \newcommand{\algref}[1]{Algorithm \ref{#1}}
@@ -64,8 +65,6 @@
 
 \newcommand{\mydeliverableid}{}
 \newcommand{\deliverableid}[1]{\renewcommand{\mydeliverableid}{#1}}
-
-
 
 \newcommand{\myduedate}{}
 \newcommand{\duedate}[1]{\renewcommand{\myduedate}{#1}}
@@ -90,9 +89,9 @@
 \newcommand{\mylogo}{pacman-logo-long-red.pdf}
 \newcommand{\reportlogo}[1]{\renewcommand{\mylogo}{#1}}
 
-
+\definecolor{DarkGreen}{rgb}{0,0.5,0}
 \newcommand{\comment}[1]{
-        \noindent{\scriptsize \fbox{Comment} \textsf{#1}\\}}
+        \noindent{\color{DarkGreen} \scriptsize \fbox{Comment} \textsf{#1}\\}}
 \newcommand{\marginlabel}[1]{
         \mbox{}\marginpar{\raggedleft\hspace{0pt}\scriptsize{\textsf{#1}}}}
 
@@ -213,9 +212,6 @@
       {\if@twocolumn\else\endquotation\fi}
 \fi 
 
-
-
-
 %\def\@oddhead{\noindent\rule{\linewidth}{.2mm}\\\par \myauthor, \mytitle}
 %\def\@evenhead{\noindent\rule{\linewidth}{.2mm}\\  \myauthor, \mytitle}
 
@@ -233,29 +229,14 @@
     \@starttoc{toc}%
     }
 
-
 %% ============================================================
 %% 
 %% Development Log: 
 %% * Begin edit: 2004 Oct 8
-%% * Last  edit: 2014 Feb 11
+%% * Last  edit: 2015 Feb 27
 %%
 %% ------------------------------------------------------------
 %% [Oct 8,GJ]  Created class file 
 %% [Feb 11, JLW] Modified class file
+%% [Feb 27, 2015, CRG] Modified class to add commonly used packages. Colored comments to recognize them quickly
 %%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
