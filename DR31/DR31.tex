@@ -105,17 +105,19 @@ This report must show the results of Task 3.1. Particularly, it should describe 
 
 \subsubsection{Task 3.1}
 
-We can proudly say that Task 3.1 has been accomplished. The results for the planned activites are summarized in the following paragraphs. It must be said that a fixture device is used as the supporting hand, and a 7 DOF robot is used as the exploratory finger, since an strategy for concurrent stable object grasping was demonstrated in DR5.1, and assumed to be given for the development.
+We can proudly say that Task 3.1 has been accomplished. The results from this task crystallized in~\cite{Rosales2014Active}, and more details how the planned activities were followed are described in MS 4.2. 
+
+In more recent works,~\cite{Ilonen2013Fusing} fuses the two sources of information by applying symmetry constraints to reconstruct the complete object shape, and~\cite{Chalon2013Online} uses the contact points to improve the object pose within the hand, initially obtained by vision. Nonetheless, other object properties apart from the shape are hardly explored, perhaps due to the fact that one needs specific sensory systems to measure them and a proper representation to process the information. In this preliminary work, the hardware setup resembles that of~\cite{Bajcsy1984What} (see Fig.~\ref{fig:schema}), but instead of using tactile arrays at the tip of the exploratory probe, we use an ITs because of its capability to retrieve the contact force~\cite{Bicchi1993Contact}, which is necessary to our approach.
 
 % To be prepared by: Carlos
 % Learning the haptic characteristics of objects by exploration in-hand
-\input{./inputFiles/LearningHapticCharacteristicsObjectsExplorationInHand.tex}
+% \input{./inputFiles/LearningHapticCharacteristicsObjectsExplorationInHand.tex}
 
 \subsubsection{Task 3.2}
 
 Previous work on object detection assisted by touch comprise typically fully actuated hands, such as the work presented in~\cite{Bimbo2013Combining}. To this end, the initial estimate provided by the visual input must be of high accuracy in order to place precisely the finger areas covered with tactile arrays. This implies solving the object recognition problem as well. In a extreme case, where no visual input is available, the remarkable work by~\cite{Petrovskaya2011Global} propose a Bayesian approach termed Scaling Series, however, the testbed was a robot arm equipped with a single force/torque sensor which allow to compute with high accuracy the contact point w.r.t. to the robot base. The inconvenient of such setup the probing. As said in the paper, each probe took approximately $10$s, and in the meantime, the algorithm, which is not light, was allowed to do computations. 
 
-Thus, the fact that the object shape and localization uncertainty is reduced by making contact, combined with the adaptability of the Pisa/IIT SoftHand to any object shape, influenced the idea of using the hand as sophisticated exploratory probe w.r.t. previous testbeds. Thus, we proposed a glove-inspired solution to read the hand configuration, as well as the contact information in future work, to estimate the object shape as the result of a grasping action. 
+Thus, the fact that the object shape and localization uncertainty is reduced by making contact, combined with the adaptability of the Pisa/IIT SoftHand to any object shape, influenced the idea of using the hand as sophisticated exploratory probe w.r.t. previous testbeds. The configuration is similar to the usual adopted in bio-mechanic systems~\cite{Cappozzo1995}, direct sensorization of the limbs is advised via optical or magnetic markers, or inertial devices, ``strap down'' to the greatest extent to the underlying bone, while defining the simplest assembly of technical joints that best reproduces the animal or human joint motion~\cite{Lucchetti1998}. We propose a glove-inspired inertial-based solution to read the hand configuration for object detection as the result of a grasping action.%, and correlate motion patterns to functional status levels for clinical studies~\cite{Balzini2003}
 
 We strongly believe that the proposed solution will be of great help in situations where partial or none visual information is available, as challenged in Task 3.2. Thus, we dedicated efforts to continue on this research as it seems beneficial to accomplish the project goals with an alternative methodology than the initially proposed. The following two paragraphs show the preliminary and on-going positive results on this topic, respectively.
 
@@ -134,7 +136,7 @@ We strongly believe that the proposed solution will be of great help in situatio
 %\input{./inputFiles/SoftHandWithSenseOfTouch.tex}
 \paragraph{Endowing the Pisa/IIT SoftHand with the sense of touch}
 
-We succesfully extended the proposed solution above to the case of the five-finger Pisa/IIT SoftHand. We validated the approach by visual inspection as shown in Fig.~\ref{fig:hand_reconstruction_1}. Additional, we suggest watching the video sequences for static \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{static} and a \href{https://www.youtube.com/watch?v=bceOXa990-Q}{dynamic} configurations\footnotetext{External links are readily identified in the PDF and might not be visible in a black\&white hardcopy, plesae, click on the PDF to go to the online site.}.
+We successfully extended the proposed solution above to the case of the five-finger Pisa/IIT SoftHand. We validated the approach by visual inspection as shown in Fig.~\ref{fig:hand_reconstruction_1}. Additional, we suggest watching the video sequences for static \href{https://www.youtube.com/watch?v=0oVha0Q1vWM}{static} and a \href{https://www.youtube.com/watch?v=bceOXa990-Q}{dynamic} configurations\footnotetext{External links are readily identified in the PDF and might not be visible in a black\&white hard-copy, please, click on the PDF to go to the on-line site.}.
 
 \begin{figure}
 \centering
