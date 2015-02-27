@@ -13,7 +13,7 @@
 \graphicspath{{images/}{../shared_images/}}
 
 %% ================================
-%% PROJECT INFO 
+%% PROJECT INFO
 
 \project{}
 \projectid{FP7-IST-60918}
@@ -21,11 +21,11 @@
 \duration{36}
 
 %% ================================
-%% DELIVERABLE INFO 
+%% DELIVERABLE INFO
 
 \title{Multi-modal compositional hierarchies}
 \deliverableid{DR 2.1}
-\author{Mirela Popa, Safoura Rezapour-Lakani, Alexander Rietzler, Justus Piater}
+\author{M. Popa, S. Rezapour-Lakani, A. Rietzler, F. Spinelli, C. J. Rosales, J. Piater}
 \address{Institute of Computer Science, University of Innsbruck}
 \email{Mirela.Popa@uibk.ac.at}
 \headertitle{Multi-modal compositional hierarchies}
@@ -64,7 +64,7 @@
 \section*{Executive Summary}
 
 This report presents work carried out in WP2 on multi-modal compositional hierarchies of object categories, using both visual and non-visual features. The work addresses the intermediate results of Tasks 2.1, 2.2 and 2.3. We describe an approach for integrating non-visual features into the compositional hierarchy, as defined in Task 2.1.
-%, which is presented in detail in Annex \ref{ann:techReport}. 
+%, which is presented in detail in Annex \ref{ann:techReport}.
 
 Next, we present the association of graspability to object parts formed using a hierarchical representation, according to Task 2.2. In addition, we propose a method for structuring compositional object models into semantically meaningful parts, guided by their graspability.
 %, which is described in a submitted conference paper included in Annex \ref{ann:icra}.
@@ -85,7 +85,7 @@ The proposed algorithms will be used to process visual and non-visual informatio
 
 DR 2.1 addresses multi-modal compositional hierarchies for object representation using both visual and non-visual information. Planned work mainly concerns Task 2.1 regarding integration of haptic features into the compositional model, Task 2.2 regarding integration of graspability into the compositional 3D model, Task 2.3 regarding structuring the 3D compositional model according to graspability, and Task 2.4 regarding the creation of scene models from sensor data.
 
-The objective of Task 2.1 consists of defining a suitable parametrization of haptic features. Next, it addresses the development of methods for incremental acquisition of haptic information and its incorporation into the multi-modal representation. 
+The objective of Task 2.1 consists of defining a suitable parametrization of haptic features. Next, it addresses the development of methods for incremental acquisition of haptic information and its incorporation into the multi-modal representation.
 
 Task 2.2 aims at associating grasps to object parts learned using a compositional approach.
 
@@ -96,7 +96,7 @@ as object models described by their pose, as well as any visual, haptic and gras
 
 \subsection{Actual work performed}
 
-In this section, the main achievements related to the topic of this deliverable are briefly described. 
+In this section, the main achievements related to the topic of this deliverable are briefly described.
 %For detailed descriptions of the work performed, the reader is referred to the papers and technical reports in Annex \ref{ann} of this deliverable.
 We choose to introduce first Task 2.3, as it describes the developed compositional model which is used in Tasks 2.1, 2.2 and 2.4, facilitating a better understanding of the performed work.
 
@@ -106,7 +106,7 @@ We designed and implemented a method for structuring the 3D compositional models
 
 In order to associate graspability to an object part and to integrate it with tactile information, this work uses a hierarchical method model that explicitly seeks to construct semantically-meaningful parts, rather than the bottom-up approach developed in Task 1.2 in WP1. We are now also investigating the attachment of grasps to 3D parts developed using the bottom-up approach of WP1.
 
-Object are represented in a compositional hierarchy where their parts are described by the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent patches. 
+Object are represented in a compositional hierarchy where their parts are described by the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent patches.
 
 We learn our model based on view-based RGB-D pointcloud data. We have developed a bottom-up compositional model which starts from the object points and reaches to the object category level.
 
@@ -157,7 +157,7 @@ An illustration of the described approach is depicted in Figure \ref{fig:rel}.
 \begin{center}
 \includegraphics[width=0.7\textwidth]{rel.pdf}
 \end{center}
-\caption{A schematic diagram of the developed compositional model, for one object class $o$. For each object, the observed patches $\mathbf{Q}=\{\mathbf{q_1},\ldots,\mathbf{q_4}\}$ are matched to the patch codebook $Q=\{q_1,\ldots,q_{N_{Q}}\}$. An object part is represented as a histogram of patch types. An object from class $o$ consists of a set of parts $\mathbf{R}=\{\mathbf{r_1},\mathbf{r_2},\mathbf{r_3}\}$ which are matched to the part codebook $R=\{r_1,\ldots,r_{N_{R}}\}$. For enabling object recognition, we learn the probabilities $p(r_1,\ldots,r_{N_{R}} \vert o)$ as well as parts connectivity based on the boundary patches $p(q_{1},q_{2} \vert o)$.} 
+\caption{A schematic diagram of the developed compositional model, for one object class $o$. For each object, the observed patches $\mathbf{Q}=\{\mathbf{q_1},\ldots,\mathbf{q_4}\}$ are matched to the patch codebook $Q=\{q_1,\ldots,q_{N_{Q}}\}$. An object part is represented as a histogram of patch types. An object from class $o$ consists of a set of parts $\mathbf{R}=\{\mathbf{r_1},\mathbf{r_2},\mathbf{r_3}\}$ which are matched to the part codebook $R=\{r_1,\ldots,r_{N_{R}}\}$. For enabling object recognition, we learn the probabilities $p(r_1,\ldots,r_{N_{R}} \vert o)$ as well as parts connectivity based on the boundary patches $p(q_{1},q_{2} \vert o)$.}
 \label{fig:rel}
 \end{figure}
 
@@ -171,7 +171,7 @@ More details can be found in Sec.~\ref{ann:icra} and~\ref{ann:cvpr}. %, availabl
 
 \subsubsection{Task 2.1 Integrating haptics into 3D compositional models}
 
-To achieve the objectives of Task 2.1, we have taken several steps. First, we implemented a framework for acquiring tactile information simultaneously with visual data, using our robotic framework. 
+To achieve the objectives of Task 2.1, we have taken several steps. First, we implemented a framework for acquiring tactile information simultaneously with visual data, using our robotic framework.
 
 Next, we recorded a dataset of Ikea objects, consisting of RGB and depth data, grasping information and tactile readings corresponding to the grasped patches of the object. In these experiments we used a parametrization suitable for our Schunk hand. Furthermore, using our developed compositional framework presented in Sec.~\ref{ann:cvpr}, we decompose an object into its constituent parts and associate the corresponding tactile features. The integration of visual and non-visual features was done in a probabilistic manner, as described in Sec.~\ref{ann:techReport}. One application of the proposed representation is object class recognition under uncertainty.
 
@@ -207,7 +207,7 @@ The steps performed to associate grasps to object parts are:
 \item Evaluate the association of grasps to object parts, by performing robotic experiments on a test set containing objects partially similar to the ones in the training set.
 \end{enumerate}
 
-The grasp template alignment procedure is based on our pose estimation algorithm~\cite{detry2010ac}, where the 6D pose dependent cross correlation between the shape distribution of the scene and a template is computed. 
+The grasp template alignment procedure is based on our pose estimation algorithm~\cite{detry2010ac}, where the 6D pose dependent cross correlation between the shape distribution of the scene and a template is computed.
 
 Next, in order to find a single best grasp for each template, we have developed a grasp inference algorithm which searches over a large number of hypothesis, while performing collision checking with the environment and checking inverse kinematics reachability of the gripper wrist pose hypothesis.
 
@@ -227,9 +227,9 @@ Finally, as future work we plan to analyze the stability of a grasp using haptic
 
 \subsection{Relation to the state-of-the-art}
 
-The main contribution of the results achieved for Task 2.3 lies in a successful design and implementation of a learnt compositional hierarchy. The main difference from other works \cite{rel2},\cite{comp2} introducing hierarchical compositional 3D object models, consists in the generalization and scale invariant properties of our representation. 
+The main contribution of the results achieved for Task 2.3 lies in a successful design and implementation of a learnt compositional hierarchy. The main difference from other works \cite{rel2},\cite{comp2} introducing hierarchical compositional 3D object models, consists in the generalization and scale invariant properties of our representation.
 
-Furthermore, by exploiting the relations between object parts, we were able to recognize novel object instances having a similar structure, while the local appearance of a part was different from the learned examples. Our method achieved an accuracy of 85\% for the recognition of novel object instances, outperforming state-of-the-art methods \cite{vfh}. 
+Furthermore, by exploiting the relations between object parts, we were able to recognize novel object instances having a similar structure, while the local appearance of a part was different from the learned examples. Our method achieved an accuracy of 85\% for the recognition of novel object instances, outperforming state-of-the-art methods \cite{vfh}.
 
 Moreover, our proposed method performed better at decomposing an object into parts, compared with \cite{rel7}, where the notion of object convexity and concavity was exploited for segmenting an object into parts.
 
@@ -240,13 +240,13 @@ In the state-of-the-art methods for part-based object recognition \cite{part2}, 
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR21}
 
-\newpage 
+\newpage
 
-\appendix 
+\appendix
 
 \section{Annexes}
 
-%Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
+%Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed.
 
 \subsection{Article: Learning 3D Object Parts through Grasping} \label{ann:icra}
 \begin{description}
@@ -258,13 +258,13 @@ In the state-of-the-art methods for part-based object recognition \cite{part2}, 
 \end{description}
 \includepdf[pages=-]{./attachedPapers/rezapouretal-icra2015.pdf}
 
-\subsection{Article: Learning Part-Based 3D Compositional Object Representations} \label{ann:cvpr} 
+\subsection{Article: Learning Part-Based 3D Compositional Object Representations} \label{ann:cvpr}
 \begin{description}
 	\item[Authors] Safoura Rezapour Lakani, Antonio J. Rodriguez-Sanchez and Justus Piater
 	\item[Info] Submitted to the 2015 IEEE Computer Vision and Pattern Recognition
 	\item[Abstract] This paper presents a novel approach to parts-based object representation from depth images. We propose a bottom-up compositional model for representing object classes. Our model uses a probabilistic approach to build object representations starting from small patches that are successively built up into regions, and finally meaningful (possibly graspable) parts . Parts represented this way are the main representatives of the identity of an object class. We have evaluated our method at parts recognition and object categorization, outperforming competing methods
 	\item[Relation with the deliverable] The paper presents a probabilistic model for learning object representations in a hierarchical manner. This representation is useful for all the tasks, as it enables forming objects by graspability (Task 2.3), it allows integration of non-visual features (Task 2.1), and it can be used for a refined scene description (Task 2.4)
-    \item[Attachment] (following pages until next annex) 
+    \item[Attachment] (following pages until next annex)
 \end{description}
 \includepdf[pages=-]{./attachedPapers/rezapouretal-cvpr2015.pdf}
 
@@ -274,7 +274,7 @@ In the state-of-the-art methods for part-based object recognition \cite{part2}, 
 \item[Info] Internal technical report
 \item[Abstract] The objective of this technical report is to introduce an object representation based on both visual and non-visual features such as haptics features. The multi-modal representation will allow us to infer visual information based on haptics information and vice-versa. The non-visual features are useful at object recognition in case of missing or incomplete visual observations. We have developed a 3D compositional part-based object representation, where the non-visual features are represented by tactile information after grasping an object
 \item[Relation with the deliverable] The technical report introduces a multi-modal representation which incorporates both visual and non-visual features
-\item[Attachment] (following pages until next annex) 
+\item[Attachment] (following pages until next annex)
 \end{description}
 \includepdf[pages=-]{./attachedPapers/rezapouretal-Tech2015.pdf}
 
@@ -284,7 +284,7 @@ In the state-of-the-art methods for part-based object recognition \cite{part2}, 
 \item[Info] Internal technical report
 \item[Abstract] The objective of this technical report is to associate graspability and haptic characteristics to object parts produced by a 3D compositional model. The advantage of the proposed method resides in the ability to perform robust grasping of novel object instances, composed of parts similar to the ones existing in the training set
 \item[Relation with the deliverable] The technical report introduces a method for associating grasp templates to object parts obtained using the 3D compositional model presented in Task 2.3
-\item[Attachment] (following pages) 
+\item[Attachment] (following pages)
 \end{description}
 \includepdf[pages=-]{./attachedPapers/rietzeler-techReport.pdf}
 
