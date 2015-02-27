@@ -47,7 +47,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent This deliverable describes the intermediate results of Tasks 2.1 and 2.2 as specified in the DoW. In this report the representations of shape and the inference methods developed are described along with the way in which grasps are attached to the object representations.
+\noindent This deliverable describes the intermediate results of Tasks 2.1 and 2.2 as specified in the DoW. In this report, the representations of shape and the inference methods developed are described along with the way in which grasps are attached to the object representations.
 \end{abstract}
 
 \vspace{.2em}
@@ -69,28 +69,29 @@ an approach for integrating non-visual features into the compositional
 hierarchy, as defined in Task 2.1.
 %, which is presented in detail in Annex \ref{ann:techReport}.
 
-Next, we present the association of graspability to object parts formed using a hhierarchical representation, according to Task 2.2. In addition, we propose a 
+Next, we present the association of graspability to object parts formed using a hierarchical representation, according to Task 2.2. In addition, we propose a 
 method for structuring compositional object models into semantically meaningful 
 parts, guided by their graspability.
 %, which is described in a submitted conference paper included in Annex \ref{ann:icvs}.
 
 \section*{Role of the Multi-modal compositional hierarchies in PaCMan}
 
-In WP2, we focus on integrating non-visual features into the multi-modal compositional hierarchy. compositional hierarchy. Furthermore, we propose forming semantically meaningful parts based on their functionality. Both these aspects contribute to a better 
+In WP2, we focus on integrating non-visual features into the multi-modal compositional hierarchy. Furthermore, we propose forming semantically meaningful parts based on their functionality. Both aspects contribute to a better 
 understanding of the environment and  will be used to refine object hypothesis, 
 decompose an object into graspable parts, as well as reasoning under incomplete 
-observations, either visual or non-visual.
+observations in the visual and non-visual domain.
 
 
 \section*{Contribution to the PaCMan scenario}
 
+The proposed algorithms will be used to process visual and non-visual information and to support reasoning under uncertainty in the dishwasher-scenarios addressed in WP5.
 information and to support reasoning under uncertainty in the 
 dishwasher-scenarios addressed in WP5. Furthermore, by using the algorithms 
 described in this report, a scene can be analyzed in a refined manner, by 
 extracting information not only about object classes, but also about the 
 semantically meaningful object parts and their graspability property. Moreover, 
-the analysis of the non-visual information, such as tactile information can be 
-used to analyze to success of an object grasp.
+the analysis of the non-visual information can be 
+used to analyze the success of an object grasp.
 
 \newpage
 
@@ -110,7 +111,7 @@ DR 2.1 addresses multi-modal compositional hierarchies for object representation
 Planned work for each Task in WP2 is as follows:
 \begin{enumerate}
 
-\item[] \textbf{Task 2.1} The objective of Task 2.1 consists of integration of 
+\item[] \textbf{Task 2.1} consists of integration of 
 non-visual features into the compositional model, by defining a suitable 
 parametrization of haptic features. Next, it addresses the development of 
 methods for incremental acquisition of haptic information and its incorporation 
@@ -120,7 +121,7 @@ into the multi-modal representation.
 compositional 3D model, by associating grasps to object parts learned using a 
 compositional approach.
 
-\item[] \textbf{Task 2.3} In Task 2.3, algorithms for structuring the 3D 
+\item[] \textbf{Task 2.3} develops algorithms for structuring the 3D 
 compositional models based on graspability are designed and implemented.
 
 \item[] \textbf{Task 2.4} addresses the detailed description of a scene, using 
@@ -142,15 +143,15 @@ better understanding of the performed work.
 
 We designed and implemented a method for structuring the 3D compositional models according to object part graspability.
 
-In order to associate graspability to an object part and to integrate it tactile information, this work uses, for the time being, a hierarchical model 
+In order to associate graspability to an object part and to integrate the tactile information, this work uses, for the time being, a hierarchical model 
 that forms just three levels at distinct levels of expressiveness (patches, 
 parts, and object), rather than the multi-layered approach of WP1. We are now 
 also investigating the attachment of grasps to 3D parts developed using the 
 approach of WP1.
 
-Object are represented in a compositional hierarchy where their parts are described by the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent patches.
+Objects are represented in a compositional hierarchy where their parts are described by the relationship between sub-parts, which are subsequently represented based on the relationships between small adjacent patches.
 
-We learn our model based on view-based RGB-D pointcloud data. We have developed a bottom-up compositional model which starts from the object points and reaches to the object category level.
+We learn our model based on view-based RGB-D point cloud data. We have developed a bottom-up compositional model which starts from the object points and reaches the object category level.
 
 Initially, the points form low-level patches. These patches construct the lowest level of our compositional model. In order to capture the different patch types in our dataset, we extract features from them, which quantize the distribution of normals inside the patch and
 perform clustering to form a patch codebook.
@@ -163,8 +164,7 @@ parts that are meaningful in robotic interaction.  Thus, parts are
 formed from object regions observed to be involved in robotic grasps,
 which is a particular novelty of our approach. An object is grasped in
 different ways, depending on its intended functionality.  Information
-gathered during grasping experiments is exploited in our framework for
-forming semantically meaningful parts.
+gathered during grasping experiments is exploited in our framework to build semantically meaningful parts.
 
 Furthermore, from the conceptual view of our hierarchical framework, our objective is to collect two types of information. First, we are interested in computing the probabilistic occurrence of a certain part in an object class. Secondly, we aim at learning the relations between the parts.
 
@@ -173,8 +173,8 @@ into its constituent parts, and assign each part to an entry in the
 part codebook. From the obtained part types, we collect statistics of
 occurrence of each part type in a certain object class.
 
-For obtaining the second type of information, regarding adjacency relations 
-between parts, we are rather interested in the way parts are connected. 
+To obtain the second type of information, regarding adjacency relations 
+between parts, we are rather interested in how parts are connected. 
 Therefore, we analyze the patches adjacent to the border between two adjacent 
 parts, instead of all the patches inside a part. Our assumption relies on the 
 fact that object instances which belong to one class have the same connection 
@@ -203,27 +203,23 @@ connectivity based on the boundary patches $p(q_{1},q_{2} \vert o)$.}
 \label{fig:rel}
 \end{figure}
 
-The novelty of our approach is two-fold. First, the proposed algorithm forms semantically meaningful object parts in a hierarchical manner, by exploiting the object functionality, and more specifically in our case the object graspability. Next, it provides a generalization mechanism for recognizing novel object instances, by exploiting the relations between adjacent parts, where the composition at each level of the hierarchy is learned from grasping experience.
-
-We evaluated our method on our collected Ikea Object Dataset \cite{website} and on the RGB-D Washington dataset \cite{rgbd-dataset}. Our approach achieved promising results, outperforming competing methods \cite{rel7}.
-
+The novelty of our approach is two-fold. First, the proposed algorithm forms semantically meaningful object parts in a hierarchical manner, by exploiting the object functionality, and more specifically in our case the object graspability. Next, it provides a generalization mechanism to recognize novel object instances by exploiting the relations between adjacent parts, where the composition at each level of the hierarchy is learned from grasping experience. We evaluated our method on our collected IKEA Object dataset~\cite{website} and on the RGB-D Washington dataset~\cite{rgbd-dataset}. Our approach achieved promising results, outperforming competing methods \cite{rel7}.
 %More details can be found in Annexes \ref{ann:icra} and \ref{ann:cvpr}.
 More details can be found in Sec.~\ref{ann:icvs} and~\ref{ann:cvpr}. %, available at~\href{./attachedPapers/rezapouretal-cvpr2015.pdf}{this link} and~\href{./attachedPapers/rezapouretal-icra2015.pdf}{this link}, respectively.
 
 
 \subsubsection{Task 2.1 Integrating haptics into 3D compositional models}
 
-The aim of Task 2.1 consists of integrating non-visual features into the 3D 
-compositional model.
-
+This task consists of integrating non-visual features into the 3D 
+compositional model. 
 To achieve the objectives of Task 2.1, we have taken several steps. First, we 
 implemented a framework for acquiring tactile information simultaneously with 
 visual data, using our robotic framework. 
 
-Next, we recorded a dataset of Ikea objects, consisting of RGB and depth data, 
+Next, we recorded a dataset of IKEA objects, consisting of RGB and depth data, 
 grasping information and tactile readings corresponding to the grasped patches 
 of the object. In these experiments we used a parametrization suitable for our 
-Schunk hand. In order to find a good parametrization of tactile features, we 
+SCHUNK dexterous hand. In order to find a good parametrization of tactile features, we 
 have done a pre-analysis of the acquired data, by extracting a set of features 
 such as object diameter, compressibility, standard deviation of intensity values 
 and translation and rotation invariant Chebyshev moments and using a multi-class 
@@ -237,8 +233,8 @@ Furthermore, using our developed compositional framework presented in Task 2.3
 and described in detail in Sec.~\ref{ann:cvpr}, we decompose an object into its 
 constituent parts and associate the corresponding tactile features. The 
 integration of visual and non-visual features is done in a probabilistic manner, 
-as described in the technical report included in Sec.~\ref{ann:techReport}. One 
-application of the proposed representation is object class recognition in case 
+as described in Sec.~\ref{ann:techReport}. One 
+application of the proposed representation is object class recognition in the case 
 of partial or missing sensory data, either visual or non-visual.
 
 The actual steps required for extracting tactile features and fusing them with 
@@ -254,35 +250,40 @@ visual features are:
   information in the absence of the other.
 \end{enumerate}
 
-\comment{[MP] New details will be added under this section, based on the input received from Pisa and from one of our students.}
+%\comment{[MP] New details will be added under this section, based on the input received from Pisa and from one of our students.}
+
+Particularly, point 1 will use the output of Task 3.1 in WP3 to properly feature extraction, which has already been completed and proved to be useful in fusing visual and non-visual information. This way, we can contrast the proposed approach to competitive approaches under the same framework and conditions.
 
 \subsubsection{Task 2.2 Integrating graspability into 3D compositional models}
 
-In this Task, we associated grasps to object parts, obtained using our proposed 
+In this task, we associated grasps to object parts, obtained using our proposed 
 compositional framework. This approach facilitates grasping unknown objects, 
 which are composed of parts similar to those learned by our hierarchical model. 
 To facilitate this task, we have designed and implemented a compositional 
 framework which is described in detail in Sec.~\ref{ann:cvpr}. The description 
 of the grasp representation and of the experimental setup is presented in Sec.~\ref{ann:techReportAlex}.
 %, available at~\href{./attachedPapers/rietzeler-techReport.pdf}{this link}.
-As an additional work, we also recorded a dataset of grasps performed by a 
-human operator with the Pisa/IIT SoftHand. Details on this dataset can be 
-found in Sec.~\ref{ann:techReportFederico}.
+%As an additional work, we also recorded a dataset of grasps performed by a  
+%human operator with the Pisa/IIT SoftHand. Details on this dataset can be 
+%found in Sec.~\ref{ann:techReportFederico}.
 
 The steps performed to associate grasps to object parts are:
 \begin{enumerate}
 \item Record a dataset of grasped object parts, by capturing object relative wrist pose of the gripper, tactile signature and kinesthetic signature (gripper joints).
 \item Detect and localize object parts using our proposed compositional model introduced in Task 2.3.
 \item Form a set of 3D shape templates according to different grasp types (pinch, spherical, and parallel).
-\item Given a scene, align the set of 3D shape templates to the cropped point-cloud sections, provided by the part recognition module and chose the best one according to an optimization procedure.
+\item Given a scene, align the set of 3D shape templates to the cropped point-cloud sections, provided by the part recognition module and choose the best one according to an optimization procedure.
 \item Evaluate the association of grasps to object parts, by performing robotic experiments on a test set containing objects partially similar to the ones in the training set.
 \end{enumerate}
+
+Concerning point 1, it is worth noting that from the beginning of the project, we agreed that the use of the Columbia Grasp Database~\ was to be replaced by the use of a database generated by UNIPI partner, given their expertise in similar experiments before. The UNIPI Grasp Database uses the Pisa/IIT SoftHand through a handle to allow subjects to position the hand arbitrarily.
+Sensor data and parameters was recorded including a point cloud of the scene to validate the proposed approach.
 
 The grasp template alignment procedure is based on our pose estimation algorithm~\cite{detry2010ac}, where the 6D pose dependent cross correlation between the shape distribution of the scene and a template is computed.
 
 Next, in order to find a single best grasp for each template, we have developed a grasp inference algorithm which searches over a large number of hypothesis, while performing collision checking with the environment and checking inverse kinematics reachability of the gripper wrist pose hypothesis.
 
-The performed experiments show the obtained grasp association score is of 70\%, 
+The performed experiments show that the obtained grasp association score is around 70\%, 
 while the prediction of successful from unsuccessful grasps based on haptic 
 features achieves an average accuracy of 80\%. The discussion of the 
 experimental results is included in Sec~\ref{ann:techReportAlex}.
@@ -296,14 +297,14 @@ and object classification and localization. A detailed description of the method
 and the achieved results can be found in Task 2.3, while we present next a brief 
 discussion of our main contributions.
 
-Due to the compositionality nature of our object representationin which object 
+Due to the constitutionality nature of our object representation which object 
 parts are described by the relationship between sub-parts, which are 
 subsequently represented based on the relationships between small adjacent 
 patches, we were able to obtain a high average recognition rate of 85\% on novel 
 object instances, composed of parts different from the ones in the training set. 
 The generalization property of our model is due to the fact that we learn the 
 relations between adjacent parts in an object and therefore our method is not 
-fully dependant on the structure of a part. Furthermore, our approach 
+fully dependent on the structure of a part. Furthermore, our approach 
 outperformed state-of-the-art methods \cite{vfh}, which achieved poor results 
 for novel object instances.
 
@@ -317,16 +318,14 @@ The main contribution of the results achieved for Task 2.3 lies in a successful 
 difference from other works \cite{rel2,comp2} introducing hierarchical 
 compositional 3D object models, consists in the generalization and scale 
 invariant properties of our representation. 
-
 Furthermore, by exploiting the relations between object parts, we were able to 
-
 recognize novel object instances having a similar structure, while the local 
 appearance of a part was different from the learned examples. Our method 
-achieved an accuracy of 85\% for the recognition of novel object instances, 
+achieved an accuracy of about 85\% for the recognition of novel object instances, 
 outperforming state-of-the-art methods \cite{vfh}. 
 
 Moreover, our proposed method performed better at decomposing an object into 
-parts, compared with \cite{rel7}, where the notion of object convexity and 
+parts, compared to \cite{rel7}, where the notion of object convexity and 
 concavity was exploited for segmenting an object into parts.
 
 In the state-of-the-art methods for part-based object recognition 
@@ -449,7 +448,7 @@ representation
 \end{description}
 \includepdf[pages=-]{./attachedPapers/kiechle-techReport.pdf}
 
-\subsection{Technical Report: Grasp Dataset performed by humans using the Pisa/IIT SoftHand} \label{ann:techReportFederico}
+\subsection{Technical Report: UNIPI Grasp Dataset performed by humans using the Pisa/IIT SoftHand} \label{ann:techReportFederico}
 \begin{description}
 \item[Authors] Federico Spinelli, Carlos J. Rosales, Edoardo Farnioli
 \item[Info] Internal technical report
