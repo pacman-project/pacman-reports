@@ -685,10 +685,10 @@ FUNCTION(ADD_LATEX_TARGETS_INTERNAL)
                        ${CMAKE_CURRENT_BINARY_DIR}/${LATEX_TARGET}.pdf
                        ${CMAKE_SOURCE_DIR}/pdf/${LATEX_TARGET}.pdf)
 
-    ADD_CUSTOM_COMMAND(TARGET ${LATEX_TARGET} POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_CURRENT_BINARY_DIR}/attachedPapers/
-                       ${CMAKE_SOURCE_DIR}/pdf/attachedPapers/)
+    # ADD_CUSTOM_COMMAND(TARGET ${LATEX_TARGET} POST_BUILD
+    #                COMMAND ${CMAKE_COMMAND} -E copy_directory
+    #                    ${CMAKE_CURRENT_BINARY_DIR}/attachedPapers/
+    #                    ${CMAKE_SOURCE_DIR}/pdf/attachedPapers/)
 
 ENDFUNCTION(ADD_LATEX_TARGETS_INTERNAL)
 
