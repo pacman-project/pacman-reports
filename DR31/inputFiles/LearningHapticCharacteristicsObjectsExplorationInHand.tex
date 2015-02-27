@@ -1,10 +1,5 @@
 %%% Learning the haptic characteristics of objects by exploration in-hand
 
-\subsubsection{Learning the haptic characteristics of objects by exploration in-hand}
-\label{sec:ControlAlgorithms}
-
-This report used a fixture device as the supporting hand, and a 7 DOF robot as the exploratory finger. It is worth mentioning that a strategy for concurrent stable object grasping was demonstrated in DR5.1, and assumed to be given for the work presented here, and here we refer to the haptic exploration strategies only.
-
 \paragraph{(a) Definition of control strategies for concurrent stable object grasping and object surface tracing for haptic exploration}
 
 An Arimoto-PD regulator provides the required torques to track a reference position. The position control law is
@@ -214,11 +209,11 @@ Based on the previous control framework, rolling over a surface is achieved by d
         \omega_{dz}\\
     \end{array}\right),
 \end{equation}
-where $\omega_{dy}$ and $\omega_{dz}$ are the scalar components of the desired rolling velocity, and $\sqrt{{\omega_{dy}}^2+{\omega_{dx}}^2}$ is the norm of the assigned velocity. This is called the rolling primitve.
+where $\omega_{dy}$ and $\omega_{dz}$ are the scalar components of the desired rolling velocity, and $\sqrt{{\omega_{dy}}^2+{\omega_{dx}}^2}$ is the norm of the assigned velocity. This is called the rolling primitive.
 
 The desired twist of the fingertip center and the desired joint angle rates rate of joint angles are obtained as in the previous paragraph.
 
-To estimate the curvature of the unknown surface, which is a second-order property, it is possible to use Montata's equations for two object in pure rolling contact, namely
+To estimate the curvature of the unknown surface, which is a second-order property, it is possible to use Montana's equations for two object in pure rolling contact, namely
 \begin{equation}
 M_f \dot{\alpha}_f=(K_f+\tilde{K}_0)^{-1}
 \left[
@@ -357,7 +352,7 @@ and the dynamic friction coefficient at the contact point can be readily obtaine
     \mu_{d} = \lVert{\mathbf{f}_{t}}\rVert/\lVert{\mathbf{f}_{n}}\rVert.
 \end{equation}
 
-Knowing the fingertip material and using a usal look-up table fo friction coefficients, one can query by the pair material-dynamic coefficient, and thus obtain the static coefficient, as a well as the object material.
+Knowing the fingertip material and using a typical look-up table for friction coefficients, one can query by the pair material-dynamic coefficient, and thus obtain the static coefficient, as a well as the object material.
 
 Finally, the compensation will be achieved by adding the term
 \begin{equation}
@@ -443,7 +438,7 @@ Fig.~\ref{fig:NormCompContForce} shows the track of the normal component of the 
 \label{fig:TangCompForce}
 \end{figure}
 
-The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where the KUKA LWR was equipped with an ATI Nano 17 force torque sensor. The estimated principal curvatures are summarized in Table~\ref{tab:results}. Note that the sphere is a basketball, whose official radius is 11,92-12,07cm, as well as the large values for the plane and one of the pricnipal curvatures on the cylinder.
+The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where the KUKA LWR was equipped with an ATI Nano 17 force torque sensor. The estimated principal curvatures are summarized in Table~\ref{tab:results}. Note that the sphere is a basketball, whose official radius is 11,92-12,07cm, as well as the large values for the plane and one of the principal curvatures on the cylinder.
 
 \begin{table}
 \centering
@@ -481,13 +476,13 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
 
 \begin{figure}[!b]
   \begin{center}
-    \includegraphics[width=1.0\linewidth]{sliding}
+    \includegraphics[width=0.8\linewidth]{sliding}
   \end{center}
   \caption{The shape is acquired by an RGBD sensor and the friction coefficients by the intrinsic tactile sensor, both shape~$f(\mathbf{x})$ and friction~$m(\mathbf{x})$ functions are represented as a Gaussian Process $\mathcal{GP}(0,k(\cdot))$. The exploration follows geodesic flows~$\gamma_i$ on the surface of a fixed object using a compliant behavior.}
   \label{fig:schema}
 \end{figure}
 
-The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection. Only sliding controller was used since the friction coefficient is simpler to retrive using that primitive. More details on the methodology can be found in the attached paper~\cite{Active2014Rosales} available at~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{this link}.
+The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection. Only sliding controller was used since the friction coefficient is simpler to retrieve using that primitive. More details on the methodology can be found in Sec.~\ref{sec:slidingPointClouds}.% available at~\href{./attachedPapers/ActiveGatheringOfFrictionalPropertiesFromObjects.pdf}{this link}.
 
 % \begin{figure}[th]
 %     \centering
