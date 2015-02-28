@@ -1,4 +1,4 @@
-\subsection{Kuka LWR4+}
+\subsection{Software: Kuka LWR4+ package}
 \label{sec:kuka}
 
 The KUKA Lightweight Robot IV shown in Fig.~\ref{fig:kuka_arm} is a 7-axis industrial manipulator which finds a wide employment in robotic research due to its flexibility and modularity.
@@ -13,7 +13,7 @@ Each joint is equipped with a position and a torque sensor, which allow the robo
 \end{figure}
 
 \subsubsection{Hardware interface}
-The robot provides three different control strategies as default setting, which are described below~\cite{kukafri}.
+The real robot controller provides three different control strategies described below~\cite{kukafri}.
 
 \paragraph{Position Controller}
 Desired joint positions are regulated through the use of an internal \textit{PID} as
@@ -46,7 +46,7 @@ As seen in Fig.~\ref{fig:rosgazebointeraction}, there are two hardware interface
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Implemented Controllers}\nocite{siciliano09}\nocite{bicchi13}
+\subsubsection{Implemented Controllers}%\nocite{siciliano09}\nocite{bicchi13}
 Exploiting the force $\tau_{FRI}$ in \eqref{eq:axisspecificstiffnesscontroller} (which will be the control strategy used for this project's purpose) as external torque command, a new set of ROS-enabled controllers has been developed in \textit{C++} language\footnote{Source code available at \url{https://github.com/CentroEPiaggio/kuka-lwr}}, following some interesting paradigms available in the robotics literature.
 
 %\subsection{Robot Control Problem Definition}

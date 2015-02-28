@@ -1,6 +1,7 @@
 %%% Learning the haptic characteristics of objects by exploration in-hand
 
 \subsection{Definition of control strategies for concurrent stable object grasping and object surface tracing for haptic exploration}
+\label{sec:start}
 
 An Arimoto-PD regulator provides the required torques to track a reference position. The position control law is
 \begin{equation}
@@ -196,6 +197,7 @@ where $\Delta_T$ is the control period.
 % with $\Gamma_f$ and $\Gamma_d$ positive definite matrices.
 
 \subsection{Definition of control strategies for concurrent stable object grasping and rolling manipulation to acquire second-order object surface properties}
+\label{sec:rolling}
 
 Based on the previous control framework, rolling over a surface is achieved by defining a reference velocity of the contact point for a pure revolution about an axis laying on the tangent plane and passing through the contact point. Similar to the previous section, the desired twist of the contact point $C$ written with respect to $\left\lbrace T \right\rbrace$ is
 \begin{equation}
@@ -473,6 +475,7 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
 %This results will be tested again in the new simulation framework presented in~\ref{sec:Simulation}.
 
 \subsection{Integration of object/part model obtained from vision with the code for reactive haptic exploration strategies}
+\label{sec:end}
 
 \begin{figure}[!b]
   \begin{center}

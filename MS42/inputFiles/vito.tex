@@ -1,7 +1,7 @@
-\subsection{Vito, the UNIPI robot}
+\subsection{Software: Vito, the UNIPI robot, package}
 \label{sec:vito}
 
-Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and UoB robots, respectively. It is a bi-manual robot with a high quality head on top provided by Karlsruhe Institue of Technology. The difference with the other two robots is that Vito uses two Pisa/IIT SoftHands as end-effectors as the default setup. However, its modularity allows him to exchange tools such as a DLR hand, an intrinsic tactile sensors like the one used in DR 3.1, or as an object scanner when using an RGB-D camera and a turntable. Fig.~\ref{fig:vito_gazebo} shows Vito uploaded in the Gazebo environment.
+Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and UoB robots, respectively. It is a bi-manual robot with a high quality head. The difference with the other two robots is that Vito uses two Pisa/IIT SoftHands as end-effectors as the default setup. However, its modularity allows him to exchange tools such as a DLR hand, an intrinsic tactile sensors like the one used in DR 3.1, or as an object scanner when using an RGB-D camera and a turntable. Fig.~\ref{fig:vito_gazebo} shows Vito uploaded in the Gazebo environment. The package is accesible through the project website~\cite{PACMAN_software}.
 
 \begin{figure}[h]
 \centering
@@ -12,7 +12,7 @@ Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and U
 
 \subsubsection{Models and modularity}
 
-All modules, namely arm, hand and head, were developed in such manner that they can be instantiated to create more complex robots like Vito in a very easy and moddular way. In Fig~\ref{fig:vito}, or by clicking \href{https://github.com/CentroEPiaggio/vito_robot/blob/master/vito_description/robot/vito.urdf.xacro}{here}, you can see the actual complete specification of the Vito model. On the top, you see the inclusion of the models, some of them are specific to the robot, such as the torso, table, and couplers, and others are imported such as the arm, hand and head.
+All modules, namely the KUKA LWR arm (Sec.~\ref{sec:kuka}, the Pisa/IIT SoftHand (Sec.~\ref{sec:softhand}) and KIT Head (Sec.~\ref{sec:kithead}), were developed in such manner that they can be instantiated to create more complex robots like Vito in a very easy and moddular way. In Fig~\ref{fig:vito}, or by clicking \href{https://github.com/CentroEPiaggio/vito_robot/blob/master/vito_description/robot/vito.urdf.xacro}{here}, you can see the actual complete specification of the Vito model. On the top, you see the inclusion of the models, some of them are specific to the robot, such as the torso, table, and couplers, and others are imported such as the arm, hand and head.
 
 \begin{figure}
 \tiny

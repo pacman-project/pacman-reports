@@ -43,11 +43,11 @@
 
 \title{Reactive haptic exploration control strategies ready for integration with planning}
 \deliverableid{Milestone 4.2}
-\author{M. Bonilla, C. Rosales, M. Gabiccini}
+\author{C. Rosales, M. Bonilla, M. Gabiccini}
 \address{Centro di Ricerca ``E. Piaggio'', Universit\`{a} di Pisa}
-\email{manuel.bonilla@centropiaggio.unipi.t}
+\email{carlos.rosales@for.unipi.t}
 \headertitle{Exploration strategies}
-\headerauthor{M. Bonilla, C. Rosales, M. Gabiccini}
+\headerauthor{C. Rosales, M. Bonilla, M. Gabiccini}
 \duedate{2015-02-28}
 \submissiondate{2014-02-28}
 \leadpartner{Universit\`{a} di Pisa}
@@ -65,7 +65,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent This milestone details the work performed to integrate planning and execution phases involving object exploration and grasping. It aims to describe in detail the output of WP3, particularly the results of completing Task 3.1.
+\noindent This milestone details the work performed to integrate planning and execution phases involving object exploration and grasping. It describes in detail the output of WP3, particularly the results of completing Task 3.1 reported in DR 3.1.
 \end{abstract}
 
 
@@ -83,18 +83,18 @@
 
 \section{Milestone Summary and Context}
 
-This milestone describes the work performed to integrate planning and execution phases concerning object exploration and grasping using a bimanual robot.
+This milestone describes the work performed to integrate planning and execution phases concerning object exploration. Particularly, it is associated with the results obtained during the completion of Task 3.1, reported in DR 3.1. In the next section we detail the contributions on the activities planned for that task. 
 
 %The main contributions are 1) the technical implementation of hardware interfaces to command the KUKA LWR arm using ROS and 2)  the implementation of different classical controllers to move the robot using torque references.
 
 %The first contribution is useful to command the robot using torque commands easier that using the actual KUKA FRI interface. The second helps to execute trajectories coming from planning phase, and to move the robot to desired references under different situations such as dynamic model uncertainty and different redundancy resolution at kinematic and dynamic levels. 
 
-The platform presented in this milestone is of great importance within the PaCMan project the implementation, testing and validation of the development algorithms .
+%The platform presented in this milestone is of great importance within the PaCMan project the implementation, testing and validation of the development algorithms .
 
 
 %In recent years, there has been growing interest in the development of a standardized framework for robotic implementations, where the robots interdisciplinary code and software could be easy to write and accessible to everyone. This is the philosophy of the \textit{Robot Operating System} (\textbf{ROS}), a flexible framework which provides all the instruments to develop and build robust and robot-independent applications, allowing researchers from different fields of robotics to share each others works with the great result of spreading the know-how.
 
-Since ROS is the software framework used in PaCMan we developed a hardware interface for the robots used in the experimental platforms. However, this interface is just useful to command the robot using torque references. There are different strategies to generate the torque references to move a robot manipulator, they are designed for different situation for example under uncertainty, which main problem faced in PaCMan Project, in this case in the robot dynamics. Other strategies to deal with multi-goal references at kinematic and dynamic level were also implemented.
+%Since ROS is the software framework used in PaCMan we developed a hardware interface for the robots used in the experimental platforms. However, this interface is just useful to command the robot using torque references. There are different strategies to generate the torque references to move a robot manipulator, they are designed for different situation for example under uncertainty, which main problem faced in PaCMan Project, in this case in the robot dynamics. Other strategies to deal with multi-goal references at kinematic and dynamic level were also implemented.
 
 % What was the milestone that you are examining? What were the criteria for achieving it? What role does achievement of the milestone play in the whole project? How will its achievement as presented in this report contribute to the PaCMan scenarios and prototypes? 
 
@@ -102,14 +102,25 @@ Since ROS is the software framework used in PaCMan we developed a hardware inter
 
 % The aim of this milestone report is focused on the development of a ROS-enabled software environment for controlling the manipulator KUKA LWR IV, used in the PaCMan platforms. 
 
-After a first phase of studying and analyzing some of the novel approaches for robot control, the default control strategies provided by the manufacturer has been extended, implementing a new set of controllers.
-The development of the controllers, including tuning and debugging, has been realized with the support of \textit{Gazebo}, a high performance realistic simulator which, interacting with ROS, gives the opportunity to test the efficiency of user-implemented control algorithms. 
+%After a first phase of studying and analyzing some of the novel approaches for robot control, the default control strategies provided by the manufacturer has been extended, implementing a new set of controllers.
+%The development of the controllers, including tuning and debugging, has been realized with the support of \textit{Gazebo}, a high performance realistic simulator which, interacting with ROS, gives the opportunity to test the efficiency of user-implemented control algorithms. 
 
 %Finally, the last phase consisted in pursuing experiments to test the implemented control strategies on the physical robot, arising a variety of practical issues which don't come out in simulation, that are explained in detail in this document.
 
-Controllers are available within the UNIPI \href{https://github.com/CentroEPiaggio/kuka-lwr}{KUKA LWR ROS package}, which is one of the components required by the Vito robot package freely available in the project website~\cite{PACMAN_software}. All packages within follow a dual implementation for real and simulated hardware, hence the same chosen controller can be tested in both scenarios with few or none extra-effort on the setup. Sec.~\ref{} describes Vito, the UNIPI robot as an alternative testbed for the project development.
+Moreover, we introduce \href{https://github.com/CentroEPiaggio/vito_robot}{Vito, the UNIPI robot}, package, a comprehensive real/simulation testbed for the project development comprising active exploration, gazing, grasping and manipulation~(Sec.~\ref{sec:vito}). The package is freely available in the project website~\cite{PACMAN_software}.
+
+The testbed was not available during the task development, however, sliding and rolling controllers developed in this milestone described in~\ref{sec:start} and~\ref{ref:rolling}, as well as other useful controllers such as those yielding Cartesian compliance for previous-to-contact actions, are already integrated in the \href{https://github.com/CentroEPiaggio/kuka-lwr}{KUKA LWR package} described in Sec.~\ref{sec:kuka} as component of Vito. The package follows a real/simulation implementation of the hardware as well, hence controllers can be tested in both scenarios with few or none extra-effort.
 
 \section{Report on Milestone Achievement}
+
+The milestone achievement is reflected in two facts:
+\begin{enumerate}
+	\item Task 3.1 completion reported in DR 3.1. This is the main goal of the milestone, and here we detail step by step the initial planned activities related to this task in Sec.~\ref{sec:start}-\ref{sec:end}.
+
+	\item Open-source release of Vito, the UNIPI robot, package, a comprehensive real/simulation testbed comprising active exploration, gazing, grasping and manipulation capabilities (Sec.~\ref{sec:vito}). The release of this package implied the open-sourcing of the KUKA LWR package~(Sec.~\ref{sec:kuka}) as part of Vito. This arm is widely used in robotic research applications and currently open-source software related to this arm requires tedious and long installation procedures, and most of the times, with specific system requirements. In contrast, this package is designed to fit in a regular desktop PC using Ubuntu 14.04 LTS. Since its release in mid-January, this package has received attention from the community, and it is starting to be used in other research institutes such as the Technical University of Munich and the Institute of Intelligent Systems and Robotics (ISIR-UPMC) in Paris.
+\end{enumerate}
+
+Next, we describe the steps followed to accomplish Task 3.1 reported in DR 3.1, that lead to the successful integration of haptic object exploration control strategies with planning using visual input.
 
 \input{./inputFiles/LearningHapticCharacteristicsObjectsExplorationInHand}
 
