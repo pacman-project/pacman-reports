@@ -461,13 +461,13 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
 
 \begin{figure}[!h]
     \centering
-    \label{fig:curvature}
     \mbox{
     \includegraphics[width=.33\linewidth]{plane}
     \includegraphics[width=.33\linewidth]{cylinder}
     \includegraphics[width=.33\linewidth]{basketball}
     }
     \caption{Test objects for curvature estimation test on a plane (left), a cylinder (middle), and a sphere (right).}
+    \label{fig:curvature}
     \vspace{9pt}
 \end{figure}
 
@@ -485,7 +485,7 @@ The tests were taken to a real scenario shown in Fig.~\ref{fig:curvature}, where
   \label{fig:schema}
 \end{figure}
 
-The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes, as shown in Fig~\ref{fig:geodesic_examples}. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection, and previously identified. Only sliding controller was used since the friction coefficient is simpler to retrieve using that primitive. 
+The setup overview is depicted in Fig.~\ref{fig:schema}. The approach used Gaussian Processes to represent both shape and fiction coefficient. This representation was successfully exploited to generate exploratory trajectories on the object surface, even with arbitrary shapes, as shown in Fig~\ref{fig:geodesic_examples}. The normal contact force was used to distinguish between the contact and the non-contact states. The exploratory probe was the same as in the previous paragraph, with an additional compliant coupler for safety and sensor protection, and previously identified. Only sliding controller was used since the friction coefficient is simpler to retrieve using that primitive.
 
 % The visual information is encoded using a Gaussian Process which then is exploited to generate trajectories over the object surface, which then is explored by means of sliding controllers implemented within the project (see MS 4.2 and Sec~\ref{sec:slidingPointClouds}). The friction coefficient is also encoded using a Gaussian process using both visual and tactile shape measurements. The latter provides a common probabilistic framework for both representations, however, we plan to replace such codification with the output of WP 2 during year 3.
 

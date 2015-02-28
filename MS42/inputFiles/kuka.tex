@@ -2,8 +2,8 @@
 \label{sec:kuka}
 
 The KUKA Lightweight Robot IV shown in Fig.~\ref{fig:kuka_arm} is a 7-axis industrial manipulator which finds a wide employment in robotic research due to its flexibility and modularity.
-%, including a payload capacity of 7 Kg. 
-%In addition, the seventh axis makes the robot redundant, which mean that, for a given position and orientation of the end effector, there exist multiple configurations in the joints space. 
+%, including a payload capacity of 7 Kg.
+%In addition, the seventh axis makes the robot redundant, which mean that, for a given position and orientation of the end effector, there exist multiple configurations in the joints space.
 Each joint is equipped with a position and a torque sensor, which allow the robot to be regulated using position, velocity and torque commands.
 \begin{figure}
 \centering
@@ -73,7 +73,7 @@ Given desired joint positions, velocities and accelerations, the required joint 
 \end{equation*}
 But the limit of this control law is that, the tracking is assured only if the initial condition errors are zero ($ q(0)=q_d(0),\dot{q}(0)=\dot{q_d}(0) $). To cope with these model uncertainties, a \textit{feedback} action must be added to the controller, implemented as a simple PD. The result is the computed torque control law (control scheme in \autoref{fig:computedtorque})
 \begin{equation}
-\tau(q,\dot{q},e,\dot{e}) = \underbrace{M(q)\ddot{q_d} + C(q,\dot{q})\dot{q} + g(q)}_{\tau_{feedforward}} + 
+\tau(q,\dot{q},e,\dot{e}) = \underbrace{M(q)\ddot{q_d} + C(q,\dot{q})\dot{q} + g(q)}_{\tau_{feedforward}} +
 \underbrace{K_p'e + K_v'\dot{e}}_{\tau_{feedback}},
 \end{equation}
 where $ K_p' $ and $ K_v' $ are positive-definite matrices and $ e = q_d-q $ is the tracking error.
@@ -104,7 +104,7 @@ It is important to note that, if matrices $ K_p $ and $ K_v $ are diagonal, it l
 \draw [->](sum2) -- (motors);
 \draw [->](motors) -- node[name=I]{$I$}(output);
 \draw [->](I) |- (measurements);
-\draw [->](measurements) -| node[pos=0.95]{$-$} node[near end]{$q,\dot{q}$}(sum1); 
+\draw [->](measurements) -| node[pos=0.95]{$-$} node[near end]{$q,\dot{q}$}(sum1);
 \end{tikzpicture}
 \caption[Control scheme for Computed Torque controller.]{Control scheme for Computed Torque controller. $I$ is the vector of output current measured from joint actuators which is then transduced to joint positions and velocity.}
 \label{fig:computedtorque}
@@ -112,7 +112,7 @@ It is important to note that, if matrices $ K_p $ and $ K_v $ are diagonal, it l
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Inverse Kinematics-based Controller}
-Given an end-effector position and orientation, the problem of inverse kinematics consists in determining the corresponding joint configurations. Since the system to solve is in general nonlinear, it's not possible to compute a solution in closed-form. This leads to different scenarios, i.e.\ no admissible solutions in presence of structure singularities, multiple or infinite solutions if the robot is redundant (which is the case of KUKA LWR IV, see Section \ref{sec:therobot}). As an extension of the forward and inverse kinematics problem, it is also possible to define a relationship between the end-effector linear and angular velocity and the joint velocities as follows
+Given an end-effector position and orientation, the problem of inverse kinematics consists in determining the corresponding joint configurations. Since the system to solve is in general nonlinear, it's not possible to compute a solution in closed-form. This leads to different scenarios, i.e.\ no admissible solutions in presence of structure singularities, multiple or infinite solutions if the robot is redundant. As an extension of the forward and inverse kinematics problem, it is also possible to define a relationship between the end-effector linear and angular velocity and the joint velocities as follows
 \begin{equation}
 \dot{x} = J\dot{q} \hspace{1cm} q \in \mathbb{R}^n,\,x \in \mathbb{R}^m
 \label{eq:diffkinematics}
@@ -122,7 +122,7 @@ representing the \textit{Differential Kinematics} equation. The mapping is descr
 \dot{q} = J^+\dot{x}
 \end{equation}
 where $J^+$ is a generalized inverse of the Jacobian. For the project's purpose, it has been implemented in ROS as the Moore-Penrose damped pseudo-inverse through the SVD method, denoted in the sequel as $J^{\dagger}$.\\
-In view of the operational space formulation, given a desired end-effector pose $x_d$ and velocity $\dot{x}_d$, a task can be defined as 
+In view of the operational space formulation, given a desired end-effector pose $x_d$ and velocity $\dot{x}_d$, a task can be defined as
 \begin{equation}
 e = x_d - x(t)
 \end{equation}
@@ -154,11 +154,11 @@ where $K$ is a positive definite gain matrix (usually diagonal).
 \draw [->](K) -- (sum2);
 \draw [->](sum2) -- (jac_inv);
 \draw [->](jac_inv) -- node{$\dot{q}$} (integral);
-\draw [->](integral) -- node[intersection,anchor=base,name=q]{} 
+\draw [->](integral) -- node[intersection,anchor=base,name=q]{}
 		   node[near end]{$q$} (output);
 \draw [->](q) |- (tmp) -| (jac_inv);
 \draw [->](q) |- (forw_kin);
-\draw [->](forw_kin) -|  node[pos=0.55]{$x_e$} node[pos=0.95]{$-$} (sum1); 
+\draw [->](forw_kin) -|  node[pos=0.55]{$x_e$} node[pos=0.95]{$-$} (sum1);
 \end{tikzpicture}
 
 \caption{Control scheme for Differential Inverse Kinematics-based controller.}
@@ -198,7 +198,7 @@ where $P_i$ is the projection operator onto the null-space of $J_i$ and the robo
 \paragraph{Inverse Dynamics-based Controller}
 The problem of inverse dynamics in the operational space consists in the determination of the joint torques $\tau$ that realizes a specific motion $\ddot{e}^*$ assigned in terms of $\ddot{x}_d,\dot{x}_d,x_d$, the end-effector desired acceleration,velocity and position
 \begin{equation}
-\ddot{e}^* = \ddot{x}_d + K_d(\dot{x}_d - \dot{x}) + K_p(x_d - x) = 
+\ddot{e}^* = \ddot{x}_d + K_d(\dot{x}_d - \dot{x}) + K_p(x_d - x) =
 \ddot{x}_d + K_{d}\dot{e} + K_{p}e
 \end{equation}
 where $K_p$ and $K_d$ are positive definite diagonal matrices. Recalling the manipulator dynamic model in the compact form \eqref{eq:compactrobotdynamics}, the choice of the \textit{inverse dynamics control}
@@ -297,7 +297,7 @@ Backstepping is a recursive methodology for designing both feedback control laws
 \end{dcases}
 \label{eq:backsteppingsystem}
 \end{equation}
-with $\xi_1\in\mathbb{R}^{n_1}, \xi_2\in\mathbb{R}^{n_2},u\in\mathbb{R}^{n_2}$ and $\ell(\xi_1,\xi_2)\in\mathbb{R}^{n_2 \times n_2}$ is invertible for all $\xi_1,\xi_2$. Assume that a stabilizing feedback law $u'=\Gamma(\xi_1)$ exists for the subsystem 
+with $\xi_1\in\mathbb{R}^{n_1}, \xi_2\in\mathbb{R}^{n_2},u\in\mathbb{R}^{n_2}$ and $\ell(\xi_1,\xi_2)\in\mathbb{R}^{n_2 \times n_2}$ is invertible for all $\xi_1,\xi_2$. Assume that a stabilizing feedback law $u'=\Gamma(\xi_1)$ exists for the subsystem
 \begin{equation}
 \dot{\xi}_1 = f(\xi_1) + g(\xi_1)u'
 \end{equation}
@@ -331,7 +331,7 @@ where
 s &= \dot{e} + \Lambda{e}\\
 &= \dot{q} - (\dot{q}_d - \Lambda{e}) = \dot{q} - \dot{q}_r
 \end{align*}
-and $\dot{q}_r$ is the so-called reference velocity. 
+and $\dot{q}_r$ is the so-called reference velocity.
 
 \begin{figure}
 	\centering
@@ -401,7 +401,7 @@ where $K_d\in\mathbb{R}^{n \times n}$ is a diagonal symmetric positive definite 
 One issue found during the implementation of controllers is the absence of joint velocity values. While the simulated hardware interface takes the joint velocity from simulation, the KUKA LWR arm is equipped with position and torque sensors. Thus, the need to derive the velocities from the position values through a process of online differentiation is prominent. The following methods were visited.
 
 \paragraph{Levant Robust Differentiator}
-This method is based on the sliding mode theory and gives asymptotically exact derivatives~\cite{levant06}. In comparison with the Euler method, Levant differentiator performs significantly better in terms of noise rejection and derivation of signals, but the major flaw which led this method to be discarded is that introduces a relevant phase shift. 
+This method is based on the sliding mode theory and gives asymptotically exact derivatives~\cite{levant06}. In comparison with the Euler method, Levant differentiator performs significantly better in terms of noise rejection and derivation of signals, but the major flaw which led this method to be discarded is that introduces a relevant phase shift.
 \paragraph{Euler method}
 This is one of the most basic techniques to compute numerical differentiation and follows the equation
 \begin{equation}
@@ -430,4 +430,4 @@ where $\tilde{\dot{q}}$ denotes the smoothed value and $\alpha\in(0,1)$ is the s
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \paragraph{Gravity Compensation}
-% Recalling the built-in controllers \eqref{eq:cartesianstiffnesscontroller}, \eqref{eq:axisspecificstiffnesscontroller} of the KUKA LWR arm, the term $f_{dynamics}(q,\dot{q},\ddot{q})$ must be analyzed. It refers to the gravity compensation performed internally by the robot, in a way that the commanded torque isn't indeed affected by the gravitational field. This, unfortunately, generates a conflict between the internal compensation and the whole control law, which at dynamic level requires the knowledge of the gravitational force to compute the input torques. Since such term can't be forced to zero, one workaround could be that of not considering the gravity ($g(q)=0$) in all model-based controller, introducing a really negligible error.
+% Recalling the built-in controllers \eqref{eq:cartesianstiffnesscontroller}, \eqref{eq:axisspecificstiffnesscontroller} of the KUKA LWR arm, the term $f_{dynamics}(q,\dot{q},\ddot{q})$ must be analyzed. It refers to the gravity compensation performed internally by the robot, in a way that the commanded torque isn't indeed affected by the gravitational field. This, unfortunately, generates a conflict between the internal compensation and the whole control law, which at dynamic level requires the knowledge of the gravitational force to compute the input torques. Since such term can't be forced to zero, one workaround could be that of not considering the gravity ($g(q)=0$) in all model-based controller, introducing a really negligible error. 
