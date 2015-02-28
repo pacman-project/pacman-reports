@@ -216,16 +216,17 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 \includepdf[pages=-]{./attachedPapers/GraspingNovelObjects.pdf}
 
 % grasping under uncertainty
-% \subsection{Book chapter/Article/Technical Report: \em TITLE grasping under uncertainty} \label{ann:uncertaintyGrasps}
-% \begin{description}
-%     \item[Authors] \em AUTHORS
-%     \item[Info] \em UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
-%     \item[Abstract] \em ABSTRACT
-%     \item \textbf{Relation with the deliverable}: \em SELF EXPLAIN
-%     \item[Attachment] (following pages until next annex)
-% \end{description}
+\subsection{Technical Report: \em Informational Reward Planning for
+Dexterous Grasping in Unstructured Environments} \label{ann:uncertaintyGrasps}
+\begin{description}
+     \item[Authors] \em Claudio Zito and Jeremy L. Wyatt
+      \item[Info] \em Unpublished.
+      \item[Abstract] \em  Dexterous grasping of objects with uncertain pose is a hard unsolved problem in robotics. In this work we extend our proposed solution to this problem using information gain re-planning. We present a new set of algorithms that enable: i) re-planning while maintaining the configuration of the robot in contact with the object when an unexpected contact occurs, ii) planning of dexterous grasping trajectories for non-convex object shapes by implementing efficient collision detection for point clouds, and iii) use of an active complaint controller to allow continuous contact while minimising the risk of perturbing the object being grasped. First we show how tactile information, acquired during a failed attempt to grasp an object can be used to refine the estimate of that object’s pose. Second, we show how this information can be used to re-plan new reach to grasp trajectories for successive grasp attempts. Third, we show how complex, dexterous grasping trajectories can be efficiently planned for a non-convex object described as a point cloud. Finally we present IR3ne, our information reward based algorithm, to show how reach-to-grasp trajectories can be modified, so that they maximise the expected tactile information gain, while simultaneously delivering the hand to the grasp configuration that is most likely to succeed. The method is demonstrated in trials with a simulated robot. Sequential re-planning is shown to achieve a greater success rate than single grasp attempts, and IR3ne, with its trajectories that maximise information gain, requires fewer re-planning iterations than conventional planning methods before a grasp is achieved. 
+     \item \textbf{Relation with the deliverable}: \em This report describes our work on Task 4.4, grasping under uncertainty.
+     \item[Attachment] (following pages until next annex)
+ \end{description}
 % to be included
-%\includepdf[pages=-]{./attachedPapers/GraspingNovelObjects.pdf}
+\includepdf[pages=-]{./attachedPapers/GraspingUnderUncertainty.pdf}
 
 \subsection{Article: Sample-based motion planning for soft robot manipulators under task constraints} \label{ann:softPlanning}
 \begin{description}
