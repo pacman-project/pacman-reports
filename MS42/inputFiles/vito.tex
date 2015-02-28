@@ -1,7 +1,7 @@
 \subsection{Software: Vito, the UNIPI robot, package}
 \label{sec:vito}
 
-Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and UoB robots, respectively. It is a bi-manual robot with a high quality head. The difference with the other two robots is that Vito uses two Pisa/IIT SoftHands as end-effectors as the default setup. However, its modularity allows him to exchange tools such as a DLR hand, an intrinsic tactile sensors like the one used in DR 3.1, or as an object scanner when using an RGB-D camera and a turntable. Fig.~\ref{fig:vito_gazebo} shows Vito uploaded in the Gazebo environment. The package is accessible through the project website~\cite{PACMAN_software}.
+Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and UoB robots, respectively. It is a bi-manual robot with a high quality head. The difference with the other two robots is that Vito uses two Pisa/IIT SoftHand as end-effectors as the default setup. However, its modularity allows it to exchange tools such as a DLR hand, an intrinsic tactile sensors like the one used in DR 3.1, or as an object scanner when using an RGB-D camera and a turntable. Fig.~\ref{fig:vito_gazebo} shows Vito uploaded in the Gazebo simulator~\cite{webgazebo}. The package is accessible through the project website~\cite{PACMAN_software}.
 
 \begin{figure}[h]
 \centering
@@ -12,7 +12,7 @@ Vito, the UNIPI robot, is the younger brother of Eddie and Boris, the UIBK and U
 
 \subsubsection{Models and modularity}
 
-All modules, namely the KUKA LWR arm (Sec.~\ref{sec:kuka}, the Pisa/IIT SoftHand (Sec.~\ref{sec:softhand}) and KIT Head (Sec.~\ref{sec:kithead}), were developed in such manner that they can be instantiated to create more complex robots like Vito in a very easy and moddular way. In Fig~\ref{fig:vito}, or by clicking \href{https://github.com/CentroEPiaggio/vito_robot/blob/master/vito_description/robot/vito.urdf.xacro}{here}, you can see the actual complete specification of the Vito model. On the top, you see the inclusion of the models, some of them are specific to the robot, such as the torso, table, and couplers, and others are imported such as the arm, hand and head.
+All modules, namely the KUKA LWR arm (Sec.~\ref{sec:kuka}), the Pisa/IIT SoftHand (Sec.~\ref{sec:softhand}) and KIT Head (Sec.~\ref{sec:kithead}), were developed in such manner that they can be instantiated to create more complex robots like Vito in a very easy and moddular way. Fig~\ref{fig:vito} shows the xacro/URDF file that contains the actual complete specification of Vito\footnote[1]{Available online at \url{https://github.com/CentroEPiaggio/vito_robot/blob/master/vito_description/robot/vito.urdf.xacro}}. On the top of the file, you see the inclusion of the models, some of them are specific to the robot, such as the torso, table, and couplers, and others are imported such as the arm, hand and head.
 
 \begin{figure}
 \tiny
@@ -102,11 +102,11 @@ All modules, namely the KUKA LWR arm (Sec.~\ref{sec:kuka}, the Pisa/IIT SoftHand
 
 \subsubsection{Real/Simulation planning and control framework}
 
-The planning framework is heavily based on the MoveIt! package, since motion planning is not within the goals of the project. It is worth to mention that Section ``High-Level Planning for Dual Arm Goal-Oriented Task'' in DR 4.2 interfaces with the core planning functions of the package to generate and use the transition graph.
+The planning framework is heavily based on the MoveIt! package~\cite{webmoveit}, since motion planning is not within the goals of the project. It is worth to mention that Section ``High-Level Planning for Dual Arm Goal-Oriented Task'' in DR~4.2 interfaces with the core planning functions of the package to generate and use the transition graph.
 
-For the control framework, each module implements an interface to the real or the simulated hardware, looking for maximum similarities between the two scenarios to have a switch between reality and simulation as effortless as possible. Both hardware interfaces expose the joints as resources that can be controlled using effort, position, or even velocity commands. This depends on the available hardware. Moreover, controllers that are compatible with the resources exposed by the hardware interface can be used indistinctly. All controllers are gathered in a configuration file that defines its functional parameters, such as the proportional, derivative and integral gains in a PID controller. Such controllers are listed as the way a group of joints can be moved in a regulated way to execute trajectories, perform exploration, or move to any desired position in the workspace. Given the fact that the main PaCMan contribution is not on trajectory planning, we decided to use the MoveIt! library to tackle this aspect.
+For the control framework, each module implements an interface to the real or the simulated hardware, looking for maximum similarities between the two scenarios to have a switch between reality and simulation as effortless as possible. Both hardware interfaces expose the joints as resources that can be controlled using effort, position, or even velocity commands. This depends on the available hardware. Moreover, controllers that are compatible with the resources exposed by the hardware interface can be used indistinctly. All controllers are gathered in a configuration file that defines its functional parameters, such as the proportional, derivative and integral gains in a PID controller. Such controllers are listed for the group of joints to be moved in a regulated way to execute trajectories, perform exploration, or move to any desired position in the workspace. Given the fact that the main PaCMan contribution is not on trajectory planning, we decided to use the MoveIt! library to tackle this aspect.
 
-The plan-to-action framework can be summarized in Fig.~\ref{fig:framework}. The link between the two figures is the controllers, in the sense that they must understand the planning output, typically joint trajectories, and the commanded values must be compatible with the hardware resource types, typically position and effort commands.
+The plan-to-action framework can be summarized in Fig.~\ref{fig:framework}. The link between the two figures is the controllers, in the sense that they must understand the planning output, typically joint trajectories, and the commanded values that must be compatible with the hardware resource type, typically position and effort commands.
 
 \begin{figure}
 \centering

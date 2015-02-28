@@ -12,14 +12,14 @@ The Karlsruhe humanoid head~\cite{Asfour2008KITHead} was acquired as the testbed
 
 \subsubsection{Hardware interface}
 
-The real hardware interface is still to be developed. The simulated hardware interface considers the default behavior of a robot using position controlled motors. This is good enough for the planning and simulation environment, specially to test active gaze control. In order to do that, we added the simulation of point cloud acquisition, as well as two RGB cameras per eye to be as close as possible to what the Humanoid Head offers. The simulation of the cameras is described next.
+The real hardware interface is still under development. The simulated hardware interface considers the default behavior of a robot using position controlled motors. This is good enough for the planning and simulation environment, specially to test active gaze control. In order to do that, we added the simulation of point cloud acquisition, as well as two RGB cameras per eye to be as close as possible to what the KIT head offers. The simulation of the cameras is described next.
 
 \subsubsection{Camera simulation}
-There are out-of-the-box camera plug-ins for both kind of cameras, RGB and RGB-D. Both are used in the simulated head. The point cloud and images are published in an uncalibrated frame as well as in the real robot could be. Real calibration values can be loaded to have camera and robot  under the same tree of connectivity. Parameters such as noise and noise type can be set to test active gaze control and object recognition in ideal and not so ideal conditions. Fig.~\ref{fig:head_vision} shows the simulated RGB and RGB-D cameras mounted on the eyes and forehead. Note that, the robot model has been set to almost transparent in the visualizer at the bottom, and the point cloud is overlayed covering the hand and wrist.
+There are out-of-the-box camera plug-ins for both kind of cameras, RGB and RGB-D. Both are used in the simulated head. The point cloud and images are published in an uncalibrated frame as well as in the real robot could be. Real calibration values can be loaded to have camera and robot  under the same tree of connectivity. Parameters such as noise and noise type can be set to test active gaze control and object recognition in ideal and not so ideal conditions. Fig.~\ref{fig:kit_vision} shows the simulated RGB and RGB-D cameras mounted on the eyes and forehead. Note that, the robot model has been set to almost transparent in the visualizer at the bottom, and the point cloud is overlaid covering the hand and wrist.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\textwidth]{headVision.png}
-\caption{Simulation of RGB (top) and RGB-D (bottom) cameras available in the real humanoid head.}
+\caption{Simulation of RGB (top) and RGB-D (bottom) cameras available in the KIT head.}
 \label{fig:kit_vision}
 \end{figure}

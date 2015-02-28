@@ -47,7 +47,7 @@ As seen in Fig.~\ref{fig:rosgazebointeraction}, there are two hardware interface
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Implemented Controllers}%\nocite{siciliano09}\nocite{bicchi13}
-Exploiting the force $\tau_{FRI}$ in \eqref{eq:axisspecificstiffnesscontroller} (which will be the control strategy used for this project's purpose) as external torque command, a new set of ROS-enabled controllers has been developed in \textit{C++} language\footnote{Source code available at \url{https://github.com/CentroEPiaggio/kuka-lwr}}, following some interesting paradigms available in the robotics literature.
+Exploiting the external torque command $\tau_{FRI}$ in \eqref{eq:axisspecificstiffnesscontroller}, a new set of ROS-enabled controllers has been developed in \textit{C++} language\footnote{Online available at \url{https://github.com/CentroEPiaggio/kuka-lwr/tree/master/lwr_controllers}}, following some interesting paradigms available in the robotics literature.
 
 %\subsection{Robot Control Problem Definition}
 Consider the expression of the dynamics of a $n$-links robot manipulator
@@ -63,7 +63,7 @@ M(q)\ddot{q} + n(q,\dot{q}) = \tau
 where $n(q,\dot{q}) = C(q,\dot{q})\dot{q} + g(q)$. The problem of the control can be formalized as the choice of the torques $ \tau $ that will stimulate the robot to behave according to some desired dynamics, such as reaching a set-point or tracking a trajectory.
 
 %\subsubsection{Joint Space VS Operational Space Formulation}
-A classical approach for manipulators control is to define a task in the joint space, i.e.\ providing a motion law for specific joints to be followed. An alternative way to define the motion law in task space is the \textit{Operational Space Formulation} \cite{khatib87}, in which the desired behavior of the robot can be described through the dynamics of its end-effector. This approach allows to formulate tasks in a more human-like way, where the importance is put more on the manipulation task rather than on the internal behaviour of the robot.
+A classical approach for manipulators control is to define a task in the joint space, i.e.\ providing a motion law for specific joints to be followed. An alternative way to define the motion law in task space is the \textit{Operational Space Formulation} \cite{khatib87}, in which the desired behavior of the robot can be described through the dynamics of its end-effector. This approach allows to formulate tasks in a more human-like way, where the importance is put more on the manipulation task rather than on the internal behaviour of the robot. Based on this, the following list of controllers are implemented.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Computed Torque Controller}
@@ -121,7 +121,7 @@ representing the \textit{Differential Kinematics} equation. The mapping is descr
 \begin{equation}
 \dot{q} = J^+\dot{x}
 \end{equation}
-where $J^+$ is a generalized inverse of the Jacobian. For the project's purpose, it has been implemented in ROS as the Moore-Penrose damped pseudo-inverse through the SVD method, denoted in the sequel as $J^{\dagger}$.\\
+where $J^+$ is a generalized inverse of the Jacobian. For the project's purpose, it has been implemented as the Moore-Penrose damped pseudo-inverse through the SVD method, denoted in the sequel as $J^{\dagger}$.\\
 In view of the operational space formulation, given a desired end-effector pose $x_d$ and velocity $\dot{x}_d$, a task can be defined as
 \begin{equation}
 e = x_d - x(t)

@@ -107,17 +107,17 @@ This milestone describes the work performed to integrate planning and execution 
 
 %Finally, the last phase consisted in pursuing experiments to test the implemented control strategies on the physical robot, arising a variety of practical issues which don't come out in simulation, that are explained in detail in this document.
 
-Moreover, we introduce \href{https://github.com/CentroEPiaggio/vito_robot}{Vito, the UNIPI robot}, package, a comprehensive real/simulation testbed for the project development comprising active exploration, gazing, grasping and manipulation~(Sec.~\ref{sec:vito}). The package is freely available in the project website~\cite{PACMAN_software}.
+Moreover, we introduce the software package for \href{https://github.com/CentroEPiaggio/vito_robot}{Vito, the UNIPI robot}, a comprehensive real/simulation testbed for the project development comprising active exploration, gazing, grasping and manipulation capabilities~(Sec.~\ref{sec:vito}). The package is freely available in the project website~\cite{PACMAN_software}.
 
-The testbed was not available during the task development, however, sliding and rolling controllers developed in this milestone described in~\ref{sec:start} and~\ref{sec:rolling}, as well as other useful controllers such as those yielding Cartesian compliance for previous-to-contact actions, are already integrated in the \href{https://github.com/CentroEPiaggio/kuka-lwr}{KUKA LWR package} described in Sec.~\ref{sec:kuka} as component of Vito. The package follows a real/simulation implementation of the hardware as well, hence controllers can be tested in both scenarios with few or none extra-effort.
+The testbed was not available during the task progress, however, sliding and rolling controllers developed in this milestone described in Sec.~\ref{sec:start} and~\ref{sec:rolling}, as well as other useful controllers such as those yielding Cartesian compliance for previous-to-contact actions, are already integrated in the \href{https://github.com/CentroEPiaggio/kuka-lwr}{KUKA LWR package} described in Sec.~\ref{sec:kuka} as a component of Vito. The package follows a real/simulation implementation of the hardware as well, hence controllers can be tested in both scenarios with few or none extra-effort.
 
 \section{Report on Milestone Achievement}
 
 The milestone achievement is reflected in two facts:
 \begin{enumerate}
-	\item Task 3.1 completion reported in DR 3.1. This is the main goal of the milestone, and here we detail step by step the initial planned activities related to this task in Sec.~\ref{sec:start}-\ref{sec:end}.
+	\item Task 3.1 completion reported in DR 3.1. The main goal of this milestone is to show the task progress following step by step the related planned activities in Sec.~\ref{sec:start}-\ref{sec:end}.
 
-	\item Open-source release of Vito, the UNIPI robot, package, a comprehensive real/simulation testbed comprising active exploration, gazing, grasping and manipulation capabilities (Sec.~\ref{sec:vito}). The release of this package implied the open-sourcing of the KUKA LWR package~(Sec.~\ref{sec:kuka}) as part of Vito. This arm is widely used in robotic research applications and currently open-source software related to this arm requires tedious and long installation procedures, and most of the times, with specific system requirements. In contrast, this package is designed to fit in a regular desktop PC using Ubuntu 14.04 LTS. Since its release in mid-January, this package has received attention from the community, and it is starting to be used in other research institutes such as the Technical University of Munich and the Institute of Intelligent Systems and Robotics (ISIR-UPMC) in Paris.
+	\item Open-source release of the package for Vito, the UNIPI robot, a comprehensive real/simulation testbed comprising active exploration, gazing, grasping and manipulation capabilities (Sec.~\ref{sec:vito}). The release of this package implied the open-sourcing of the KUKA LWR package~(Sec.~\ref{sec:kuka}) as part of Vito. This arm is widely used in robotic research applications and currently open-source software related to this arm requires tedious and long installation procedures, and most of the times, with specific system requirements. In contrast, this package is designed to fit in a regular desktop PC using Ubuntu 14.04 LTS. Since its release in mid-January, 2015, this package has received attention from the community, and it is starting to be used in other research institutes such as the Technical University of Munich and the Institute of Intelligent Systems and Robotics (ISIR-UPMC) in Paris, increasing the technical impact of the project.
 \end{enumerate}
 
 Next, we describe the steps followed to accomplish Task 3.1 reported in DR 3.1, that lead to the successful integration of haptic object exploration control strategies with planning using visual input.
@@ -143,7 +143,7 @@ Next, we describe the steps followed to accomplish Task 3.1 reported in DR 3.1, 
 \input{./inputFiles/conclusions}
 
 \subsection{Technical report: Studio e simulazione in ambiente Adams della Pisa-IIT Softhand - Cap. 2 and 3 } \label{sec:AdamsSoftHand}
-This report is written in Italian, but still figures and equations can be followed readily. It concerns an excerpt of the implementation of the Pisa/IIT SoftHand mechanism in the Adams\copyright, developed as part of requirements to approve one of the classes imparted by Prof. Marco Gabiccini.
+This report is written in Italian, but still figures and equations can be followed readily. It concerns an excerpt of the implementation of the Pisa/IIT SoftHand mechanism in the ADAMS MSC$^\copyright$, developed as part of requirements to approve one of the classes imparted by Prof. Marco Gabiccini.
 \includepdf[pages=5-26]{./attachedPapers/CristinaPiazzaReport.pdf}
 
 \end{document}
