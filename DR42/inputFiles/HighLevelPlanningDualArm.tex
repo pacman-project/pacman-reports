@@ -9,7 +9,7 @@ Our idea considers the possibility of having the object in a known position, whi
 
 From this information, a semantic graph is constructed which has as nodes a grasp id and a workspace id, and as arcs all possible known transitions between nodes.
 
-Once a minimum cost path has been found, it is translated back into Cartesian information for collision-free motion planning, grasp commands, etc.
+Once a minimum cost path has been found, it is translated back into Cartesian information for collision-free motion planning, grasp commands, and all low-level requirements to execute the plan successfully.
 
 While there are many previous works on combining high-level semantic reasoning and low-level cartesian path planning (see e.g. \cite{karlsson2012combining, leidner2012things, leidner2013hybrid}) which mostly take advantage of object-specific reasoning introduced in \cite{levison1996connecting}, our main contribution is to include the possibility of passing an object between two end-effectors.
 
