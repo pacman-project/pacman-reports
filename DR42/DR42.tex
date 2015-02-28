@@ -73,7 +73,7 @@ This deliverable documents the effort of the consortium in devising new strategi
 
 \section*{Contribution to the PaCMan scenario}
 
-To our eyes, grasp methodologies that try to cope with pose uncertainty, object shape estimation inaccuracies, clutter and partial occlusions, either (i) by accomodating grasp unmodelled dynamics by exploiting prior knowledge about the adaptivity and the compliance of the Pisa/IIT SoftHand (as mainly proposed by the UNIPI Team), or (ii) by inferring grasps for novel objects from as little as one training example (of a chosen grasp type) that are shown to be generalizable within and \emph{across} object categories, even with partial shape information, (as mainly proposed by The UoB Team), represent central contributions in the scenario depicted in the PaCMan project.
+To our eyes, grasp methodologies that try to cope with pose uncertainty, object shape estimation inaccuracies, clutter and partial occlusions, either (i) by accomodating grasp unmodelled dynamics by exploiting prior knowledge about the adaptivity and the compliance of the Pisa/IIT SoftHand (as mainly proposed by the UNIPI Team), or (ii) by inferring grasps for novel objects from as little as one training example (of a chosen grasp type) that are shown to be generalizable within and \emph{across} object categories, even with partial shape information, (as mainly proposed by the UoB Team), represent central contributions in the scenario depicted in the PaCMan project.
 
 
 \newpage
@@ -192,10 +192,10 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 \end{description}
 \includepdf[pages=-]{./attachedPapers/GraspingWithSoftHands.pdf}
 
-\subsection{Article: Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object Decomposition} \label{ann:boxedGrasp}
+\subsection{Technical Report: Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object Decomposition} \label{ann:boxedGrasp}
 \begin{description}
     \item[Authors] M. Bonilla, D. Resasco, M. Gabiccini, A. Bicchi
-    \item[Info] Under review
+    \item[Info] Unpublished
     \item[Abstract] In this paper we present a method to plan grasps for Soft Hands. Considering that Soft Hands adapt to the shape of the object whatever its geometry is, we first approximate the object with bounding boxes. A set of hand poses are then proposed using geometric information of such bounding boxes. All hand postures are then used in a dynamic simulator of the PISA/IIT Soft Hand to evaluate if a proposed hand posture leads to a successful grasp or not.
     We show through a set of simulations that the probability of success of the proposed hand poses is higher that with the existing methods.
     At the end we show some experimental work using the PISA/IIT Soft Hand.
@@ -220,8 +220,8 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 Dexterous Grasping in Unstructured Environments} \label{ann:uncertaintyGrasps}
 \begin{description}
      \item[Authors] Claudio Zito and Jeremy L. Wyatt
-      \item[Info] Unpublished.
-      \item[Abstract]  Dexterous grasping of objects with uncertain pose is a hard unsolved problem in robotics. In this work we extend our proposed solution to this problem using information gain re-planning. We present a new set of algorithms that enable: i) re-planning while maintaining the configuration of the robot in contact with the object when an unexpected contact occurs, ii) planning of dexterous grasping trajectories for non-convex object shapes by implementing efficient collision detection for point clouds, and iii) use of an active complaint controller to allow continuous contact while minimising the risk of perturbing the object being grasped. First we show how tactile information, acquired during a failed attempt to grasp an object can be used to refine the estimate of that object’s pose. Second, we show how this information can be used to re-plan new reach to grasp trajectories for successive grasp attempts. Third, we show how complex, dexterous grasping trajectories can be efficiently planned for a non-convex object described as a point cloud. Finally we present IR3ne, our information reward based algorithm, to show how reach-to-grasp trajectories can be modified, so that they maximise the expected tactile information gain, while simultaneously delivering the hand to the grasp configuration that is most likely to succeed. The method is demonstrated in trials with a simulated robot. Sequential re-planning is shown to achieve a greater success rate than single grasp attempts, and IR3ne, with its trajectories that maximise information gain, requires fewer re-planning iterations than conventional planning methods before a grasp is achieved. 
+      \item[Info] Unpublished
+      \item[Abstract]  Dexterous grasping of objects with uncertain pose is a hard unsolved problem in robotics. In this work we extend our proposed solution to this problem using information gain re-planning. We present a new set of algorithms that enable: i) re-planning while maintaining the configuration of the robot in contact with the object when an unexpected contact occurs, ii) planning of dexterous grasping trajectories for non-convex object shapes by implementing efficient collision detection for point clouds, and iii) use of an active complaint controller to allow continuous contact while minimising the risk of perturbing the object being grasped. First we show how tactile information, acquired during a failed attempt to grasp an object can be used to refine the estimate of that object’s pose. Second, we show how this information can be used to re-plan new reach to grasp trajectories for successive grasp attempts. Third, we show how complex, dexterous grasping trajectories can be efficiently planned for a non-convex object described as a point cloud. Finally we present IR3ne, our information reward based algorithm, to show how reach-to-grasp trajectories can be modified, so that they maximise the expected tactile information gain, while simultaneously delivering the hand to the grasp configuration that is most likely to succeed. The method is demonstrated in trials with a simulated robot. Sequential re-planning is shown to achieve a greater success rate than single grasp attempts, and IR3ne, with its trajectories that maximise information gain, requires fewer re-planning iterations than conventional planning methods before a grasp is achieved.
      \item \textbf{Relation with the deliverable}: This report describes our work on Task 4.4, grasping under uncertainty.
      \item[Attachment] (following pages until next annex)
  \end{description}
@@ -249,14 +249,14 @@ Dexterous Grasping in Unstructured Environments} \label{ann:uncertaintyGrasps}
 % \end{description}
 %\includepdf[pages=-]{./attachedPapers/.pdf}
 
-\subsection{Article: High-Level Planning for Dual Arm Goal-Oriented Tasks} \label{ann:dualArmPlanning}
+\subsection{Technical Report: High-Level Planning for Dual Arm Goal-Oriented Tasks} \label{ann:dualArmPlanning}
 \begin{description}
     \item[Authors] H. Marino, M. Ferrati, A. Settimi, C. Rosales, M. Gabiccini
-    \item[Info] under review
+    \item[Info] Unpublished
     %Submitted to the 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems
-    \item[Abstract] 
+    \item[Abstract]
     In this paper we design a simple methodology for high-level planning, corroborated by low-level planning and simulated execution, of a task to be solved given a set of ``interaction primitives''. We exemplify this with the simple task of moving an object from a given initial to a desired final configuration, possibly, and opportunistically, by exploiting the interaction between the object and the tabletop; here the interaction primitives are the different ways in which the object can be grasped and moved around, possibly different for each end-effector, and the planning step is carried out considering the table itself as an end-effector (with a ``non-movable'' attribute) with its own set of primitives.
-    
+
 In this way, we can avoid an excessive increase in computational burden for the planning step, considering that each object has a pre-defined set of primitives for different end-effectors, and that transitions between states can only happen in a pre-defined manner. Such a database can be generated via experiments, simulations, or direct exploration of the environment when new objects are encountered.
     \item[Relation with the deliverable] passing objects from one hand to another (Task 5.3)
     \item[Attachment] (following pages until next annex)
