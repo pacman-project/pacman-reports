@@ -133,7 +133,7 @@ class.
 An illustration of the described approach is depicted in Figure~\ref{fig:rel},~\ref{fig:rel2},~\ref{fig:rel3} .
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=0.5\textwidth,height=0.2\textheight]{imgs/rel2.pdf}
+\includegraphics[width=0.5\textwidth,height=0.2\textheight]{rel2.pdf}
 \end{center}
 \caption{A schematic diagram for a learned model for object class $o$. We have learned patch types $Q=\{q_1,\ldots,q_{N_{Q}}\}$ and learned part types $R=\{r_1,\ldots,r_4\}$. A part is composed of patches $\mathbf{Q}=\{\mathbf{q_1},\ldots,\mathbf{q_4}\}$. Those patches are matched to the patch types. Hence a part is represented as a histogram of patch types. As shown in the figure, the lighter the color the less frequent the patch type and vice versa. Next, an object is composed of parts $\mathbf{R}=\{\mathbf{r_1},\mathbf{r_2},\mathbf{r_3}\}$. The parts are matched to the parts clusters. We then compute the probability of occurrence of the object parts types which belong to the object class $o$, $p(r_1,\ldots,r_{N_{R}} \vert o)$. For object recognition we learn the $p(r_1,\ldots,r_{N_{R}} \vert o)$ as well as part connectivity based on adjacent boundary patches $p(q_{1},q_{2} \vert o)$. 
 } 
@@ -142,7 +142,7 @@ An illustration of the described approach is depicted in Figure~\ref{fig:rel},~\
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=0.7\textwidth,height=0.4\textheight]{imgs/rel3.pdf}
+\includegraphics[width=0.7\textwidth,height=0.4\textheight]{rel3.pdf}
 \end{center}
 \caption{A schematic diagram for data flow in learning the compositional model. We segment each object to its patches $\mathbf{Q}=\{\mathbf{q_1},\ldots,\mathbf{q_4}\}$. Next, we obtain patch types by clustering the patches from multiple objects as shown by the red brace $Q=\{q_1,\ldots,q_{N_{Q}}\}$. The obtained patch types are used for part segmentation. The observed object parts are denoted by $\mathbf{R}=\{\mathbf{r_1},\mathbf{r_2},\mathbf{r_3}\}$. We have patches of each object part, then we match them to the learned patch types, as shown by the orange arrows. One patch can be matched to multiple patch clusters but it belongs to only one part. Next, we represent a part as the histogram of its constituent patch types. We then perform clustering on the part histograms and obtain part types $R=\{r_1,r_2,r_3\}$. For the objects which belongs to the object class $o$, we compute the likelihood of their constituent parts to the learned part types. The arrows from part types to the object class node show the frequency of occurrence of each of part types for an object class. The lighter the color the less frequent the part type for the object class $o$.} 
 \label{fig:rel2}
@@ -150,7 +150,7 @@ An illustration of the described approach is depicted in Figure~\ref{fig:rel},~\
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=0.7\textwidth,height=0.4\textheight]{imgs/rel4.pdf}
+\includegraphics[width=0.7\textwidth,height=0.4\textheight]{rel4.pdf}
 \end{center}
 \caption{A schematic diagram for data flow in an instantiated object model. Initially, an object is segmented to its constituent patches which are considered as observed patches $\mathbf{Q}=\{\mathbf{q_1},\ldots,\mathbf{q_4}\}$. These patches are matched to the learned patch type $Q=\{q_1,\ldots,q_{N_{Q}}\}$ and assigned to only one object part as denoted by $\mathbf{R}=\{\mathbf{r_1},\mathbf{r_2},\mathbf{r_3}\}$. A part is represented by a histogram of patch types based on its constituent patch types. These parts are then matched to the part types as denoted by $R=\{r_1,r_2,r_3\}$. Finally, an object is classified to object class $o$ based on the probability of occurrence of their part types as well as their adjacent boundary patches for the object class $o$.} 
 \label{fig:rel3}
