@@ -1,8 +1,8 @@
-%%% Sample-Based Motion Planning for Soft Robot Manipulators 
+%%% Sample-Based Motion Planning for Soft Robot Manipulators
 %%% Under Task Constraints
 
 \subsubsection{Sample-Based Motion Planning for Soft Robot Manipulators
-Under Task Constraints} 
+Under Task Constraints}
 \label{sec:SampleBasedMotionPlanningSoftRobots}
 
 In this section we present a new sample-based approach to motion planning for soft robot manipulators which considers also task constraints.
@@ -16,7 +16,7 @@ Previous approaches are based either on the decomposition of the chain in an act
 
 Specializing the algorithm for compliant systems, we can avoid this increase in computational burden relaxing the constraint to be of the type $ C(q) \leq \varepsilon $: in the case in which the tight constraint is violated, a force proportional to the violation arises between two parts in contact, but still the configuration is feasible (although undesired forces on the grasped object could be generated).
 In this way, we can sample a boundary layer $ \mathcal{M}_{r} := \{q \in \mathcal{M}_{\text{free}},\,C(q)\leq \varepsilon \} $ which has the same dimensionality as the whole configuration space, and volume decreasing with $ \varepsilon $.
-We can then use a biased random sampling technique like the one in \cite{bialkowsky2013free}, which allows us to obtain a sample distribution which tends to be uniform in $ \mathcal{M}_{r} $.
+We can then use a biased random sampling technique like the one in \cite{bialkowski2013free}, which allows us to obtain a sample distribution which tends to be uniform in $ \mathcal{M}_{r} $.
 
 Once the planning problem is solved, the main challenge arises from the fact that the relaxed constraint has now to be enforced during execution in order to avoid undesired forces acting on the object.
 This has to be ensured via a real-time controller, which can be synthesised exploiting the geometric formulation introduced in \cite{prattichizzo1997consistent,prattichizzo1998dynamic} where an algorithm to make the position and force control of certain systems non-interacting has been devised, allowing for regulation of the internal object forces to an appropriate level without jeopardising the planned motion.
