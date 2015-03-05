@@ -35,7 +35,7 @@
 \duedate{2015-02-28}
 \submissiondate{2015-02-28}
 \leadpartner{Universit\`{a} di Pisa}
-\revision{interim}
+\revision{final}
 \disseminationlevel{PU}
 
 
@@ -192,18 +192,15 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 \end{description}
 \includepdf[pages=-]{./attachedPapers/GraspingWithSoftHands.pdf}
 
-\subsection{Technical Report: Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object Decomposition} \label{ann:boxedGrasp}
+\subsection{Article: Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object Decomposition} \label{ann:boxedGrasp}
 \begin{description}
     \item[Authors] M. Bonilla, D. Resasco, M. Gabiccini, A. Bicchi
-    \item[Info] Unpublished
-    \item[Abstract] In this paper we present a method to plan grasps for Soft Hands. Considering that Soft Hands adapt to the shape of the object whatever its geometry is, we first approximate the object with bounding boxes. A set of hand poses are then proposed using geometric information of such bounding boxes. All hand postures are then used in a dynamic simulator of the PISA/IIT Soft Hand to evaluate if a proposed hand posture leads to a successful grasp or not.
-    We show through a set of simulations that the probability of success of the proposed hand poses is higher that with the existing methods.
-    At the end we show some experimental work using the PISA/IIT Soft Hand.
+    \item[Info] Submitted to the 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems
+    \item[Abstract] In this paper, we present a method to plan grasps for soft hands. Considering that soft hands can easily conform to the shape an the object, with preference to certain types of basic geometries and dimensions, we decompose the object into one type of these geometries, particularly into Minimal Volume Bounding Boxes (MVBBs), which are proved to be efficiently graspable by the hand we use. A set of hand poses are then generated using geometric information extracted from such MVBBs. All hand postures are used in a dynamic simulator of the PISA/IIT Soft Hand and put on a test to evaluate if a proposed hand posture leads to a successful grasp. We show, through a set of numerical simulations, that the probability of success of the hand poses generated with the proposed algorithm is very good and represents an evident improvement with respect to our previous results published in~\ref{ann:softGrasps}.
     \item[Relation with the deliverable] Part-based grasping under uncertainty for soft hands.
     \item[Attachment] (following pages until next annex)
 \end{description}
-%% TO BE INCLUDED
-%\includepdf[pages=-]{./attachedPapers/.pdf}
+\includepdf[pages=-]{./attachedPapers/GraspPlanningwithSoftHandsusingBoundingBoxObjectDecomposition.pdf}
 
 \subsection{Article: One shot learning and generation of dexterous grasps for novel objects} \label{ann:novelObjects}
 \begin{description}
@@ -249,19 +246,15 @@ Dexterous Grasping in Unstructured Environments} \label{ann:uncertaintyGrasps}
 % \end{description}
 %\includepdf[pages=-]{./attachedPapers/.pdf}
 
-\subsection{Technical Report: High-Level Planning for Dual Arm Goal-Oriented Tasks} \label{ann:dualArmPlanning}
+\subsection{Article: High-Level Planning for Dual Arm Goal-Oriented Tasks} \label{ann:dualArmPlanning}
 \begin{description}
     \item[Authors] H. Marino, M. Ferrati, A. Settimi, C. Rosales, M. Gabiccini
-    \item[Info] Unpublished
-    %Submitted to the 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems
-    \item[Abstract]
-    In this paper we design a simple methodology for high-level planning, corroborated by low-level planning and simulated execution, of a task to be solved given a set of ``interaction primitives''. We exemplify this with the simple task of moving an object from a given initial to a desired final configuration, possibly, and opportunistically, by exploiting the interaction between the object and the tabletop; here the interaction primitives are the different ways in which the object can be grasped and moved around, possibly different for each end-effector, and the planning step is carried out considering the table itself as an end-effector (with a ``non-movable'' attribute) with its own set of primitives.
-
-In this way, we can avoid an excessive increase in computational burden for the planning step, considering that each object has a pre-defined set of primitives for different end-effectors, and that transitions between states can only happen in a pre-defined manner. Such a database can be generated via experiments, simulations, or direct exploration of the environment when new objects are encountered.
+    \item[Info] Submitted to the 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems
+    \item[Abstract] In this paper, we design a simple methodology for high-level planning, corroborated with low-level planning and execution, to solve a task having specified a priori a set of interaction primitives. We provide a realistic implementation focusing on the simple task of moving an object from a given initial to a desired final configuration, possibly exploiting the interaction between the object and the tabletop, as well as direct handoff between two hands when convenient. The interaction primitives are the different ways in which the object can be grasped and moved around, possibly different for each end-effector, and the planning step is carried out considering the table itself as an end-effector (with the non-movable attribute) with its own set of primitives. This results in a sequence of actions that are then translated into collision-free paths and, subsequently, low level commands for the robot. Experimental results with a bi-manual robotic platform show the viability of our approach, which can be well extended to multi-arm systems.
     \item[Relation with the deliverable] passing objects from one hand to another (Task 5.3)
     \item[Attachment] (following pages until next annex)
 \end{description}
-%\includepdf[pages=-]{./attachedPapers/.pdf}
+\includepdf[pages=-]{./attachedPapers/HighLevelPlanningforDualArmObjectPassingTasks.pdf}
 
 \subsection{Article: A computational framework for environment-aware robotic manipulation planning} \label{ann:env-awareManipulation}
 \begin{description}
