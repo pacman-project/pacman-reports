@@ -7,13 +7,16 @@ You need to install it on your tex system in order to compile the reports follow
 
 Note: the steps should be repeated if the file is changed.
 
-Note2: bibliography uses the `IEEEtran` style, so ensure you have it on your system. In Linux: `sudo apt-get install texlive-publishers`.
+Dependencies:
+1. bibliography uses the `IEEEtran` style, so ensure you have it on your system. In Linux: `sudo apt-get install texlive-publishers`.
+2. Some reports use stuff from texlive-science. In Linux: `sudo apt-get install texlive-science`
+
 
 ### On Windows/TeXLive:
 Just copy the .cls file into the local texmf folder.
 In my laptop I just copied this is in: C:\texlive\texmf-local\tex\latex\local
 
-### On Unix-based (at least Uuntu 14.04):
+### On Unix-based (at least Ubuntu 14.04):
 
 `sudo rsync -a ./templates/pacmanreport.cls /usr/share/texmf/tex/latex/pacmanreport/`
 
