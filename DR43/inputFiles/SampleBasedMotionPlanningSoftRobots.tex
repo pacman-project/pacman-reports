@@ -1,0 +1,24 @@
+%%% Sample-Based Motion Planning for Soft Robot Manipulators
+%%% Under Task Constraints
+
+\subsubsection{Sample-Based Motion Planning for Soft Robot Manipulators
+Under Task Constraints}
+\label{sec:SampleBasedMotionPlanningSoftRobots}
+
+In this section we present a new sample-based approach to motion planning for soft robot manipulators which considers also task constraints.
+
+As our final goal is to use a bimanual system to grasp and position objects, motion planning cannot neglect the constraints arising from closing the kinematic loop between the two arms, the two hands, and the object being grasped. Moreover, while using compliant manipulators gives new and unforeseen opportunities, it also poses new challenges even on the motion planning side.
+
+Normally, random sampling-based methods for motion planning such as \cite{kavraki1996probabilistic,lavalle1998rapidly} have the advantage to efficiently sample the robot configuration space (for which we have an explicit parameterization) and may iteratively improve the connection between an initial and a desired final robot configurations.
+This advantage deteriorates when we consider constrained motion planning because the lack of an explicit parameterization of the non linear submanifold of the configuration space which satisfies the constraints makes it difficult to find samples which are valid nodes of the plan to be found.
+Explicitly, the fraction of the free-from-obstacle configuration space $ \mathcal{M}_{\text{free}} \in \mathbb{R}^{d} $ which strictly satisfies a constraint of the type $ C(q) = 0 $, is a zero-measure submanifold $ \mathcal{M}_{v} $ for which the practical probability of sampling a point $ q \in \mathcal{M}_{v} $ is zero.
+Previous approaches are based either on the decomposition of the chain in an active and a passive chains \cite{cortes2002random}, or in the projection of any random sample to the valid configuration space \cite{stilman2010global,berenson2011constrained}, slowing down the planning process.
+
+Specializing the algorithm for compliant systems, we can avoid this increase in computational burden relaxing the constraint to be of the type $ C(q) \leq \varepsilon $: in the case in which the tight constraint is violated, a force proportional to the violation arises between two parts in contact, but still the configuration is feasible (although undesired forces on the grasped object could be generated).
+In this way, we can sample a boundary layer $ \mathcal{M}_{r} := \{q \in \mathcal{M}_{\text{free}},\,C(q)\leq \varepsilon \} $ which has the same dimensionality as the whole configuration space, and volume decreasing with $ \varepsilon $.
+We can then use a biased random sampling technique like the one in \cite{bialkowski2013free}, which allows us to obtain a sample distribution which tends to be uniform in $ \mathcal{M}_{r} $.
+
+Once the planning problem is solved, the main challenge arises from the fact that the relaxed constraint has now to be enforced during execution in order to avoid undesired forces acting on the object.
+This has to be ensured via a real-time controller, which can be synthesised exploiting the geometric formulation introduced in \cite{prattichizzo1997consistent,prattichizzo1998dynamic} where an algorithm to make the position and force control of certain systems non-interacting has been devised, allowing for regulation of the internal object forces to an appropriate level without jeopardising the planned motion.
+
+More details on this new approach and on the currently achieved results can be found in Sec.~\ref{ann:softPlanning}. % available at this~\href{./attachedPapers/SampleBasedMotionPlanningSoftRobots.pdf}{link}. 

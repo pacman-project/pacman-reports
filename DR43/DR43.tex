@@ -1,13 +1,20 @@
 \documentclass[a4paper,11pt,pdf]{pacmanreport}
 
 %%=== Aditional packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
 
+% The following is used to make packages hyperref and cite work together
+\makeatletter
+\let\NAT@parse\undefined
+\makeatother
+\usepackage[bookmarks=true,hyperfootnotes=true,colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,urlcolor=blue,filecolor=blue]{hyperref}
 
 %%=== Local definitions
 \graphicspath{{images/}{../shared_images/}}
 
 %% ================================
-%% PROJECT INFO 
+%% PROJECT INFO
 
 \project{}
 \projectid{FP7-IST-60918}
@@ -15,25 +22,25 @@
 \duration{36}
 
 %% ================================
-%% DELIVERABLE INFO 
+%% DELIVERABLE INFO
 
 \title{Methodologies for grasp acquisition and planning}
-\deliverableid{DR 4.3}
-\author{J. Wyatt, ...}
-\address{University of Birmingham}
-\email{jlw@cs.bham.ac.uk}
-\headertitle{shorted title}
-\headerauthor{shortauthor}
+\deliverableid{DR 4.2}
+\author{H. Marino, C. Rosales, M. Kopicki, G. Santaera, E. Luberto, Y. Wu, T. Sartor, J.L.~Wyatt, and M. Gabiccini}
+\address{Universit\`{a} di Pisa, Pisa Italy}
+\email{m.gabiccini@ing.unipi.it}
+\headertitle{Grasp acquisition and planning}
+\headerauthor{H. Marino, et al.}
 
-\duedate{2015-02-27}
-\submissiondate{2015-02-27}
-\leadpartner{UBHAM}
-\revision{draft}
+\duedate{2016-02-29}
+\submissiondate{2016-02-29}
+\leadpartner{Universit\`{a} di Pisa}
+\revision{final}
 \disseminationlevel{PU}
 
 
 %% UNCOMMENT: to get the logo; if you've copied this file to a directory yearX/wpY/ then this should work
-\reportlogo{pacmanlogo}
+\reportlogo{pacmanlogo.png}
 
 
 \begin{document}
@@ -41,7 +48,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent Here comes the abstract
+\noindent This report describes the activities related to the control of grasping actions given the detection of an object. It includes work on: modelling underactuated and adaptive robotic hands, acquiring target grasps learned from data gathered either from humans or simulations, synthesising grasps for novel objects using either heuristic or statistical machine learning approaches, planning complex grasping and manipulation tasks either using discrete search methods or via direct trajectory optimization methods for systems with unspecified contact sequences.
 \end{abstract}
 
 
@@ -58,15 +65,15 @@
 
 \section*{Executive Summary}
 
-What does the report present? What tasks does it address? How has progress been evaluated? What previous reports does this report follow up on? 
+This report describes the activities --- most of which are already performed, while some others scheduled for finalization in the weeks that precede the PaCMan review meeting in May 2015 --- within the PaCMan consortium to define methodologies for \emph{incipient grasping evaluation}. The material included in this report describes the results that fall under Task 4.2 (M 7-18), and the progress of Task 4.3 (M 7-30) at M 24.
 
-\section*{Role of [YOUR TOPIC] in PaCMan}
+\section*{Role of incipient grasp evaluation in PaCMan}
 
-What role do the tasks addressed in this report play in the larger context of PaCMan? How do these tasks, how does report, contribute to achieving the overall goals for PaCMan? 
+This deliverable documents the effort of the consortium in devising new strategies to define \emph{practical} approaches to tackle the problem of \emph{grasping under uncertainty and novelty}, either caused by clutter, visual occlusions, or new object shapes. To this sake, the ability to evaluate \emph{incipient grasps} in terms of their expected quality, robustness, and probability of success, is of paramount importance.
 
 \section*{Contribution to the PaCMan scenario}
 
-How do the results presented in this report contribute to the PaCMan\cite{ProjectWebsite} scenarios and prototypes? 
+To our eyes, grasp methodologies that try to cope with pose uncertainty, object shape estimation inaccuracies, clutter and partial occlusions, either (i) by accomodating grasp unmodelled dynamics by exploiting prior knowledge about the adaptivity and the compliance of the Pisa/IIT SoftHand (as mainly proposed by the UNIPI Team), or (ii) by inferring grasps for novel objects from as little as one training example (of a chosen grasp type) that are shown to be generalizable within and \emph{across} object categories, even with partial shape information, (as mainly proposed by the UoB Team), represent central contributions in the scenario depicted in the PaCMan project.
 
 
 \newpage
@@ -75,15 +82,97 @@ How do the results presented in this report contribute to the PaCMan\cite{Projec
 
 \subsection{Planned work}
 
-What tasks was the report supposed to address? What objectives, results were these tasks to achieve? 
+Humans have no troubles in selecting the correct grasp strategies even if the object to be grasped is unknown or partially visible. On the contrary, though robotics has made significant progress in the field of autonomous grasping, the problem of grasping novel objects in cluttered scenarios has not been completely solved yet. In this report, we document the activities of the consortium to tackle this problem.
+
+The work to be documented in this report regards: ``Methodologies for incipient grasp evaluation''. This should mostly contain the results of Task 4.2 and the progress of Task 4.3 and Task 4.4 at this stage. In particular, the report should contain a description of the procedures to infer first-order object surface properties and the quality of the associated grasp from fingerpad sensor recordings, and algorithms for local optimization of contact point locations and on-line grasping force optimization.
+
+%% Input from Claudio
+% In Task 4.4 we posed the problem of grasping as a problem of motion planning under uncertainty. We planned to implement and evaluate a motion planning algorithm in a physics based simulation, prior to transfer to a real robot. The requirement was for an algorithm that could provide robust reach to grasp trajectories in the face of object pose and shape uncertainty, planning for and taking advantage of tactile contacts. We considered both methods that plan explicitly in belief space, and those that embed information from observations in the physical space. We elected to pursue the latter route.
+
 
 \subsection{Actual work performed}
 
-What does the report actually present? How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? 
+We have to clearly state, right away, that not all the pieces of work presented in this report, even if sharing the very same goals of WP4, i.e., ``to develop methods to control grasping actions given a detection of an object using the compositional object model'', fit exactly the breakdown structure suggested by the Tasks reported in the ``Description of Work''. In particular, the description of the activities to be performed in Tasks 4.1, 4.2 and 4.3, represents the sequential temporal stages that one could envision in performing a robust grasp when adopting a fully actuated and sensorized robotic hand. In fact, the pre-shaping of the hand to a first object contact (Task 4.1), the assessment of the first-order properties of the object surface, along with the local optimization of the contact point locations (Task 4.2), and the actual grasp acquisition with the optimal distribution of contact forces (Task 4.3), indeed assume that the action is performed by employing a dexterous hand with a plethora of force and position sensors. Moreover, here the robustness of the grasp was envisioned by reasoning, at each stage of the process, whether the previous step was successfully performed and taking proper corrective actions if that was not the case.
 
-\subsection{Relation to the state-of-the-art}
+The approach that we came to pursue sees instead a central role of compliantly underactuated hands, where uncertainty in the relative pose between the hand and the object and object shape itself is mechanically absorbed by the adaptive behavior of the Pisa/IIT SoftHand. This new research direction brought about somewhat completely unplanned (and unexplored) issues that we considered central to the goals of WP4 and worth to be pursued. First of all, the sensorization of a compliantly adaptive hand with dislocable joints asked for a whole new approach to provide proprioceptive feedback to the hand (this topic is actually matter of DR~3.1). The force sensorization problem, which is somewhat assumed in the Tasks~4.2 and~4.3, poses non trivial technological problems for the hand under investigation, and is still under development and testing. Moreover, the envisioned phases to transit from grasp formation to successful grasp acquisition are inextricably entangled and somehow blurred for an adaptive and underactuated hand with just one single Degree of Actuation, as the dynamic interaction between the hand and the object --- and possibly the environment --- is responsible for the global behavior of the system. This new perspective asked for a rescheduling and reorganization of the needed pieces of work.
 
-How are the obtained results related to the state-of-the-art? 
+For the reasons mentioned above, the work that is presented in this report is mostly focused on proposing robust grasping solution for an adaptive hand and, in particular, for our Pisa/IIT SoftHand. The learning and transfer of grasps within and across object categories, instead, makes use of the fully actuated and sensorized 20-DoF DLR-HIT Hand II, since a finer control over the fingertip position is required.
+
+In Sec.~\ref{sec:GraspingWithSoftHands}, we present our approach to define successful synthetic poses for the Pisa/IIT SoftHand in grasping the PaCMan Object Database~\cite{PacmanObjectDatabase}. In Sec.~\ref{sec:GraspPlanningBoundingBoxes}, the previous approach is sharpened by employing a custom decomposition into cuboids of the object point cloud. Each cuboid suggests a number of grasps to be performed on the object. These grasps are used to warm start the search for successful grasps to be synthetically found in the simulation environment and to be attached to that object's grasp database. The feasibility of using this approach on-line to find graspable parts on objects in the scene with partial point cloud information and irrespective to their prior recognition is under investigation using the framework described in MS~4.2, Sec.~A.1-A.4.
+
+In Sec.~\ref{sec:GraspingNovelObjects}, we shift our attention onto the generalization and adaptation ability of the previously reported grasp planning algorithm for fully actuated hands showing, in experiments using the DLR-HIT Hand II, how it is possible to just use a few example grasps, taught in a kinesthetic manner, in order to be able to transfer this knowledge to unknown, even partially visible objects.
+
+In Sec.~\ref{sec:GraspingUncertainty}, we consider the grasps of the previous section as the starting point, but now wish to execute them more reliably than in an essentially open loop fashion. We present the progress on our method for planning tactile information gathering to reduce the uncertainty in the pose of an object. The method works by embedding the information to be gained in the physical space, using it to shorten distances, and thus make information gathering trajectories of lower cost. We show improvement in our results over the previous year.
+
+Sec.~\ref{sec:SampleBasedMotionPlanningSoftRobots} presents a new approach to planning for soft robot manipulators under task constraints. This piece of work is central to motion planning in dual arm configurations, e.g. when an object is held simultaneously with two compliant underactuated hands. The corresponding control problem, which makes use of a geometric formulation and is based on a non-interacting scheme, is tested on a dual-arm (closed kinematic loop) configuration.
+
+Sec.~\ref{sec:HighLevelPlanningDualArm} presents our approach to solve high-level planning for grasping an object and passing it from one hand to another. This work constitutes the theoretical foundation for the high-level planning needed to perform the Task 5.3.
+
+In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based on direct trajectory optimization that does not require a-priori specification of the contact sequence and presents the benefits of providing dynamically consistent plans, from the outset, and allowing for opportunistic exploitation of environmental constraints.
+
+% \subsection{Relation to the state-of-the-art}
+% How are the obtained results related to the state-of-the-art?
+% This part is usually discussed in the corresponding subsection. Therefore, % a global 'Relation to the state-of-the-art' is unnecessary
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Work directly into the following .tex files
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Marco Gabiccini
+% Grasp Planning via a Bounding Box Object Decomposition
+\input{./inputFiles/GraspingWithSoftHands.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Manuel Bonilla
+% Grasp Planning via a Bounding Box Object Decomposition
+\input{./inputFiles/GraspPlanningBoundingBoxes.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: UoB and adapted by Hamal Marino
+% Grasp Novel Objects
+\input{./inputFiles/GraspingNovelObjects.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: UoB (Claudio and Jeremy))
+% Grasping under Uncertainty
+\input{./inputFiles/GraspingUnderUncertainty.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Marco Gabiccini
+% Sample-Based Motion Planning for Soft Robot Manipulators
+% Under Task Constraints
+\input{./inputFiles/SampleBasedMotionPlanningSoftRobots.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Marco Gabiccini
+% Integrated Constrained Motion Planning and Control for
+% Compliant Robots
+%\input{./inputFiles/ConstrainedMotionPlanningAndControl.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Hamal Marino
+% High-Level Planning for Dual Arm Goal-Oriented Tasks
+\input{./inputFiles/HighLevelPlanningDualArm.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% To be prepared by: Marco Gabiccini
+% Computational Framework for Environment-Aware Robotic Manipulation
+% Planning
+\input{./inputFiles/ComputationalFramework.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR43}
@@ -93,18 +182,92 @@ How are the obtained results related to the state-of-the-art?
 \appendix
 \section{Annexes}
 
-Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
-
-% template for annexes
-\subsection{Book chapter/Article/Technical Report: \em TITLE}
+\subsection{Article: Grasping with soft hands} \label{ann:softGrasps}
 \begin{description}
-    \item[Authors] 
-    \item[Info] % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
-    \item[Abstract]
-    \item [Relation with the deliverable] 
-    \item[Attachment] %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+    \item[Authors] M. Bonilla, E. Farnioli, C. Piazza, M. Catalano, G. Grioli, M. Garabini, M. Gabiccini, A. Bicchi
+    \item[Info] In proceedings of IEEE-RAS Int. Conf. on Humanoid Robots (Humanoids), 2014
+    \item[Abstract] Despite some prematurely optimistic claims, the ability of robots to grasp general objects in unstructured environments still remains far behind that of humans. This is not solely caused by differences in the mechanics of hands: indeed, we show that human use of a simple robot hand (the Pisa/IIT SoftHand) can afford capabilities that are comparable to natural grasping. It is through the observation of such human-directed robot hand operations that we realized how fundamental in everyday grasping and manipulation is the role of hand compliance, which is used to adapt to the shape of surrounding objects. Objects and environmental constraints are in turn used to functionally shape the hand, going beyond its nominal kinematic limits by exploiting structural softness. In this paper, we set out to study grasp planning for hands that are simple - in the sense of low number of actuated degrees of freedom (one for the Pisa/IIT SoftHand) - but are soft, i.e. continuously deformable in an infinity of possible shapes through interaction with objects. After general considerations on the change of paradigm in grasp planning that this setting brings about with respect to classical rigid multi-dof grasp planning, we present a procedure to extract grasp affordances for the Pisa/IIT SoftHand through physically accurate numerical simulations. The selected grasps are then successfully tested in an experimental scenario.
+    \item \textbf{Relation with the deliverable}: Grasping under uncertainty by exploiting the adaptive behavior encoded in the mechanical design.
+    \item[Attachment] (following pages until next annex)
 \end{description}
-% attach your PDF(s) if required, pusblished and online available documents do not require it if you provide the doi (only doi are permitted)
-%\includepdf[pages=-]{./attachedPapers/YOURFILE.pdf
+\includepdf[pages=-]{./attachedPapers/GraspingWithSoftHands.pdf}
+
+\subsection{Article: Grasp Planning for the Pisa/IIT Softhand via Bounding-Box Object Decomposition} \label{ann:boxedGrasp}
+\begin{description}
+    \item[Authors] M. Bonilla, D. Resasco, M. Gabiccini, A. Bicchi
+    \item[Info] Submitted to the 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems
+    \item[Abstract] In this paper, we present a method to plan grasps for soft hands. Considering that soft hands can easily conform to the shape an the object, with preference to certain types of basic geometries and dimensions, we decompose the object into one type of these geometries, particularly into Minimal Volume Bounding Boxes (MVBBs), which are proved to be efficiently graspable by the hand we use. A set of hand poses are then generated using geometric information extracted from such MVBBs. All hand postures are used in a dynamic simulator of the PISA/IIT Soft Hand and put on a test to evaluate if a proposed hand posture leads to a successful grasp. We show, through a set of numerical simulations, that the probability of success of the hand poses generated with the proposed algorithm is very good and represents an evident improvement with respect to our previous results published in~\ref{ann:softGrasps}.
+    \item[Relation with the deliverable] Part-based grasping under uncertainty for soft hands.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/GraspPlanningwithSoftHandsusingBoundingBoxObjectDecomposition.pdf}
+
+\subsection{Article: One shot learning and generation of dexterous grasps for novel objects} \label{ann:novelObjects}
+\begin{description}
+    \item[Authors] M. Kopicki, M. Adjible, A. Leonardis, R. Detry, J.L. Wyatt
+    \item[Info] Under review
+    \item[Abstract] This paper presents a method for one-shot learning of dexterous grasps, and grasp generation for novel objects. A model of each grasp type is learned from a single kinesthetic demonstration, and several types are taught. These models are used to select and generate grasps for unfamiliar objects. Both the learning and generation stages use an incomplete point cloud from a depth camera – no prior model of object shape is used. The learned model is a product of experts, in which experts are of two types. The first is a contact model and is a density over the pose of a single hand link relative to the local object surface. The second is the hand configuration model and is a density over the whole hand configuration. Grasp generation for an unfamiliar object optimises the product of these two model types, generating thousands of grasp candidates in under 30 seconds. The method is robust to incomplete data at both training and testing stages. When several grasp types are considered the method selects the highest likelihood grasp across all the types. In an experiment, the training set consisted  of five different grasps, and the test set of forty-five previously unseen objects. The success rate of the first choice grasp is 84.4\% or 77.7\% if seven views or a single view of the test object are taken, respectively. A \href{https://www.youtube.com/watch?v=FXchUFERErU}{video} summarizing the work is available at {\tt https://www.youtube.com/watch?v=FXchUFERErU}.
+    \item[Relation with the deliverable] A new method is proposed for learning grasps and generalize them to novel objects.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/GraspingNovelObjects.pdf}
+
+% grasping under uncertainty
+\subsection{Technical Report: Informational Reward Planning for
+Dexterous Grasping in Unstructured Environments} \label{ann:uncertaintyGrasps}
+\begin{description}
+     \item[Authors] Claudio Zito and Jeremy L. Wyatt
+      \item[Info] Unpublished
+      \item[Abstract]  Dexterous grasping of objects with uncertain pose is a hard unsolved problem in robotics. In this work we extend our proposed solution to this problem using information gain re-planning. We present a new set of algorithms that enable: i) re-planning while maintaining the configuration of the robot in contact with the object when an unexpected contact occurs, ii) planning of dexterous grasping trajectories for non-convex object shapes by implementing efficient collision detection for point clouds, and iii) use of an active complaint controller to allow continuous contact while minimising the risk of perturbing the object being grasped. First we show how tactile information, acquired during a failed attempt to grasp an object can be used to refine the estimate of that object’s pose. Second, we show how this information can be used to re-plan new reach to grasp trajectories for successive grasp attempts. Third, we show how complex, dexterous grasping trajectories can be efficiently planned for a non-convex object described as a point cloud. Finally we present IR3ne, our information reward based algorithm, to show how reach-to-grasp trajectories can be modified, so that they maximise the expected tactile information gain, while simultaneously delivering the hand to the grasp configuration that is most likely to succeed. The method is demonstrated in trials with a simulated robot. Sequential re-planning is shown to achieve a greater success rate than single grasp attempts, and IR3ne, with its trajectories that maximise information gain, requires fewer re-planning iterations than conventional planning methods before a grasp is achieved.
+     \item \textbf{Relation with the deliverable}: This report describes our work on Task 4.4, grasping under uncertainty.
+     \item[Attachment] (following pages until next annex)
+ \end{description}
+% to be included
+\includepdf[pages=-]{./attachedPapers/GraspingUnderUncertainty.pdf}
+
+\subsection{Article: Sample-based motion planning for soft robot manipulators under task constraints} \label{ann:softPlanning}
+\begin{description}
+    \item[Authors] M. Bonilla, E. Farnioli, L. Pallottino, A. Bicchi
+    \item[Info] Accepted for publication at the 2015 IEEE Intl. Conf. on Robotics and Automation
+    \item[Abstract] Random sampling-based methods for motion planning of constrained robot manipulators has been widely studied in recent years. The main problem to deal with is the lack of an explicit parametrization of the non linear submanifold in the Configuration Space (CS), due to the constraints imposed by the system. Most of the proposed planning methods use projections to generate valid configurations of the system slowing the planning process. Recently, new robot mechanism includes compliance either in the structure or in the controllers. In this kind of robot most of the times the planned trajectories are not executed exactly by the robots due to uncertainties in the environment. Indeed, controller references are generated such that the constraint is violated to indirectly generate forces during interactions. In this paper we take advantage of the compliance of the system to relax the geometric constraint imposed by the task, mainly to avoid projections. The relaxed constraint is then used in a state-of-the-art sub-optimal random sampling based technique to generate any-time paths for constrained robot manipulators. As a consequence of relaxation, contact forces acting on the constraint change from configuration to configuration during the planned path. Those forces can be regulated using a proper controller that takes advantage of the geometric decoupling of the subspaces describing constrained
+    rigid-body motions of the mechanism and the controllable forces.
+    \item[Relation with the deliverable] planning dual arm manipulation for soft robots.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/SampleBasedMotionPlanningSoftRobots.pdf}
+
+% \subsection{Article: Integrated Constrained Motion Planning and Control for Compliant Robots} \label{ann:controlledSoftPlanning}
+% \begin{description}
+%     \item[Authors]
+%     \item[Info] Submitted to the 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems
+%     \item[Abstract]
+%     \item[Relation with the deliverable]
+%     \item[Attachment] (following pages until next annex)
+% \end{description}
+%\includepdf[pages=-]{./attachedPapers/.pdf}
+
+\subsection{Article: High-Level Planning for Dual Arm Goal-Oriented Tasks} \label{ann:dualArmPlanning}
+\begin{description}
+    \item[Authors] H. Marino, M. Ferrati, A. Settimi, C. Rosales, M. Gabiccini
+    \item[Info] Submitted to the 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems
+    \item[Abstract] In this paper, we design a simple methodology for high-level planning, corroborated with low-level planning and execution, to solve a task having specified a priori a set of interaction primitives. We provide a realistic implementation focusing on the simple task of moving an object from a given initial to a desired final configuration, possibly exploiting the interaction between the object and the tabletop, as well as direct handoff between two hands when convenient. The interaction primitives are the different ways in which the object can be grasped and moved around, possibly different for each end-effector, and the planning step is carried out considering the table itself as an end-effector (with the non-movable attribute) with its own set of primitives. This results in a sequence of actions that are then translated into collision-free paths and, subsequently, low level commands for the robot. Experimental results with a bi-manual robotic platform show the viability of our approach, which can be well extended to multi-arm systems.
+    \item[Relation with the deliverable] passing objects from one hand to another (Task 5.3)
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/HighLevelPlanningforDualArmObjectPassingTasks.pdf}
+
+\subsection{Article: A computational framework for environment-aware robotic manipulation planning} \label{ann:env-awareManipulation}
+\begin{description}
+    \item[Authors] M. Gabiccini, A. Artoni, G. Pannocchia, J.~Gillis
+    \item[Info] Under review
+    \item[Abstract] In this paper, we present a computational framework for direct trajectory optimization of general manipulation systems with unspecified contact sequences, exploiting \emph{environmental constraints} as a key tool to accomplish a task.
+    Two approaches are presented to describe the dynamics of systems with contacts, which are based on a penalty formulation and on a velocity-based time-stepping scheme, respectively. In  both cases, object and environment contact forces are included among the free optimization variables, and they are rendered consistent via suitably devised sets of complementarity conditions.
+    To maximize computational efficiency, we exploit sparsity patterns in the linear algebra expressions generated during the solution of the optimization problem and leverage Algorithmic Differentiation to calculate derivatives. % quickly and accurately.
+    The benefits of the proposed methods are evaluated in three simulated planar manipulation tasks, where essential interactions with environmental constraints are automatically synthesized and opportunistically exploited.
+    \item[Relation with the deliverable] grasp and manipulation planning for systems with a-priori unspecified contact sequences.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/ComputationalFrameworkEnvAwareRobManipPlanning.pdf}
+\includepdf[pages=-]{./attachedPapers/appendix_of_ComputationalFrameworkEnvAwareRobManipPlanning.pdf}
 
 \end{document}
