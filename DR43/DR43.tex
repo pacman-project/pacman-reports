@@ -26,15 +26,15 @@
 
 \title{Methodologies for grasp acquisition and planning}
 \deliverableid{DR 4.3}
-\author{H. Marino, C. Rosales, M. Kopicki, G. Santaera, E. Luberto, Y. Wu, T. Sartor, J.L.~Wyatt, and M. Gabiccini}
-\address{Universit\`{a} di Pisa, Pisa Italy}
-\email{m.gabiccini@ing.unipi.it}
+\author{H. Marino, C.J.~Rosales, M. Kopicki, G. Santaera, E. Luberto, Y. Wu, A. Artoni, G. Pannocchia, M. Gabiccini, and J.L.~Wyatt}
+\address{University of Birmingham, UK}
+\email{jlw@cs.bham.ac.uk}
 \headertitle{Grasp acquisition and planning}
 \headerauthor{H. Marino, et al.}
 
 \duedate{2016-02-29}
 \submissiondate{2016-02-29}
-\leadpartner{Universit\`{a} di Pisa}
+\leadpartner{University of Birmingham, UK}
 \revision{final}
 \disseminationlevel{PU}
 
@@ -154,7 +154,7 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 
 % To be prepared by: Marco GABICCINI
 % Offset-free MPC Explained: novelties, subtleties, and applications
-% Planning
+% 
 \input{./inputFiles/OffsetFreeMPCExplained.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -175,6 +175,8 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 \appendix
 \section{Annexes}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Article: On the Problem of Moving Objects with Autonomous Robots: a Unifying High-Level Planning Approach} 
 \label{ann:highLevelPlanning}
 \begin{description}
@@ -186,6 +188,25 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
     \item[Attachment] (following pages until next annex)
 \end{description}
 \includepdf[pages=-]{./attachedPapers/OnTheProblemOfMovingObjectsWithAutonomousRobots.pdf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Article: Learning and Inference of Dexterous Grasps for Novel Objects with Underactuated Hands}
+\label{ann:LearningInferenceUnderactuatedHands}
+\begin{description}
+    \item[Authors] M. Kopicki, C. J. Rosales, H. Marino, M. Gabiccini, J. L. Wyatt
+    \item[Info] Submitted to: {\color{red} update this and the attached PDF!}
+    \item[Abstract] Recent advances have been made in learning of grasps for fully actuated hands. A typical approach learns the target locations of finger links on the object. When a new object must be grasped, new finger locations are generated, and a collision free reach-to-grasp trajectory is planned. Such a division of labour fails to transfer directly to underactuated hands, which improve grasp reliability via contacts with the object during grasping. In this paper we present a method for learning transferrable grasps for underactuated hands. Our approach learns not only the desired final grasp, and also good grasping trajectories, from a rigid body simulation. This enables us to learn how to approach the object and close the underactuated hand from a variety of poses. Our method does not rely on explicit representation of the contact sequence.
+The core learning method uses product of experts. This allows grasp transfer to novel objects and works despite partial shape reconstruction of less than 25\% of the surface. From nine training grasps on three objects the method transferred grasps to previously unseen, novel objects, that differ significantly from the training objects, with an 80\% success rate. We move beyond previous work by: i) showing the ability to learn transferrable grasps for underactuated hands; ii) extending our learning
+method to work with multiple training examples for each grasp
+type; iii) extending our method to work with multiple reach to
+grasp trajectories.
+    \item[Relation with the deliverable] this work is concerned with the problem of transferring a grasp robustly to different initial hand-object poses for underactuated hands. The present work contributes to the goals of Task 4.4.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/LearningInferenceUnderactuatedHands.pdf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Article: A computational framework for environment-aware robotic manipulation planning} \label{ann:env-awareManipulation}
 \begin{description}
@@ -200,5 +221,19 @@ In Sec.~\ref{sec:ComputationalFramework}, we describe a planning strategy based 
 \end{description}
 \includepdf[pages=-]{./attachedPapers/ComputationalFrameworkEnvAwareRobManipPlanning.pdf}
 \includepdf[pages=-]{./attachedPapers/appendix_of_ComputationalFrameworkEnvAwareRobManipPlanning.pdf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Article: Offset-free MPC explained: novelties, subtleties, and applications}
+\label{ann:OffsetFreeMPCExplained}
+\begin{description}
+    \item[Authors] G. Pannocchia, M. Gabiccini, and A. Artoni
+    \item[Info] Published in: 5th IFAC Conference on Nonlinear Model Predictive Control, Seville, Spain, September 17-20, 2015
+    \item[Abstract]  This paper presents an updated and comprehensive description of offset-free MPC algorithms for nonlinear (and linear) discrete-time systems, with the intended objectives of clarifying the main concepts, showing new results, highlighting subtleties by means of challenging applications. First, the offset-free tracking problem for nonlinear systems is presented, putting a strong accent on the role of the disturbance model and observer, and then novel and stronger offset-free estimation results are presented. Next, recent advances in linear offset-free MPC are described, which show the equivalence of the velocity form algorithm (so far considered an alternative method) to a particular disturbance model and observer. Then, the concepts of offset-free estimation are exploited to design an offset-free economic MPC algorithm, which can asymptotically achieve the highest economic performance despite persistent model errors and disturbances. Extensive application results are presented to show the benefits of offset-free MPC algorithms over standard ones, and to clarify misconceptions and design errors that can prevent constraint satisfaction, closed-loop stability, and offset-free performance.
+    \item[Relation with the deliverable] this work is concerned with providing the necessary theoretical background to design offset-free MPC algorithms, which are fundamental to turn direct trajectory optimization-based manipulation planners (presented in Sec.~\ref{sec:ComputationalFramework}) into controllers able to asymptotically achieve economic performances despite model errors and disturbances.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/OffsetFreeMPCExplained.pdf}
+
 
 \end{document}
