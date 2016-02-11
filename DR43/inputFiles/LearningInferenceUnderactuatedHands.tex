@@ -3,4 +3,21 @@
 \subsubsection{Learning and Inference of Dexterous Grasps for Novel Objects with Underactuated Hands}
 \label{sec:LearningInferenceUnderactuatedHands}
 
-In this section we show the extension of our approach to ...
+While we promised to be able to grasp novel objects in Task~5.5 at month 36, we were able to demonstrate such capabilities for fully actuated hands at month 24 \cite{kopicki2015oneshot}.
+
+In this section, we show our work towards the extension of our approach to underactuated hands: on the one hand, they have the advantage of adapting to the object and partly accommodating the uncertainty in object's shape and position via mechanical compliance, but on the other they present challenging aspects at the planning level.\\
+In fact, most of the reliability they can offer is obtained through a close, daring interaction of the hand with the object and the environment during grasping.
+In a majority of cases, the grasp involves interactions with the object, moving it to the stable grasp pose.
+This is a natural property of underactuated hands, but it poses relevant challenges to the learning method.
+
+To move forward in this direction, our previously proposed algorithm has been extended to be able to use more than a single training example for the same grasp category, and to moreover include multiple trajectories as part of the learning process.
+Furthermore, it does not rely on an explicit representation of the contact sequence.
+The core learning method uses a product of experts.
+
+Nine training examples, three per grasp type (rim, pinch, and handle) were executed in simulation with a human in control.
+Only two objects were used in this training phase. Tests were conducted on fifteen different, previously unseen objects, whose models consisted only of a point cloud taken from just one view.
+Reconstructions were thus partial, typically less that 25\% of the object's surface area.
+Automatic selection of the grasp which was most-likely to succeed led to 12 good grasps out of the 15 tests, giving a generalization success rate of 80\%.\\
+Extensions of this work where also object-environment interactions are considered are under development, as recognized to be of utmost relevance.
+
+A more in depth picture of this approach and what has been so far achieved can be seen in Sec.~\ref{ann:LearningInferenceUnderactuatedHands}.

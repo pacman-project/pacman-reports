@@ -1,6 +1,28 @@
 %%% Data-Driven Movement Analysis
 
-\subsubsection{Data-Driven Movement Analysis}
+\subsubsection{Data-Driven Human Grasp Movement Analysis}
 \label{sec:DataDrivenMovementAnalysis}
 
-In this section we show the extension of our approach to ...
+As the description of human hand motions is very complex, methods to reduce this complexity have attracted much attention in the motor control literature.
+Early studies prevalently used direct analysis methods such as visual inspection to define grasp taxonomies (e.g. \cite{cutkosky1989grasp}).
+More recently, analytical methods have been employed to perform grasping data dimensionality reduction (e.g. \cite{santello1998postural}).
+In this section, a methodology is presented which allows to obtain a data-generated grasp taxonomy along with low-dimensional representations: these could be used for human grasping data classification and posture reconstruction, as well as design specification for underactuated hands design.
+
+The technique used here is an adaptation of the Multiple Eigenspaces technique, originally proposed in computer vision (\cite{leonardis2002multiple}).
+Here, an \emph{Eigenspace} is an affine sub-space (i.e. has a \emph{mean} datapoint (DP), and a certain number of linear directions) of the full hand configuration space representing a subset of the data.
+The generation of eigenspaces needs to consider, at the same time, which are the DPs belonging together, and what the dimension (i.e. the number of linear directions to incorporate) should be.
+
+%The algorithm generates seeds, which are the initial stage of the eigenspaces, from the dataset with a temporal proximity criterion; then, each eigenspace is grown independently, including \emph{close} DPs based on single DP reconstruction error.\\
+%A further decision on whether to keep the DPs in the eigenspace is based on overall reconstruction error of the eigenspace itself.\\
+%Then, a selection procedure is carried out based on a greedy binary search algorithm to optimize a \emph{Minimum Description Length} (MDL) cost.
+
+Applying the technique to more than 4500 postures has led to a number of low dimensional affine sub-spaces similar to grasp categories which can be found in a classical grasp taxonomy (\cite{cutkosky1989grasp}).
+
+An interesting application of this methodology is represented by the possibility of using such sub-spaces to have a simplified, task-driven hand design approach; this in order to be able to capture the nature of some duties that the hand must fulfill, without over-complicating the actuation method, and possibly the overall hand design.
+%For example, given a class of tasks to be performed, a weighted interest in each of them, and a sample population of hand postures performing those tasks, it is possible to first obtain a taxonomy-like classification of the task set, and then identify the best possible linear direction to accomplish them (e.g. convex combination of each task principal direction).
+This is against the idea of considering the single linear direction which best interpolates all the samples like in Principal Component Analysis, as this is affected by the data population itself.
+
+A more detailed view on this method and on the achieved results can be seen in Sec.~\ref{ann:DataDrivenHumanGraspMovementAnalysis}.
+
+%From the report of Y1:
+%There is a large number of models and techniques which are useful for dimensionality reduction, most popularly PCA. However, the results of such global dimensionality reduction techniques can be highly dependent on the dataset used. To avoid this dependency, we have used the Multiple Eigenspace technique [23]. This approach gives lower dimensional subspaces than the ones given by PCA. These subspaces can be used for interpolation, thus utilising the low dimensional local structure of the data, which is instead usually ignored. We have described the results of this novel technique by analysing more 4500 individual grasp postures.
