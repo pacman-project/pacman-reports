@@ -3,31 +3,14 @@
 \subsubsection{On the Problem of Moving Objects with Autonomous Robots: a Unifying High-Level Planning Approach}
 \label{sec:HighLevelPlanning}
 
-In order to successfully complete Task~5.3, which requires the object to be passed between the hands of the robot, we describe in this section our approach to solve high-level planning for this matter.
+In this work we propose a high-level planner that unifies
+different object moving strategies such as pick-and-place and
+handoff, and exploits support surfaces if required to achieve
+the goal. Both a real and simulated examples with different
+objects and multiple manipulators show the efficacy and scalability of this approach.
 
-Our idea considers the possibility of having the object in a known position, which can be recognized using vision, and a higher-level agent (such as a user) decides a target configuration the object has to reach.
+Our main contribution with this paper is a graph-based modelization of the problem, associated to a novel planning algorithm, that effectively unifies previously described strategies.
+In this graph, each node represents the state of the object to be moved, while the arcs correspond to feasible change of state (more details on this are given in Sec. IV in the annex (Sec.~\ref{ann:highLevelPlanning})). In a hierarchical planning layered architecture, our planner needs to be placed below a symbolic reasoning planner.
+The experimental validation of the proposed approach has been carried out on the Vito robot of Centro di Ricerca ``E. Piaggio''. In order to test the planner on a more complex setup with multiple end-effectors, a simulation with five Kuka LWR and one conveyor belt has been also performed.
 
-From this information, a semantic graph is constructed which has as nodes a grasp id and a workspace id, and as arcs all possible known transitions between nodes.
-
-Once a minimum cost path has been found, it is translated back into Cartesian information for collision-free motion planning, grasp commands, and all low-level requirements to execute the plan successfully.
-
-While there are many previous works on combining high-level semantic reasoning and low-level cartesian path planning (see e.g. \cite{karlsson2012combining, leidner2012things, leidner2013hybrid}) which mostly take advantage of object-specific reasoning introduced in \cite{levison1996connecting}, our main contribution is to include the possibility of passing an object between two end-effectors.
-
-Specifically, considering end-effectors with different properties, the table (and possibly other non-movable surfaces) has its own set of grasps for an object, and is treated exactly like a hand when generating arcs in the graph, apart from the fact that it cannot be moved and, thus, there will be no arc connecting the same ``table grasp'' in adjacent workspaces (while there could be one if the grasp is performed via a hand of the robot).
-
-Thus, considering that previous approaches mostly rely on a table in order to move an object from one arm workspace to another, we can simply classify the \emph{primitives} which allow a transition from a grasp/workspace pair into another in three categories:
-\begin{enumerate}
-	\item \emph{pick} with an end-effector from a fixed surface
-	\item \emph{move} the end-effector
-	\item \emph{place} with an end-effector onto a fixed surface
-\end{enumerate}
-
-Our approach uses instead a more general action of ``grasp transfer'', which can be specialized in:
-\begin{enumerate}
-	\item moving actions of an end-effector among its reachable workspaces
-	\item pick and place actions if one end-effector involved is non-movable (such as a table)
-	\item a grasp-ungrasp sequence if both end-effectors involved are movable
-\end{enumerate}
-This list is still under development, and we will try to generalize it even more in the future with other, more interesting \emph{primitives} which could possibly exploit dynamics, friction, gravity, and so on.
-
-A more detailed view on this method and on the achieved results can be seen in Sec.~\ref{ann:highLevelPlanning}. % available at this~\href{./attachedPapers/HighLevelPlanningBimanualObjectPassing.pdf}{link}.
+More details on this new approach and on the achieved results can be found in Sec.~\ref{ann:highLevelPlanning}.
