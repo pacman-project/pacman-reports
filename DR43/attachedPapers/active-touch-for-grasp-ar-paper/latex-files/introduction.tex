@@ -1,0 +1,17 @@
+\section{Introduction}
+\label{sec:intro}
+
+Robot grasping is typically affected by uncertainty associated with the location of the object to be grasped.  This is a challenging problem because it requires the robot to find collision-free trajectories that are robust in the face of such uncertainty. There are two fundamentally different approaches. First, a trajectory may be formulated that is robust to current uncertainty, but does not reason about how future information may reduce that uncertainty. Second, the robot may plan a trajectory to gather information that will reduce the uncertainty, so as to make a final grasping trajectory more reliable.
+Previous work typically separates these two aspects, separately planning information gathering trajectories and grasping trajectories. The two can be theoretically joined in a continuous state and action POMDP, but this leads to an infinite dimensional belief space planning problem that is hard to solve. In this paper we propose and validate a way to mix information gathering and reach to grasp trajectories.  Our main insight is that to avoid the full complexity of belief state planning we can instead embed the value of information in the much lower dimensional physical space. This gives a well posed but tractable problem for reach to grasp planning under uncertainty. The specific contributions of this work are to:
+\begin{enumerate}
+\item plan information gain whilst simultaneously attempting to grasp the target object.
+\item encode expected information gain by warping distances in the workspace, creating a non-Euclidean metric that is information sensitive.
+\item employ a hierarchical planning approach to reduce planning complexity in this space.
+\item update the belief about the object's pose using a tactile observation model for a multi-finger hand palpating the object.
+\item evaluate the methods, proving that our approach improves reach to grasp planning for a dexterous robot.
+\end{enumerate}
+
+Features of the work are that we use a state of the art grasp generation algorithm to obtain a target grasp (i.e. a set of finger contacts) on the fly, recomputing it as we update information about the object pose. One assumption is that a shape model of the object is also previously obtained from sensing, but this may be incomplete. The work is demonstrated in trials in simulation and on Boris, a half-humanoid robot platform. Empirical results confirm that sequential re-planning achieves a greater success rate than single grasp attempts, and that the information gain approach requires fewer iterations before a grasp is achieved.  
+
+In the rest of the paper we describe the problem formulation, and the core information gain planning algorithm (Section~\ref{sec:problem}). We then describe the implementation on a dexterous robot platform (Section~\ref{sec:implementation}), and the experimental results (Section~\ref{sec:experiments}). We finish with related work (Section~\ref{sec:background}), and concluding remarks (Section~\ref{sec:conclusion}).
+
