@@ -1,7 +1,8 @@
 \documentclass[a4paper,11pt,pdf]{pacmanreport}
 
 %%=== Aditional packages
-
+\usepackage{xcolor}
+\usepackage{pdfpages}
 
 %%=== Local definitions
 \graphicspath{{images/}{../shared_images/}}
@@ -46,7 +47,7 @@ This deliverable report describes results of Task 2.3 as specified in
 the DoW.  The objective of this Task is the development of methods for
 influencing the formation of compositions in a hierarchical object
 representation by robotic grasps of training objects.  Here we
-describe our novel method that decomposes objects into graspable
+describe a novel method that decomposes objects into graspable
 regions with different grasping success probabilities,
 %% JP: I do not understand the following:
 %% represents objects based on different resolution of grasping,
@@ -143,10 +144,11 @@ outlined in the paragraphs below.  For a detailed description of the
 work performed, the reader is referred to the paper in Annex~\ref{ann}
 of this deliverable.
 
-We were unable to pursue the idea of multiple, coexisting part
-hierarchies because of persistent difficulties with the development of
-the tree-structured compositional hierarchies in WP1.
+%We were unable to pursue the idea of multiple, coexisting part
+%hierarchies because of persistent difficulties with the development of
+%the tree-structured compositional hierarchies in WP1.
 
+The work on multiple coexisting hierarchies has been carried out in WP1 and is reported in DR1.3.
 
 \subsubsection{Constructing object models from parts of diverse graspability}
 
@@ -158,10 +160,10 @@ parameters in terms of gripper pose. Next, we brief\-ly explain our
 compositional object representation. More details can be found in
 Annex~\ref{ann}.
 
-We learn our model based on view-based RGB-D pointcloud data and by
+We learn our model on view-based RGB-D pointcloud data and by
 performing robotic grasping experiments. Since the grasped regions of
 an object are only partially visible in one view, we fused two views
-in our experiments. We considered parallel, two-fingers grasps. Thus,
+in our experiments. We considered parallel, two-finger grasps. Thus,
 we considered pairs of candidate points for grasping. We represent the
 area enclosed by the candidate points based on gripper pose as an
 ellipse.
@@ -172,7 +174,7 @@ consider the neighboring ellipses of the grasped ellipse along the
 direction of its principal axes. We then compute the area differences
 between each of these neighboring ellipses and the grasped
 ellipse. The differences along the principal axes and the parameters
-of the ellipse itself compose our feature vector. The more area change
+of the ellipse itself compose our feature vector. The area change
 in the neighboring ellipses, the more sensitive the grasp -- and the
 less probable will generally be its success.
 
@@ -186,7 +188,7 @@ sensitivity) into a region.
 \subsubsection{Inferring grasps for novel objects}
  
 The first step in inferring grasps for a novel object is to obtain
-candidate contact points. Based on our observation on two-finger
+candidate contact points. Based on two-finger
 grasps during training, normal vectors at contact points tend to be
 collinear. The next step is to fit ellipses to the candidate pairs and
 compute area changes with respect to their neighbors which constructs
@@ -235,7 +237,7 @@ incurs a large search space, or to the object level which does not
 lend itself to generalization, our decomposition provides us with more
 distinctive object regions, which is robust and efficient.
 
-\bibliographystyle{IEEEtran}
+\bibliographystyle{ieeetr}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR22}
 
 \newpage
