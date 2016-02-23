@@ -85,7 +85,7 @@ What does the report actually present? How have the tasks been addressed? To wha
 
 How are the obtained results related to the state-of-the-art? 
 
-\bibliographystyle{IEEEtran}
+\bibliographystyle{ieeetr}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR32}
 
 \newpage
@@ -106,5 +106,27 @@ Which papers / articles are included in the report? Mention titles, authors, pub
 \end{description}
 % attach your PDF(s) if required, pusblished and online available documents do not require it if you provide the doi (only doi are permitted)
 %\includepdf[pages=-]{./attachedPapers/YOURFILE.pdf
+
+\subsection{Technical Report: \em The Next Best Touch or Non-Touch:
+Object Pose Estimation via Sculpting with Compliant Hands}
+\begin{description}
+    \item[Authors] Alexander Rietzler, Carlos J. Rosales, Marco Gabiccini, Justus Piater
+    \item[Info] Paper Draft% UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Abstract] Many robotic tasks rely on the ability of a vision system to accurately estimate the 6 dimensional pose of objects in a scene.
+In many cases a single vision sensor does not provide sufficient information to discriminate a single correct
+pose of an object. 
+This paper solves the problem of refining the pose distribution 
+of an object solely via proprioceptive sensing of occupancy.
+Our main novel contribution is an algorithm that plans a robot arm-hand trajectory such that 
+information gathered about the object pose belief is maximized while at the same time impact on the object is minimized. 
+This may result in actions that do not make contact with the object at all.
+Impact on the object is further reduced by using a compliant robotic hand.
+    \item [Relation with the deliverable] This report reports work done under\\ Task~2.3 by introducing a method for reducing an object's pose uncertainty by performing proprioceptive information
+    gathering actions.
+    \item[Attachment] (following pages) %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+\end{description}
+% attach your PDF(s) if required, pusblished and online available documents do not require it if you provide the doi (only doi are permitted)
+\includepdf[pages=-]{./attachedPapers/iros_draft_rietzleretal.pdf}
+
 
 \end{document}
