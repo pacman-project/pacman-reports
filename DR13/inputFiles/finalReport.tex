@@ -59,7 +59,7 @@
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.9\columnwidth]{images/learningGeneral.eps}
+\includegraphics[width=0.9\columnwidth]{../images/learningGeneral.eps}
 \caption{General procedure of learning the hierarchical representation of objects}
  \label{hopProc}
 \end{figure}
@@ -76,7 +76,7 @@ To create first layer of the hierarchy we remove background from images. Then, w
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.5\columnwidth]{images/recFields1.eps}
+\includegraphics[width=0.5\columnwidth]{../images/recFields1.eps}
 \caption{Point cloud obtained from single camera view divided into first layer receptive fields. Each color represent receptive field. Black points are not used to compute planar patches}
  \label{recFields1}
 \end{figure}
@@ -85,7 +85,7 @@ To extract planar patches from the depth image we divide image space into regula
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.9\columnwidth]{images/word.eps}
+\includegraphics[width=0.9\columnwidth]{../images/word.eps}
 \caption{Representation of words in the view-variant layers}
  \label{word}
 \end{figure}
@@ -96,7 +96,7 @@ The words of the second layer are extracted from all images used for training th
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.99\columnwidth]{images/overlap.eps}
+\includegraphics[width=0.99\columnwidth]{../images/overlap.eps}
 \put(-222,62){a} \put(-142,62){b} \put(-60,62){c}
 \caption{Overlapping receptive fields: receptive field shifted by 0\% (a), 33\% (b) and 66\% (c)}
  \label{overlap}
@@ -128,7 +128,7 @@ where ${\bf T}$ is special Euclidean group SE(3) rigid body transformation, $d_{
 
 \begin{figure}[t]
  \centering
- \includegraphics[width=0.95\columnwidth]{images/parts2ndLayer.eps}
+ \includegraphics[width=0.95\columnwidth]{../images/parts2ndLayer.eps}
  \caption{Alignment of parts from the second layer. Gray -- part A ($p_A$), red -- part B ($p_B$)}
  \label{parts2ndLayer}
 \end{figure}
@@ -139,7 +139,7 @@ The example alignment for parts from second layer is presented in Fig.~\ref{part
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.95\columnwidth]{images/2ndLayer.eps}
+\includegraphics[width=0.95\columnwidth]{../images/2ndLayer.eps}
 \put(-215,182){a} \put(-102,182){b}
 \put(-215,82){c} \put(-102,82){d}
 \caption{Clusterization results for the second layer. Parts from the same group have the same color on the object visualization: overlap 0\% (a), overlap 33\% (b), overlap 66\% (a), combination of hypotheses (d)}
@@ -152,7 +152,7 @@ The variability of subparts is encoded in the clusters. Clusters are created wit
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.95\columnwidth]{images/explanation2ndLayer.eps}
+\includegraphics[width=0.95\columnwidth]{../images/explanation2ndLayer.eps}
 \put(-232,172){a} \put(-232,77){b}
 \caption{Explanation of data using vocabulary from second layer without (659 parts) (a) and with compression (38 parts) (b)}
  \label{explanation2ndLayer}
@@ -162,14 +162,14 @@ In the next step the input data is explained using the obtained $l$-th layer voc
 
 \begin{figure}[t]
  \centering
- \includegraphics[width=0.95\columnwidth]{images/parts3rdLayer.eps}
+ \includegraphics[width=0.95\columnwidth]{../images/parts3rdLayer.eps}
  \caption{Alignment of parts from the third layer. Gray -- part A ($p_A$), red -- part B ($p_B$)}
  \label{parts3rdLayer}
 \end{figure}
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.95\columnwidth]{images/3rdLayer.eps}
+\includegraphics[width=0.95\columnwidth]{../images/3rdLayer.eps}
 \put(-215,182){a} \put(-102,182){b}
 \put(-215,82){c} \put(-102,82){d}
 \caption{Clusterization results for the second layer. Parts from the same group have the same color on the object visualization: overlap 0\% (a), overlap 33\% (b), overlap 66\% (a), combination of hypotheses (d)}
@@ -178,7 +178,7 @@ In the next step the input data is explained using the obtained $l$-th layer voc
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.95\columnwidth]{images/explanation3rdLayer.eps}
+\includegraphics[width=0.95\columnwidth]{../images/explanation3rdLayer.eps}
 \put(-232,172){a} \put(-232,77){b}
 \caption{Explanation of data using vocabulary from third layer without (143 parts) (a) and with compression (36 parts) (b)}
  \label{explanation3rdLayer}
@@ -194,7 +194,7 @@ To deal with the proper representation of objects in 3D we build the hierarchy w
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.75\columnwidth]{images/wordInd.eps}
+\includegraphics[width=0.75\columnwidth]{../images/wordInd.eps}
 \caption{Representation of words in the view-invariant layers}
  \label{wordInv}
 \end{figure}
@@ -205,7 +205,7 @@ To create first layer of the volumetric vocabulary we transform each part from t
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.95\columnwidth]{images/viParts.eps}
+\includegraphics[width=0.95\columnwidth]{../images/viParts.eps}
 \caption{Alignment of parts from the fourth layer. Gray -- part A ($p_A$), red -- part B ($p_B$)}
  \label{viParts}
 \end{figure}
@@ -227,7 +227,7 @@ The procedure parts selection is the same as for view-dependent layer. When the 
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.95\columnwidth]{images/shareability.eps}
+\includegraphics[width=0.95\columnwidth]{../images/shareability.eps}
 \put(-227,420){a} \put(-110,420){b}
 \put(-227,325){c} 
 \put(-227,160){d} 
@@ -241,7 +241,7 @@ Shareability of parts is also visible on the 3rd layer of the hierarchy (Fig.~\r
 
 \begin{figure}[t]
  \centering
-\includegraphics[width=0.95\columnwidth]{images/shareability4thLayer.eps}
+\includegraphics[width=0.95\columnwidth]{../images/shareability4thLayer.eps}
 \put(-227,80){a} \put(-100,80){b}
 \caption{Shareablity of 4th layer parts between objects}
  \label{shareability4thLayer}
