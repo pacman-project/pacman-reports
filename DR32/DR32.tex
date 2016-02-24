@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,pdf]{pacmanreport}
+\documentclass[a4paper,11pt,pdf]{../templates/pacmanreport}
 
 %%=== Aditional packages
 
@@ -17,13 +17,13 @@
 %% ================================
 %% DELIVERABLE INFO 
 
-\title{Planning Active Information Gathering for Haptics and Vision}
+\title{Planning Active Information Gathering for Haptic and Vision}
 \deliverableid{DR 3.2}
-\author{C. Zito, ...}
-\address{University of Birmingham}
-\email{cxz004@cs.bham.ac.uk}
-\headertitle{shorted title}
-\headerauthor{shortauthor}
+\author{C. Zito, C. Rosales, F. Spinelli, A. Rietzler, J. L. Wyatt}
+\address{School of Computer Science, University of Birmingham}
+\email{claudio.zito.81@gmail.com}
+\headertitle{Active Information Gathering}
+\headerauthor{C. Zito, C. Rosales, F. Spinelli, A. Rietzler, J. L. Wyatt}
 
 \duedate{2015-02-27}
 \submissiondate{2015-02-27}
@@ -41,7 +41,10 @@
 \maketitle
 
 \begin{abstract}
-\noindent Here comes the abstract
+\noindent 
+This report describes activities related to the development of planning algorithms for actively gathering information for object of unknown shape. This report presents the efforts on the definition of information theoretic measures for uncertainty about shape as well as modelling of incomplete surfaces. It also describes how to integrate low-level controllers, developed on Task 3.1, to plan haptic exploration strategies for a bi-manual robot which holds in one hand an unknown object and is capable of tracing the object's surface with a sensorised finger.  
+
+
 \end{abstract}
 
 
@@ -58,15 +61,16 @@
 
 \section*{Executive Summary}
 
-What does the report present? What tasks does it address? How has progress been evaluated? What previous reports does this report follow up on? 
+This report describes the activities within the PaCMan consortium to define methodologies for \emph{active information gathering}.
+The material included in this report presents results on reactive control strategies for haptic exploration developed in Task 3.1 (M 1-18) as well as results on planning and execution of active visual information gathering developed in Task 3.3 (M 1-36).
 
-\section*{Role of [YOUR TOPIC] in PaCMan}
+\section*{Role of active information gathering in PaCMan}
 
-What role do the tasks addressed in this report play in the larger context of PaCMan? How do these tasks, how does report, contribute to achieving the overall goals for PaCMan? 
+This deliverable presents the achievements of the consortium in the development of new strategies for planning of active information gathering actions. 
 
 \section*{Contribution to the PaCMan scenario}
 
-How do the results presented in this report contribute to the PaCMan\cite{ProjectWebsite} scenarios and prototypes? 
+Robot grasping is typically affected by uncertainty associated to the location of the object to be grasped as well as its shape. A robot could gather information either by i) touching the object or ii) visually observing it from different point of views. This report presents three approaches that enable a robot to reason about such uncertainties and to plan the best-next action to maximise the information gain.
 
 
 \newpage
@@ -75,13 +79,25 @@ How do the results presented in this report contribute to the PaCMan\cite{Projec
 
 \subsection{Planned work}
 
-What tasks was the report supposed to address? What objectives, results were these tasks to achieve? 
+This deliverable addresses the work developed in Task 3.2 and Task 3.3. In particular, the development of planning active strategies for information gathering through both vision and haptic exploration of unknown objects. This includes using vision and haptic clues to build probabilistic models of the object to be manipulated.   
 
 \subsection{Actual work performed}
 
-What does the report actually present? How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? 
+\subsection{Task 3.2}
+
+This task addresses the problem of planning and execute active information gathering for objects of unknown shape. Our solution employs a Gaussian Process (GP) for estimating an implicitly-defined function as well as provide a measurement of the uncertainty on the estimated surface. The approximating function can be considered as the 0-levelset of the surface of the object to be manipulated, it comes handy to interpret it as a manifold and to build on recent developments on sample-based techniques for manifold explorations, e.g.~\cite{Jaillet2013Path}. We extend such algorithms to define the next-best exploration action to minimise the reduction of shape uncertainty. 
+
+The work in~\cite{Dragiev2011Gaussian} is one of the first attempt to employ GP for implicit surfaces for representing shapes in tasks as robotic grasping. However, the authors rely only on the MAP estimation of the surface (its mean) without exploiting the model uncertainty. The same authors in~\cite{Dragiev2013Uncertainty} extended their previous work to formulate a way to make inference from the GP to prefer regions on the model with particular certainty level and introduce the concept of explore-grasp and exploit grasp primitives. 
+
+Our proposed solution has several advantages: i) it implicitly defines the unknown shape in a probabilistic model, ii) integrates visual and haptic information in its model to refine its predictions and iii) constructs paths on the object's surface that a robot equipped with a sensorised finger can follow in order to gather haptic information. 
+The algorithm is demonstrated in simulation and on a real robotic platform (Vito) where a bi-manual robot holds an unknown object in its hand and it is cabable of tracing the object surface with the other arm equipped with a F/T sensor.
+%do we have a paper to cite about the probe finger?
+
+The experimental results show that our framework can learn the object shape and yields to better models with a reduced number of exploration actions.
 
 \subsection{Relation to the state-of-the-art}
+
+
 
 How are the obtained results related to the state-of-the-art? 
 
