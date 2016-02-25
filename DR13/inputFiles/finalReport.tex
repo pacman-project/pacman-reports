@@ -29,7 +29,7 @@
 }
 
 
-\author{Dominik Belter, Marek Kopicki, Jeremy Wyatt% <-this stops a space
+\author{Dominik Belter, Marek Kopicki, Ales Leonardis, Jeremy L. Wyatt% <-this stops a space
 % \thanks{}% <-this % stops a space
 % \thanks{D. Belter, M. Nowicki and P. Skrzypczy\'nski are with the Institute of Control and 
 %  Information Engineering, Poznan University of Technology, ul. Piotrowo 3A 60-965 Pozna\'n, Poland,
@@ -52,10 +52,13 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%
 
+\section{Introduction}
+
+Grasping and manipulation that are generalisable across objects require representations of object shape that are flexible and robust. To scale these representations must have several properties.  Features, for example, must be shared across objects and object categories, as well as being robust to variability. In addition we require that global object shape must be inferrable from partial views, and that missing parts can be inferred reliably. Compositional hierarchies are a particular class of representations that have proven themselves for object categorisation from intensity images. In these an object or image is represented as a hierarchy of parts learned in a statistical manner. In this paper we develop a learning and inference framework for compositional hierarchical models of 3D shape. This takes view based depth images as input, rather than either intensity images, or complete shape data. We show empirically that it has the properties of shareability, robustness to variability, and the ability to approximately infer missing shape information. We offer the framework as a promising representation to support future work in generalisable grasping and manipulation.
+
 \section{Related work}
 
 \section{Learning}
-
 
 \begin{figure}[t]
  \centering
@@ -64,9 +67,12 @@
  \label{hopProc}
 \end{figure}
 
-The procedure of learning hierarchical representation of objects is presented in Fig.~\ref{hopProc}. At the beginning, the input data are filtered to remove the noise introduced by the sensor. In the next step the first layer of the hierarchy is defined. Words in the first layer vocabulary are defined over the space of image features. For the grayscale images the Gabor filters might be used~\cite{Fiedler2014}. Each Gabor filter correspond to the edge of the object on the 2D image. Because we create hierarchy from range data the input feature corresponds to the surface of the object and the word in the first layer is represented by the planar patch. 
+Our overall procedure for learning a compositional shape hierarchy is as follows. First, we learn view dependent parts from view specific depth images. Then, to learn the layers beyond these, the hierarchy brings together different views of the same parts so as to create view independent 3D shape parts. At each layer the size of the receptive field for a part grows, and so parts in a layer $N$ are compositions of parts in layer $N-1$ that commonly fall within the same receptive field.  A visualisation of a portion of a learned hierarchy is shown in Figure XX.  
 
-In the next step of the learning procedure input data is explained using first layer vocabulary. The first layer words (planar patches) are detected on the depth image. To create next layer vocabulary the size of the receptive field is increased. The words of the $i-th$ layer are created from spatial combination of words of the previous layer. Then, the learning procedure selects representative words for the next layer vocabulary. It allows to reduce the number of words in the vocabulary and to obtain generalization properties of the hierarchy. Similar parts are grouped in clusters. Next, each cluster is represented by the representative part on the higher levels of the hierarchy. As a representative part we choose the part in the center of the cluster. The procedure is repeated until the desired number of layers is obtained. In general the receptive field of the last layer should cover the whole object.
+\subsection{A sketch of the learning procedure}
+The general procedure for learning this hierarchical representation of objects is presented in Fig.~\ref{hopProc}. Initially, the input depth data are median filtered to remove sensor noise. Then, words in the first layer vocabulary are defined over the space of image features. In compositional hierarchies built from grayscale images Gabor filters are commonly used~\cite{Fiedler2014}, such that each Gabor filter corresponds to an intensity edge in the 2D image. In this paper we instead create the hierarchy from depth data, so the input features are surface patches from the object and thus the words in the first layer are planar patches of varying orientations relative to the image plane. 
+
+In the next step of the learning procedure the input data must be explained using first layer vocabulary. The first layer words (planar patches) are detected on the depth image. To create the next layer vocabulary the size of the receptive field is increased. Candidate words for the $i^{th}$ layer are created from all the combinations of words from layer $i-1$ that are present in the data. A subset of these are selected to form the words for layer $i$. This compression underpins the generalization properties of the hierarchy. Similar parts are grouped in clusters, and each cluster takes a central part as its representative part to higher layers. The procedure is repeated until the desired number of layers is obtained. In general the receptive field of the last layer should cover the whole object.
 
 \subsection{Implementation}
 
