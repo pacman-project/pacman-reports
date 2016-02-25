@@ -169,7 +169,7 @@ a_j^2=W_1^2Z_j^2+b_1^2, j\in\{1,\ldots,N^2\}
 \end{equation}
 where $N^2$ is the number of extracted patches on the second layer.
 
-Next, all the other layers up the top layer $n_{2D}$ in our hierarchical representation are learned in an iterative manner as described above, where the input to each layer $l$ is given by the activations of the hidden units learned on patches from the previous layer $l-1$.
+Next, all the other layers up the top layer $n_{2D}$ in our hierarchical representation are learned in an iterative manner as described above, where the input to each layer $l$ is given by the activations of the hidden units learned on patches from the previous layer $l-1$. This hierarchical approach is useful at capturing non-linear dependencies in the input data and models them iteratively from low-level image patches up to the object level.
 
 For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of category specific parts, view specific ones on layer $n_{2D}-1$ and category specific ones on the last layer. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of all the database.    
 
@@ -183,9 +183,9 @@ The set of model parameters on each layer $l$ is  given by:
 
 The set of parts obtained on each layer $l,l\in\{1,\ldots,n_{2D}\}$ for the 2D $\{\Gamma^l\}$ and view-based 3D $\{\Omega^l\}$ hierarchical representations are depicted in the experimental section.
 
-In the next subsection we present our model for binding the two hierarchical representations for 2D and view-based 3D data.
+A similar approach to the one described above was addressed in \cite{Masci2011}, where stacked autoencoders are trained in a similar fashion, one layer at a time, and each layer receives as input the latent representation of the layer below. The main difference from that work, addressed in our approach is the cross-hierarchy prediction power which is achieved by discretizing the responses of each layer into a set of parts, using clustering techniques. This step enables efficient inference of parts from one hierarchy, given observed parts in the other hierarchy. In the next subsection we present our model for binding the two hierarchical representations for 2D and view-based 3D data.
  
-\subsection{Establishing correspondences between 2D and 3D view-based hierarchical representations}
+\section{Establishing correspondences between 2D and 3D view-based hierarchical representations}
 \label{sec:analysis}
 
 We build the 2D and the view-based 3D hierarchical representations on similar learning principles and their parts encode on each layer the same spatial locality $R_{f(2D)}^l=R_{f(3D)}^l$, while the difference consists in the different type of information they encode, edges and depth.
@@ -257,6 +257,7 @@ The correspondence table introduced above can be considered as a starting point 
 Furthermore, the correspondence table can be used as a starting point for building better prediction models, such as training a classifier for predicting 3D view-based parts, given an observed 2D part, which takes into account not only the conditional probabilities across hierarchies, but also their associated feature vectors.
 
 \subsection{Inference of View-based 3D Parts using 2D and 3D Hierarchical Compositional Models}
+\label{sec:inference}
 
 We propose a probabilistic model for performing inference in the view-based 3D hierarchy, by reusing the inference mechanism existing in the 2D hierarchy in combination with the joint probability table introduced above.
 
@@ -346,7 +347,7 @@ In the following section we provide the results of the performed statistical eva
 
 \section{Experimental Results}
 
-We learned and tested the proposed hierarchical representations for 2D and view-based 3D data on a set of object categories from the PaCMan dataset which is publicly available\footnote{\url{http://www.pacman-project.eu/datasets/}}. We depict in Figure \ref{database} a set of example images (edge and depth) used in the training phase. The dataset contains gray-scale and depth images generated from 3D models of 23 categories of various kitchen objects, with each category containing between 15 and 30 samples. Each object is captured at dense, regular viewpoint intervals, and we use all the 48 different viewpoints. 
+We learned and tested the proposed hierarchical representations for 2D and view-based 3D data on a set of object categories from the PaCMan dataset which is publicly available\footnote{\url{http://www.pacman-project.eu/datasets/}}. We depict in Figure \ref{database} a set of example images (edge and depth) used in the training phase. The dataset contains gray-scale and depth images generated from 3D models of 20 categories of various kitchen objects, each category containing on average 20 instances. Each object is captured at dense, regular viewpoint intervals, and we use all the 48 different viewpoints of an object instance, both in the training and testing phase.
 
 \begin{figure}
 \begin{center}
@@ -356,19 +357,29 @@ We learned and tested the proposed hierarchical representations for 2D and view-
 \label{database}
 \end{figure}
 
-The number of layers in the hierarchy depend on the size of the objects and in the case of PaCMan dataset, the hierarchical representations are formed of five layers. 
+The number of constructed layers in a hierarchy depends on the size of the training objects and for the PaCMan dataset, the hierarchical representations are formed of five layers. 
 
-One important issue consisted of finding the optimum number of parts on each layer for each representation, and apart from minimizing the reconstruction error introduced in (8), we also used the Davies-Bouldin index \cite{Bouldin97} as a method to assess the quality of the clustering process.
+One important issue consisted of finding the optimum number of parts on each layer for each representation, and apart from minimizing the reconstruction error introduced in (8), we also used the Davies-Bouldin (DB) index \cite{Bouldin97} as a method to assess the quality of the clustering process. The optimum number of parts $k$ on a layer $l$ is selected according to the minimum DB index.
 
-We present next examples of learned parts on each layer of the two hierarchical representations.
+Examples of learned parts on each layer of the two hierarchical representations and correspondences between them are depicted in Figure \ref{hierarchy}.
 
-We introduce in Table 1 for each layer in the 2D and view-based 3D hierarchies, the optimum number of parts, the reconstruction error for each hierarchy and the part entropies introduced in section \ref{sec:statistical}. The reconstruction error is computed using an adaptation of the formula introduced in (8):
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{hierarchy}
+\end{center}
+\caption{Examples of parts at each layer in the 2D and view-based 3D hierarchies and correspondences between them.}
+\label{hierarchy}
+\end{figure}
+
+We present in Table 1 for each layer in the 2D and view-based 3D hierarchies, the optimum number of parts, the reconstruction error for each hierarchy and the part entropies introduced in section \ref{sec:statistical}. The reconstruction error is computed using an adaptation of the formula introduced in (8):
 
 \begin{equation}
  r_j^l = \frac{\left\|\Gamma_m^l-Z_j^l\right\|_2}{\left\|Z_j^l\right\|_2}, \end{equation}
- where m is the index of best fitting part to each patch $Z_j$.
+ 
+ where m is the index of best fitting part for the patch $Z_j^l$ at the layer $l$ which indicates the size of the receptive field $R_f^l$:
+ 
 \begin{equation}
- m=min_{i=1}^{n_l}(\left\|\Gamma_i^l-Z_j^l\right\|_2)
+ m=min_{i=1}^{n_l}(\left\|\Gamma_i^l-Z_j^l\right\|_2).
 \end{equation}
 
  \begin{table}
@@ -376,10 +387,10 @@ We introduce in Table 1 for each layer in the 2D and view-based 3D hierarchies, 
   \begin{tabular}{ | c | c | c | c | c | c | c |r |}
       \hline
       $Layers$  & $Size(\Delta^l)$ & $Err_{2D}$ & $H(\Delta^l)$ &  $Size(\Theta^l)$ & $Err_{3D}$ & $H(\Theta^l)$  \\ \hline
-    $l_1$ &  130  & 0.32 &  & 100 & 0.53 &  \\ \hline
-    $l_2$ &  400 & 0.49 &  & 400 & 0.42 &  \\ \hline
-    $l_3$ &  400 & 0.63 &   & 500 & 0.37 &  \\ \hline 
-    $l_4$ &   &  &   &  &  &  \\ \hline
+    $l_1$ &  130  & 0.32 & 4.78 & 100 & 0.53 & 4.2 \\ \hline
+    $l_2$ &  400 & 0.49 & 5.74 & 400 & 0.42 & 5.64 \\ \hline
+    $l_3$ &  400 & 0.63 & 5.68 & 500 & 0.37 & 5.97 \\ \hline 
+    $l_4$ &  550 & 0.71 & 5.95 & 600 & 0.31 & 6.14 \\ \hline
     $l_5$ &   &  &  &  &  &  \\ 
     \hline
   \end{tabular}
@@ -407,7 +418,7 @@ We present in Figures \ref{reconstructionEdge} and \ref{reconstructionDepth} sev
 \label{reconstructionDepth}
 \end{figure}
 
-Our aim consists in quantifying the predictive power of the learned correspondences between 2D and view-based 3D information channels, at each layer of their compositional representations, aim which is assessed using multiple statistical measures. First, we assess the conditional probabilities of 2D parts given 3D parts and vice-versa and compute the predictive power in the case of choosing the part which maximizes the conditional probability in Table 2. Some examples of correlations are depicted in Figure \ref{correlations}.
+Our aim consists in quantifying the predictive power of the learned correspondences between 2D and view-based 3D information channels, at each layer of their compositional representations, aim which is assessed using multiple statistical measures. First, we assess the conditional probabilities of 2D parts given 3D parts and vice-versa and compute the predictive power in the case of choosing the part which maximizes the conditional probability. Some examples of correlations are depicted in Figure \ref{correlations}.
 
 \begin{figure}
 \begin{center}
@@ -417,11 +428,52 @@ Our aim consists in quantifying the predictive power of the learned corresponden
 \label{correlations}
 \end{figure}
 
-As there are many-to-many correspondences, choosing the best part according to the conditional probability is not always the best choice, but only in 20\% of the cases, due to ambiguity of edge structures which could correspond to many depth parts. Therefore, one solution consists of extracting complementary information about the surrounding region around an edge part using HOG features.
+As there are many-to-many correspondences, choosing the best part according to the conditional probability is not always the best choice, but only in overall 20\% of the cases, due to ambiguity of edge structures which could correspond to many depth parts. Therefore, one solution for obtaining an efficient inference of view-based 3D parts, given observed 2D parts consists of extracting complementary information from the surrounding region around an edge part using HOG features. Additionally, we trained a k-nearest neighbour classifier for improving the prediction of view-based 3D parts. The obtained results for each layer are presented in Table 2 together with the reconstruction error of view-based 3D parts given 2D parts and statistical measures such as conditional entropy. The cross hierarchy reconstruction error is computed using an adapted version of (8):
+ 
+\begin{equation}
+ r_j^l(3D|2D) = \frac{\left\|\Omega_{m'}^l-D_j^l\right\|_2}{\left\|D_j^l\right\|_2}, 
+\end{equation}
+ where $m'$ is the index which maximizes the conditional probability of a view-based 3D part given the observed 2D part $\Gamma_m^l$ and $D_j^l$ is the ground-truth depth patch corresponding to the observed 2D patch $Z_j^l$ at layer $l$:
+ 
+\begin{equation}
+ m'=max_{i=1}^{n_l^{'}}P(\Omega_i^l|\Gamma_m^l)
+\end{equation}
+and $m$ is the index of best fitting 2D part for the patch $Z_j^l$.
+\begin{equation}
+ m=min_{i=1}^{n_l}(\left\|\Gamma_i^l-Z_j^l\right\|_2).
+\end{equation}
+
+ \begin{table}
+ \begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | c |r |}
+      \hline
+      $Layers$  & $Max Prediction$ & $Err(3D|2D)$ & $K-nn$ & $Err(3D|2D)$ & $H(\Theta^l|\Gamma^l)$ & $H(\Gamma^l|\Theta^l)$  \\ \hline
+    $l_1$ &  34.12\% & 1.39 &  & 0.64 & 2.51 & 1.93 \\ \hline
+    $l_2$ &  27.36\% & 0.99 &  & 0.56 & 2.68 & 2.77 \\ \hline
+    $l_3$ &  25.27\% &  &  & 0.44 & 2.92 & 2.63 \\ \hline 
+    $l_4$ &  22.44\% &  &  &  & 2.62 & 2.43 \\ \hline
+    $l_5$ &   &  &  &  &  &  \\ 
+    \hline
+  \end{tabular}
+\end{center}
+\caption{Statistics of inference results of view-based 3D parts given 2D observed parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
+\end{table}
+
+In Figure \ref{inference} we depict several examples of depth images formed of view-based parts inferred from observed 2D parts detected from a corresponding edge image using the probabilistic model introduced in section \ref{sec:inference}. As we use overlapping receptive fields in both hierarchies, we enforce consistency of overlapping predictions using a correlation score for each pixel, weighted by the confidence of the 2D parts that predicted its value and the conditional probability of the view-based 3D part given the observed 2D part.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{inference}
+\end{center}
+\caption{Reconstruction examples of depth images based on inference results of view-based 3D parts given 2D observed parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
+\label{inference}
+\end{figure}
 
 \section{Conclusion}
  
-In this work we proposed a method for constructing two hierarchical representations, for two information channels, 2D edge images and view-based 3D data, using a sparse autonencoder network. Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations.
+In this work we proposed a method for constructing two hierarchical representations, for two information channels, 2D edge images and view-based 3D data, using a sparse autonencoder network. 
+
+Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations.
 
 The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts. 
 
