@@ -5,7 +5,8 @@
 \documentclass[letterpaper,10pt,conference]{ieeeconf}  % Comment this line out if you needa4paper
 \usepackage{amsmath}
 \usepackage{amssymb}
-
+\usepackage{comment}
+\usepackage{todonotes}
 %\documentclass[a4paper,10pt,conference]{ieeeconf}        % Use this line for a4 paper
 
 \IEEEoverridecommandlockouts                              % This command is only needed if
@@ -25,11 +26,11 @@
 %\usepackage{amssymb}  % assumes amsmath package installed
 
 \title{\LARGE \bf
- Learning hierarchical representation of 3D objects
+ Learning and inference with a compositional hierarchical representation of 3D object shape
 }
 
 
-\author{Dominik Belter, Marek Kopicki, Ales Leonardis, Jeremy L. Wyatt% <-this stops a space
+\author{Dominik Belter, Marek Kopicki, Ales Leonardis and Jeremy L. Wyatt% <-this stops a space
 % \thanks{}% <-this % stops a space
 % \thanks{D. Belter, M. Nowicki and P. Skrzypczy\'nski are with the Institute of Control and 
 %  Information Engineering, Poznan University of Technology, ul. Piotrowo 3A 60-965 Pozna\'n, Poland,
@@ -47,6 +48,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %%
 \begin{abstract}
+Modelling of object shape is critical pre-cursor to any method for object manipulation. In this paper we present a method for learning compositional hierarchical representations of 2.5D and 3D object shape. These are representations that consist of a hierarchy of parts. We present novel algorithms for learning and inference. We empirically demonstrate the ability to learn these representations from real depth data, and to fill in missing information caused by self-occlusions. We also demonstrate the ability of the hierarchy to model variable shape, and to share parts across different objects and object categories.
 \end{abstract}
 
 
@@ -54,7 +56,7 @@
 
 \section{Introduction}
 
-Grasping and manipulation that are generalisable across objects require representations of object shape that are flexible and robust. To scale these representations must have several properties.  Features, for example, must be shared across objects and object categories, as well as being robust to variability. In addition we require that global object shape must be inferrable from partial views, and that missing parts can be inferred reliably. Compositional hierarchies are a particular class of representations that have proven themselves for object categorisation from intensity images. In these an object or image is represented as a hierarchy of parts learned in a statistical manner. In this paper we develop a learning and inference framework for compositional hierarchical models of 3D shape. This takes view based depth images as input, rather than either intensity images, or complete shape data. We show empirically that it has the properties of shareability, robustness to variability, and the ability to approximately infer missing shape information. We offer the framework as a promising representation to support future work in generalisable grasping and manipulation.
+Grasping and manipulation actions that are generalisable across objects require representations of object shape that are flexible and robust to variations in shape. These representations must have several properties.  Features, for example, must be shared across objects and object categories, as well as being robust to variability. In addition, global object shape must be inferrable from partial views, and missing parts must be inferred reliably. Compositional hierarchies are a particular class of representations that have proven themselves with respect to these properties in the domain of object categorisation from intensity images. In these an object or image is represented as a hierarchy of parts learned in a statistical manner. In this paper we develop a learning and inference framework for compositional hierarchical models of 3D shape. This takes view based depth images as input, rather than either intensity images, or complete shape data. We show empirically that it has properties of shareability, robustness to variability, and the ability to approximately infer missing shape information. We offer the framework as a promising representation to support future work in generalisable grasping and manipulation.
 
 \section{Related work}
 
@@ -67,18 +69,18 @@ Grasping and manipulation that are generalisable across objects require represen
  \label{hopProc}
 \end{figure}
 
-Our overall procedure for learning a compositional shape hierarchy is as follows. First, we learn view dependent parts from view specific depth images. Then, to learn the layers beyond these, the hierarchy brings together different views of the same parts so as to create view independent 3D shape parts. At each layer the size of the receptive field for a part grows, and so parts in a layer $N$ are compositions of parts in layer $N-1$ that commonly fall within the same receptive field.  A visualisation of a portion of a learned hierarchy is shown in Figure XX.  
+Our overall procedure for learning a compositional shape hierarchy is as follows. The hierarchy is built in layers, with each layer consisting of a part vocabulary. Each part in the vocabulary is also called a word. Instantiations of parts caused by data are called realisations. First, we learn parts from depth images obtained from particular viewpoints. Then, to learn the layers above these, the hierarchy brings together different views of the same parts so as to create view independent 3D shape parts. At each layer the size of the receptive field for a part grows, and so parts in a layer $N$ are compositions of parts in layer $N-1$ that commonly fall within the same receptive field.  A visualisation of a portion of a learned hierarchy is shown in Figure XX.  
 
 \subsection{A sketch of the learning procedure}
-The general procedure for learning this hierarchical representation of objects is presented in Fig.~\ref{hopProc}. Initially, the input depth data are median filtered to remove sensor noise. Then, words in the first layer vocabulary are defined over the space of image features. In compositional hierarchies built from grayscale images Gabor filters are commonly used~\cite{Fiedler2014}, such that each Gabor filter corresponds to an intensity edge in the 2D image. In this paper we instead create the hierarchy from depth data, so the input features are surface patches from the object and thus the words in the first layer are planar patches of varying orientations relative to the image plane. 
-
-In the next step of the learning procedure the input data must be explained using first layer vocabulary. The first layer words (planar patches) are detected on the depth image. To create the next layer vocabulary the size of the receptive field is increased. Candidate words for the $i^{th}$ layer are created from all the combinations of words from layer $i-1$ that are present in the data. A subset of these are selected to form the words for layer $i$. This compression underpins the generalization properties of the hierarchy. Similar parts are grouped in clusters, and each cluster takes a central part as its representative part to higher layers. The procedure is repeated until the desired number of layers is obtained. In general the receptive field of the last layer should cover the whole object.
+The general procedure for learning this hierarchical representation of objects is presented in Fig.~\ref{hopProc}. Initially, the depth data are median filtered to remove sensor noise. Following this we create the view dependent layers. The atomic first layer part is simply a planar patch. The use of a planar patch at the bottom level is analogous to the use of a Gabor filter in intensity images~\cite{Fiedler2014}.  The orientation of the planar patch for each 5x5 pixel patch in the depth image is then obtained. This estimation process creates a piecewise planar interpretation of the image. Then, to create the next layer vocabulary, the size of the receptive field is increased. Candidate parts for the $i^{th}$ layer are created from all the combinations of words from layer $i-1$ that are present in the data. A subset of these are selected to form the actual parts for layer $i$. This compression underpins the generalization properties of the hierarchy. Similar parts are grouped in clusters, and each cluster takes a central part as its representative part to present to layer $i+1$. The procedure is repeated until the desired number of layers is obtained. In general the receptive field of the last layer should cover the whole object.
 
 \subsection{Implementation}
-
-We learn the hierarchy from range images obtained from Kinect-like sensors. We create two types of vocabularies. First layers of the hierarchy, which are view-dependent, are created using 2.5D depth image. This allows to build representation of the object from single viewpoint and also explain data on depth image. View-dependent layers contain view-invariant parts (the id of the part depend on the local surface of the object and the id should be independent from camera viewpoint) obtained from single camera frame. The parts are created using 2.5D depth image space. The view-invariant layers are created from multiple camera frames in the volumetric space. To build full 3D hierarchical model of the object we also build volumetric words in 3D from multiple depth camera images. 
-
-To create first layer of the hierarchy we remove background from images. Then, we filter the image to remove noise introduced by the sensor. To this end, we applied median filter in 7$\times$7 window. In the hierarchy the first layer is represented by planar patch. According to the general procedure of the hierarchy learning (Fig.~\ref{hopProc}) the next step the input data is explained using first layer vocabulary. Thus we extract planar patches from the depth image. First we compute the normal vector for each point on the image. To compute normal vector we use Principal Component Analysis (PCA). We compute normal vectors using 7$\times$7 window. Because PCA does not work properly on the edges we detect two surfaces inside the sliding window. Then, we remove all point which don't belong to the dominant surface inside the sliding window.
+\begin{comment}
+The point about how the parts are view invariant is completely unclear.}
+\end{comment}
+We learn the hierarchy from range images obtained from a depth camera. We create two types of vocabularies. First, layers of the hierarchy, which are view-dependent. This allows us to build a representation of object parts from single viewpoint and thus fill in small quantities of missing data in the depth image. There are 3 view-dependent layers and 3 view independent layers. The first three layers are view dependent in that they are learned from particular viewpoints. For maxium flexibility, however, the parts themselves are view-invariant (the id of the part depends on the local surface of the object and the id should be independent from camera viewpoint).  The subsequent view-invariant layers are created from multiple depth images. We thus switch from receptive fields defined on the image plane for the  view dependent layers, to volumetric receptive fields defined as intervals on the 3D workspace.
+\todo{what do we mean technically by explain the data}
+As a preprocessing step we perform background subtraction for all depth images. Then, to denoise, we apply a median filter in every 7$\times$7 window. Without loss of generality, words in the first layer are constrained to be planar patches. According to the general procedure (Fig.~\ref{hopProc}) the input data is then explained using first layer vocabulary. Thus we extract planar patches from the depth image. First we compute the normal vector for each point on the image. To compute normal vector we use Principal Component Analysis (PCA). We compute normal vectors using 7$\times$7 window. Because PCA does not work properly on the edges we detect two surfaces inside the sliding window. Then, we remove all point which don't belong to the dominant surface inside the sliding window.
 
 \begin{figure}[t]
  \centering
