@@ -11,7 +11,7 @@
 % \renewcommand\thelinenumber{\color[rgb]{0.2,0.5,0.8}\normalfont\sffamily\scriptsize\arabic{linenumber}\color[rgb]{0,0,0}}
 % \renewcommand\makeLineNumber {\hss\thelinenumber\ \hspace{6mm} \rlap{\hskip\textwidth\ \hspace{6.5mm}\thelinenumber}}
 % \linenumbers
-\graphicspath{ {./images/} }
+\graphicspath{ {../images/} }
 \pagestyle{headings}
 \mainmatter
 \def\ECCV16SubNumber{***}  % Insert your submission number here
@@ -359,7 +359,7 @@ We learned and tested the proposed hierarchical representations for 2D and view-
 
 The number of constructed layers in a hierarchy depends on the size of the training objects and for the PaCMan dataset, the hierarchical representations are formed of five layers. 
 
-One important issue consisted of finding the optimum number of parts on each layer for each representation, and apart from minimizing the reconstruction error introduced in (8), we also used the Davies-Bouldin (DB) index \cite{Bouldin97} as a method to assess the quality of the clustering process. The optimum number of parts $k$ on a layer $l$ is selected according to the minimum DB index.
+One important issue consisted of finding the optimum number of parts on each layer for each representation, and apart from minimizing the reconstruction error introduced in (8), we also used the Davies-Bouldin (DB) index \cite{Bouldin97} as a method to assess the quality of the clustering process. The optimum number of parts $k$ on a layer $l$ is selected according to the minimum DB index. As the dimensionality of the feature vectors used in the clustering process is increasing on each layer, we applied a dimensionality reduction method such as PCA for obtaining a faster and more efficient selection of the optimum number of clusters.
 
 Examples of learned parts on each layer of the two hierarchical representations and correspondences between them are depicted in Figure \ref{hierarchy}.
 
@@ -398,7 +398,7 @@ We present in Table 1 for each layer in the 2D and view-based 3D hierarchies, th
 \caption{Statistics of parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
 \end{table}
 
-Analysis of the results presented in Table 1, highlights two phenomena, the reconstruction error in the 2D case is increasing, while in the 3D case is decreasing from bottom layers to top ones. As the error is computed per pixel in a patch, a slight translation of an edge part will increase the error, while in the depth case, higher level structures are better at describing the data and therefore the error is decreasing. 
+Analysis of the results presented in Table 1, highlights two phenomena, the reconstruction error in the 2D case is increasing, while in the 3D case is decreasing from bottom layers to top ones. As the error is computed per pixel in a patch, a slight translation of an edge part will increase the error, while in the depth case, higher level structures are better at describing the data and therefore the error is decreasing. Regarding the part entropies at each layer, we notice a slight increase, which is caused by the increasing of the number of parts from bottom-up, having a direct impact on the part uncertainties when sampled from the underlying part probability distributions on that layer.
 
 \begin{figure}
 \begin{center}
@@ -422,7 +422,7 @@ Our aim consists in quantifying the predictive power of the learned corresponden
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.8\textwidth]{correlations}
+\includegraphics[width=0.8\textwidth]{correlations_1_3}
 \end{center}
 \caption{Correlation examples between 2D and the best corresponding view-based 3D parts at Layers 2-3.}
 \label{correlations}
@@ -448,9 +448,9 @@ and $m$ is the index of best fitting 2D part for the patch $Z_j^l$.
   \begin{tabular}{ | c | c | c | c | c | c | c |r |}
       \hline
       $Layers$  & $Max Prediction$ & $Err(3D|2D)$ & $K-nn$ & $Err(3D|2D)$ & $H(\Theta^l|\Gamma^l)$ & $H(\Gamma^l|\Theta^l)$  \\ \hline
-    $l_1$ &  34.12\% & 1.39 &  & 0.64 & 2.51 & 1.93 \\ \hline
-    $l_2$ &  27.36\% & 0.99 &  & 0.56 & 2.68 & 2.77 \\ \hline
-    $l_3$ &  25.27\% &  &  & 0.44 & 2.92 & 2.63 \\ \hline 
+    $l_1$ &  34.12\% & 1.39 & 50.43\% & 0.64 & 2.51 & 1.93 \\ \hline
+    $l_2$ &  27.36\% & 0.99 & 53.6\% & 0.56 & 2.68 & 2.77 \\ \hline
+    $l_3$ &  24.27\% & 0.87 &  & 0.44 & 2.92 & 2.63 \\ \hline 
     $l_4$ &  22.44\% &  &  &  & 2.62 & 2.43 \\ \hline
     $l_5$ &   &  &  &  &  &  \\ 
     \hline
@@ -459,7 +459,7 @@ and $m$ is the index of best fitting 2D part for the patch $Z_j^l$.
 \caption{Statistics of inference results of view-based 3D parts given 2D observed parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
 \end{table}
 
-In Figure \ref{inference} we depict several examples of depth images formed of view-based parts inferred from observed 2D parts detected from a corresponding edge image using the probabilistic model introduced in section \ref{sec:inference}. As we use overlapping receptive fields in both hierarchies, we enforce consistency of overlapping predictions using a correlation score for each pixel, weighted by the confidence of the 2D parts that predicted its value and the conditional probability of the view-based 3D part given the observed 2D part.
+In Figure \ref{inference} we depict several examples of depth images formed of view-based parts inferred from observed 2D parts detected from a corresponding edge image using the probabilistic model introduced in section \ref{sec:inference}. As we use overlapping receptive fields in both hierarchies, we enforce consistency of overlapping predictions using a correlation score for each pixel, weighted by the confidence of the 2D parts that predicted its value and the conditional probability of the view-based 3D part given the observed 2D part. Each pair of images on each layer $l\in\{1,\ldots,5\}$ in Figure \ref{inference} is composed of the ground truth depth image and the predicted one based on 2D parts detected at each specific layer and only contain data around edge parts, while the size of the predicted region is increasing at at each layer.
 
 \begin{figure}
 \begin{center}
@@ -471,15 +471,11 @@ In Figure \ref{inference} we depict several examples of depth images formed of v
 
 \section{Conclusion}
  
-In this work we proposed a method for constructing two hierarchical representations, for two information channels, 2D edge images and view-based 3D data, using a sparse autonencoder network. 
+In this work we proposed a method for constructing two hierarchical representations, for two information channels, 2D edge images and view-based 3D data. Our model uses as a learning algorithm a sparse autonencoder network, which propagates information from bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of each layer responses. 
 
-Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations.
+Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts. 
 
-The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts. 
-
-Next, we introduced a probabilistic fusion model for inferring missing observations, by exploiting the correlations between 2D and view-based 3D primitives.
- 
-The fused model enables an improved and refined representation of the world, by encompassing both 2D and 3D aspects of a scene. Moreover, it facilitates inference of one view from the other, in the case when only one hierarchical representation is available, or under challenging conditions, such as occlusions or noisy sensor data. 
+Next, we introduced a probabilistic fusion model for inferring missing observations, by exploiting the correlations between 2D and view-based 3D primitives. The fused model enables an improved and refined representation of the world, by encompassing both 2D and 3D aspects of a scene. Moreover, it facilitates inference of one view from the other, in the case when only one hierarchical representation is available, or under challenging conditions, such as occlusions or noisy sensor data. 
 
 \bibliographystyle{splncs}
 \bibliography{egbib}
