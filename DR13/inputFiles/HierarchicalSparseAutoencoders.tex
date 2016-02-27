@@ -33,8 +33,8 @@
 \maketitle
 
 \begin{abstract}
+In this work we propose a method for constructing two hierarchical representations, for two information channels, 2D edge images and view-based 3D data. Our model uses as a learning algorithm a sparse autonencoder network, which propagates information from bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of each layer responses. Next, we introduced a probabilistic fusion model for inferring missing observations, by exploiting the correlations between 2D and view-based 3D primitives. The obtained results on the PaCMan dataset, prove the efficiency of our approach.
 
-\dots
 \keywords{Hierarchical Representation, Sparse Autoencoder Network, Depth Inference}
 \end{abstract}
 
@@ -45,11 +45,11 @@ Visual object recognition and categorization has many potential applications, en
 
 However, obtaining an efficient object representation is difficult due to high intra-class variation in shape, appearance and pose, but also due to illumination changes, occlusions or clutter. One approach useful for dealing with these limitations is to use a hierarchical object representation, which provides a compact representation on different levels of abstraction, provides object part shareability between different object categories and can cope with incompleteness produced by occlusions.
 
-In recent years, many approaches have been proposed for object class detection using 2D features from a single view, such as the deformable part model \cite{Felzenswalb2010}, but also multi-view based methods which are useful at predicting not only the category but also the pose of an object in a scene \cite{Teney2014}. Furthermore, the availability of depth sensors such as Kinect had a great impact on the rapid development of algorithms for construction and acquisition of view-based 3D object models. Employing view-based 3D models for object recognition is useful, as they capture the intrinsic geometric structure of objects and provide a compact object representation \cite{Liebelt2010}. 
+In recent years, many approaches have been proposed for object class detection using 2D features from a single-view, such as the deformable part model \cite{Felzenswalb2010}, but also multi-view based methods which are useful at predicting not only the category but also the pose of an object in a scene \cite{Teney2014}. Furthermore, the availability of depth sensors such as Kinect had a great impact on the rapid development of algorithms for construction and acquisition of view-based 3D object models. Employing view-based 3D models for object recognition is useful, as they capture the intrinsic geometric structure of objects and provide a compact object representation \cite{Liebelt2010}. Throughout this paper, by 2D data we mean intensity images, while an equivalent name of view-based 3D models in the literature is 2.5D models.
 
 Provided that 2D and view-based 3D information are complementary, we aim to combine them in an efficient manner using a hierarchical representation, enabling improved recognition performance and inference of view-based 3D object parts given observed 2D parts. 
 
-There are different fusion methods available, such as early-level fusion where different features are concatenated at an early stage, or decision-level fusion in which recognition is performed individually for each input channel and the final decision is taken by combining the independent results, using different criteria such as taking the maximum or using a weighted average \cite{Mahmoudi2013}.
+There are different fusion methods available, such as early-level fusion \cite{Arca2007}, where different features are concatenated at an early stage, or decision-level fusion \cite{Soltana2010} in which recognition is performed individually for each input channel and the final decision is taken by combining the independent results, using different criteria such as taking the maximum or using a weighted average \cite{Mahmoudi2013}.
 
 These methods are insufficient for our goal, as we aim to take advantage of the correlations between 2D and view-based 3D information not only at the beginning or at the end of the recognition process, but to model them in a hierarchical manner, by considering relationships between parts in the 2D and view-based 3D hierarchies. Even though there are works which consider the relationships between 2D and 3D visual information, to the best of our knowledge, there is no other work which investigates this problem using a hierarchical modeling approach.
 
@@ -85,9 +85,8 @@ The reason for building a new hierarchical model, instead of using existing mode
 
 The principles for forming the hierarchical object representations are consistent for both 2D and 3D view-based data, where the size of the receptive field is gradually increased at each layer, up to the top layer which is sufficiently large to represent the whole object. Therefore, we will only describe the learning process for one type of data, namely 2D information. To obtain an object representation robust to illumination changes we use 2D shape information, obtained by applying an edge detection algorithm to the 2D intensity images.
 
-The input used for learning the 2D hierarchical representation is a set $\mathcal{Z}$ of training edge images $Z^i \in \mathcal{Z}, i=1,\ldots,|\mathcal{Z}|$, represented\footnote{Here and in the following, superscripts always constitute upper indices; their use as powers will be indicated explicitly unless unambiguously clear from the context.} as a set of vectorized patches $Z_j$, i.e.,
-$Z^i=\{Z_1,\ldots,Z_j,\ldots,Z_{|Z^i|}\}$\commentJP{Don't the $Z_j$ require an upper index $i$, i.e., $Z_j^i$?}, where each image patch
-$Z_j=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$\commentJP{I corrected $n$ to $n^2$ twice above; please check.} of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edges \commentJP{What exactly was $edgeNr$ intended to represent?} divided by the sampling rate \commentJP{what is the \emph{sampling rate}?}. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
+The input used for learning the 2D hierarchical representation is a set $\mathcal{Z}$ of training edge images $Z^i \in \mathcal{Z}, i=1,\ldots,|\mathcal{Z}|$, represented\footnote{Here and in the following, superscripts always constitute upper indices; their use as powers will be indicated explicitly unless unambiguously clear from the context.} as a set of vectorized patches $Z_j^i$, i.e., $Z^i=\{Z_1,\ldots,Z_j,\ldots,Z_{|Z^i|}\}$, where each image patch
+$Z_j^i=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$ of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edges divided by the stride step. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
 
 The first layer is learned using a sparse autoencoder algorithm, which is one approach to automatically learn features from unlabeled data and proved to be suitable not only for computer vision, but also for a range of problems including text, audio, etc. An autoencoder network is an unsupervised learning algorithm which applies backpropagation, setting the target values to be equal to the input values, as depicted in Figure \ref{fig:autoencoder} below. Therefore, one practical application is to use it for reconstruction. 
 
@@ -120,9 +119,8 @@ In the current implementation we chose to use the sigmoid function, as its range
 
 Learning the model parameters $\rho=(W_1,W_2,b_1,b_2)$ can be done using a batch gradient descent method, where the cost function $J$ can be defined to minimize the reconstruction error and will be trained on the data itself:
 \begin{equation}
-   J(\theta,j)=\left\|h(\theta,j)-Z_j\right\|_2^2 + \alpha W^2
+   J(\theta,j)=\left\|h(\theta,j)-Z_j\right\|_2^2 + \alpha\sum_{i=1}^{2} W_i^2
 \end{equation}
-\commentJP{What is $W^2$?}
 where the second term of the function is a regularization term that tends to decrease the magnitude of the weights---which helps to prevent overfitting---and the parameter $\alpha$ controls the relative importance of the two terms.
  
 Furthermore, by placing different constraints on the cost function, such as limiting the number of hidden units, we can obtain a compressed representation of the input data. A sparsity constraint will force most of the hidden units to be inactive most of the time. By inactive, we mean the neuronal activation value is close to 0, while active means their value is close to 1. The new cost function is defined as
@@ -161,13 +159,12 @@ The same learning method as described above is used to obtain the model paramete
 a_j^2=W_1^2Z_j^2+b_1^2, \;j=1,\ldots,|Z_*^2|
 \end{equation}
 where $|Z_*^2|$ is the number of extracted patches on the second layer.
-\commentJP{You used $nr(\cdot)$ before, and here you used $N$.  Aren't they the same? Or is there a difference between the patch counts? Is my use of $|Z_*^{\cdot}|$ consistent?}
 
 Next, all the other layers in our hierarchical representation, up to the top layer $L_{2D}$, are learned in an iterative manner as described above, where the input to each layer $l$ is given by the activations of the hidden units learned on patches from the previous layer $l-1$. This hierarchical approach is useful for capturing non-linear dependencies in the input data and models them iteratively, from low-level image patches up to the object level.
 
 \commentJP{This section becomes very long, and the reader tends to lose track of where s/he is.  Consider dividing it into subsections with explicit titles.}
 
-For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of category-specific parts \commentJP{which layers?}, view-specific parts at layer $L_{2D}-1$, and category-specific parts at the last layer. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
+For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of category-specific parts, view-specific parts at layer $L_{2D}-1$, and category-specific parts at the last layer $L_{2D}$. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
 
 Each layer will produce a set of weight vectors $W_1^l$ which compress the input information, while producing a useful representation. 
 
