@@ -58,6 +58,10 @@ Modelling of object shape is an essential pre-cursor to any method for object ma
 
 Grasping and manipulation actions that are generalisable across objects require representations of object shape that are expressive of and robust to variations in shape. These representations must have several properties.  Features, for example, must be shared across objects and object categories, as well as being robust to variability. In addition, global object shape must be inferrable from partial views, and missing parts must be inferred reliably. Compositional hierarchies are a particular class of representations that have proven themselves with respect to these properties in the domain of object categorisation from intensity images. In these representations an object or image is represented as a hierarchy of parts learned in a statistical manner. In this paper we develop a learning and inference framework for compositional hierarchical models of 3D shape. This takes view based depth images as input, rather than either intensity images, or complete shape data. We show empirically that it has properties of shareability, robustness to variability, and the ability to approximately infer missing shape information. We offer the framework as a promising representation to support future work in generalisable grasping and manipulation.
 
+Our approach to objects represantation is based on the models which explain visual processing in human cortex~\cite{Riesenhuber1999}. According to these models the visual processing is hierarchical and all layers are learned. First layers of the hierarchy are position and scale invariant. The higher layers of the hierarchy build invariance to the viewpoint~\cite{Spehr2015}. Also the receptive fields increase with the layer of the hierarchy. The HMAX model~\cite{Serre2007} assumes that the inference process is feedforward to obtain fast objects recognition.
+
+Our approach differs to biological counterparts. We build view invariance of parts from the very beginning. Our choice is motivated by the application. Our goal is to learn representation of objects from minimal number of examples. For view-variant representations the objects used for training should be observed from many viewpoints to build sufficient vocabulary. The number of parts which are required to represent the object is acceptable for 2D models~\cite{Fiedler2014}. Unfortunatelly, it explodes if the vocabulary of 3D parts is built. In our approach we have to run optimization which aligns parts in 3D whenever similarity between parts has to be computed but we show that this can be performed efficiently using Umeyama method. The additional advantage of our approach is the small number of parts in vocabulary which does not require GPU implementation.
+
 \section{Related work}
 
 \section{Learning}
@@ -65,7 +69,7 @@ Grasping and manipulation actions that are generalisable across objects require 
 \begin{figure}[t]
  \centering
 \includegraphics[width=1.0\columnwidth]{../images/hierarchyParts.eps}
-\caption{Representation of parts in the view-variant layers. Each receptive field at the lowest layer is $5 \times 5$ pixels. Arrows represent the surface normals for those planar patches.}
+\caption{Illustration of hierarchical representation of 3D objects. At $i$-th layer vocabulary $\Omega^i$ each word is represented by 3D shape. Arrows represent compositional relations between parts.}
  \label{hierarchyParts}
 \end{figure}
 
@@ -98,7 +102,7 @@ To create layer 2, these planar part realisations are first grouped into recepti
 \begin{figure}[t]
  \centering
 \includegraphics[width=0.9\columnwidth]{../images/hierarchy.eps}
-\caption{Representation of parts in the view-variant layers. Each receptive field at the lowest layer is $5 \times 5$ pixels. Arrows represent the surface normals for those planar patches.}
+\caption{Representation of receptive fields in the hierarchy. Each receptive field at the lowest layer is $5 \times 5$ pixels. Arrows represent the surface normals for those planar patches. First three layers of the hierarchy are defined on the image plane. The next two layers are volumetric.}
  \label{word}
 \end{figure}
 
@@ -255,7 +259,8 @@ The shareability of parts can be also observed in volumetric layers of the hiera
 \begin{figure}[t]
  \centering
 \includegraphics[width=1.0\columnwidth]{../images/inference.eps}
-\caption{Representation of parts in the view-variant layers. Each receptive field at the lowest layer is $5 \times 5$ pixels. Arrows represent the surface normals for those planar patches.}
+\put(-240,260){a} \put(-180,260){b} \put(-120,260){c} \put(-55,260){d}
+\caption{Inference results for five new objects (a): parts obtained on second (b), third (c) and fourth (d) layer. Shareability of parts obtained during training the hierarchy is presented in Fig.~\ref{shareability} and Fig.~\ref{shareability4thLayer}}
  \label{inference}
 \end{figure}
 
@@ -273,6 +278,13 @@ The shareability of parts can be also observed in volumetric layers of the hiera
 A. Aldoma, Z.C. Marton, F. Tombari, W. Wohlkinger, C. Potthast, B. Zeisl, R.B. Rusu, S. Gedikli, M. Vincze, Point cloud library: Three-Dimensional Object Recognition and 6 DoF Pose Estimation. IEEE Robotics \& Automation Magazine, pp.~80-91, 2012
 \bibitem{Fiedler2014}
   S. Fidler, M. Boben, A. Leonardis, Learning a Hierarchical Compositional Shape Vocabulary for Multi-class Object Representation, Computer Vision and Pattern Recognition, 2014 (under review)
+\bibitem{Riesenhuber1999}
+M. Riesenhuber, T. Poggio,Hierarchical models of object recogni-tion in cortex. Nature Neuroscience, Vol.~2, pp.~1019--1025, 1999
+\bibitem{Serre2007}
+T. Serre, G. Kreiman, M. Kouh, C. Cadieu, U. Knoblich, T. Poggio, A quantitative theory of immediate visual recognition. Progress in
+Brain Research, Vol.~165, pp.~33--56, 2007
+\bibitem{Spehr2015}
+J. Spehr, On Hierarchical Models for Visual Recognition and Learning of Objects, Scenes, and Activities, Studies in Systems, Decision and Control, Springer, 2015
 \bibitem{Umeyama1991}
  S. Umeyama,
  ``Least-squares estimation of transformation parameters between two point patterns'',
