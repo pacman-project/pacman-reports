@@ -33,11 +33,11 @@
 \maketitle
 
 \begin{abstract}
-In this work we propose a method for constructing two hierarchical representations, for two information channels, 2D edge images and view-based 3D data. Our model uses as a learning algorithm a sparse autonencoder network, which propagates information from bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of each layer responses. Next, we introduced a probabilistic fusion model for inferring missing observations, by exploiting the correlations between 2D and view-based 3D primitives. The obtained results on the PaCMan dataset, prove the efficiency of our approach.
+
 
 \keywords{Hierarchical Representation, Sparse Autoencoder Network, Depth Inference}
 \end{abstract}
-
+We propose a method for constructing a pair of complementary hierarchical representations from 2D edge images and from view-based 3D data, respectively.  As a learning algorithm, our model uses a sparse autoencoder network, which propagates information bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of the responses at each layer.  We introduce a probabilistic fusion model for inferring missing observations across modalities and for scene reconstruction by exploiting correlations between 2D and view-based 3D observations. The results obtained on the PaCMan dataset demonstrate the efficacy of our approach.
 
 \section{Introduction}
 
@@ -88,6 +88,8 @@ The principles for forming the hierarchical object representations are consisten
 The input used for learning the 2D hierarchical representation is a set $\mathcal{Z}$ of training edge images $Z^i \in \mathcal{Z}, i=1,\ldots,|\mathcal{Z}|$, represented\footnote{Here and in the following, superscripts always constitute upper indices; their use as powers will be indicated explicitly unless unambiguously clear from the context.} as a set of vectorized patches $Z_j^i$, i.e., $Z^i=\{Z_1,\ldots,Z_j,\ldots,Z_{|Z^i|}\}$, where each image patch
 $Z_j^i=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$ of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edges divided by the stride step. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
 
+\subsection{Learning algorithm} 
+
 The first layer is learned using a sparse autoencoder algorithm, which is one approach to automatically learn features from unlabeled data and proved to be suitable not only for computer vision, but also for a range of problems including text, audio, etc. An autoencoder network is an unsupervised learning algorithm which applies backpropagation, setting the target values to be equal to the input values, as depicted in Figure \ref{fig:autoencoder} below. Therefore, one practical application is to use it for reconstruction. 
 
 \begin{figure}
@@ -129,6 +131,8 @@ J_{\textrm{sparse}}(\theta)=J(\theta)+\beta \KL(\rho,\rho')
 \end{equation}
 where $\rho$ is the mean activation of the hidden units, and $\rho'$ is a sparsity parameter which is usually a small value close to zero. By minimizing the KL divergence, we thus force $\rho$ to be close to zero. In other words, we force most of the hidden units to be inactive.
 
+\subsection{Discretization mechanism for obtaining parts} 
+
 After learning the model parameters, we want to obtain a discrete set of parts. This goal is achieved by clustering in the space of feature vectors formed of hidden unit activations. For each input patch $Z_j$, we obtain a feature vector
 \begin{equation}
 a_j=W_1Z_j+b_1, \;j=1,\ldots,|Z_*|.
@@ -142,6 +146,8 @@ which represents the set of parts at the first layer $\Gamma^{1}$.
 The number of clusters $M^l, l=1,\ldots,L_{2D}$ (where the number of layers for the 2D representation is $L_{2D}$) and the clustering method ($k$-means, agglomerative clustering, hierarchical clustering) represent two more design choices. These can be made based on experiments so as to find the optimum number of parts at each layer $l$. 
 
 The input to the second layer is a set of patches $Z_j^2=\{a_1,\ldots,a_i,\ldots,a_{p^2}\}$, obtained by concatenating  $p^2$ overlapping feature vectors $a_i$ introduced in (6), extracted at different positions inside the specified receptive field at the second layer of twice the size, $F^2=2F^1$. The number $p^l$ of overlapping sub-parts considered at each layer represents another design decision.
+
+\subsection{Parameter optimization based on reconstruction error}
 
 We chose to optimize the parameter values based on minimizing the reconstruction error at each layer $l$. For this purpose, we considered the relative root mean square reconstruction error \cite{Chai2014}, which for one input image/feature patch $Z_j^l$ on layer $l$ is
 \begin{equation}
@@ -162,18 +168,15 @@ where $|Z_*^2|$ is the number of extracted patches on the second layer.
 
 Next, all the other layers in our hierarchical representation, up to the top layer $L_{2D}$, are learned in an iterative manner as described above, where the input to each layer $l$ is given by the activations of the hidden units learned on patches from the previous layer $l-1$. This hierarchical approach is useful for capturing non-linear dependencies in the input data and models them iteratively, from low-level image patches up to the object level.
 
-\commentJP{This section becomes very long, and the reader tends to lose track of where s/he is.  Consider dividing it into subsections with explicit titles.}
-
 For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of category-specific parts, view-specific parts at layer $L_{2D}-1$, and category-specific parts at the last layer $L_{2D}$. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
 
 Each layer will produce a set of weight vectors $W_1^l$ which compress the input information, while producing a useful representation. 
 
 The set of model parameters at each layer $l$ is  given by
 \begin{equation}
-\theta^l = \{\rho^l,\Gamma^l,F^l\},
+\theta^l = (rho^l,\Gamma^l,F^l),
 \rho^l=(W_1^l,W_2^l,b_1^l,b_2^l).
 \end{equation}
-\commentJP{Is there a reason why you mix set and tuple notation?}
 
 The set of parts obtained at each layer $l\in\{1,\ldots,n_{2D}\}$ for the 2D $\{\Gamma^l\}$ and view-based 3D $\{\Omega^l\}$ hierarchical representations are depicted in Section~\ref{sec:results}.
 
