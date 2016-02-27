@@ -79,7 +79,7 @@ In the next section, we introduce our proposed hierarchical object representatio
 
 Our goal consists of matching 2D and view-based 3D parts in order to permit inference of 2D parts from observed view-based 3D parts and vice-versa and also to achieve better object recognition and/or object pose recognition accuracy.  
 
-In order to obtain 2D and 3D-view based object parts at different levels of granularity, we propose using a hierarchical model which enables binding of parts at different levels. A hierarchical representation has advantages such as capturing exponential variability in a compact way and allowing fast inference.
+In order to obtain 2D and 3D-view based object parts at different levels of granularity, we propose using a hierarchical model which enables binding of parts at different layers. A hierarchical representation has advantages such as capturing exponential variability in a compact way and allowing fast inference.
 
 The reason for building a new hierarchical model, instead of using existing models, is that we need a consistent method for forming parts for both modalities (2D intensity and 3D view-based), parts which need to share the same receptive field, otherwise correlations might only partially reflect the real relationships between the two information channels.
 
@@ -185,22 +185,14 @@ An approach similar to that described above was proposed by Masci et al.~\cite{M
 \section{Establishing correspondences between 2D and 3D view-based hierarchical representations}
 \label{sec:analysis}
 
-We build the 2D and the view-based 3D hierarchical representations on similar learning principles and their parts encode on each layer the same spatial locality $R_{f(2D)}^l=R_{f(3D)}^l$, while the difference consists in the different type of information they encode, edges and depth.
-	
+We build the 2D and the view-based 3D hierarchical representations on similar learning principles, and their parts encode at each layer the same spatial locality $F_{2D}^l=F_{3D}^l$, while the difference lies in the different types of information they encode, edges and depth.
 Furthermore, the two hierarchies are trained on the same object models, consisting of both 2D edge images and the corresponding depth images or point clouds.  
+The hierarchical compositional 2D model is formed of $L_{2D}$ layers, each layer being composed of a number of 2D parts. 
+As our main goal was to be able to do efficient inference across the two representations, we chose to use the same number of layers in both hierarchies, i.e., $L_{2D}=L_{3D}=L$.
 
-The hierarchical compositional 2D model is formed of $n_{2D}$ layers, each layer being composed of a number of 2D parts. 
-As our main goal was to be able to do efficient inference across the two representations, we chose to use the same number of layers in both hierarchies, such as $n_{2D}=n_{3D}=n_h$.
+We denote part $i$ constructed at layer $l$ of a  hierarchical vocabulary of 2D shapes by $\Gamma_{i}^{l}$, for $i=1,\ldots,|\Gamma_*^l|$ and $l=1,\ldots,L$. Part $j$ constructed at layer $l$ of the  hierarchical vocabulary of view-based 3D shapes is denoted by $\Omega_{j}^{l}$, for $j=1,\ldots,|\Omega_*^l|$ and $l=1,\ldots,L$.
 
-We denote the $i^{th}$ part constructed at the $l^{th}$ layer of a  hierarchical vocabulary of 2D shapes as $\Gamma_{i}^{l}$, where $i \in \{1,\ldots,n_{l}\}, l \in \{1,\ldots,n_h\}$. The $j^{th}$ part constructed at the $l^{th}$ layer of the  hierarchical vocabulary of view-based 3D shapes as $\Omega_{j}^{l}$, where $j \in \{1,\ldots,n_{l}^{'}\}, {l} \in \{1,\ldots,n_h\}$. As the number of parts at a layer $l$ in each hierarchy can be different, we use the notation $n_l$ for the 2D case and $n_l^{'}$ for the view-based 3D parts. 
-
-For establishing correspondences between the parts in the two hierarchies, we build a \emph{correspondence table} with row indices $(1,\dots,N)$, (where $N=\sum_{l=1}^{n_h} {n_l}$) corresponding to the 2D parts and columns indices $(1,\dots,M)$, where $M=\sum_{l=1}^{n_h} {n_{l}^ {'}}$) corresponding to the view-based 3D parts, as depicted in Figure~\ref{fig:fused-models} below. 
-
-We will establish level-by-level correspondences between 2D and view-based 3D  parts (($\Gamma_{i}^l,\Omega_{j}^l$), $i \in (1,\ldots,n_l), j \in (1,\ldots,n_{l}^{'})$).
-
-The correspondences between the two types of parts are build using an observation function $c^l$, which quantizes the co-occurrences of one 2D and a view-based 3D part and vice-versa at each layer. 
-
-Next, we illustrate the parts binding mechanism in Figure \ref{fig:fused-models}.
+For establishing correspondences between the parts in the two hierarchies, we build an $N\times M$ \emph{correspondence table} with $N=\sum_{l=1}^L |\Gamma_*^l|$ rows corresponding to the 2D parts and $M=\sum_{l=1}^L |\Omega_*^l|$ columns corresponding to the view-based 3D parts, as depicted in Figure~\ref{fig:fused-models} below.  Our goal is to establish layer-by-layer correspondences $(\Gamma_{i}^l,\Omega_{j}^l)$ between 2D and view-based 3D  parts (Figure~\ref{fig:fused-models}).
 
 \begin{figure}
 \begin{center}
@@ -210,137 +202,122 @@ Next, we illustrate the parts binding mechanism in Figure \ref{fig:fused-models}
 \label{fig:fused-models}
 \end{figure}
 
-To every correspondence $c^l(i,j)$, where $i$ is the index of the 2D part $\Gamma_i^l$ and $j$ the index of the view-based 3D part $\Omega_j^l$ on layer $l$, we assign a real value. As for each 3D/2D part there might be several 2D/3D parts corresponding to it, all associated correspondences will be activated. Therefore, the value $c^l(i,j)$ is computed as the joint probability of observing parts $\Gamma_i^l$ and $\Omega_j^l$ at the same spatial location:
-
+The correspondences between the two types of parts are built using an observation function $c^l(i,j)$, which quantizes the co-occurrences of a 2D part $\Gamma_i^l$ and a view-based 3D part $\Omega_j^l$, and vice-versa, at each layer $l$. 
+To every correspondence $c^l(i,j)$ we assign a real value. As to each 3D (2D) part might correspond several 2D (3D) parts, all associated correspondences will be activated. Therefore, the value $c^l(i,j)$ is computed as the joint probability of observing parts $\Gamma_i^l$ and $\Omega_j^l$ at the same spatial location:
 \begin{equation}
-  c^l(i,j) = P(\Gamma_i^l,\Omega_j^l). 
+  c^l(i,j) = P(\Gamma_i^l,\Omega_j^l).
+  \label{eqn:cij.Pij}
  \end{equation} 
 
-In general, there will not be a one-to-one relation between 2D and view-based 3D parts, as the 2D parts are represented using edges and they can be correlated with depth parts which encode depth disparities on one side or the other one of the edge part and also can be correlated with internal depth edges. Still, the number of correlations will decrease for higher level parts, as more complex edge structures such as L, Y or T junctions are better at predicting the possible associated depth structures.
+In general, there will not be a one-to-one relation between 2D and view-based 3D parts, as the 2D parts are represented using edges and they can be correlated with depth parts which encode depth disparities on one side or the other one of the edge part and also can be correlated with internal depth edges. Still, the number of correlations will decrease for higher-level parts, as more complex edge structures such as L, Y or T junctions are better at predicting the possible associated depth structures.
 
 The correspondence table represents the set of possible correspondences over all sets of 2D and view-based 3D parts.  
+Moreover, the joint probability table of 2D and view-based 3D parts can be used to perform inference of view-based 3D parts/2D parts coherently and transparently across the 2D and view-based 3D hierarchies.
 
-Moreover, the joint probability table of 2D and view-based 3D parts can be used for performing inference of view-based 3D parts/2D parts coherently and transparently across the 2D and view-based 3D hierarchies.
-
-Still, the inference process can be regraded from two perspectives, given the type of parts we want to predict, either 2D or 3D. 
-
-Therefore, for he task of inferring a 2D part $\Gamma_i^l$ from an observed view-based 3D part $\Omega_j^l$ at layer $l$, we employ the conditional probability:
-
+Still, the inference process can be regarded from two perspectives, given the type of parts we want to predict, either 2D or 3D. 
+Therefore, for he task of inferring a 2D part $\Gamma_i^l$ from an observed view-based 3D part $\Omega_j^l$ at layer $l$, we employ the conditional probabilities
 \begin{equation}
-P(\Gamma_i^l \vert \Omega_j^l), i \in \{1,\dots,n_l\},
+P(\Gamma_i^l \vert \Omega_j^l), \;i=1,\dots,|\Gamma_*^l|
 \end{equation}
-
-operation, which will retrieve all 2D parts $\Gamma_i^l$ which are probable to be observed with the view-based 3D part $\Omega_j^l$. 
-
-The relation to equation (12) is build using the Bayes rule such as:
+to retrieve all 2D parts $\Gamma_i^l$ which are likely to be observed
+with the view-based 3D part $\Omega_j^l$.  This is related to
+Eqn.~\ref{eqn:cij.Pij} via Bayes' Rule by
 \begin{equation}
-P(\Gamma_i^l \vert \Omega_j^l)= \frac{P(\Gamma_i^l,\Omega_j^l)}{P(\Omega_j^l)}.
+  P(\Gamma_i^l \vert \Omega_j^l)= \frac{P(\Gamma_i^l,\Omega_j^l)}{P(\Omega_j^l)}.
+  \label{eqn:PGO.Bayes}
 \end{equation}
-
-Respectively, inference of a view-based 3D part $\Omega_j^l$ can be performed using the conditional probability:
+Conversely, inference of a view-based 3D part $\Omega_j^l$ can be performed using the conditional probability
 \begin{equation}
- P(\Omega_j^l \vert \Gamma_i^l), j \in \{1,\dots,n_{l}^{'}\},
+ P(\Omega_j^l \vert \Gamma_i^l), \;j=1,\dots,|\Omega_*^l|,
 \end{equation} 
-which permits retrieving all view-based 3D parts $\Omega_j^l$ which could be observed with the 2D part $\Gamma_i^l$. 
-
-Furthermore, the relation to equation (12) is given by:
-
+which permits retrieving all view-based 3D parts $\Omega_j^l$ which could be observed with the 2D part $\Gamma_i^l$. Again, this is related to Eqn.~\ref{eqn:cij.Pij} via
 \begin{equation}
- P(\Omega_j^l \vert \Gamma_i^l)=\frac{P(\Omega_j^l,\Gamma_i^l)}{P(\Gamma_i^l)}.
+  P(\Omega_j^l \vert \Gamma_i^l)=\frac{P(\Gamma_i^l,\Omega_j^l)}{P(\Gamma_i^l)}.
+  \label{eqn:POG}
 \end{equation} 
  
-The correspondence table introduced above can be considered as a starting point for different tasks, such as inferring view-based 3D parts from observed 2D parts, and respectively inferring 2D parts from observed view-based 3D parts, object recognition, object reconstruction, or pose estimation. 
+The correspondence table introduced above can be considered a starting point for different tasks, such as inferring view-based 3D parts from observed 2D parts, and (conversely) inferring 2D parts from observed view-based 3D parts, object recognition, object reconstruction, or pose estimation. 
 
 Furthermore, the correspondence table can be used as a starting point for building better prediction models, such as training a classifier for predicting 3D view-based parts, given an observed 2D part, which takes into account not only the conditional probabilities across hierarchies, but also their associated feature vectors.
 
 \subsection{Inference of View-based 3D Parts using 2D and 3D Hierarchical Compositional Models}
 \label{sec:inference}
 
-We propose a probabilistic model for performing inference in the view-based 3D hierarchy, by reusing the inference mechanism existing in the 2D hierarchy in combination with the joint probability table introduced above.
-
-We use the assumption that parts in the view-based 3D hierarchy are formed by propagating evidence from lower levels to higher ones in a probabilistic manner. 
-
-Next, we condition the probability of a view-based 3D part $\Omega_j^{l}$ at layer $l$ not only on the the sub-parts on the previous layer $l-1$, but also on the 2D parts that are probable to co-occur with it. We will replace the conditional probability:
-
+We now propose a probabilistic model for performing inference in the view-based 3D hierarchy, by reusing the inference mechanism existing in the 2D hierarchy in combination with the joint probability table introduced above.
+We use the assumption that parts in the view-based 3D hierarchy are formed by propagating evidence from lower to higher layers in a probabilistic manner. 
+The probability of a view-based 3D part $\Omega_j^{l}$ at layer $l$ is conditioned not only on the sub-parts at the previous layer $l-1$ but also on the 2D parts that are probable to co-occur with it.  Thus, we replace\commentJP{Replace? You never mentioned this before!} the conditional probability
 \begin{equation}
- P(\Omega_j^{l} \vert \Omega_i^{l-1}), i \in \{1,\dots,n_{l-1}^{'}\},
+ P(\Omega_j^{l} \vert \Omega_i^{l-1})
+  \label{eqn:POO}
 \end{equation}
-with:
+by
 \begin{equation}
- P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l), i \in \{1,\dots,n_{l-1}^{'}\}.
+  P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l)
+  \label{eqn:POOG}
 \end{equation}
+for $i=1,\dots,\Omega_*^{l-1}$.
 
-2D parts $\Gamma_k^l$ are retrieved using the joint probability table introduced in Section \ref{sec:analysis} and consist of the set of 2D parts which maximize the $P(\Gamma_k^l,\Omega_j^l)$. The threshold for part selection $\tau$, where $P(\Gamma_k^l,\Omega_j^l)>\tau$ is learned according to the purpose of the inference process.
+2D parts $\Gamma_k^l$ are retrieved using the joint probability table introduced in Section~\ref{sec:analysis}, and consist of the set of 2D parts which maximize the $P(\Gamma_k^l,\Omega_j^l)$. The threshold for part selection $\tau$, where $P(\Gamma_k^l,\Omega_j^l)>\tau$, is learned according to the purpose of the inference process.
 
-Furthermore, according to Bayes rule we can estimate the conditional probability introduced in (18) as follows:
-
+Furthermore, using Bayes' Rule we can estimate the conditional probability introduced in Eqn.~\ref{eqn:POOG} as
 \begin{equation}
- P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l})P(\Omega_j^{l})}{P(\Omega_i^{l-1},\Gamma_k^l)}.
-\end{equation}
-
-For estimating the following conditional probability:
-
-\begin{equation}
- P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l},\Omega_i^{l-1}) P(\Omega_i^{l-1} \vert \Omega_j^{l}),
+  P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l})P(\Omega_j^{l})}{P(\Omega_i^{l-1},\Gamma_k^l)}.
+  \label{eqn:POOG.Bayes}
 \end{equation}
 
-we take into account the introduced definition of neighbourhood, which suggests that if the pairs of parts $(\Gamma_k^l,\Omega_j^{l})$ and $(\Omega_j^{l},\Omega_i^{l-1})$ are in the same neighbourhood and can be correlated, then the parts $(\Gamma_k^l,\Omega_i^{l-1})$ are conditionally independent, given part $\Omega_j^{l}$, as the correspondences between parts are established at the highest possible layers in the two hierarchies and therefore: 
-
+To estimate the conditional probability
 \begin{equation}
- P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l}) P(\Omega_i^{l-1} \vert \Omega_j^{l}).
+ P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l},\Omega_i^{l-1}) P(\Omega_i^{l-1} \vert \Omega_j^{l})
 \end{equation}
-
-By introducing equation (21) into (19) we obtain:
-
+we take into account the introduced\commentJP{not introduced anyhere here\dots} definition of neighbourhood, which suggests that if the pairs of parts $(\Gamma_k^l,\Omega_j^{l})$ and $(\Omega_j^{l},\Omega_i^{l-1})$ are in the same neighbourhood and can be correlated, then the parts $(\Gamma_k^l,\Omega_i^{l-1})$ are conditionally independent given part $\Omega_j^{l}$, as the correspondences between parts are established at the highest possible layers in the two hierarchies. Therefore,
 \begin{equation}
- P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Gamma_k^l \vert \Omega_j^{l})P(\Omega_i^{l-1} \vert \Omega_j^{l})P(\Omega_j^{l})}{P(\Omega_i^{l-1},\Gamma_k^l)},
+  P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l}) P(\Omega_i^{l-1} \vert \Omega_j^{l}).
+  \label{eqn:part-cond-indep}
 \end{equation}
-
-where the conditional probability $P(\Gamma_k^l \vert \Omega_j^l)$ can be obtained from equation (14) and $P(\Omega_i^{l-1} \vert \Omega_j^{l})$ can be computed using the initial conditional probability introduced in (17) as follows:
-
+By substituting Eqn.~\ref{eqn:part-cond-indep} into Eqn.~\ref{eqn:POOG.Bayes} we obtain
 \begin{equation}
- P(\Omega_i^{l-1} \vert \Omega_j^{l}) = \frac{P(\Omega_j^{l}\vert \Omega_i^{l-1})P(\Omega_i^{l-1})}{P(\Omega_j^{l})}.
+  P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Gamma_k^l \vert \Omega_j^{l})P(\Omega_i^{l-1} \vert \Omega_j^{l})P(\Omega_j^{l})}{P(\Omega_i^{l-1},\Gamma_k^l)},
+  \label{eqn:POOG.Bayes.POGO}
+\end{equation}
+where the conditional probability $P(\Gamma_k^l \vert \Omega_j^l)$ can be obtained from Eqn.~\ref{eqn:PGO.Bayes}, and $P(\Omega_i^{l-1} \vert \Omega_j^{l})$ can be computed using the initial conditional probability introduced in Eqn.~\ref{eqn:POO} as
+\begin{equation}
+  P(\Omega_i^{l-1} \vert \Omega_j^{l}) = \frac{P(\Omega_j^{l}\vert \Omega_i^{l-1})P(\Omega_i^{l-1})}{P(\Omega_j^{l})}.
+  \label{eqn:POO.Bayes}
  \end{equation}
 
-Finally, by introducing equation (23) into (22) we obtain:
-
+Finally, by introducing Eqn.~\ref{eqn:POO.Bayes} into Eqn.~\ref{eqn:POOG.Bayes.POGO} we obtain
 \begin{equation}
  P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Gamma_k^l \vert \Omega_j^{l})P(\Omega_j^{l} \vert \Omega_i^{l-1})P(\Omega_i^{l-1})}{P(\Omega_i^{l-1},\Gamma_k^l)}.
 \end{equation}
   
-The view-based 3D part prior $P(\Omega_i^{l-1})$ can be considered uniform or computed using the inverse frequency operator on an input database, which takes into account the part frequency across the database, while the joint probability $P(\Omega_i^{l-1},\Gamma_k^l)$ can be obtained from equation (16) presented in Section \ref{sec:analysis}.
+The view-based 3D part prior $P(\Omega_i^{l-1})$ can be considered uniform or computed using the inverse frequency operator on an input database, which takes into account the part frequency across the database, while the joint probability $P(\Omega_i^{l-1},\Gamma_k^l)$ can be obtained from Eqn.~\ref{eqn:POG} presented in Section~\ref{sec:analysis}.
 
-The proposed model will be initialized with probabilities of 2D parts on the first layer of the 2D hierarchy. Next, the observations in the 2D hierarchy will be used to propagate information in the view-based 3D hierarchy and finally to obtain hypotheses about view-based 3D parts. 
+The proposed model will be initialized with probabilities of 2D parts at the first layer of the 2D hierarchy. The observations in the 2D hierarchy will be used to propagate information to the view-based 3D hierarchy and finally to obtain hypotheses about view-based 3D parts. 
 
 Next, we analyze a set of statistical properties of the correspondences between parts in the 2D and view-based 3D hierarchies. This analysis will be used to obtain a better understanding of the benefits achieved by fusing them.
 
 \subsection{Statistical Evaluation}
 \label{sec:statistical}
 
-The purpose of the statistical evaluation of the correspondences between the two information channels 2D and view-based 3D is to assess the relations which can be formed between them and furthermore, to draw conclusion regarding the efficiency of the inference process. 
+The purpose of the statistical evaluation of the correspondences between the two information channels, 2D and view-based 3D, is to assess the relations which can be formed between them, and, furthermore, to draw conclusions regarding the efficacy of the inference process. 
 
-For quantizing correspondences between parts in the 2D and view-based 3D hierarchies, we use several statistical measures.
+To quantify correspondences between parts in the 2D and view-based 3D hierarchies, we use several statistical measures.
 
-First, we analyze on each layer $l$ the correspondences of each 2D/3D part, given the set of 3D/2D parts on that layer, by constructing a pdf over all computed conditional probabilities of that part. A peaked pdf suggests that the considered 2D/3D part can be matched successfully to a part or to a limited set of 3D/2D parts, while a multi-peak distribution indicates that more information is needed in order to predict a good matching. The pairs of parts which can be matched with a lower uncertainty between the two hierarchies, should be given a higher weight in the inference process, as they are better at predicting the unknown part in the other hierarchy.
+First, we analyze at each layer $l$ the correspondences of each 2D (3D) part given the set of 3D (2D) parts at that layer, by constructing a pdf \commentJP{??? certainly not\dots} over all computed conditional probabilities of that part. A peaked probability distribution suggests that the considered 2D (3D) part can be matched successfully to a part or to a limited set of 3D (2D) parts, while a multi-peaked distribution indicates that more information is needed in order to predict a good match. Those pairs of parts that can be matched with higher certainty between the two hierarchies should be given a higher weight in the inference process, as they are better at predicting the unknown part in the other hierarchy.
 
-Next, we compute the conditional entropy of 2D parts given 3D parts on layer $l$ and vice-versa, using the conditional probabilities introduced in equations (14) and (16). This measure computes the amount of uncertainty remaining in predicting 2D parts given 3D parts and vice-versa, thus helping us to determine which information, either 2D or 3D, is better at predicting the other type of information in the inference process. The analysis is performed for each layer in the 2D and view-based 3D hierarchical representations.
+Next, we compute the conditional entropy of 2D parts given 3D parts at layer $l$ and vice-versa, using the conditional probabilities introduced in Eqns.~\ref{eqn:PGO.Bayes} and \ref{eqn:POG}. This measure computes the amount of uncertainty remaining in predicting 2D parts given 3D parts and vice versa, thus helping us to determine which information, either 2D or 3D, is better at predicting the other type of information in the inference process. The analysis is performed for each layer in the 2D and view-based 3D hierarchical representations:
+\begin{eqnarray}
+ H^l(\Gamma_*^l|\Omega_*^l) &=& -\sum\limits_{j=1}^{|\Omega_*^l|}P({\Omega_j^l})\sum\limits_{i=1}^{|\Gamma_*^l|}P(\Gamma_i^l|\Omega_j^l)\log P(\Gamma_i^l|\Omega_j^l) \\
+ H^l(\Omega_*^l|\Gamma_*^l) &=& -\sum\limits_{i=1}^{|\Gamma_*^l|}P({\Gamma_i^l})\sum\limits_{j=1}^{|\Omega_*^l|}P(\Omega_j^l|\Gamma_i^l)\log P(\Omega_j^l|\Gamma_i^l),
+\end{eqnarray}
+where $\Gamma_*^l$ consists of all 2D parts $\Gamma_i^l$ for $i=1,\ldots,|\Gamma_*^l|$, and $\Omega_*^l$ consists of all the view-based 3D parts $\Omega_j^l$ for $j=1,\ldots,|\Omega_*^l|$, all at layer $l$.
 
+Moreover, we analyze the mutual information of the parts in the 2D and 3D compositional representations at layer $l$, as a measure of the parts' mutual dependence, by employing the joint probabilities introduced in Eqn.~\ref{eqn:cij.Pij}:
 \begin{equation}
- H^l(\Delta^l|\Theta^l) = -\sum\limits_{j=1}^{n_l^{'}}P({\Omega_j^l})\sum\limits_{i=1}^{n_l}P(\Gamma_i^l|\Omega_j^l)\log P(\Gamma_i^l|\Omega_j^l), 
+ I^l(\Gamma_*^l;\Omega_*^l) = \sum\limits_{j=1}^{|\Omega_*^l|}\sum\limits_{i=1}^{|\Gamma_*^l|}P({\Gamma_i^l},\Omega_j^l)\log \frac{P({\Gamma_i^l},\Omega_j^l)}{P({\Gamma_i^l})P(\Omega_j^l)}.
 \end{equation}
 
-\begin{equation}
- H^l(\Theta^l|\Delta^l) = -\sum\limits_{i=1}^{n_l}P({\Gamma_i^l})\sum\limits_{j=1}^{n_l^{'}}P(\Omega_j^l|\Gamma_i^l)\log P(\Omega_j^l|\Gamma_i^l),
-\end{equation}
-where $\Delta^l$ consists of all 2D parts $\{\Gamma_i^l, i \in (1,\ldots,n_l)\}$ and $\Theta^l$ consists of all the view-based 3D parts $\{\Omega_j^l, j \in (1,\ldots,n_l^{'})\}$ on layer $l$.
-
-Moreover, we also analyze the mutual information of the parts in the 2D and 3D compositional representations on layer $l$, as a measure of the parts mutual dependence, by employing the joint probabilities introduced in equation (12).
-
-\begin{equation}
- I^l(\Delta^l;\Theta^l) = \sum\limits_{j=1}^{n_l^{'}}\sum\limits_{i=1}^{n_l}P({\Gamma_i^l},\Omega_j^l)\log \frac{P({\Gamma_i^l},\Omega_j^l)}{P({\Gamma_i^l})P(\Omega_j^l)}.
-\end{equation}
-
-In the following section we provide the results of the performed statistical evaluation.
+In the following section we provide the results of this statistical evaluation.
 
 \section{Experimental Results}
 \label{sec:results}
@@ -384,7 +361,7 @@ We present in Table 1 for each layer in the 2D and view-based 3D hierarchies, th
  \begin{center}
   \begin{tabular}{ | c | c | c | c | c | c | c |r |}
       \hline
-      $Layers$  & $Size(\Delta^l)$ & $Err_{2D}$ & $H(\Delta^l)$ &  $Size(\Theta^l)$ & $Err_{3D}$ & $H(\Theta^l)$  \\ \hline
+      $Layers$  & $Size(\Gamma_*^l)$ & $Err_{2D}$ & $H(\Gamma_*^l)$ &  $Size(\Omega_*^l)$ & $Err_{3D}$ & $H(\Omega_*^l)$  \\ \hline
     $l_1$ &  130  & 0.32 & 4.78 & 100 & 0.53 & 4.2 \\ \hline
     $l_2$ &  400 & 0.49 & 5.74 & 400 & 0.42 & 5.64 \\ \hline
     $l_3$ &  400 & 0.63 & 5.68 & 500 & 0.37 & 5.97 \\ \hline 
@@ -396,7 +373,7 @@ We present in Table 1 for each layer in the 2D and view-based 3D hierarchies, th
 \caption{Statistics of parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
 \end{table}
 
-Analysis of the results presented in Table 1, highlights two phenomena, the reconstruction error in the 2D case is increasing, while in the 3D case is decreasing from bottom layers to top ones. As the error is computed per pixel in a patch, a slight translation of an edge part will increase the error, while in the depth case, higher level structures are better at describing the data and therefore the error is decreasing. Regarding the part entropies at each layer, we notice a slight increase, which is caused by the increasing of the number of parts from bottom-up, having a direct impact on the part uncertainties when sampled from the underlying part probability distributions on that layer.
+Analysis of the results presented in Table 1, highlights two phenomena, the reconstruction error in the 2D case is increasing, while in the 3D case is decreasing from bottom layers to top ones. As the error is computed per pixel in a patch, a slight translation of an edge part will increase the error, while in the depth case, higher-level structures are better at describing the data and therefore the error is decreasing. Regarding the part entropies at each layer, we notice a slight increase, which is caused by the increasing of the number of parts from bottom-up, having a direct impact on the part uncertainties when sampled from the underlying part probability distributions on that layer.
 
 \begin{figure}
 \begin{center}
@@ -445,7 +422,7 @@ and $m$ is the index of best fitting 2D part for the patch $Z_j^l$.
  \begin{center}
   \begin{tabular}{ | c | c | c | c | c | c | c |r |}
       \hline
-      $Layers$  & $Max Prediction$ & $Err(3D|2D)$ & $K-nn$ & $Err(3D|2D)$ & $H(\Theta^l|\Gamma^l)$ & $H(\Gamma^l|\Theta^l)$  \\ \hline
+      $Layers$  & $Max Prediction$ & $Err(3D|2D)$ & $K-nn$ & $Err(3D|2D)$ & $H(\Omega_*^l|\Gamma^l)$ & $H(\Gamma^l|\Omega_*^l)$  \\ \hline
     $l_1$ &  34.12\% & 1.39 & 50.43\% & 0.64 & 2.51 & 1.93 \\ \hline
     $l_2$ &  27.36\% & 0.99 & 53.6\% & 0.56 & 2.68 & 2.77 \\ \hline
     $l_3$ &  24.27\% & 0.87 &  & 0.44 & 2.92 & 2.63 \\ \hline 
