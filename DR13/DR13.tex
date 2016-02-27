@@ -19,14 +19,14 @@
 
 \title{Bound compositional hierarchies modeling 2D and 3D visual shape of object categories}
 \deliverableid{DR 1.3}
-\author{M. Popa, ...}
+\author{M. Popa, J. L. Wyatt, A. Leonardis, D. Tabernik, V. Kramarev, R. Aktas, D. Belter}
 \address{Institute of Computer Science, University of Innsbruck}
 \email{Mirela.Popa@uibk.ac.at}
-\headertitle{shorted title}
-\headerauthor{shortauthor}
+\headertitle{Compositional Hierarchies}
+\headerauthor{Popa et al.}
 
-\duedate{2015-02-27}
-\submissiondate{2015-02-27}
+\duedate{2016-02-29}
+\submissiondate{2016-02-29}
 \leadpartner{UIBK}
 \revision{draft}
 \disseminationlevel{PU}
@@ -41,7 +41,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent Here comes the abstract
+\noindent Compositional hierarchies are a particular form of representation for objects that we are investigating in the project. In this report we describe progress on several fronts regarding these hierarchies. We present, first of all, a method for learning compositional hierarchies that are linked across 2D intensity features and view based 3D depth features. We show that this is able to infer 3D object shape from 2D intensity edge information. Additionally we report several other advances we have made. These include several instantiations of our hierarchy that follow the same broad principles, and also the use of popular deep networks (CNNs) to perform similar tasks. The instantiations of our hierarchies include: a surface based version of our compositional hierarchy for modelling 3D shape; a mixed surface and volume based version of our hierarchy for the same purpose; and a 2D intensity version hierarchy for modelling of object appearance from edge images. We describe the general principles that we believe are essential for these hierarchies to work. These include: redundancy, generative modelling, and techniques for consistification. Our compositional hierarchical approach described here has been connected to the grasping algorithms developed previously, and this is described in DR2.2.
 \end{abstract}
 
 
@@ -58,16 +58,19 @@
 
 \section*{Executive Summary}
 
-What does the report present? What tasks does it address? How has progress been evaluated? What previous reports does this report follow up on? 
+%What does the report present? What tasks does it address? How has progress been evaluated? What previous reports does this report follow up on? 
 
-\section*{Role of [YOUR TOPIC] in PaCMan}
+In previous years the project peformed work on various extensions to a baseline compositional hierarchical approach. This included: i) adapting compositional hierarchical models developed for single viewpoint intensity images to multi-view recognition; ii) revision of the original model that was graph-theoretically sound; iii) a framework for compositional modelling from single view depth images. The focus in the final year has been on: i) learning linked compositional hierarchies; ii) learning view independent 3D hierarchies; iii) a probabilistic generative version of our 2D intensity based hierarchy; iv) investigations of alternative approaches such as CNNs. This report thus addresses all the remaining work done for tasks in WP1, especially Task 1.3. Progress has been evaluated by working on two common datasets that we have created: the PacMan grasping dataset used with our IJRR paper; and a new synthetic dataset of 400 objects with several hundred thousand depth and intensity images of those. We have also, where appropriate, used external datasets, such as CIFAR-10.
 
-What role do the tasks addressed in this report play in the larger context of PaCMan? How do these tasks, how does report, contribute to achieving the overall goals for PaCMan? 
+\section*{Role of Compositional Hierarchies in PaCMan}
+
+%What role do the tasks addressed in this report play in the larger context of PaCMan? How do these tasks, how does report, contribute to achieving the overall goals for PaCMan? 
+The work in WP1 is about developing models of object shape. The objective is to provide models of object appearance and shape that are robust to shape variability within categories, are compact, hierarchical, and robust to missing data. Finally the models should be of a form where they are suitable to support manipulation actions such as grasping. Thus this workpackage feeds into WP2, WP4, and WP5.
 
 \section*{Contribution to the PaCMan scenario}
 
-How do the results presented in this report contribute to the PaCMan\cite{ProjectWebsite} scenarios and prototypes? 
-
+%How do the results presented in this report contribute to the PaCMan\cite{ProjectWebsite} scenarios and prototypes? 
+The PacMan scenario is grasping and manipulation of unfamiliar objects. The results presented in this workpackage feed into work on grasping of unfamiliar objects described in WP2. They will also feed into one of the demonstrators in WP5.
 
 \newpage
 
@@ -75,15 +78,41 @@ How do the results presented in this report contribute to the PaCMan\cite{Projec
 
 \subsection{Planned work}
 
-What tasks was the report supposed to address? What objectives, results were these tasks to achieve? 
+%What tasks was the report supposed to address? What objectives, results were these tasks to achieve? 
+The main goal for the final stage of the project was to complete Task 1.3.
+\begin{quotation}
+{\em Task 1.3 Integration of 2D and 3D representations of objects:} We will integrate (bind) the two information channels, the one that models 2D shape fragments on various levels of complexity and the other that structures 3D elements in a compositional hierarchy. The integration will take a form of feature binding at various levels of granularity. We will learn significant statistical correlations between the two channels and link together the co-occuring features in a probabilistic sense.
+\end{quotation}
+
+For the final period the specific sub-goal was to ``Develop an efficient inference process that will operate both on combined (i.e., 2D
+and 3D visual information channels) as well as on the individual ones.''
 
 \subsection{Actual work performed}
 
-What does the report actually present? How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? 
+%What does the report actually present? How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? 
 
-\subsection{Relation to the state-of-the-art}
+We have achieved the goal of Task 1.3, using an approach based, as promised, on a pair of linked compositional hierarchies. Each hierarchy employs stacked autoencoders. The links between the 2D and 3D features are learned using the probabilistic approach to this that we presented at the Year 2 review. We also completed work on several instantiations of our compositional hierarchy that utilise the same core learning framework, but which have different ways of encoding object shape. The first encodes the 2D shape on the image plane caused by intensity changes. The second encodes the 3D shape of the object in a view based manner, expressing the changing depth of the object surfaces relative to the image plane. The third and fourth instantiations encode the 3D shape of the object in a view independent manner. The third instantiation does this in a surface based way, the fourth instantiation starts with this, and then builds on top of it a volumetric representation of 3D shape. In another WP we have combined this representation with our grasping algorithms. Finally, we have studied and implemented competing methods in the form of CNNs. In addition to all these pieces of work, we have generated a new dataset, containing 400 objects from 20 categories, which contains several hundred thousand depth and intensity images of these objects. We have used this for training of our compositional hierarchies. In addition it is intended for use as an enlarged training set for the cluttered scene challenge we presented as part of SHREC. Finally we participated in a workshop at ICCV, where we presented this challenge, and also a full ICCV paper on the theory of compositional hierarchies. The current work has resulted in drafts of three papers to be submitted to ECCV, and one paper to be submitted to IROS.
 
-How are the obtained results related to the state-of-the-art? 
+\subsubsection{Linked 2D-3D compositional hierarchies}
+
+lajsdlfj
+
+\paragraph{Relation to SOTA:} hljadl fjl
+
+
+\subsubsection{2D intensity-based compositional hierarchies}
+
+ljasflj
+
+\paragraph{Relation to SOTA:} oadfljsl
+
+\subsubsection{3D view invariant compositional hierarchies}
+
+lajdsfl
+
+\paragraph{Relation to SOTA:} lasjdlkdsaj 
+
+
 
 \bibliographystyle{IEEEtran}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR13}
@@ -93,18 +122,75 @@ How are the obtained results related to the state-of-the-art?
 \appendix
 \section{Annexes}
 
-Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
+%Which papers / articles are included in the report? Mention titles, authors, publication info; abstract; and a one-liner relating the publication back to the discussion on actual work performed. 
 
 % template for annexes
-\subsection{Book chapter/Article/Technical Report: \em TITLE}
+\subsection{Article: \em Hierarchical Object Representation based on a Sparse Autoencoder Network}
 \begin{description}
-    \item[Authors] 
-    \item[Info] % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
-    \item[Abstract]
-    \item [Relation with the deliverable] 
-    \item[Attachment] %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+    \item[Authors] Mirela Popa, Jeremy L Wyatt and Justus Piater
+    \item[Info] To be submitted to ECCV 2016.
+    \item[Abstract] We propose a method for constructing a pair of complementary
+hierarchical representations from 2D edge images and from view-based 3D
+data, respectively.  As a learning algorithm, our model uses a sparse
+autoencoder network, which propagates information bottom-up, while
+offering an efficient inference mechanism across hierarchies, based on
+discretization of the responses at each layer.  We introduce a
+probabilistic fusion model for inferring missing observations across
+modalities and for scene reconstruction by exploiting correlations
+between 2D and view-based 3D observations. The results obtained on the
+PaCMan dataset demonstrate the efficacy of our approach.
+    \item [Relation with the deliverable] This work is concerned with learning and inference using a pair of linked 2D-3D hierarchies. This is one of primary goals of the WP, and the primary goal of Task 1.3. The paper describes how we create a compositional hierarchy using a stacked autoencoder. It then shows how we learn a pair of such hierarchies, one for 2D intensity information, and one for view based 3D information. The hierarchies are grown using the same principles we have developed elsewhere, including We then show how these hierarchies can be linked using probabilistically correct inference. Finally we show that this enables us to infer 3D structure from 2D intensity edges. This meets the goal of Task 1.3.
+    
+    \item[Attachment] The attachment is included at the end of the deliverable.
 \end{description}
 % attach your PDF(s) if required, pusblished and online available documents do not require it if you provide the doi (only doi are permitted)
 %\includepdf[pages=-]{./attachedPapers/YOURFILE.pdf
+\newpage
+
+\subsection{Article: \em A view-invariant, compositional hierarchical representation of 3D shapes}
+\begin{description}
+    \item[Authors] Vladislav Kramarev, Ales Leonardis and Jeremy L. Wyatt
+    \item[Info] To be submitted to ECCV 2016.
+    \item[Abstract] We propose a novel, view-invariant, compositional hierarchical representation of 3D shape. The representation is surface based. The hierarchy is learned from 3D models, either point cloud or mesh data. The hierarchy is built in layers, where each layer is a vocabulary of parts, each part corresponding to some 3D surface. The parts in a layer are learned by composing parts from the layer below. The implementation of the framework allows learning of compact hierarchies. Each part is able to capture variation in shape, and does so by encoding densities over transformations between part poses, and measures of surface similiarity. Compactness is also achieved by the fact that the parts learned are shared across different object categories. In empirical work we show the features that the hierarchy learns, and demonstrate their shareability. Receptive fields for each layer are redundant, and grow geodesically across the surface of the object.
+    \item [Relation with the deliverable] This paper describes a more advanced form of the previously view variant 3D compositional hierarchy that we presented in previous years. We have now moved this hierarchy to be completely view independent. This enables the parts to grow without restrictions imposed by the viewpoint. We demonstrate the learning on a PacMan dataset gathered specifically for this purpose. This work represents part of the progress we have made on compositional hierarchies for 3D shape.
+    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+\end{description}
+\newpage
+
+\subsection{Article: \em Learning and inference with a compositional hierarchical representation
+of 3D object shape}
+\begin{description}
+    \item[Authors] Domink Belter, Marek Kopicki, Ales Leonardis and Jeremy L. Wyatt
+    \item[Info] To be submitted to IROS 2016. % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Abstract] Modelling of object shape is an essential precursor to any method for object manipulation. In this paper
+we present a method for learning compositional hierarchical representations of 2.5D and 3D object shape. These are representations
+that consist of a hierarchy of parts. We present novel algorithms for learning and inference. We empirically demonstrate the ability to learn these representations from real
+depth data, and to fill in missing information caused by self-occlusions. We also demonstrate the ability of the hierarchy to model variable shape, and to share parts across different
+objects and object categories.
+    \item [Relation with the deliverable] This paper describes an extension of the type of approach in the previous attachment. This compositional hierarchy starts with learning view invariant surface parts from viewpoint specific data. It then performs a further abstraction by creating parts that are based on volumetric receptive fields, and learned from data obtained from several different views. The hierarchy is the part of our work on 3D compositions that has been implemented to connect with our grasp learning algorithms. In this paper we describe how the hierarchy is learned, and show that it has the properties of view invariance, shareability and robustness to noise that we desire. To show the ability to learn in the face of noisy data we demonstrate learning on the IJRR dataset that 
+    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+\end{description}
+\newpage
+
+\subsection{Article: \em Gaussian parametrization of deep convolutional network filters}
+\begin{description}
+    \item[Authors] Domen Tabernik and Ales Leonardis
+    \item[Info] To be submitted to ...% UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Abstract]
+    \item [Relation with the deliverable] This paper describes work on applying CNNs to learning object categories. The study looks at the performance of a CNN implementation on two datasets CIFAR-10 and the PacMan synthetic object dataset. The paper focuses on 2D intensity images, and on object categorisation. Part of the purpose of this investigation was to assess the level of performance of CNNs on similar data to that used by our compositional hierarchies. The paper looks at ways of simplifying CNNs while retaining their performance, the approach being to constrain weights to lie on a Gaussian. 
+    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+\end{description}
+\newpage
+
+\subsection{Article: \em A probabilistic generative compositional hierarchy for modelling 2D object shape}
+\begin{description}
+    \item[Authors] Rusen Aktas, Ales Leonardis and Jeremy L. Wyatt
+    \item[Info] To be submitted to ECCV 2016 % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Abstract] 
+    \item [Relation with the deliverable] This paper is the conclusion of our work on compositional hierarchies for 2D intensity images. As in the first two years of the project we learn the hierarchy from multiple views, using edge features extracted from intensity images. At the start of the project the LHOP approach was used. Following this we developed CHOP. The purpose of CHOP was to provide a theoretically sound way (MDL) to trade-off the description length of the parts against their explanatory power. This was done with a graph theoretic approach. In this final iteration we have also made the formulation better grounded in terms of probability theory. This has been achieved by using a generative compositional hierarchical model. The generative model allows us to sample images from nodes at higher layers in the hierarchy. This is achieved using a stochastic grammar, a product of experts, and an optimisation procedure for maximising the likelihood of generated images. This allows us to achieve one of the goals of the hierarchy, which is to run it as a generative model, thus showing the ability to fill in missing data.
+    
+    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+\end{description}
+\newpage
 
 \end{document}
