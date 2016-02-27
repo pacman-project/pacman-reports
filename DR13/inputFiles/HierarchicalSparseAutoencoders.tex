@@ -33,11 +33,9 @@
 \maketitle
 
 \begin{abstract}
-
-
+We propose a method for constructing a pair of complementary hierarchical representations from 2D edge images and from view-based 3D data, respectively.  As a learning algorithm, our model uses a sparse autoencoder network, which propagates information bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of the responses at each layer.  We introduce a probabilistic fusion model for inferring missing observations across modalities and for scene reconstruction by exploiting correlations between 2D and view-based 3D observations. The results obtained on the PaCMan dataset demonstrate the efficacy of our approach.
 \keywords{Hierarchical Representation, Sparse Autoencoder Network, Depth Inference}
 \end{abstract}
-We propose a method for constructing a pair of complementary hierarchical representations from 2D edge images and from view-based 3D data, respectively.  As a learning algorithm, our model uses a sparse autoencoder network, which propagates information bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of the responses at each layer.  We introduce a probabilistic fusion model for inferring missing observations across modalities and for scene reconstruction by exploiting correlations between 2D and view-based 3D observations. The results obtained on the PaCMan dataset demonstrate the efficacy of our approach.
 
 \section{Introduction}
 
@@ -85,8 +83,8 @@ The reason for building a new hierarchical model, instead of using existing mode
 
 The principles for forming the hierarchical object representations are consistent for both 2D and 3D view-based data, where the size of the receptive field is gradually increased at each layer, up to the top layer which is sufficiently large to represent the whole object. Therefore, we will only describe the learning process for one type of data, namely 2D information. To obtain an object representation robust to illumination changes we use 2D shape information, obtained by applying an edge detection algorithm to the 2D intensity images.
 
-The input used for learning the 2D hierarchical representation is a set $\mathcal{Z}$ of training edge images $Z^i \in \mathcal{Z}, i=1,\ldots,|\mathcal{Z}|$, represented\footnote{Here and in the following, superscripts always constitute upper indices; their use as powers will be indicated explicitly unless unambiguously clear from the context.} as a set of vectorized patches $Z_j^i$, i.e., $Z^i=\{Z_1,\ldots,Z_j,\ldots,Z_{|Z^i|}\}$, where each image patch
-$Z_j^i=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$ of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edges divided by the stride step. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
+The input used for learning the 2D hierarchical representation is a set $\mathcal{Z}$ of training edge images $Z^i \in \mathcal{Z}, i=1,\ldots,|\mathcal{Z}|$, represented\footnote{Here and in the following, superscripts always constitute upper indices; their use as powers will be indicated explicitly unless unambiguously clear from the context.} as a set of vectorized patches $Z_j$, i.e., $Z^i=\{Z_1,\ldots,Z_j,\ldots,Z_{|Z^i|}\}$, where each image patch
+$Z_j=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$ of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edges\commentJP{really? I don't understand} divided by the stride. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
 
 \subsection{Learning algorithm} 
 
@@ -123,6 +121,7 @@ Learning the model parameters $\rho=(W_1,W_2,b_1,b_2)$ can be done using a batch
 \begin{equation}
    J(\theta,j)=\left\|h(\theta,j)-Z_j\right\|_2^2 + \alpha\sum_{i=1}^{2} W_i^2
 \end{equation}
+\commentJP{The regularizer does not make sense; it must be scalar.  Do you mean the sum of the Frobenius norms of the two $W_i$?}
 where the second term of the function is a regularization term that tends to decrease the magnitude of the weights---which helps to prevent overfitting---and the parameter $\alpha$ controls the relative importance of the two terms.
  
 Furthermore, by placing different constraints on the cost function, such as limiting the number of hidden units, we can obtain a compressed representation of the input data. A sparsity constraint will force most of the hidden units to be inactive most of the time. By inactive, we mean the neuronal activation value is close to 0, while active means their value is close to 1. The new cost function is defined as
@@ -169,7 +168,7 @@ where $|Z_*^2|$ is the number of extracted patches on the second layer.
 
 Next, all the other layers in our hierarchical representation, up to the top layer $L_{2D}$, are learned in an iterative manner as described above, where the input to each layer $l$ is given by the activations of the hidden units learned on patches from the previous layer $l-1$. This hierarchical approach is useful for capturing non-linear dependencies in the input data and models them iteratively, from low-level image patches up to the object level.
 
-For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of category-specific parts, view-specific parts at layer $L_{2D}-1$, and category-specific parts at the last layer $L_{2D}$. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
+For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of category-specific parts \commentJP{which layers \emph{here}?}, view-specific parts at layer $L_{2D}-1$, and category-specific parts at the last layer $L_{2D}$. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
 
 Each layer will produce a set of weight vectors $W_1^l$ which compress the input information, while producing a useful representation. 
 
