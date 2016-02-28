@@ -328,7 +328,7 @@ We learned and tested the proposed hierarchical representations for 2D and view-
 \begin{center}
 \includegraphics[width=0.6\textwidth]{database}
 \end{center}
-\caption{Examples of object instances (box, mug, can) from the PaCMan database. \commentJP{The edge images are very hard to see.  Can you render everything against a white background?}}
+\caption{Examples of object instances (box, mug, can) from the PaCMan database.}
 \label{database}
 \end{figure}
 
@@ -448,13 +448,11 @@ In Figure \ref{inference} we depict several examples of depth images formed of v
 \section{Conclusion}
 \label{sec:conclusions}
 
-\commentJP{Please revise the Conclusions.  They are now almost the same as the abstract.  Instead, it should summarize the highlights of this work.}
+In this work we proposed a method for constructing two hierarchical representations, for two information channels, 2D intensity data and view-based 3D depth data. We employed as a learning algorithm a sparse autonencoder network, where each layer receives as input the latent representation of the layer below. For obtaining predictions across hierarchies, we discretized the responses of each layer into a set of parts, using clustering techniques. Furthermore, we introduced a probabilistic fusion model for linking the two information channels across hierarchies. The fused model enables an improved and refined representation of the world, while being able to infer 3D object shape from 2D intensity edge information.
 
-In this work we proposed a method for constructing two hierarchical representations, for two information channels, 2D edge images and view-based 3D data. Our model uses as a learning algorithm a sparse autonencoder network, which propagates information from bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of each layer responses. 
+Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts, while specific 2D parts have a high conditional entropy, due to ambiguity of edge structures which could correspond to many depth parts. We handled this problem, by extracting complementary information from the region surrounding an edge part using HOG features, which were fed to a SVM classifier. This method proved its usefulness in the inference process, leading to an improved detection of the correct corresponding depth part.
 
-Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts. 
-
-Next, we introduced a probabilistic fusion model for inferring missing observations, by exploiting the correlations between 2D and view-based 3D primitives. The fused model enables an improved and refined representation of the world, by encompassing both 2D and 3D aspects of a scene. Moreover, it facilitates inference of one view from the other, in the case when only one hierarchical representation is available, or under challenging conditions, such as occlusions or noisy sensor data. 
+As future work, we plan to test the efficacy of our approach on scenes composed of several objects exposing different levels of complexity, such as clutter and occlusions.
 
 \bibliographystyle{splncs}
 \bibliography{egbib}
