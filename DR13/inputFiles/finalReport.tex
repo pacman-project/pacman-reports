@@ -69,7 +69,7 @@ Our approach differs to biological counterparts. We build view invariance of par
 \begin{figure}[t]
  \centering
 \includegraphics[width=1.0\columnwidth]{../images/hierarchyParts.eps}
-\caption{Illustration of hierarchical representation of 3D objects. At $i$-th layer vocabulary $\Omega^i$ each word is represented by 3D shape. Arrows represent compositional relations between parts.}
+\caption{An illustration of a portion of our learned hierarchical representation of 3D objects. Within the $i$-th layer vocabulary $\Omega^i$ each word represents a 3D shape. Arrows represent compositional relations between parts.}
  \label{hierarchyParts}
 \end{figure}
 
@@ -156,7 +156,7 @@ An example alignment for parts from the second layer is presented in Fig.~\ref{p
  \label{2ndLayer}
 \end{figure}
 
-The variability of sub-parts is encoded in the clusters. These clusters are created without supervision, and the algorithm generates natural groups of planar, concave and convex parts. Other groups contain various elements which represent edges in the depth image. These parts contain sub-parts created from planar patches and background elements. The example clusterization results--- given overlapping receptive fields and a single view-point---are presented in Fig.~\ref{2ndLayer}. The hierarchy distinguishes between various parts and groups them if the local shape is similar. Some surfaces are misclassified. The size of the receptive field in the second layers is small and the noise of the sensor plays an important role here. However, the multiple hypotheses about the parts help to deal with this problem (Fig.~\ref{2ndLayer}).
+The variability of sub-parts is encoded in the clusters. These clusters are created without supervision, and the algorithm generates natural groups of planar, concave and convex parts. Other groups contain various elements which represent edges in the depth image. These parts contain sub-parts created from planar patches and background elements. The example clusterization results--- given overlapping receptive fields and a single view-point---are presented in Fig.~\ref{2ndLayer}. The hierarchy distinguishes between various parts, but groups them if the local shape is similar. Some surfaces are misclassified. The size of the receptive field in the second layers is small and the noise of the sensor plays an important role here. However, multiple hypotheses about the parts help to deal with this problem (Fig.~\ref{2ndLayer}).
 
 \subsection{Data explanation using $i$-th layer vocabulary}
 
@@ -164,11 +164,11 @@ The variability of sub-parts is encoded in the clusters. These clusters are crea
  \centering
 \includegraphics[width=0.95\columnwidth]{../images/explanation2ndLayer.eps}
 \put(-232,172){a} \put(-232,77){b}
-\caption{Explanation of data using vocabulary from second layer without (659 parts) (a) and with compression (38 parts) (b)}
+\caption{Explanation of data using the vocabulary from the second layer without compression (659 parts) (a) and with compression (38 parts) (b)}
  \label{explanation2ndLayer}
 \end{figure}
 
-In the next step the input data is explained using the obtained $l$-th layer vocabulary. We explain the image using representative parts only. Thus, some areas of the image are replaced by $l$-th layer representative parts. This enables the compression of the input data as well as generalization. Using information about camera pose the parts can be moved into 3D space and reconstruct the object. Then, we can check visually the compression and clusterization results. The obtained representation of the object created from second layer vocabulary is presented in Fig.~\ref{explanation2ndLayer}. In Fig.~\ref{explanation2ndLayer}a the object created from 659 parts is presented. In this case the compression rate is set to 0\%. In Fig.~\ref{explanation2ndLayer}b the objects is created from 38 parts only. The compression rate for this layer is 5.8\%. Despite of the high reduction of parts the explanation of the input data is still precise. Moreover, the normal angles are more smooth for the object created from compressed vocabulary. This property comes out from the clusterization. The variation of the shapes inside clusters which is also caused by the sensor noise is represented by the ``average'' part in the center of the cluster.
+In the next step the input data is explained using the obtained $i$-th layer vocabulary. We explain the image using representative parts only. Thus, some areas of the image are replaced by $i$-th layer representative parts. This enables compression of the input data as well as generalization. Using information about camera pose, the parts can be moved into 3D space and reconstruct the object. Then, we can visually check the compression and clusterization results. The representation of the object created from the second layer vocabulary is presented in Fig.~\ref{explanation2ndLayer}. In Fig.~\ref{explanation2ndLayer}a a representation of the object created from 659 parts is presented. In this case the compression rate is set to 0\%. In Fig.~\ref{explanation2ndLayer}b the representation of the object is created from just 38 parts. The compression rate for this layer is 5.8\%. Despite the big reduction in the number of parts the explanation of the input data is still precise. Moreover, the normals vary more smoothly for the object created from the compressed vocabulary. This property arises from the clusterization. The variation of the shapes inside clusters which is also caused by the sensor noise is represented by the ``average'' part in the centre of the cluster.
 
 \begin{figure}[t]
  \centering
@@ -182,7 +182,7 @@ In the next step the input data is explained using the obtained $l$-th layer voc
 \includegraphics[width=0.95\columnwidth]{../images/3rdLayer.eps}
 \put(-215,182){a} \put(-102,182){b}
 \put(-215,82){c} \put(-102,82){d}
-\caption{Clusterization results for the second layer. Parts from the same group have the same color on the object visualization: overlap 0\% (a), overlap 33\% (b), overlap 66\% (a), combination of hypotheses (d)}
+\caption{Clusterization results for the second layer. Parts from the same group have the same colour in the object visualization: overlap 0\% (a), overlap 33\% (b), overlap 66\% (a), combination of hypotheses (d)}
  \label{3rdLayer}
 \end{figure}
 
@@ -190,15 +190,15 @@ In the next step the input data is explained using the obtained $l$-th layer voc
  \centering
 \includegraphics[width=0.95\columnwidth]{../images/explanation3rdLayer.eps}
 \put(-232,172){a} \put(-232,77){b}
-\caption{Explanation of data using vocabulary from third layer without (143 parts) (a) and with compression (86 parts) (b)}
+\caption{Explanation of data using the vocabulary from third layer without compression (143 parts) (a) and with compression (86 parts) (b)}
  \label{explanation3rdLayer}
 \end{figure}
 
-The procedure of learning $l$-th layer vocabulary is repeated for view-dependent layers until the desired number of layers is obtained. The obtained alignment of parts in the third layer is presented in Fig.~\ref{parts3rdLayer}. The obtained clusters are presented in Fig.~\ref{3rdLayer}. For the third layer the compression rate is 60.1~\%. For the third layer the obtained compression is significantly smaller than for the second layer. In the third layer the receptive fields are three times bigger than in the second layer (Fig.~\ref{word}). At this size of the receptive field the difference between concave, convex and flat parts is bigger. On the other hand, parts overlapped by receptive fields are more unique and clusterization of parts produces higher number of groups. The higher compression is possible but the higher reconstruction error has to be accepted in this case. The explanation of the input data using third layer vocabulary is presented in Fig.~\ref{explanation3rdLayer}.
+The procedure for learning $i$-th layer vocabulary is repeated for view-dependent layers until the desired number of layers is obtained. The resulting alignment of parts in the third layer is presented in Fig.~\ref{parts3rdLayer}. The clusters are presented in Fig.~\ref{3rdLayer}. For the third layer the compression rate is 60.1~\%. It is also the case that for the third layer the compression is significantly smaller than for the second layer. In the third layer the receptive fields are three times bigger than in the second layer (Fig.~\ref{word}). At this size of receptive field the difference between concave, convex and flat parts is also bigger. On the other hand, the parts produced by overlapping receptive fields are necessarily less common, and so clusterization of parts produces a higher number of groups. Thus a higher compression is possible, but then a higher reconstruction error has to be accepted. The explanation of the input data using the third layer vocabulary is presented in Fig.~\ref{explanation3rdLayer}.
 
 \subsection{View-invariant representation of parts}
 
-Parts obtained from single camera view do not provide full information about the shape of the object. It's difficult to conclude about parts which are located on the edges of the object. The system which learns from single view does not have information that some edges visible from a single view correspond to continuous surface of the object. The full information about these parts is important when the robot grasp the object. The grasps that can be attached to the real 3D edge of the object and the edge visible from single camera view are different. Without the knowledge that some edges on 2D image might represent continuous surface the grasping method might fails. To deal with the proper representation of objects in 3D we build the hierarchy which contains view-invariant layers defined in the volumetric space.
+Parts obtained from a single camera view do not provide full information about the shape of the object. In particular it's difficult to draw conclusions about parts which are located on the edges of the object. Thus a system which learns from a single view does not have information that some edges visible from that single view correspond to continuous surfaces of the object. Full information about these parts is important for tasks such as grasping. Without the knowledge that some edges in a 2D image might represent a continuous surface a grasping method might fail. To create a proper representation of objects in 3D we therefore extend our hierarchy so as to contain view-invariant layers defined on the volumetric receptive fields.
 
 % \begin{figure}[t]
 %  \centering
@@ -207,9 +207,9 @@ Parts obtained from single camera view do not provide full information about the
 %  \label{wordInv}
 % \end{figure}
 
-The general learning principle is the same for view-variant and view-invariant layers (Fig.~\ref{hopProc}). For view-invariant volumetric layers the receptive field is represented by the box. The relation between words from $l$ and $l+1$ layers is presented in Fig.~\ref{word}. The word of the $l+1$ layer consists 27 words (parts) from the $l$-th layer. The receptive fields for the volumetric layers grows in three dimensions.
+The general learning principle is the same for view-variant and view-invariant layers (Fig.~\ref{hopProc}). For view-invariant layers the receptive field is a cube. The relation between words from $i$ and $i+1$ layers is presented in Fig.~\ref{word}. A word in the $i+1^{th}$ layer consists of 27 words (parts) from the $i^{th}$ layer. The receptive fields for the volumetric layers grow in three dimensions.
 
-To create first layer of the volumetric vocabulary we transform each part from the view-dependent layer into 3D using known position of the camera for each viewpoint. In current implementation we start to build volumetric layers from parts of the second view-dependent layer. Then, we hierarchically convert each part into point cloud. We store all points related to each object in separate octree. To reduce number of points and to combine information about surface observed from many viewpoints we run voxel grid filtering~\cite{Aldoma2012}. In contrast to~\cite{Aldoma2012} we preserve normal vectors for each voxel. During computation of mean point for each voxel the point are clustered according to the normal vector. The maximal distance (angle) between normal vectors inside single cluster is set to 45$^\circ$. For each obtained cluster the mean position and normal vector is computed. This approach allows to preserve inner and outer surfaces of the objects.
+To create the first layer of the volumetric vocabulary we transform each part from the view-dependent layer into 3D using the known position of the camera for each viewpoint. In our current implementation we start to build volumetric layers from parts of the second view-dependent layer. Then, we hierarchically convert each part into a point cloud. We store the points for each object in separate octrees. To reduce the number of points and to combine information about surfaces observed from many viewpoints we run voxel grid filtering~\cite{Aldoma2012}. In contrast to~\cite{Aldoma2012} we preserve normal vectors for each voxel. During computation of the mean point for each voxel the points are clustered according to the normal vector. The maximal distance (angle) between normal vectors inside single cluster is set to 45$^\circ$. For each obtained cluster the mean position and normal vector is computed. This approach allows us to preserve the inner and outer surfaces of the objects.
 
 \begin{figure}[t]
  \centering
@@ -218,18 +218,18 @@ To create first layer of the volumetric vocabulary we transform each part from t
  \label{viParts}
 \end{figure}
 
-To compute similarity between view-invariant parts we find the SE(3) transformation $T$ which aligns two parts. To find the optimal transformation $T$ we minimize the error:
+To compute the similarity between pairs of view-invariant parts we find the SE(3) transformation $T$ which aligns two parts. To find the optimal transformation $T$ we minimize the error:
 
 \begin{equation}
 \label{optVol}
  \arg\min_{\bf T} (n_A-n_B)^2 \sum_i ||{\bf N}_B^i \cdot ({\bf T}\cdot {\bf p}_A^{\rm i}-{\bf p}_B^{\rm i})||^2,
 \end{equation}
 
-where ${\bf p}_A^{\rm i}$ and ${\bf p}_B^{\rm i}$ are corresponding points from part A and part B, $n_A$ and $n_B$ are number of points in parts, ${\bf N}_B^i$ is the surface normal at ${\bf p}_B^{\rm i}$. The element $(n_A-n_B)^2$ in (\ref{optVol}) is added to prevent matching parts with significantly different size. To find correspondence between points and to compute optimal transformation $T$ we use point-to-plane variant of Iterative Closest Point~\cite{Segal2009}. To prevent sub-optimal solutions we run ICP multiple times. Each optimization starts from randomly initialized initial guess. Because positions of points are defined in the center of the part we only initialize randomly the orientation of the parts. 
+where ${\bf p}_A^{\rm i}$ and ${\bf p}_B^{\rm i}$ are corresponding points from part A and part B, $n_A$ and $n_B$ are the number of points in the respective parts, ${\bf N}_B^i$ is the surface normal at ${\bf p}_B^{\rm i}$. The element $(n_A-n_B)^2$ in (\ref{optVol}) is added to prevent matching parts with significantly different size. To find the correspondences between points and to compute the optimal transformation $T$ we use a point-to-plane variant of Iterative Closest Point~\cite{Segal2009}. To prevent sub-optimal solutions we run ICP multiple times. Each optimization starts from a randomly initialized initial guess. Because the positions of points are defined in the centre of the part we only randomly initialize the orientations of the parts. 
 
-The example alignment of parts from the fourth layer is presented in Fig.~\ref{viParts}. In contrast to parts from view-dependent layers, which represent single surface, the parts from volumetric layers contain two surfaces. View invariant parts from volumetric layers represent inner and outer surfaces of the objects (cf. Fig.~\ref{parts3rdLayer} and Fig.~\ref{parts2ndLayer}).
+The example alignment of parts from the fourth layer is presented in Fig.~\ref{viParts}. In contrast to parts from view-dependent layers, which represent single surfaces, the parts from volumetric layers can contain multiple surfaces. View invariant parts from volumetric layers represent, for example, both the inner and outer surfaces of the objects (cf. Fig.~\ref{parts3rdLayer} and Fig.~\ref{parts2ndLayer}).
 
-The procedure parts selection is the same as for view-dependent layer. When the next layer vocabulary is selected the receptive fields are increased and the part extraction procedure is repeated (Fig.~\ref{hopProc}). To minimize the influence of the object pose in relation to the global coordinate system the view-invariant receptive fields are also shifted by 33\%. This strategy also provides redundant information about parts covered by receptive fields. Thus, the identification of parts for grasping is more robust.
+The procedure for part selection is the same as for view-dependent layer. When the next layer vocabulary is selected, the receptive fields are increased and the part extraction procedure is repeated (Fig.~\ref{hopProc}). To minimize the influence of the object pose in relation to the global coordinate system the view-invariant receptive fields are also shifted by 33\%. This strategy also provides redundant information about parts covered by receptive fields. Thus, the identification of parts for problems such as grasping is more robust.
 
 \section{Results}
 
@@ -242,25 +242,25 @@ The procedure parts selection is the same as for view-dependent layer. When the 
  \label{shareability}
 \end{figure}
 
-The learning of the hierarchy allows to find parts which explain the input data. The most important property oh the hierarchy is shareability. The parts are shared between object thus the grasp can be also transfered from the training object to another object. The shareability of parts from view-dependent layers is presented in Fig.~\ref{shareability}. The shareability is presented for two types of objects: mug and bowl. In Fig.~\ref{shareability}c parts from second layers are presented. The parts which represent concave surface (green) can be found on the surface mug which is visible from two various viewpoints as well as on the inner surface of the bowl. Convex parts (pink) are mainly visible on the outer surface of the mug. Some realizations of convex parts can be also found on the bowl's surface but they only represent local shape of the surface.
+The learning of the hierarchy allows us to find parts which explain the input data. The most important property of the hierarchy is shareability. The parts are shared between object categories. Thus inference and activities such as grasping can be also transfered from the training object to another object. The shareability of parts from view-dependent layers is presented in Fig.~\ref{shareability}. This shareability property is presented for two types of objects: mug and bowl. In Fig.~\ref{shareability}c parts from second layers are presented. The parts which represent concave surfaces (green) can be found on the surface of the mug which is visible from two different viewpoints, as well as on the inner surface of the bowl. Convex parts (pink) are mainly visible on the outer surface of the mug. Some realizations of convex parts can also be found on the bowl's surface, but they only represent the local shape of the surface.
 
-Shareability of parts is also visible on the 3rd layer of the hierarchy (Fig.~\ref{shareability}c). Because the size of the receptive field is bigger than the size of the first layer's receptive field also the difference between geometric properties of the surface (convex and concave) are better visible. The same parts realizations can be found on the surface of the mug and on the surface of the bowl (concave parts are represented by purple color).
+The shareability of parts is also visible on the 3rd layer of the hierarchy (Fig.~\ref{shareability}c). Because the size of the receptive field is bigger than the size of the first layer's receptive field also the difference between qualitative geometric properties of surfaces (convexity vs. concavity) are better visible. The same part realizations can be found on the surface of the mug and on the surface of the bowl (concave parts are represented by the colour purple).
 
 \begin{figure}[t]
  \centering
 \includegraphics[width=0.95\columnwidth]{../images/shareability4thLayer.eps}
 \put(-227,80){a} \put(-100,80){b}
-\caption{Shareablity of 4th layer parts between objects}
+\caption{Shareablity of 4th layer parts between objects.}
  \label{shareability4thLayer}
 \end{figure}
 
-The shareability of parts can be also observed in volumetric layers of the hierarchy (Fig.~\ref{shareability4thLayer}). Some parts representing edges (green and purple) as well as bigger parts which correspond to inner and outer surface of the object are shared between mug and bowl. Note that some parts which are related to the edges can be also found on the objects surface (purple parts in Fig.~\ref{shareability4thLayer}a). This is the result of space division into regular grid which represent receptive fields. The position of the receptive fields in 3D strongly influence how the object is divided into parts. To mitigate this problem we implemented overlapping receptive fields. The information about spurious edges can be also ignored because the location of the edge is not supported by parts from lower layers of the hierarchy.
+The shareability of parts can be also observed in volumetric layers of the hierarchy (Fig.~\ref{shareability4thLayer}). Some parts represent edges (green and purple), and other, bigger parts correspond to the inner and outer surfaces of the object are shared between the mug and the bowl. Note that some parts which are related to the edges can be also found on the objects' surfaces (purple parts in Fig.~\ref{shareability4thLayer}a). This is the result of the receptive fields forming a regular grid. The positions of the receptive fields in 3D strongly influence how the object is divided into parts. To mitigate this problem we implemented overlapping receptive fields. The information about spurious edges can be also ignored because the location of the edge is not supported by parts from lower layers of the hierarchy.
 
 \begin{figure}[t]
  \centering
 \includegraphics[width=1.0\columnwidth]{../images/inference.eps}
 \put(-240,260){a} \put(-180,260){b} \put(-120,260){c} \put(-55,260){d}
-\caption{Inference results for five new objects (a): parts obtained on second (b), third (c) and fourth (d) layer. Shareability of parts obtained during training the hierarchy is presented in Fig.~\ref{shareability} and Fig.~\ref{shareability4thLayer}}
+\caption{Inference results for five new objects (a): parts obtained on the second (b), third (c) and fourth (d) layers. The shareability of parts obtained during training the hierarchy is presented in Fig.~\ref{shareability} and Fig.~\ref{shareability4thLayer}.}
  \label{inference}
 \end{figure}
 
