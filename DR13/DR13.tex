@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,pdf]{pacmanreport}
+\documentclass[a4paper,11pt,pdf]{../templates/pacmanreport}
 
 %%=== Aditional packages
 
@@ -95,10 +95,17 @@ We have achieved the goal of Task 1.3, using an approach based, as promised, on 
 
 \subsubsection{Linked 2D-3D compositional hierarchies}
 
-lajsdlfj
+In an ECCV submission paper included in Annex A.1, we describe our proposed method for constructing two hierarchical representations, for two information channels, 2D intensity data and view-based 3D depth data. We employed as a learning algorithm a sparse autonencoder network, where each layer receives as input the latent representation of the layer below. For obtaining predictions across hierarchies, we discretized the responses of each layer into a set of parts, using clustering techniques. Furthermore, we introduced a probabilistic fusion model for linking the two information channels across hierarchies. The fused model enables an improved and refined representation of the world, while being able to infer 3D object shape from 2D intensity edge information.
 
-\paragraph{Relation to SOTA:} hljadl fjl
+Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts, while specific 2D parts have a high conditional entropy, due to ambiguity of edge structures which could correspond to many depth parts. We handled this problem, by extracting complementary information from the region surrounding an edge part using HOG features, which were fed to a SVM classifier. This method proved its usefulness in the inference process, leading to an improved detection of the correct corresponding depth part.
 
+The proposed approach and algorithms were examined on the PaCMan dataset. Experimental results show the efficacy of our approach for inferring view-based 3D information from observed 2D intensity data. 
+
+\paragraph{Relation to SOTA:} 
+
+The review of the works dealing with 2D and view-based 3D information showed that there are several approaches which tackle this problem using flat models, having a wide range of applications. Face recognition is investigated by Arca et al.~\cite{Arca2007} by fusing the two modalities at an early stage and by Soltana et al.~\cite{Soltana2010} who propose a fusing strategy consisting of an offline and an online weight learning process. 3D object retrieval based on a 2D image is investigated by Eitz et al.~\cite{Eitz2012} using a sketch representation based on optimized Gabor filters, followed by a bag-of-words approach. 2D-to-3D movie conversion was addressed by Cheng et al.~\cite{Cheng2010}, using the assumption that edge information in an image has a high probability of also being an edge in the depth map.
+Recovering 3D depth from a single image for scene understanding represents an important topic in computer vision and was investigated by Tian et al.~\cite{Tian2014} using a deep learning model, by Saxena et al.~\cite{Saxena2009} by means of a Markov Random Field(MRF) model which captured the relationships between different parts of an image and by Konrad et al.~\cite{Konrad2012} who proposed a depth sampling method, by fusing the corresponding depth images of the top $k$-nearest neighbour images of the query image.
+An approach similar to ours was proposed by Masci et al.~\cite{Masci2011}, where stacked autoencoders are trained in a similar fashion, while the main novelty addressed in our work, is the cross-hierarchy prediction power which facilitates view-based 3D inference from observed 2D intensity data.
 
 \subsubsection{2D intensity-based compositional hierarchies}
 
