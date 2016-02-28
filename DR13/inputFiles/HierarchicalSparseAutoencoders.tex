@@ -119,9 +119,9 @@ In the current implementation we chose to use the sigmoid function, as its range
 
 Learning the model parameters $\rho=(W_1,W_2,b_1,b_2)$ can be done using a batch gradient descent method, where the cost function $J$ can be defined to minimize the reconstruction error and will be trained on the data itself:
 \begin{equation}
-   J(\theta,j)=\left\|h(\theta,j)-Z_j\right\|_2^2 + \alpha\sum_{i=1}^{2} W_i^2
+   J(\theta,j)=\left\|h(\theta,j)-Z_j\right\|_2^2 + \alpha\sum_{i=1}^{2} \left\|W_i\right\|_2^2
 \end{equation}
-\commentJP{The regularizer does not make sense; it must be scalar.  Do you mean the sum of the Frobenius norms of the two $W_i$?}
+
 where the second term of the function is a regularization term that tends to decrease the magnitude of the weights---which helps to prevent overfitting---and the parameter $\alpha$ controls the relative importance of the two terms.
  
 Furthermore, by placing different constraints on the cost function, such as limiting the number of hidden units, we can obtain a compressed representation of the input data. A sparsity constraint will force most of the hidden units to be inactive most of the time. By inactive, we mean the neuronal activation value is close to 0, while active means their value is close to 1. The new cost function is defined as
@@ -168,7 +168,7 @@ where $|Z_*^2|$ is the number of extracted patches on the second layer.
 
 Next, all the other layers in our hierarchical representation, up to the top layer $L_{2D}$, are learned in an iterative manner as described above, where the input to each layer $l$ is given by the activations of the hidden units learned on patches from the previous layer $l-1$. This hierarchical approach is useful for capturing non-linear dependencies in the input data and models them iteratively, from low-level image patches up to the object level.
 
-For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of category-specific parts \commentJP{which layers \emph{here}?}, view-specific parts at layer $L_{2D}-1$, and category-specific parts at the last layer $L_{2D}$. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
+For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of view-specific parts at layer $L_{2D}-1$ and category-specific parts at the last layer $L_{2D}$. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
 
 Each layer will produce a set of weight vectors $W_1^l$ which compress the input information, while producing a useful representation. 
 
@@ -190,7 +190,7 @@ Furthermore, the two hierarchies are trained on the same object models, consisti
 The hierarchical compositional 2D model is formed of $L_{2D}$ layers, each layer being composed of a number of 2D parts. 
 As our main goal was to be able to do efficient inference across the two representations, we chose to use the same number of layers in both hierarchies, i.e., $L_{2D}=L_{3D}=L$.
 
-We denote part $i$ constructed at layer $l$ of a  hierarchical vocabulary of 2D shapes by $\Gamma_{i}^{l}$, for $i=1,\ldots,|\Gamma_*^l|$ and $l=1,\ldots,L$. Part $j$ constructed at layer $l$ of the  hierarchical vocabulary of view-based 3D shapes is denoted by $\Omega_{j}^{l}$, for $j=1,\ldots,|\Omega_*^l|$ and $l=1,\ldots,L$.
+We denote part $i$ constructed at layer $l$ of a hierarchical vocabulary of 2D shapes by $\Gamma_{i}^{l}$, for $i=1,\ldots,|\Gamma_*^l|$ and $l=1,\ldots,L$. Part $j$ constructed at layer $l$ of the  hierarchical vocabulary of view-based 3D shapes is denoted by $\Omega_{j}^{l}$, for $j=1,\ldots,|\Omega_*^l|$ and $l=1,\ldots,L$.
 
 For establishing correspondences between the parts in the two hierarchies, we build an $N\times M$ \emph{correspondence table} with $N=\sum_{l=1}^L |\Gamma_*^l|$ rows corresponding to the 2D parts and $M=\sum_{l=1}^L |\Omega_*^l|$ columns corresponding to the view-based 3D parts, as depicted in Figure~\ref{fig:fused-models} below.  Our goal is to establish layer-by-layer correspondences $(\Gamma_{i}^l,\Omega_{j}^l)$ between 2D and view-based 3D  parts (Figure~\ref{fig:fused-models}).
 
@@ -269,7 +269,7 @@ To estimate the conditional probability
 \begin{equation}
  P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l},\Omega_i^{l-1}) P(\Omega_i^{l-1} \vert \Omega_j^{l})
 \end{equation}
-we take into account the introduced\commentJP{not introduced anyhere here\dots} definition of neighbourhood, which suggests that if the pairs of parts $(\Gamma_k^l,\Omega_j^{l})$ and $(\Omega_j^{l},\Omega_i^{l-1})$ are in the same neighbourhood and can be correlated, then the parts $(\Gamma_k^l,\Omega_i^{l-1})$ are conditionally independent given part $\Omega_j^{l}$, as the correspondences between parts are established at the highest possible layers in the two hierarchies. Therefore,
+we take into account the principle of forming correlations introduced in Section~\ref{sec:analysis}, which suggests that if the parts $(\Gamma_k^l,\Omega_j^{l})$ can be correlated, then the parts $(\Gamma_k^l,\Omega_i^{l-1})$ are conditionally independent given part $\Omega_j^{l}$, as the correspondences between parts are established at the highest possible layers in the two hierarchies. Therefore,
 \begin{equation}
   P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l}) P(\Omega_i^{l-1} \vert \Omega_j^{l}).
   \label{eqn:part-cond-indep}
@@ -303,7 +303,7 @@ The purpose of the statistical evaluation of the correspondences between the two
 
 To quantify correspondences between parts in the 2D and view-based 3D hierarchies, we use several statistical measures.
 
-First, we analyze at each layer $l$ the correspondences of each 2D (3D) part given the set of 3D (2D) parts at that layer, by constructing a pdf \commentJP{??? certainly not\dots} over all computed conditional probabilities of that part. A peaked probability distribution suggests that the considered 2D (3D) part can be matched successfully to a part or to a limited set of 3D (2D) parts, while a multi-peaked distribution indicates that more information is needed in order to predict a good match. Those pairs of parts that can be matched with higher certainty between the two hierarchies should be given a higher weight in the inference process, as they are better at predicting the unknown part in the other hierarchy.
+First, we analyze at each layer $l$ the correspondences of each 2D (3D) part given the set of 3D (2D) parts at that layer, by constructing a pdf over all computed correlations of that part. A peaked probability distribution suggests that the considered 2D (3D) part can be matched successfully to a part or to a limited set of 3D (2D) parts, while a multi-peaked distribution indicates that more information is needed in order to predict a good match. Those pairs of parts that can be matched with higher certainty between the two hierarchies should be given a higher weight in the inference process, as they are better at predicting the unknown part in the other hierarchy.
 
 Next, we compute the conditional entropy of 2D parts given 3D parts at layer $l$ and vice-versa, using the conditional probabilities introduced in Eqns.~\ref{eqn:PGO.Bayes} and \ref{eqn:POG}. This measure computes the amount of uncertainty remaining in predicting 2D parts given 3D parts and vice versa, thus helping us to determine which information, either 2D or 3D, is better at predicting the other type of information in the inference process. The analysis is performed for each layer in the 2D and view-based 3D hierarchical representations:
 \begin{eqnarray}
@@ -334,7 +334,7 @@ We learned and tested the proposed hierarchical representations for 2D and view-
 
 The number of constructed layers in a hierarchy depends on the size of the training objects. For the PaCMan dataset, the hierarchical representations are formed of five layers. 
 
-One important issue consisted of finding the optimum number of parts at each layer for each representation. Apart from minimizing the reconstruction error introduced in Eqn.~\ref{eqn:recon-error.patch}, we also used the Davies-Bouldin (DB) index \cite{Bouldin97} as a method to assess the quality of the clustering process. The optimum number of parts $k$ on a layer $l$ is selected according to the minimum DB index. As the dimensionality of the feature vectors used in the clustering process increases at each layer, we applied a dimensionality reduction method such as PCA \commentJP{Why ``such as''?  What did you really use?} for a faster and more efficient selection of the optimum number of clusters.
+One important issue consisted of finding the optimum number of parts at each layer for each representation. Apart from minimizing the reconstruction error introduced in Eqn.~\ref{eqn:recon-error.patch}, we also used the Davies-Bouldin (DB) index \cite{Bouldin97} as a method to assess the quality of the clustering process. The optimum number of parts $k$ on a layer $l$ is selected according to the minimum DB index. As the dimensionality of the feature vectors used in the clustering process increases at each layer, we applied the PCA dimensionality reduction method for a faster and more efficient selection of the optimum number of clusters.
 
 Examples of the learned parts at each layer of the two hierarchical representations and correspondences between them are depicted in Figure~\ref{hierarchy}.
 
@@ -348,7 +348,10 @@ Examples of the learned parts at each layer of the two hierarchical representati
 
 We present in Table~\ref{tab:stats} for each layer in the 2D and view-based 3D hierarchies the optimum number of parts, the reconstruction error for each hierarchy, and the part entropies introduced in Section~\ref{sec:statistical}. The reconstruction error is computed using an adaptation of the formula introduced in Eqn.~\ref{eqn:recon-error.patch},
 \begin{equation}
- r_j^l = \frac{\left\|\Gamma_m^l-Z_j^l\right\|_2}{\left\|Z_j^l\right\|_2}, \end{equation}
+ Err^l = \frac{1}{|Z_*^l|} \sum_{j=1}^{|Z_*^l|} r_j^l,\quad
+ r_j^l = \frac{\left\|\Gamma_m^l-Z_j^l\right\|_2}{\left\|Z_j^l\right\|_2},
+ \label{eq:r}
+\end{equation}
 where $m$ is the index of best-fitting part for patch $Z_j^l$ at layer $l$ that indicates the size of the receptive field $F^l$:
  \begin{equation}
  m=\min_{i=1}^{|\Gamma_*^l|}(\left\|\Gamma_i^l-Z_j^l\right\|_2).
@@ -367,7 +370,7 @@ where $m$ is the index of best-fitting part for patch $Z_j^l$ at layer $l$ that 
     \hline
   \end{tabular}
 \end{center}
- \caption{Statistics of parts at Layers 1-5 in the 2D and view-based 3D hierarchies. \commentJP{What is $Err$; is it $\textrm{avg}_j r_j^l$? Be very clear.}}
+ \caption{Statistics of parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
  \label{tab:stats}
 \end{table}
 
@@ -401,8 +404,9 @@ One of our principal aims consists in quantifying the predictive power of the le
 \label{correlations}
 \end{figure}
 
-As there are many-to-many correspondences, choosing the best part according to the conditional probability is not always the best choice, but only in overall 20\% \commentJP{???} of the cases, due to ambiguity of edge structures which could correspond to many depth parts. Therefore, one solution for effective inference of view-based 3D parts, given observed 2D parts, consists of extracting complementary information from the region surrounding an edge part using HOG features. Additionally, we trained a $k$-nearest-neighbour classifier to improve the prediction of view-based 3D parts. The results obtained for each layer are presented in Table~\ref{tab:stats.inference} together with the reconstruction error of view-based 3D parts given 2D parts, and statistical measures such as conditional entropy. The cross-hierarchy reconstruction error is computed using an adapted version of Eqn.~\ref{eqn:recon-error.patch},
+As there are many-to-many correspondences, choosing the best part according to the conditional probability is not always the best choice, due to ambiguity of edge structures which could correspond to many depth parts. Therefore, one solution for effective inference of view-based 3D parts, given observed 2D parts, consists of extracting complementary information from the region surrounding an edge part using HOG features. Additionally, we trained a SVM classifier to improve the prediction of view-based 3D parts. The results obtained for each layer are presented in Table~\ref{tab:stats.inference} together with the reconstruction error of view-based 3D parts given 2D parts, and statistical measures such as conditional entropy. The \textit{max. prediction} column contains for each layer $l$ the prediction accuracy of the depth part in relation to the ground truth depth patch, while the classifier column $svm$ shows the prediction accuracy using additional context information which is fed to a SVM classifier. The cross-hierarchy reconstruction error is computed using an adapted version of Eqn.~\ref{eqn:recon-error.patch},
 \begin{equation}
+ Err(3D|2D)^l = \frac{1}{|D_*^l|} \sum_{j=1}^{|D_*^l|} r_j^l(3D|2D),\quad
  r_j^l(3D|2D) = \frac{\left\|\Omega_{m'}^l-D_j^l\right\|_2}{\left\|D_j^l\right\|_2}, 
 \end{equation}
  where $m'$ is the index that maximizes the conditional probability of a view-based 3D part given the observed 2D part $\Gamma_m^l$, and $D_j^l$ is the ground-truth depth patch corresponding to the observed 2D patch $Z_j^l$ at layer $l$, i.e.,
@@ -418,16 +422,16 @@ and $m$ is the index of best fitting 2D part for the patch $Z_j^l$,
  \begin{center}
   \begin{tabular}{ | c | c | c | c | c | c | c |r |}
       \hline
-      Layer $l$  & max. prediction & $Err(3D|2D)$ & $k$-NN & $Err(3D|2D)$ & $H(\Omega_*^l|\Gamma^l)$ & $H(\Gamma^l|\Omega_*^l)$  \\ \hline
-    $l_1$ &  34.12\% & 1.39 & 50.43\% & 0.64 & 2.51 & 1.93 \\ \hline
+      Layer $l$  & max. prediction & {\begin{minipage}{0.9in}$\quad Err(3D|2D)$ \\ max. prediction \end{minipage}} & SVM & {\begin{minipage}{0.7in}$Err(3D|2D)$       SVM \end{minipage}} & $H(\Omega_*^l|\Gamma^l)$ & $H(\Gamma^l|\Omega_*^l)$  \\ \hline
+    $l_1$ &  34.12\% & 1.39 & 50.4\% & 0.64 & 2.51 & 1.93 \\ \hline
     $l_2$ &  27.36\% & 0.99 & 53.6\% & 0.56 & 2.68 & 2.77 \\ \hline
-    $l_3$ &  24.27\% & 0.87 &  & 0.44 & 2.92 & 2.63 \\ \hline 
-    $l_4$ &  22.44\% &  &  &  & 2.62 & 2.43 \\ \hline
+    $l_3$ &  24.27\% & 0.87 & 56.4\% & 0.44 & 2.92 & 2.63 \\ \hline 
+    $l_4$ &  22.44\% &  & 45\% & 0.37 & 2.62 & 2.43 \\ \hline
     $l_5$ &   &  &  &  &  &  \\ 
     \hline
   \end{tabular}
 \end{center}
- \caption{Statistics of inference results of view-based 3D parts given 2D observed parts at Layers 1-5 in the 2D and view-based 3D hierarchies. \commentJP{What exactly does the first column show?  See also my comments on Table~\ref{tab:stats}.}}
+ \caption{Statistics of inference results of view-based 3D parts given 2D observed parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
  \label{tab:stats.inference}
 \end{table}
 
