@@ -60,18 +60,24 @@ Grasping and manipulation actions that are generalisable across objects require 
 
 Our approach to objects represantation is based on the models which explain visual processing in human cortex~\cite{Riesenhuber1999}. According to these models the visual processing is hierarchical and all layers are learned. First layers of the hierarchy are position and scale invariant. The higher layers of the hierarchy build invariance to the viewpoint~\cite{Spehr2015}. Also the receptive fields increase with the layer of the hierarchy. The HMAX model~\cite{Serre2007} assumes that the inference process is feedforward to obtain fast objects recognition.
 
-Our approach differs to biological counterparts. We build view invariance of parts from the very beginning. Our choice is motivated by the application. Our goal is to learn representation of objects from minimal number of examples. For view-variant representations the objects used for training should be observed from many viewpoints to build sufficient vocabulary. The number of parts which are required to represent the object is acceptable for 2D models~\cite{Fiedler2014}. Unfortunatelly, it explodes if the vocabulary of 3D parts is built. In our approach we have to run optimization which aligns parts in 3D whenever similarity between parts has to be computed but we show that this can be performed efficiently using Umeyama method. The additional advantage of our approach is the small number of parts in vocabulary which does not require GPU implementation.
-
-\section{Related work}
-
-\section{Learning}
-
 \begin{figure}[t]
  \centering
 \includegraphics[width=1.0\columnwidth]{../images/hierarchyParts.eps}
 \caption{An illustration of a portion of our learned hierarchical representation of 3D objects. Within the $i$-th layer vocabulary $\Omega^i$ each word represents a 3D shape. Arrows represent compositional relations between parts.}
  \label{hierarchyParts}
 \end{figure}
+
+Our approach differs to biological counterparts. We build view invariance of parts from the very beginning. Our choice is motivated by the application. Our goal is to learn representation of objects from minimal number of examples. For view-variant representations the objects used for training should be observed from many viewpoints to build sufficient vocabulary. The number of parts which are required to represent the object is acceptable for 2D models~\cite{Fiedler2014}. Unfortunatelly, it explodes if the vocabulary of 3D parts is built. In our approach we have to run optimization which aligns parts in 3D whenever similarity between parts has to be computed but we show that this can be performed efficiently using Umeyama method. The additional advantage of our approach is the small number of parts in vocabulary which does not require GPU implementation.
+
+\section{Related work}
+
+The method presented in this paper is inspired by the compositional hierarchy learning framework designed for 2D shapes~\cite{Fiedler2014}. The hierarchical compositional vocabularies are learn unsupervised. Because the hierarchy presented in this paper is designed for 3D objects the approach is based on 3D surfaces in contrast to contour-based approach in~\cite{Fiedler2014}. Renaud Detry et al. proposed probabilistic framework based on Markov network for objects detection and pose estimation in the scene~\cite{Detry2009}. Hierarchy is also build unsupervised from local object descriptors. The descriptors are based on the edge features. Thus, the hierarchy does not encode the information about the surfaces of the objects which are important for grasping.
+
+Current state of the art methods for 3D objects classification use deep learning to create multi-layered representation of input data~\cite{Deng2014}. The representation is hierarchical. Higher level features are generated from lover level features. The efficiency of classification is very high~\cite{Krizhevsky2012, Socher2012}. Deep learning can be also applied for objects classification and reconstruction. Wu et al. proposed method which builds volumetric representation of the object from depth image, recognizes the objects and complete 3D occluded shapes~\cite{Wu2015}. This approach requires high number of training samples and hardware implementation (GPU). The object is then represented by the voxel grid. In this approach information about surface of the object is lost.
+
+The generative probabilistic model of component-based shape structures is proposed by Evangelos Kalogerakis et al.~\cite{Kalogerakis2012}. The model is designed to generate novel shapes after training on a small number of examples. In contrast to our method which operates on the image patches and volumetric fields the probabilistic model operates on geometric and semantic features of three-dimensional shape components. The hierarchy of 3D shapes which operate on depth image is proposed by Vladislav Kramarev et al.~\cite{Kramarev2015}. The inference is not performed by the hierarchical model but combined with Support Vector Machine classifier. Similar approach which uses unordered selection of features and SVM classifier provides good classification accuracy~\cite{Toldo2010}. On the other hand but the model is not generative. This approach can't be used for reconstruction of parts which are not visible on the depth image.
+
+\section{Learning}
 
 Our overall procedure for learning a compositional shape hierarchy is as follows. In this paper we build two linked hierarchies, one where parts are learned from single views, and one where parts are learned from many views. The view independent layers are built on top of the second view dependent layer. The hierarchy is learned layer by layer, with each layer consisting of a part vocabulary. Each part in a vocabulary is also called a word. Instantiations of parts caused by data are called realisations. 
 
@@ -82,7 +88,7 @@ Our overall procedure for learning a compositional shape hierarchy is as follows
  \label{hopProc}
 \end{figure}
 
-First, starting with a layer consisting of a single seed part, we learn two additional layers of parts from depth images obtained from particular viewpoints. The receptive fields for these parts are areas of the image plane. Then, to learn the three view-independent layers above these, the hierarchy brings together different views of the same parts so as to create view independent 3D shape parts. The receptive fields for these parts are 3D volumes. It should be noted that the first three layers are view dependent in that they are each learned from data from a single viewpoint. For maximum generalisation, however, the part representations themselves are view-invariant, achieved by attaching a frame of reference to the part itself, rather than to the camera frame.  The subsequent view-invariant layers are created from multiple depth images. We thus switch from receptive fields defined as intervals on the image plane for the view dependent layers, to volumetric receptive fields defined as intervals on the 3D workspace. At each layer, each dimension of the receptive field for a part trebles. This means that parts in a layer $i$ are compositions of 9 or 27 parts from layer $i-1$.  Each layers is learned from the layer below. The procedure is repeated until the desired number of layers is obtained. In general the receptive field of the last layer should cover the whole object. A visualisation of a portion of a learned hierarchy is shown in Figure XX.  
+First, starting with a layer consisting of a single seed part, we learn two additional layers of parts from depth images obtained from particular viewpoints. The receptive fields for these parts are areas of the image plane. Then, to learn the three view-independent layers above these, the hierarchy brings together different views of the same parts so as to create view independent 3D shape parts. The receptive fields for these parts are 3D volumes. It should be noted that the first three layers are view dependent in that they are each learned from data from a single viewpoint. For maximum generalisation, however, the part representations themselves are view-invariant, achieved by attaching a frame of reference to the part itself, rather than to the camera frame.  The subsequent view-invariant layers are created from multiple depth images. We thus switch from receptive fields defined as intervals on the image plane for the view dependent layers, to volumetric receptive fields defined as intervals on the 3D workspace. At each layer, each dimension of the receptive field for a part trebles. This means that parts in a layer $i$ are compositions of 9 or 27 parts from layer $i-1$.  Each layers is learned from the layer below. The procedure is repeated until the desired number of layers is obtained. In general the receptive field of the last layer should cover the whole object. A visualisation of a portion of a learned hierarchy is shown in Fig.~\ref{hierarchyParts}.  
 
 \subsection{Learning the view-variant layers}
 
@@ -276,8 +282,18 @@ The shareability of parts can be also observed in volumetric layers of the hiera
 \begin{thebibliography}{99}
 \bibitem{Aldoma2012}
 A. Aldoma, Z.C. Marton, F. Tombari, W. Wohlkinger, C. Potthast, B. Zeisl, R.B. Rusu, S. Gedikli, M. Vincze, Point cloud library: Three-Dimensional Object Recognition and 6 DoF Pose Estimation. IEEE Robotics \& Automation Magazine, pp.~80-91, 2012
+\bibitem{Deng2014}
+L. Deng, D. Yu, Deep Learning: Methods and Applications. Foundations and Trends in Signal Processing, Vol.~7(3--4), 2014
+\bibitem{Detry2009}
+R. Detry, N. Pugeault, J. Piater, A Probabilistic Framework for 3D Visual Object Representation, IEEE Transactions on Pattern Analysis and Machine Intelligence, Vol.~31(10), pp.~1790--1803, 2009
 \bibitem{Fiedler2014}
-  S. Fidler, M. Boben, A. Leonardis, Learning a Hierarchical Compositional Shape Vocabulary for Multi-class Object Representation, Computer Vision and Pattern Recognition, 2014 (under review)
+S. Fidler, M. Boben, A. Leonardis, Learning a Hierarchical Compositional Shape Vocabulary for Multi-class Object Representation, Computer Vision and Pattern Recognition, 2014 (under review)
+\bibitem{Kalogerakis2012}
+E. Kalogerakis, S. Chaudhuri, D. Koller, V. Koltun, A Probabilistic Model for Component-based Shape Synthesis, ACM Transactions on Graphics, Vol.~31(4), pp.~55:1--55:11, 2012
+\bibitem{Kramarev2015}
+V. Kramarev, K. Walas, A. Leonardis, Categorisation of 3D Objects in Range Images Using Compositional Hierarchies of Parts Based on MDL and Entropy Selection Criteria, Image Analysis, series Lecture Notes in Computer Science, Vol.~9127, R. R. Paulsen, K. S. Pedersen, pp.~289--301, 2015
+\bibitem{Krizhevsky2012}
+A. Krizhevsky, I. Sutskever, G. E. Hinton, ImageNet Classification with Deep Convolutional Neural Networks, Advances in Neural Information Processing Systems, P. Bartlett et al. (Eds), pp.~1106--1114, 2012
 \bibitem{Riesenhuber1999}
 M. Riesenhuber, T. Poggio,Hierarchical models of object recogni-tion in cortex. Nature Neuroscience, Vol.~2, pp.~1019--1025, 1999
 \bibitem{Serre2007}
@@ -286,13 +302,17 @@ Brain Research, Vol.~165, pp.~33--56, 2007
 \bibitem{Spehr2015}
 J. Spehr, On Hierarchical Models for Visual Recognition and Learning of Objects, Scenes, and Activities, Studies in Systems, Decision and Control, Springer, 2015
 \bibitem{Umeyama1991}
- S. Umeyama,
- ``Least-squares estimation of transformation parameters between two point patterns'',
- IEEE Trans. on Pattern Analysis \& Machine Intelligence, 13(4), 1991, 376--380.
+ S. Umeyama, Least-squares estimation of transformation parameters between two point patterns, IEEE Trans. on Pattern Analysis \& Machine Intelligence, 13(4), 1991, 376--380.
  \bibitem{Manning2008}
  C. D. Manning, P. Raghavan, H. Sch\"{u}tze, Introduction to Information Retrieval, Cambridge University Press. 2008
  \bibitem{Segal2009}
  A. V. Segal, D. Haehnel, and S. Thrun, Generalized-ICP, Robotics: Science and Systems, 2009
+ \bibitem{Socher2012}
+R. Socher, B. Huval, B. Bhat, C. D. Manning, A. Y. Ng, Convolutional-Recursive Deep Learning for 3D Object Classification, Advances in Neural Information Processing Systems, pp.~801--809, 2012
+\bibitem{Toldo2010}
+R. Toldo, U. Castellani, A. Fusiello, The bag of words approach for retrieval and categorization of 3D objects, The Visual Computer, Vol.~26(10), pp.~1257--1268, 2010
+\bibitem{Wu2015}
+ Z. Wu, S. Song, A. Khosla, F. Yu, L. Zhang, X. Tang and J. Xiao, 3D ShapeNets: A Deep Representation for Volumetric Shape Modeling, Proceedings of 28th IEEE Conference on Computer Vision and Pattern Recognition, pp.~1912--1920, 2015.
 \end{thebibliography}
 
 \end{document}
