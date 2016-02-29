@@ -123,13 +123,66 @@ Our work on Compositional Hierarchy of Parts (CHOP) \cite{chop,CHOPManifold}, al
 
 \subsubsection{3D view invariant compositional hierarchies}
 
+We have also been pursuing work on 3D compositional hierarchies. In previous years we developed a method that built 2.5D parts. This year we have moved to view independent 3D representations. We have explored two ways of growing the receptive fields of the parts. The first is essentially surface based, so that the receptive fields grow geodesically across the object's surface. The second is surface based at the lower levels, but at the higher levels it moves to a volumetric representation. At the moment we are able to show that both these 3D representations have the shareability property that is essential to scaling. We are currently evaluating both of these 3D representations, and we have linked one of them to our work on grasp learning using probabilistic representations.
 
-\paragraph{Relation to SOTA:} 
+\paragraph{Relation to SOTA:}  
 
+Relatively little work has been done in the domain of 3D compositional part-based models. The classical work of Biederman was done in the 1980s \cite{biederman1987recognition}. In his approach geons are based on a set of standard geometric primitives (e.g. cylinders, cones), which are assembled to form object and category models. There exist several more recent methods in this domain. Wessel and Klein \cite{pratikakis2010learning}, for example, presented a feature selection technique, which decomposes 3D objects into sections that can be represented by planes, spheres, cylinders, cones and tori. They introduced a probabilistic framework modeling the spatial arrangements between these shape primitives. This early work \cite{biederman1987recognition,pratikakis2010learning} used a set of pre-defined shapes as simple primitives with very shallow hierarchical structures, which makes it difficult to generalise over complex shapes. In contrast, our methodology is entirely data-driven, and is able to learn structures of arbitrary size and complexity. 
 
+More recently, neural networks have been used in creating 3D representations \cite{wu20153d,Su_2015_ICCV}. Wu et al. \cite{wu20153d} proposed a 3D hierarchical compositional framework called 3D-ShapeNet. They present a 3D model
+as a probability distribution of binary variables on a 3D voxel grid, using a convolutional Deep Belief Network (DBN). They demonstrated the ability of their approach to recognize object categories from range images and complete full 3D shape of objects. Similarly, Su et al. \cite{Su_2015_ICCV} have applied convolution neural networks to the 3D shape recognition problem. They first perform recognition of objects presented from a single view, and then present a novel
+CNN architecture that combines information from multiple views of each object into a single compact descriptor. Our method can be seen as an alternative based on local function approximation in each layer, as opposed to global function approximation. Local function approximators have quite different properties to global function approximators, producing more easily understandable features, and having different properties in terms of learning complexity.
+
+Hu and Zhu \cite{hu2015learning} presented a framework for learning of 3D templates from 3D models of cars using AND-OR trees. They used the learned templates for simultaneous object detection, localization and pose estimation. This method exploits the well-defined 3D structure of cars to learn 3D compositions, which would otherwise be a combinatorial problem. It requires manual annotation of object parts, however, hence addition of new categories is difficult. Our approach does not require annotation of object parts, and is able to find recurring patterns in data automatically. Finally, methods based on deep learning \cite{wu20153d,Su_2015_ICCV} perform well on object categorization tasks. The challenge lies in designing the network to different tasks, since it is not possible to visualise the learned features in order to check if they are visually meaningful. 
+
+\subsubsection{New PacMan dataset}
+
+To support the work we have done on other aspects, we have employed a new dataset. This is a synthetic dataset, designed to give us clean data for learning, and also to enable the generation of a large number of views of common objects. This we refer to as the PaCMan Shape Dataset. It comprises a total of 400 objects across 20 categories, each having 20 models. The categories are all household objects, most of which are typical kitchen objects: mug, cup, fork, jug, plate, bowl, frying pan, tray, teapot, tea cup, cutting board, box, knife, vase, can, fork, spatula, scissors, bottle and shaker. The objects have realistic sizes, and their longest dimension ranges from 80 mm to 200 mm, depending on the category. One representative image out of every class is depicted in Fig. \ref{shapes}.
+
+ \begin{figure}[!h]
+  \caption{Representative shapes for every class in the dataset.}
+  \centering
+    \includegraphics[width=\textwidth]{shapes.png}
+\label{shapes}
+\end{figure}
+
+In order to render the objects from multiple viewpoints, we used 32 uniformly sampled points on the view sphere. The azimuth and elevation of these samples are given below. Fig \ref{viewSphere} shows the triangulation of the view sphere, where every vertex corresponds to a camera position, with the viewing vector directed to the centre of the sphere. We have  rendered every object from each viewpoint using a simulated RGB camera and a depth camera, which has the characteristics of a Carmine 1.09 sensor.
+ 
+ 
+\begin{itemize}
+\item azimuth =(358, 62, 238, 272, 195, 167, 274, 50, 230, 242, 273, 92, 347, 314, 58, 134, 297, 336, 94, 308, 93, 254, 178, 156, 26, 184, 206, 4, 15, 128, 74, 117)
+\item elevation = (58, -38, -2, -26, -18, 12, -68, 39, -39, 38, 12, 26, -12, -38, 2, 38, 42, 24, 68, -1, -12, 75, -58, -24, -17, 50, 17, 50, 18, 1, -75, -42)
+\end{itemize}
+
+\begin{figure}[!h]
+  \caption{View sphere triangulation.}
+  \centering
+    \includegraphics[width=0.6\textwidth]{viewSphere.png}
+\label{viewSphere}
+\end{figure}
+
+The image acquisition process proceeded as follows:
+\begin{enumerate}
+\item The object was placed such that its centre of gravity is at the origin.
+\item The camera was located on the y axis in various distances from the origin, namely, [0, 600mm, 0] or [0, 900mm, 0] or [0, 1200mm, 0].
+\item Two light sources were placed in the scene. The more powerful light source was located above the camera, while the weaker one was below the camera, with respect to the camera's up vector. This created enough intensity differences to reveal intensity edges on the object. 
+\item The camera was directed towards the origin. The camera had a horizontal Field of View of 57.5 degrees.
+\item The near range of the camera was 350mm, and the far range was 1400mm. That meant that depth values in the range from 350mm to 1400mm were encoded in 2 byte values. Larger values correspond to closer distances.
+\end{enumerate}
+
+Rendered images of the objects in the dataset are placed in a hierarchical structure, and named in a specific way. For example, for a rendered image that has the name ``3\_P2\_IP3.png":
+\begin{itemize}
+\item 3 is the id of the object in the dataset (from 1 to 400)
+\item P2 - that means that values a(2) and b(2) were used to rotate the object (we rotate the object, not the camera).
+\item IP3 - id of the in-plane rotation. There are 8 IDs in total, describing 8 different angles of rotation of the camera about the y-axis, with a step size of 45 degrees. IP1, the initial configuration of the camera, corresponds to a zero degree rotation of the camera.
+\end{itemize}
+
+The category labels are stored in a 400x1 array that contains the label of every model in the dataset, distributed along with the images. The dataset is currently available at the following location:  \\
+
+{\tt \small https://www.dropbox.com/s/9ti5mdkx4jcdlvg/400Pacmans.tar.gz?dl=0} 
 
 \bibliographystyle{IEEEtran}
-\bibliography{../shared_bibliography/abbreviations,./bibliography/DR13,egbib_rusen}
+\bibliography{../shared_bibliography/abbreviations,./bibliography/DR13,egbib_rusen,inputFiles/KramarevECCV2016/refs}
 
 \newpage
 
@@ -142,7 +195,7 @@ Our work on Compositional Hierarchy of Parts (CHOP) \cite{chop,CHOPManifold}, al
 \subsection{Article: \em Hierarchical Object Representation based on a Sparse Autoencoder Network}
 \begin{description}
     \item[Authors] Mirela Popa, Jeremy L Wyatt and Justus Piater
-    \item[Info] To be submitted to ECCV 2016.
+    \item[Info] This is a long version of a paper to be submitted to ECCV 2016.
     \item[Abstract] We propose a method for constructing a pair of complementary
 hierarchical representations from 2D edge images and from view-based 3D
 data, respectively.  As a learning algorithm, our model uses a sparse
@@ -235,6 +288,8 @@ shape components using graphs, which are aggregated to construct a hierarchical 
 %\newpage
 
 \includepdf[pages=-]{./attachedPapers/HierarchicalSparseAutoencoders.pdf}
+
+\includepdf[pages=-]{./attachedPapers/eccv2016submission.pdf}
 
 \includepdf[pages=-]{./attachedPapers/finalReport.pdf}
 
