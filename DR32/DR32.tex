@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,pdf]{../templates/pacmanreport}
+\documentclass[a4paper,11pt,pdf]{pacmanreport}
 
 %%=== Aditional packages
 
@@ -42,9 +42,12 @@
 
 \begin{abstract}
 \noindent 
-This report describes activities related to the development of planning algorithms for actively gathering information for object of unknown shape. This report presents the efforts on the definition of information theoretic measures for uncertainty about shape as well as modelling of incomplete surfaces. It also describes how to integrate low-level controllers, developed on Task 3.1, to plan haptic exploration strategies for a bi-manual robot which holds in one hand an unknown object and is capable of tracing the object's surface with a sensorised finger.  
-
-
+This report describes activities related to the development of planning algorithms for actively gathering information for object of unknown shape. 
+This report presents the efforts on the definition of information theoretic measures for uncertainty about shape as well as modelling of incomplete surfaces. 
+It also describes how to integrate low-level controllers, developed on Task 3.1, to plan haptic exploration strategies for a bi-manual robot which holds in one 
+hand an unknown object and is capable of tracing the object's surface with a sensorised finger. 
+Further, work is introduced, where we describe a novel method for planning actions to actively gain 
+information about an object's pose belief via proprioceptive sensing using an adaptive robotic hand.
 \end{abstract}
 
 
@@ -62,7 +65,8 @@ This report describes activities related to the development of planning algorith
 \section*{Executive Summary}
 
 This report describes the activities within the PaCMan consortium to define methodologies for \emph{active information gathering}.
-The material included in this report presents results on reactive control strategies for haptic exploration developed in Task 3.1 (M 1-18) as well as results on planning and execution of active visual information gathering developed in Task 3.3 (M 1-36).
+The material included in this report presents results on reactive control strategies for haptic exploration developed in Task 3.1 (M 1-18) 
+as well as results on planning and execution of active visual information gathering developed in Task 3.3 (M 1-36).
 
 \section*{Role of active information gathering in PaCMan}
 
@@ -70,8 +74,9 @@ This deliverable presents the achievements of the consortium in the development 
 
 \section*{Contribution to the PaCMan scenario}
 
-Robot grasping is typically affected by uncertainty associated to the location of the object to be grasped as well as its shape. A robot could gather information either by i) touching the object or ii) visually observing it from different point of views. This report presents three approaches that enable a robot to reason about such uncertainties and to plan the best-next action to maximise the information gain.
-
+Robot grasping is typically affected by uncertainty associated to the location of the object to be grasped as well as its shape. 
+A robot could gather information either by i) touching the object or ii) visually observing it from different point of views. 
+This report presents three approaches that enable a robot to reason about such uncertainties and to plan the best-next action to maximise the information gain.
 
 \newpage
 
@@ -79,7 +84,10 @@ Robot grasping is typically affected by uncertainty associated to the location o
 
 \subsection{Planned work}
 
-This deliverable addresses the work developed in Task 3.2 and Task 3.3. In particular, the development of planning active strategies for information gathering through both vision and haptic exploration of unknown objects. This includes using vision and haptic clues to build probabilistic models of the object to be manipulated.   
+This deliverable addresses the work developed in Task 3.2 and Task 3.3.
+In particular, the development of planning active strategies for information gathering through both vision and 
+haptic exploration of unknown objects. 
+This includes using vision and haptic clues to build probabilistic models of the object to be manipulated.   
 
 \subsection{Actual work performed}
 
@@ -90,16 +98,53 @@ This task addresses the problem of planning and execute active information gathe
 The work in~\cite{Dragiev2011Gaussian} is one of the first attempt to employ GP for implicit surfaces for representing shapes in tasks as robotic grasping. However, the authors rely only on the MAP estimation of the surface (its mean) without exploiting the model uncertainty. The same authors in~\cite{Dragiev2013Uncertainty} extended their previous work to formulate a way to make inference from the GP to prefer regions on the model with particular certainty level and introduce the concept of explore-grasp and exploit grasp primitives. 
 
 Our proposed solution has several advantages: i) it implicitly defines the unknown shape in a probabilistic model, ii) integrates visual and haptic information in its model to refine its predictions and iii) constructs paths on the object's surface that a robot equipped with a sensorised finger can follow in order to gather haptic information. 
-The algorithm is demonstrated in simulation and on a real robotic platform (Vito) where a bi-manual robot holds an unknown object in its hand and it is cabable of tracing the object surface with the other arm equipped with a F/T sensor.
+The algorithm is demonstrated in simulation and on a real robotic platform (Vito) where a bi-manual robot holds an unknown object in its hand and it is capable of tracing the object surface with the other arm equipped with a F/T sensor.
 %do we have a paper to cite about the probe finger?
 
 The experimental results show that our framework can learn the object shape and yields to better models with a reduced number of exploration actions.
 
+\subsection{Proprioceptive information gain using adaptive hands for pose refinement}
+%Connecting with Task description..
+
+This work solves the problem of reducing the uncertainty in the pose of an object by actively gathering information via proprioception.
+Our proprioceptive measurements are integrated into an occupancy grid, which is subsequently used to update the pose belief.
+In that sense, our occupancy grid also represents the object's shape. 
+In contrast to explicitly modeling the uncertainty of the object via object model pose hypotheses, the occupancy grid is suited to 
+represent unknown shape. Therefore, our work is easily extendable to gain shape information of unknown objects and thus touches the core of Task 3.2.
+%Our solutution
+We  solve this problem by representing robot actions by manually defining a set of action primitives comprised of endeffector translations direction and
+open close states for the robotic hand. In the planning step reachable endeffector poses are searched and the associated actions are ranked 
+by expected information gain.
+The actions are executed and the occupancy grid and subsequently the pose belief are updated depending on the proprioceptive measurements of the robotic hand.
+%Whats good about our algorithms
+The novelty of algorithm is that it uses proprioception instead of tactile contact. Because we model the probability of touching the object 
+given the current progress of the action and because our measurements are purely proprioceptive, we can influence that we touch the object at all but still 
+gain information about its pose belief. This might be helpful in cases of exploring lightweight objects that move easily and do not 
+generate measureable forces at touching sensors.
+Another promised advantage of our method is the use of an adaptive hand. This should lead to a higher amount of 
+relevant proprioceptive measurements close to object surfaces while not moving the object due to the adaptability.
+%First results
+In our technical report we show the theoretical background of our proposed method and intermediate results on implementation. 
+So far we implemented the occupancy aware pose distribution sampling, computation of the occupancy grid posterior and the definition of the action primitives.
+In the next steps we want to we want to compare the effectiveness of the different action primitives in refining the pose belief in scenarios with objects 
+having different masses and sizes and different levels of occlusion. 
+
 \subsection{Relation to the state-of-the-art}
 
+The following paragraph discusses work related to our work about proprioceptive information gain for pose refinement.
 
+In the case of selecting actions based on tactile information gain, robot-environment interaction has to be taken into account. 
+Hebert et. al. \cite{Hebert2013} have introduced a method to select the next best touching action to localize the 3D object position or other object model parameters.
+Similar to our work they choose an action from a set of predefined candidate actions. 
+To update the belief over object parameters they use a combined measurement model that is based on both binary contact detection and tactile sensors.  
+In contrast, we use only proprioceptive measurements of occupancy, which enables us to gain information
+when we do not interact with the object at all.
 
-How are the obtained results related to the state-of-the-art? 
+Recent work from Wong et. al. \cite{Lawson2016Not} combines the occupancy grid representation and object-based representations like belief over an object's pose and identity 
+in a general way. They illustrate a motivating example where they use contact-free proprioceptive measurements of an robot arm to update an 
+occupancy grid and subsequently are able to distinguish between two different objects. 
+We extend there work in the sense that we also gain information purely by proprioception, but in contrast we provide an automated way to compute 
+a robot action to do so.
 
 \bibliographystyle{ieeetr}
 \bibliography{../shared_bibliography/abbreviations,./bibliography/DR32}
@@ -127,17 +172,18 @@ Which papers / articles are included in the report? Mention titles, authors, pub
 Object Pose Estimation via Sculpting with Compliant Hands}
 \begin{description}
     \item[Authors] Alexander Rietzler, Carlos J. Rosales, Marco Gabiccini, Justus Piater
-    \item[Info] Paper Draft% UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Info] Paper draft% UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
     \item[Abstract] Many robotic tasks rely on the ability of a vision system to accurately estimate the 6 dimensional pose of objects in a scene.
 In many cases a single vision sensor does not provide sufficient information to discriminate a single correct
-pose of an object. 
-This paper solves the problem of refining the pose distribution 
+pose of an object. This work solves the problem of refining the pose distribution 
 of an object solely via proprioceptive sensing of occupancy.
 Our main novel contribution is an algorithm that plans a robot arm-hand trajectory such that 
 information gathered about the object pose belief is maximized while at the same time impact on the object is minimized. 
 This may result in actions that do not make contact with the object at all.
 Impact on the object is further reduced by using a compliant robotic hand.
-    \item [Relation with the deliverable] This report reports work done under\\ Task~2.3 by introducing a method for reducing an object's pose uncertainty by performing proprioceptive information
+In this report our the theoretical foundations of our ongoing work are presented and intermediate results are shown. %on occupancy aware pose belief sampling and the definition of the action primitives are shown.
+
+    \item [Relation with the deliverable] This report reports work done under\\ Task~3.2 by introducing a method for reducing an object's pose uncertainty by performing proprioceptive information
     gathering actions.
     \item[Attachment] (following pages) %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
 \end{description}
