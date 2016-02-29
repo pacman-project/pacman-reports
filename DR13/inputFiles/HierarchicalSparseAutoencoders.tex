@@ -3,7 +3,7 @@
 
 \documentclass[runningheads]{llncs}
 \usepackage{graphicx}
-\usepackage{amsmath,amssymb} % define this before the line numbering.
+\usepackage{amsmath,amssymb,multirow} % define this before the line numbering.
 \usepackage{ruler}
 \usepackage{color}
 \usepackage[width=122mm,left=12mm,paperwidth=146mm,height=193mm,top=12mm,paperheight=217mm]{geometry}
@@ -55,7 +55,7 @@ Therefore, in this work, we propose using both 2D and view-based 3D primitives, 
 
 The principles of hierarchy construction for both 2D and view-based 3D data are similar and are learned using sparse autoencoder networks. The relations between the two types of information are captured using an efficient probabilistic model. The model provides better inference, by reinforcing the evidence provided by one input channel with that from the other. Furthermore, it can be employed in the case of missing observations, inferring the most likely view-based 3D primitives from the observed 2D ones and vice-versa. 
 
-In the following section we present a review of related work, while in Section~\ref{sec:learning} we introduce our hierarchical model for object representation using the two available data types, 2D intensity-based shape information and 3D view-based depth data. Next, in Section~\ref{sec:analysis} we present our method for capturing correspondences between 2D and view-based 3D primitives. The experimental results are introduced in Section~\ref{sec:results} and conclusions are formulated in Section~\ref{sec:conclusions}.
+In the following section we present a review of related work, while in Section~\ref{sec:learning} we introduce our hierarchical model for object representation using the two available data types, 2D intensity-based shape information and 3D view-based depth data. Next, in Section~\ref{sec:analysis} we present our method for capturing correspondences between 2D and view-based 3D primitives, while in Section~\ref{sec:inference} we introduce our proposed algorithm for inferring view-based 3D parts given observed 2D parts. The experimental results are introduced in Section~\ref{sec:results} and conclusions are formulated in Section~\ref{sec:conclusions}.
 
 \section{Related Work}
 \label{sec:related_work}  
@@ -67,6 +67,8 @@ Another approach for capturing 2D to view-based 3D correlations is described by 
 An adaptive fusion approach of 2D and 3D features is proposed by Arca et al.~\cite{Arca2007} with an application in face recognition. The integration of the two modalities is beneficial, as 2D features are more precise at capturing facial details, while 3D features are more robust under pose or lighting variations. The two types of features are fused at an early stage, while in the recognition process, only the most reliable features are used. Discarding of unreliable features is achieved using a matching criterion, which assigns weights based on a similarity measure. The same topic is investigated also by Soltana et al.~\cite{Soltana2010}, where the fusion strategy consists of an offline and an online weight learning process. In both cases the most relevant weights of all the scores for each sample in each modality is automatically selected.
 
 3D object retrieval based on a 2D image represent another source of inspiration for linking 2D and 3D information. Eitz et al.~\cite{Eitz2012} propose using a sketch representation based on optimized Gabor filters, followed by a bag-of-words approach. The feature extraction technique can be further refined into a hierarchical representation using concepts proposed by Dai et al.~\cite{Dai2014}, which guide the learning of a dictionary of templates in an unsupervised manner. Each template is a composition of Gabor wavelets which are allowed to shift their location and orientation relative to each other. The invariance property is achieved using the active basis model \cite{Wu2010}.
+
+Recovering 3D depth from a single image for scene understanding represents an important topic in computer vision and was investigated by Tian et al.~\cite{Tian2014} using a deep learning model, by Saxena et al.~\cite{Saxena2009} by means of a Markov Random Field(MRF) model which captured the relationships between different parts of an image and by Konrad et al.~\cite{Konrad2012} who proposed a depth sampling method, by fusing the corresponding depth images of the top $k$-nearest neighbour images of the query image.
 
 The review of work dealing with 2D and view-based 3D information showed that fusing them is beneficial, while great care needs to be given to challenging issues such as conflicting data, outliers and noise, or data registration and correlation assessment. Without a proper pre-analysis of all these issues, the success rate of the fusion algorithm can be affected. 
 
@@ -84,7 +86,7 @@ The reason for building a new hierarchical model, instead of using existing mode
 The principles for forming the hierarchical object representations are consistent for both 2D and 3D view-based data, where the size of the receptive field is gradually increased at each layer, up to the top layer which is sufficiently large to represent the whole object. Therefore, we will only describe the learning process for one type of data, namely 2D information. To obtain an object representation robust to illumination changes we use 2D shape information, obtained by applying an edge detection algorithm to the 2D intensity images.
 
 The input used for learning the 2D hierarchical representation is a set $\mathcal{Z}$ of training edge images $Z^i \in \mathcal{Z}, i=1,\ldots,|\mathcal{Z}|$, represented\footnote{Here and in the following, superscripts always constitute upper indices; their use as powers will be indicated explicitly unless unambiguously clear from the context.} as a set of vectorized patches $Z_j$, i.e., $Z^i=\{Z_1,\ldots,Z_j,\ldots,Z_{|Z^i|}\}$, where each image patch
-$Z_j=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$ of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edges\commentJP{really? I don't understand} divided by the stride. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
+$Z_j=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$ of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edge pixels divided by the stride. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
 
 \subsection{Learning algorithm} 
 
@@ -245,12 +247,13 @@ Furthermore, the correspondence table can be used as a starting point for buildi
 
 We now propose a probabilistic model for performing inference in the view-based 3D hierarchy, by reusing the inference mechanism existing in the 2D hierarchy in combination with the joint probability table introduced above.
 We use the assumption that parts in the view-based 3D hierarchy are formed by propagating evidence from lower to higher layers in a probabilistic manner. 
-The probability of a view-based 3D part $\Omega_j^{l}$ at layer $l$ is conditioned not only on the sub-parts at the previous layer $l-1$ but also on the 2D parts that are probable to co-occur with it.  Thus, we replace\commentJP{Replace? You never mentioned this before!} the conditional probability
+
+Inference across hierarchies is performed by conditioning the probability of a view-based 3D part $\Omega_j^{l}$ at layer $l$ not only on the sub-parts at the previous layer $l-1$ but also on the 2D parts $\Gamma_k^l$ at layer $l$, that are probable to co-occur with it. Thus, we use in the inference process the conditional probability
 \begin{equation}
  P(\Omega_j^{l} \vert \Omega_i^{l-1})
   \label{eqn:POO}
 \end{equation}
-by
+instead of
 \begin{equation}
   P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l)
   \label{eqn:POOG}
@@ -269,7 +272,7 @@ To estimate the conditional probability
 \begin{equation}
  P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l},\Omega_i^{l-1}) P(\Omega_i^{l-1} \vert \Omega_j^{l})
 \end{equation}
-we take into account the principle of forming correlations introduced in Section~\ref{sec:analysis}, which suggests that if the parts $(\Gamma_k^l,\Omega_j^{l})$ can be correlated, then the parts $(\Gamma_k^l,\Omega_i^{l-1})$ are conditionally independent given part $\Omega_j^{l}$, as the correspondences between parts are established at the highest possible layers in the two hierarchies. Therefore,
+we take into account the principle of forming correlations introduced in Section~\ref{sec:analysis}, which suggests that if the parts $(\Gamma_k^l,\Omega_j^{l})$ can be correlated, then the parts $(\Gamma_k^l,\Omega_i^{l-1})$ are conditionally independent given part $\Omega_j^{l}$, as the correspondences between parts are established at the same layers in the two hierarchies. Therefore,
 \begin{equation}
   P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l}) P(\Omega_i^{l-1} \vert \Omega_j^{l}).
   \label{eqn:part-cond-indep}
@@ -294,35 +297,31 @@ The view-based 3D part prior $P(\Omega_i^{l-1})$ can be considered uniform or co
 
 The proposed model will be initialized with probabilities of 2D parts at the first layer of the 2D hierarchy. The observations in the 2D hierarchy will be used to propagate information to the view-based 3D hierarchy and finally to obtain hypotheses about view-based 3D parts. 
 
-Next, we analyze a set of statistical properties of the correspondences between parts in the 2D and view-based 3D hierarchies. This analysis will be used to obtain a better understanding of the benefits achieved by fusing them.
+Next, we introduce a method for optimizing the prediction of view-based 3D parts, by incorporating additional context information.
 
-\subsection{Statistical Evaluation}
-\label{sec:statistical}
+\subsection{Classification}
 
-The purpose of the statistical evaluation of the correspondences between the two information channels, 2D and view-based 3D, is to assess the relations which can be formed between them, and, furthermore, to draw conclusions regarding the efficacy of the inference process. 
+As there are many-to-many correspondences, choosing the best part according to the conditional probability is not always the best choice, due to ambiguity of edge structures which could correspond to many depth parts. Therefore, one solution for effective inference of view-based 3D parts, given observed 2D parts, consists of extracting complementary information from the region surrounding an edge part using HOG features. Additionally, we trained a SVM classifier to improve the prediction of view-based 3D parts. 
+The comparison of results obtained for each layer are presented in Section~\ref{sec:results}, showing the detection accuracy of depth parts in both cases, without and with additional context information. The baseline model is the probabilistic inference model presented in Section~\ref{sec:inference}.
 
-To quantify correspondences between parts in the 2D and view-based 3D hierarchies, we use several statistical measures.
+We depict in Figure~\ref{classification} two examples of reconstructed depth images using the inference algorithm introduced in subsection~\ref{sec:inference} based on only 2D edge information in Figure~\ref{classification}(A) and on additional complementary features in Figure~\ref{classification}(B). As it can be noticed adding context information helps in most cases at disambiguating the depth part corresponding to an edge part.
 
-First, we analyze at each layer $l$ the correspondences of each 2D (3D) part given the set of 3D (2D) parts at that layer, by constructing a pdf over all computed correlations of that part. A peaked probability distribution suggests that the considered 2D (3D) part can be matched successfully to a part or to a limited set of 3D (2D) parts, while a multi-peaked distribution indicates that more information is needed in order to predict a good match. Those pairs of parts that can be matched with higher certainty between the two hierarchies should be given a higher weight in the inference process, as they are better at predicting the unknown part in the other hierarchy.
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{classification}
+\end{center}
+\caption{Reconstruction of depth image based on 2D edge parts using only the inference algorithm in (A) and combining the inference algorithm with the SVM classifier in (B).}
+\label{classification}
+\end{figure}
 
-Next, we compute the conditional entropy of 2D parts given 3D parts at layer $l$ and vice-versa, using the conditional probabilities introduced in Eqns.~\ref{eqn:PGO.Bayes} and \ref{eqn:POG}. This measure computes the amount of uncertainty remaining in predicting 2D parts given 3D parts and vice versa, thus helping us to determine which information, either 2D or 3D, is better at predicting the other type of information in the inference process. The analysis is performed for each layer in the 2D and view-based 3D hierarchical representations:
-\begin{eqnarray}
- H^l(\Gamma_*^l|\Omega_*^l) &=& -\sum\limits_{j=1}^{|\Omega_*^l|}P({\Omega_j^l})\sum\limits_{i=1}^{|\Gamma_*^l|}P(\Gamma_i^l|\Omega_j^l)\log P(\Gamma_i^l|\Omega_j^l) \\
- H^l(\Omega_*^l|\Gamma_*^l) &=& -\sum\limits_{i=1}^{|\Gamma_*^l|}P({\Gamma_i^l})\sum\limits_{j=1}^{|\Omega_*^l|}P(\Omega_j^l|\Gamma_i^l)\log P(\Omega_j^l|\Gamma_i^l),
-\end{eqnarray}
-where $\Gamma_*^l$ consists of all 2D parts $\Gamma_i^l$ for $i=1,\ldots,|\Gamma_*^l|$, and $\Omega_*^l$ consists of all the view-based 3D parts $\Omega_j^l$ for $j=1,\ldots,|\Omega_*^l|$, all at layer $l$.
-
-Moreover, we analyze the mutual information of the parts in the 2D and 3D compositional representations at layer $l$, as a measure of the parts' mutual dependence, by employing the joint probabilities introduced in Eqn.~\ref{eqn:cij.Pij}:
-\begin{equation}
- I^l(\Gamma_*^l;\Omega_*^l) = \sum\limits_{j=1}^{|\Omega_*^l|}\sum\limits_{i=1}^{|\Gamma_*^l|}P({\Gamma_i^l},\Omega_j^l)\log \frac{P({\Gamma_i^l},\Omega_j^l)}{P({\Gamma_i^l})P(\Omega_j^l)}.
-\end{equation}
-
-In the following section we provide the results of this statistical evaluation.
+In the following section we provide the results obtained using the proposed approach for learning the two hierarchical representations and the inference algorithm for prediction across hierarchies.
 
 \section{Experimental Results}
 \label{sec:results}
 
-We learned and tested the proposed hierarchical representations for 2D and view-based 3D data on a set of object categories from the PaCMan dataset which is publicly available\footnote{\url{http://www.pacman-project.eu/datasets/}}. We depict in Figure~\ref{database} a set of example images (edge and depth) used in the training phase. The dataset contains gray-scale and depth images generated from 3D models of 20 categories of various kitchen objects, each category containing on average 20 instances. Each object is captured at dense, regular viewpoint intervals, and we use all the 48 different viewpoints of an object instance, both in the training and testing phase.
+We learned and tested the proposed hierarchical representations for 2D and view-based 3D data on a set of object categories from the PaCMan dataset which is publicly available\footnote{\url{http://www.pacman-project.eu/datasets/}}. We depict in Figure~\ref{database} a set of example images (edge and depth) from three object categories. 
+
+The dataset contains gray-scale and depth images generated from 3D models of 20 categories of various kitchen related objects, each category containing on average 20 instances. Each object is captured at dense, regular viewpoint intervals, and we use all the 48 different viewpoints of an object instance, both in the training and testing phase. We trained and tested our approach on three object categories, using three instances from each category in the training phase and two new, but similar instances in the testing phase. The testing set $\mathcal{Z'}$ of edge images $Z'^i \in \mathcal{Z'}, i=1,\ldots,|\mathcal{Z'}|$ is composed of vectorized image patches $Z'_j$, i.e., $Z'^i=\{Z'_1,\ldots,Z'_j,\ldots,Z'_{|Z'^i|}\}$ in the same manner as presented in Section~\ref{sec:learning}.
 
 \begin{figure}
 \begin{center}
@@ -346,41 +345,40 @@ Examples of the learned parts at each layer of the two hierarchical representati
 \label{hierarchy}
 \end{figure}
 
-We present in Table~\ref{tab:stats} for each layer in the 2D and view-based 3D hierarchies the optimum number of parts, the reconstruction error for each hierarchy, and the part entropies introduced in Section~\ref{sec:statistical}. The reconstruction error is computed using an adaptation of the formula introduced in Eqn.~\ref{eqn:recon-error.patch},
+We present in Table~\ref{tab:stats} for each layer in the 2D and view-based 3D hierarchies the optimum number of parts and the reconstruction error obtained for each hierarchy on the testing set. The reconstruction error is computed using an adaptation of the formula introduced in Eqn.~\ref{eqn:recon-error.patch},
 \begin{equation}
- Err^l = \frac{1}{|Z_*^l|} \sum_{j=1}^{|Z_*^l|} r_j^l,\quad
- r_j^l = \frac{\left\|\Gamma_m^l-Z_j^l\right\|_2}{\left\|Z_j^l\right\|_2},
+ Err^l = \frac{1}{|Z_*^{'l}|} \sum_{j=1}^{|Z_*^{'l}|} r_j^l,\quad
+ r_j^l = \frac{\left\|\Gamma_m^l-Z_j^{'l}\right\|_2}{\left\|Z_j^{'l}\right\|_2},
  \label{eq:r}
 \end{equation}
-where $m$ is the index of best-fitting part for patch $Z_j^l$ at layer $l$ that indicates the size of the receptive field $F^l$:
+where $m$ is the index of best-fitting part for a patch from the testing set $Z_j^{'l}$ at layer $l$ that indicates the size of the receptive field $F^l$:
  \begin{equation}
- m=\min_{i=1}^{|\Gamma_*^l|}(\left\|\Gamma_i^l-Z_j^l\right\|_2).
+ m=\min_{i=1}^{|\Gamma_*^l|}(\left\|\Gamma_i^l-Z_j^{'l}\right\|_2).
 \end{equation}
 
  \begin{table}
  \begin{center}
-  \begin{tabular}{ | c | c | c | c | c | c | c |r |}
+  \begin{tabular}{ | c | c | c | c | c |r |}
       \hline
-      Layer $l$  & $|\Gamma_*^l|$ & $Err_{2D}$ & $H(\Gamma_*^l)$ &  $|\Omega_*^l|$ & $Err_{3D}$ & $H(\Omega_*^l)$  \\ \hline
-    1 &  130 & 0.32 & 4.78 & 100 & 0.53 & 4.20 \\ \hline
-    2 &  400 & 0.49 & 5.74 & 400 & 0.42 & 5.64 \\ \hline
-    3 &  400 & 0.63 & 5.68 & 500 & 0.37 & 5.97 \\ \hline 
-    4 &  550 & 0.71 & 5.95 & 600 & 0.31 & 6.14 \\ \hline
-    5 &   &  &  &  &  &  \\ 
-    \hline
+      Layer $l$  & $|\Gamma_*^l|$ & $Err_{2D}$ &  $|\Omega_*^l|$ & $Err_{3D}$ \\ \hline
+    1 &  130 & 0.32 & 100 & 0.53 \\ \hline
+    2 &  400 & 0.49 & 400 & 0.42 \\ \hline
+    3 &  400 & 0.63 & 500 & 0.37  \\ \hline 
+    4 &  550 & 0.71 & 600 & 0.34  \\ \hline
+    5 &  600 & 0.75 & 650 & 0.31 \\ \hline
   \end{tabular}
 \end{center}
  \caption{Statistics of parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
  \label{tab:stats}
 \end{table}
 
-Analysis of the results presented in Table~\ref{tab:stats} highlights two phenomena: The reconstruction error in the 2D case increases with $l$, while in the 3D case it decreases. As the error is computed per pixel in a patch, a slight translation of an edge part will increase the error, while in the depth case, higher-level structures are better at describing the data and therefore reduce the error. Regarding the part entropies at each layer, we notice a slight increase with $l$, which is caused by the increasing number of parts from the bottom up, which has a direct impact on the part uncertainties when sampled from the underlying part probability distributions at that layer.
+Analysis of the results presented in Table~\ref{tab:stats} highlights two phenomena: The reconstruction error in the 2D case increases with $l$, while in the 3D case it decreases. As the error is computed per pixel in a patch, a slight translation of an edge part will increase the error with quite a high margin. On the other hand in the depth case, a part translation impacts the error in a much smaller way, while the decrease of the overall error is due to the increasing of the number of parts with $l$, which improves the chances of finding a better fitting part for each patch. 
 
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.7\textwidth]{reconstruction_edge}
 \end{center}
-\caption{2D reconstruction examples of a mug instance from different viewpoints at Layers 2 and 3.  \commentJP{Again, the ground truth is hard to see.}}
+\caption{2D reconstruction examples of a mug instance from different viewpoints at Layers 2 and 3.}
 \label{reconstructionEdge}
 \end{figure}
 
@@ -404,38 +402,43 @@ One of our principal aims consists in quantifying the predictive power of the le
 \label{correlations}
 \end{figure}
 
-As there are many-to-many correspondences, choosing the best part according to the conditional probability is not always the best choice, due to ambiguity of edge structures which could correspond to many depth parts. Therefore, one solution for effective inference of view-based 3D parts, given observed 2D parts, consists of extracting complementary information from the region surrounding an edge part using HOG features. Additionally, we trained a SVM classifier to improve the prediction of view-based 3D parts. The results obtained for each layer are presented in Table~\ref{tab:stats.inference} together with the reconstruction error of view-based 3D parts given 2D parts, and statistical measures such as conditional entropy. The \textit{max. prediction} column contains for each layer $l$ the prediction accuracy of the depth part in relation to the ground truth depth patch, while the classifier column $svm$ shows the prediction accuracy using additional context information which is fed to a SVM classifier. The cross-hierarchy reconstruction error is computed using an adapted version of Eqn.~\ref{eqn:recon-error.patch},
+The results obtained for each layer are presented in Table~\ref{tab:stats.inference} together with the reconstruction error of view-based 3D parts given 2D parts. The \textit{Inference} column contains for each layer $l$ the recall value for the correct prediction of depth parts relative to the ground truth depth patches using the inference algorithm, while the classifier column $Inference+SVM$ shows the recall when using additional context information in combination with the inference algorithm. 
+
+The cross-hierarchy reconstruction error is computed using an adapted version of Eqn.~\ref{eqn:recon-error.patch},
 \begin{equation}
- Err(3D|2D)^l = \frac{1}{|D_*^l|} \sum_{j=1}^{|D_*^l|} r_j^l(3D|2D),\quad
- r_j^l(3D|2D) = \frac{\left\|\Omega_{m'}^l-D_j^l\right\|_2}{\left\|D_j^l\right\|_2}, 
+ Err(3D|2D)^l = \frac{1}{|D_*^{'l}|} \sum_{j=1}^{|D_*^{'l}|} r_j^l(3D|2D),\quad
+ r_j^l(3D|2D) = \frac{\left\|\Omega_{m'}^l-D_j^{'l}\right\|_2}{\left\|D_j^{'l}\right\|_2}, 
 \end{equation}
- where $m'$ is the index that maximizes the conditional probability of a view-based 3D part given the observed 2D part $\Gamma_m^l$, and $D_j^l$ is the ground-truth depth patch corresponding to the observed 2D patch $Z_j^l$ at layer $l$, i.e.,
+ where $m'$ is the index that maximizes the conditional probability of a view-based 3D part given the observed 2D part $\Gamma_m^l$, and $D_j^{'l}$ is the ground-truth depth patch from the testing set corresponding to the observed 2D patch $Z_j^{'l}$ at layer $l$, i.e.,
 \begin{equation}
  m'=\max_{i=1}^{|\Omega_*^l|}P(\Omega_i^l|\Gamma_m^l)
 \end{equation}
-and $m$ is the index of best fitting 2D part for the patch $Z_j^l$,
+and $m$ is the index of best fitting 2D part for the patch $Z_j^{'l}$,
 \begin{equation}
- m=\min_{i=1}^{|\Gamma_*^l|}(\left\|\Gamma_i^l-Z_j^l\right\|_2).
+ m=\min_{i=1}^{|\Gamma_*^l|}(\left\|\Gamma_i^l-Z_j^{'l}\right\|_2).
 \end{equation}
 
  \begin{table}
  \begin{center}
-  \begin{tabular}{ | c | c | c | c | c | c | c |r |}
+  \begin{tabular}{ | c | c | c | c | c |r |}
       \hline
-      Layer $l$  & max. prediction & {\begin{minipage}{0.9in}$\quad Err(3D|2D)$ \\ max. prediction \end{minipage}} & SVM & {\begin{minipage}{0.7in}$Err(3D|2D)$       SVM \end{minipage}} & $H(\Omega_*^l|\Gamma^l)$ & $H(\Gamma^l|\Omega_*^l)$  \\ \hline
-    $l_1$ &  34.12\% & 1.39 & 50.4\% & 0.64 & 2.51 & 1.93 \\ \hline
-    $l_2$ &  27.36\% & 0.99 & 53.6\% & 0.56 & 2.68 & 2.77 \\ \hline
-    $l_3$ &  24.27\% & 0.87 & 56.4\% & 0.44 & 2.92 & 2.63 \\ \hline 
-    $l_4$ &  22.44\% & 0.69 & 45\% & 0.37 & 2.62 & 2.43 \\ \hline
-    $l_5$ &   &  &  &  &  &  \\ 
-    \hline
+   \multirow{2}{*}{Layer $l$}  &  \multicolumn{2}{ |c| } {$Inference$} & \multicolumn{2}{ |c| } {$Inference+SVM$}  \\ \cline{2-5}
+   & \quad Recall \quad  & $Err(3D|2D)$ & \quad Recall \quad & $Err(3D|2D)$ \\ \hline
+      \hline
+    $l_1$ &  34.12\% & 1.39 & 50.4\% & 0.64 \\ \hline
+    $l_2$ &  27.36\% & 0.99 & 53.6\% & 0.56  \\ \hline
+    $l_3$ &  24.27\% & 0.87 & 56.4\% & 0.44  \\ \hline 
+    $l_4$ &  22.44\% & 0.69 & 45\% & 0.37  \\ \hline
+    $l_5$ &  35.50\% & 0.52 & 40\% & 0.48  \\  \hline
   \end{tabular}
 \end{center}
  \caption{Statistics of inference results of view-based 3D parts given 2D observed parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
  \label{tab:stats.inference}
 \end{table}
 
-In Figure \ref{inference} we depict several examples of depth images formed of view-based parts inferred from observed 2D parts detected from a corresponding edge image using the probabilistic model introduced in Section~\ref{sec:inference}. As we use overlapping receptive fields in both hierarchies, we enforce consistency of overlapping predictions using a correlation score for each pixel, weighted by the confidence of the 2D parts that predicted its value and the conditional probability of the view-based 3D part given the observed 2D part. Each pair of images at each layer $l=1,\ldots,5$ in Figure~\ref{inference} shows the ground truth depth image and the reconstruction based on 2D parts detected at each specific layer.  They only contain data around edge parts, while the size of the predicted region increases at at each layer.
+In Figure \ref{inference} we depict several examples of depth images formed of view-based parts inferred from observed 2D parts detected from a corresponding edge image using the probabilistic model introduced in Section~\ref{sec:inference}. As we use overlapping receptive fields in both hierarchies, we enforce consistency of overlapping predictions using a correlation score for each pixel, weighted by the confidence of the 2D parts that predicted its value and the conditional probability of the view-based 3D part given the observed 2D part. 
+
+The set of images at each layer $l=1,\ldots,5$ in Figure~\ref{inference} is composed of the ground truth edge image, the predicted edge image via the 2D hierarchy, the depth reconstructed image based on the inference of depth parts given 2D detected parts and the corresponding ground truth depth image, at each specific layer. The images only contain data around edge parts, while the size of the predicted region increases at each layer.
 
 \begin{figure}
 \begin{center}
@@ -450,7 +453,7 @@ In Figure \ref{inference} we depict several examples of depth images formed of v
 
 In this work we proposed a method for constructing two hierarchical representations, for two information channels, 2D intensity data and view-based 3D depth data. We employed as a learning algorithm a sparse autonencoder network, where each layer receives as input the latent representation of the layer below. For obtaining predictions across hierarchies, we discretized the responses of each layer into a set of parts, using clustering techniques. Furthermore, we introduced a probabilistic fusion model for linking the two information channels across hierarchies. The fused model enables an improved and refined representation of the world, while being able to infer 3D object shape from 2D intensity edge information.
 
-Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts, while specific 2D parts have a high conditional entropy, due to ambiguity of edge structures which could correspond to many depth parts. We handled this problem, by extracting complementary information from the region surrounding an edge part using HOG features, which were fed to a SVM classifier. This method proved its usefulness in the inference process, leading to an improved detection of the correct corresponding depth part.
+Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts, while specific 2D parts have low prediction power, due to ambiguity of edge structures which could correspond to many depth parts. We handled this problem, by extracting complementary information from the region surrounding an edge part using HOG features, which were fed to a SVM classifier. This method proved its usefulness in the inference process, leading to an improved prediction of the correct corresponding depth part.
 
 As future work, we plan to test the efficacy of our approach on scenes composed of several objects exposing different levels of complexity, such as clutter and occlusions.
 
