@@ -19,7 +19,7 @@
 
 \title{Bound compositional hierarchies modeling 2D and 3D visual shape of object categories}
 \deliverableid{DR 1.3}
-\author{M. Popa, J. L. Wyatt, A. Leonardis, D. Tabernik, V. Kramarev, R. Aktas, D. Belter}
+\author{M. Popa, J. L. Wyatt, A. Leonardis, D. Tabernik, V. Kramarev, R. Aktas, D. Belter, J. Piater, M. Ozay}
 \address{Institute of Computer Science, University of Innsbruck}
 \email{Mirela.Popa@uibk.ac.at}
 \headertitle{Compositional Hierarchies}
@@ -95,11 +95,9 @@ We have achieved the goal of Task 1.3, using an approach based, as promised, on 
 
 \subsubsection{Linked 2D-3D compositional hierarchies}
 
-In an ECCV submission paper included in Annex A.1, we describe our proposed method for constructing two hierarchical representations, for two information channels, 2D intensity data and view-based 3D depth data. We employed as a learning algorithm a sparse autonencoder network, where each layer receives as input the latent representation of the layer below. For obtaining predictions across hierarchies, we discretized the responses of each layer into a set of parts, using clustering techniques. Furthermore, we introduced a probabilistic fusion model for linking the two information channels across hierarchies. The fused model enables an improved and refined representation of the world, while being able to infer 3D object shape from 2D intensity edge information.
+In a paper to be submitted to ECCV, and included in Annex A.1, we describe our proposed method for constructing two hierarchical representations, for two information channels, 2D intensity data and view-based 3D depth data. We employed as a learning algorithm a sparse autonencoder network, where each layer receives as input the latent representation of the layer below. For obtaining predictions across hierarchies, we discretized the responses of each layer into a set of parts, using clustering techniques. Furthermore, we introduced a probabilistic fusion model for linking the two information channels across hierarchies. The fused model enables an improved and refined representation of the world, while being able to infer 3D object shape from 2D intensity edge information.
 
-Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts, while specific 2D parts have a high conditional entropy, due to ambiguity of edge structures which could correspond to many depth parts. We handled this problem, by extracting complementary information from the region surrounding an edge part using HOG features, which were fed to a SVM classifier. This method proved its usefulness in the inference process, leading to an improved detection of the correct corresponding depth part.
-
-The proposed approach and algorithms were examined on the PaCMan dataset. Experimental results show the efficacy of our approach for inferring view-based 3D information from observed 2D intensity data. 
+Next, we evaluated the statistical relationship between representations obtained from 2D and view-based 3D models, analysis which facilitates also the understanding of the geometric properties of the two compositional representations. The evaluation of the learned correspondences between parts in the two hierarchies showed that meaningful correlations can be formed for a set of parts, while specific 2D parts have a high conditional entropy, due to ambiguity of edge structures which could correspond to many depth parts. We handled this problem, by extracting complementary information from the region surrounding an edge part using HOG features, which were fed to a SVM classifier. This method proved its usefulness in the inference process, leading to an improved detection of the correct corresponding depth part. The proposed approach and algorithms were examined on the PaCMan dataset. Experimental results show the efficacy of our approach for inferring view-based 3D information from observed 2D intensity data. 
 
 \paragraph{Relation to SOTA:} 
 
@@ -109,20 +107,29 @@ An approach similar to ours was proposed by Masci et al.~\cite{Masci2011}, where
 
 \subsubsection{2D intensity-based compositional hierarchies}
 
-ljasflj
+In this line of work we have been refining work on compositional hierarchies through our graph theoretically grounded CHOP algorithm. This was published in ICCV 2015. This addresses the problem of learning shape models that are invariant to translations, rotations, and scaling. We address this particularly for the case of shapes that have multiple disconnected components. Moving beyond CHOP we have attempted to build a hierarchy that is probabilistically clean, and which attempts to maximise data likelihood. This has led to a new formulation that we will present at the review. In addition we have investigated what can be done with CNNs. In particular we have looked at how to simplify CNNs by constraining weights in the network to lie on a Gaussian. Our early experiments, which have been drafted into a paper to be submitted to ICPR, show that this does not affect the quality of learning. 
 
-\paragraph{Relation to SOTA:} oadfljsl
+\paragraph{Relation to SOTA:} 
+
+Our work is inspired by evidence that visual data processing in the brain is hierarchical, consisting of multiple layers responsible for different complexity classes \cite{report:kruger}. Many hierarchical vision algorithms that imitate this type of behaviour \cite{rev1} have been developed. These require tractable layer-wise learning and part shareability. However, the optimization functions for part selection depend on the task. Hierarchical dictionaries have been trained for object categorization \cite{report:shen,fidler_cvpr07}, recognition \cite{report:recognition} and detection \cite{felz,report:kokkinos,girshick2014rcnn} problems. 
+
+Convolutional Neural Networks (CNNs) \cite{Lenet} are an alternative to compositional hierarchies that have shown excellent performance on vision-related tasks. Their resurgence can be attributed to Krizhevsky et al. \cite{Krizhevsky} achieving state-of-the-art performance in ILSVRC-2012, on the ImageNet classification task. Powerful computers and large datasets have been critical in this advance, as evident in a 150-layer network by He et al. \cite{DBLP:journals/corr/HeZRS15} winning the ILSVRC-2015 and COCO-2015 competitions. A difference between our approach and deep networks is that most of the compositional hierarchies that we study perform local function approximation at each layer, rather than the global transformations performed in CNNs, although we have moved in the direction of global function approximation with our other work on stacked auto-encoders. 
+
+Local function approximation generally produces more human understandable representations, and this may be seen as an advantage of the line we are pursuing. Despite this recent papers on deep nets \cite{deepvis,Simonyan14a,DBLP:journals/corr/MahendranV15,deepvis2} have attempted to visualise learned representations for better understanding of the algorithms. Zeiler and Fergus \cite{deepvis}, for example, have demonstrated that CNNs are able to learn visually meaningful features. 
+
+We are also pursuing work on using compositional hierarchies as generative models. In parallel there is work on this in deep networks. Simonyan et al. \cite{Simonyan14a}, for example, developed a method to generate a single image that is the representative of a class via gradient-based optimization of class scores. Also, true generative approaches for feature visualization have been developed for CNNs. Dai and Wu \cite{DBLP:journals/corr/DaiW14} perform generative sampling from discriminatively-learned deep neural networks. The generative gradient that minimizes reconstruction error is used in pre-training and visualisation. Similarly, Dosovitskiy et al. \cite{DB15} have presented a method that can generate previously unseen samples of a class (chairs) using CNNs. Overall, it is not yet entirely clear what the precise performance advantages of our approach versus CNNs is, although recent work by Hinton on capsules claims key deficiencies in CNNs with respect to spatial transformations---such as those handled well by our ICCV paper---and proposes mechanisms essentially similiar to those we are pursuing. This suggests that our approach, and hybrid approaches hold promise.
+
+Our work on Compositional Hierarchy of Parts (CHOP) \cite{chop,CHOPManifold}, also has similarities with two previous hierarchical compositional frameworks, Learned Hierarchy of Parts (LHOP) by Fidler et al. \cite{fidler_cvpr07,lhop_book} and And-Or graphs by Si and Zhu \cite{report:SCZhu}. All three algorithms use simple features as low-level features, and learn compositional representations in the form of And-nodes, while articulations of a part are encoded in Or-nodes. 
 
 \subsubsection{3D view invariant compositional hierarchies}
 
-lajdsfl
 
-\paragraph{Relation to SOTA:} lasjdlkdsaj 
+\paragraph{Relation to SOTA:} 
 
 
 
 \bibliographystyle{IEEEtran}
-\bibliography{../shared_bibliography/abbreviations,./bibliography/DR13}
+\bibliography{../shared_bibliography/abbreviations,./bibliography/DR13,egbib_rusen}
 
 \newpage
 
@@ -182,22 +189,57 @@ objects and object categories.
 \subsection{Article: \em Gaussian parametrization of deep convolutional network filters}
 \begin{description}
     \item[Authors] Domen Tabernik and Ales Leonardis
-    \item[Info] To be submitted to ...% UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
-    \item[Abstract]
+    \item[Info] To be submitted to ICPR 2016% UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Abstract] In this work we propose to extend convolutional neural networks with an explicit spatial structure. We introduce
+a restriction between a feature and its sub-features by explicitly incorporating a spatial relationship between them to represent
+the spatial structure within object’s hierarchy. By proposing to model this relationship with Gaussian distributions we effectively
+introduce a parametrization of CNN filters using a mixture of Gaussian distributions. We show how parametrization can fit
+into the learning with back-propagation and gradient descent, and further show that standard convolutional neural network
+can be considered as a special case of the proposed model. More importantly, we show that proposed model can now be
+considered as composition hierarchy, thus opening a way to incorporate generative properties of compositional hierarchies
+in the future. This work focuses on analyzing the viability of proposed model by evaluating it on a simple synthetic case and on
+two classification dataset, CIFAR-10 and PaCMan database. We show that proposed model achieves the same level of performance
+as standard CNNs, but achieves higher level of compactness of filters and is a first step towards the compositional interpretation
+of the representation being learned through CNNs.
     \item [Relation with the deliverable] This paper describes work on applying CNNs to learning object categories. The study looks at the performance of a CNN implementation on two datasets CIFAR-10 and the PacMan synthetic object dataset. The paper focuses on 2D intensity images, and on object categorisation. Part of the purpose of this investigation was to assess the level of performance of CNNs on similar data to that used by our compositional hierarchies. The paper looks at ways of simplifying CNNs while retaining their performance, the approach being to constrain weights to lie on a Gaussian. 
     \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
 \end{description}
 \newpage
 
-\subsection{Article: \em A probabilistic generative compositional hierarchy for modelling 2D object shape}
+
+\subsection{Article: \em Compositional Hierarchical Representation of Shape Manifolds for Classification
+of Non-manifold Shapes}
 \begin{description}
-    \item[Authors] Rusen Aktas, Ales Leonardis and Jeremy L. Wyatt
-    \item[Info] To be submitted to ECCV 2016 % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
-    \item[Abstract] 
-    \item [Relation with the deliverable] This paper is the conclusion of our work on compositional hierarchies for 2D intensity images. As in the first two years of the project we learn the hierarchy from multiple views, using edge features extracted from intensity images. At the start of the project the LHOP approach was used. Following this we developed CHOP. The purpose of CHOP was to provide a theoretically sound way (MDL) to trade-off the description length of the parts against their explanatory power. This was done with a graph theoretic approach. In this final iteration we have also made the formulation better grounded in terms of probability theory. This has been achieved by using a generative compositional hierarchical model. The generative model allows us to sample images from nodes at higher layers in the hierarchy. This is achieved using a stochastic grammar, a product of experts, and an optimisation procedure for maximising the likelihood of generated images. This allows us to achieve one of the goals of the hierarchy, which is to run it as a generative model, thus showing the ability to fill in missing data.
-    
-    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+    \item[Authors] Mete Ozay, Rusen Aktas, Jeremy L. Wyatt and Ales Leonardis
+    \item[Info] Published in ICCV 2015 % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Abstract] We address the problem of statistical learning of shape models which are invariant to translation, rotation and scale in compositional hierarchies when data spaces of measurements and shape spaces are not topological manifolds. In practice, this problem is observed while modeling shapes having multiple disconnected components, e.g.
+partially occluded shapes in cluttered scenes. We resolve the aforementioned problem by first reformulating the relationship between data and shape spaces considering the interaction between Receptive Fields (RFs) and Shape Manifolds (SMs) in a compositional hierarchical shape vocabulary. Then, we suggest a method to model the topological
+structure of the SMs for statistical learning of the geometric transformations of the shapes that are defined by group
+actions on the SMs. For this purpose, we design a disjoint union topology using an indexing mechanism for the formation of shape models on SMs in the vocabulary, recursively. We represent the topological relationship between
+shape components using graphs, which are aggregated to construct a hierarchical graph structure for the shape vocabulary. To this end, we introduce a framework to implement the indexing mechanisms for the employment of the vocabulary for structural shape classification. The proposed approach is used to construct invariant shape representations. Results on benchmark shape classification outperform state-of-the-art methods.
+\item [Relation with the deliverable] This shows the completion of our work on CHOP, and the ability of the CHOP method to draw inferences in the face of occlusions.
+\item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
 \end{description}
 \newpage
+
+%
+%\subsection{Article: \em A probabilistic generative compositional hierarchy for modelling 2D object shape}
+%\begin{description}
+%    \item[Authors] Rusen Aktas, Ales Leonardis and Jeremy L. Wyatt
+%    \item[Info] To be submitted to ECCV 2016 % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+%    \item[Abstract] 
+%    \item [Relation with the deliverable] This paper is the conclusion of our work on compositional hierarchies for 2D intensity images. As in the first two years of the project we learn the hierarchy from multiple views, using edge features extracted from intensity images. At the start of the project the LHOP approach was used. Following this we developed CHOP. The purpose of CHOP was to provide a theoretically sound way (MDL) to trade-off the description length of the parts against their explanatory power. This was done with a graph theoretic approach. In this final iteration we have also made the formulation better grounded in terms of probability theory. This has been achieved by using a generative compositional hierarchical model. The generative model allows us to sample images from nodes at higher layers in the hierarchy. This is achieved using a stochastic grammar, a product of experts, and an optimisation procedure for maximising the likelihood of generated images. This allows us to achieve one of the goals of the hierarchy, which is to run it as a generative model, thus showing the ability to fill in missing data.
+%    
+%    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+%\end{description}
+%\newpage
+
+\includepdf[pages=-]{./attachedPapers/HierarchicalSparseAutoencoders.pdf}
+
+\includepdf[pages=-]{./attachedPapers/finalReport.pdf}
+
+\includepdf[pages=-]{./attachedPapers/GaussianCNN_TechReport.pdf}
+
+\includepdf[pages=-]{./attachedPapers/Ozay_Compositional_Hierarchical_Representation_ICCV_2015_paper.pdf}
 
 \end{document}
