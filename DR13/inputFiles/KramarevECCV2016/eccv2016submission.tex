@@ -38,59 +38,49 @@ representation of 3D shapes.
 
 \section{Introduction}
 
-Several compositional hierarchical representations of 2D contour
-shapes have been proposed
-\cite{Leonardis1}\cite{aktas2014graph}\cite{Ommer}. Some important
-properties of this type of representation have been reported in the
-literature, such as scalability of the representation, sub-linear
-growth of representation with number of object categories, fast
+Several compositional hierarchical representations for 2D contour
+shapes have been proposed in
+\cite{Leonardis1,aktas2014graph,Ommer}. Some important
+properties of this type of representations have been reported in literature, such as scalability, sub-linear
+growth of representations with respect to the number of object categories, fast
 inference and matching, reusability of shape parts within and across
-the categories which leads to compactness of the representation and
+the categories which leads to compactness of the representations and
 enables transfer of knowledge between objects and categories.
 
-A relatively little work has been done in the domain of the 3D
+Relatively little work has been done in the domain of the 3D
 compositional part-based models. Classical work of Biederman was
 done in 80s \cite{biederman1987recognition}. He has shown that
-people are able to recognize objects by separating them into geons,
-which are the main component parts of each object. In his approach
-geons were based on a set of standard geometric primitives (e.g.
-cylinders, cones), which were assembled to form the object and
+people are able to recognize objects by dividing them into geons,
+which are the main components objects that form objects. In his approach.
+geons are based on a set of standard geometric primitives (e.g.
+cylinders, cones), which are assembled to form object and
 category models.
 
-There exist several more recent works in this domain.  Wessel and
+There exist several more recent methods in this domain. Wessel and
 Klein \cite{pratikakis2010learning} presented a feature selection
 technique, which decomposes 3D objects into sections that can be
-represented by a plane, a sphere, a cylinder, a cone and a torus.
+represented by planes, spheres, cylinders, cones and tori.
 They introduced a probabilistic framework modeling the spatial
 arrangements between these shape primitives.
 
-Wu et al. \cite{wu20153d} proposed a 3D hierarchical compositional
-framework called framework call 3D ShapeNet. They present a 3D model
-as a probability distribution of of binary variable on a 3D voxel
-grid, using a convolutional Deep Belief Network. They demonstrated
-ability of their approach to recognize object category from range
-images and complete full 3D shape of objects.
+Early work of Biederman \cite{biederman1987recognition}, Wessel and Klein \cite{pratikakis2010learning} both use a set of pre-defined shapes as simple primitives with very shallow hierarchical structures, which makes it difficult to generalise over complex shapes. In contrast, our methodology is entirely data-driven, and is able to learn structures of arbitrary size and complexity. 
 
-Su et al. \cite{Su_2015_ICCV} have applied convolution neural
-networks for 3D shape recognition problem. First perform recognition
+More recently, neural networks have been used in creating 3D representations \cite{wu20153d,Su_2015_ICCV}. Wu et al. \cite{wu20153d} proposed a 3D hierarchical compositional
+framework called 3D-ShapeNet. They present a 3D model
+as a probability distribution of binary variables on a 3D voxel
+grid, using a convolutional Deep Belief Network (DBN). They demonstrated
+ability of their approach to recognize object categories from range
+images and complete full 3D shape of objects. Similarly, Su et al. \cite{Su_2015_ICCV} have applied convolution neural
+networks to 3D shape recognition problem. They first perform recognition
 of objects presented from a single view, and then present a novel
-CNN architecture that combines information from multiple views of
-the object into a single compact descriptor.
+CNN architecture that combines information from multiple views of each object into a single compact descriptor.
 
 Hu and Zhu \cite{hu2015learning} presented a framework for learning
 of 3D templates from 3D models of cars using AND-OR trees. They used
 the learned templates for simultaneous object detection,
-localization and pose estimation.
-
-The rest of the paper is organized is follows. Section
-\ref{sec:Representation} introduces the representation and describes
-its properties. Section \ref{sec:Learning} describes the vocabulary
-learning procedure, while Section \ref{sec:Inference} describes
-inference of parts from input data. Section \ref{sec:Experiments}
-discusses the results.
+localization and pose estimation. This method exploits the well-defined 3D structure of cars to learn 3D compositions, which would otherwise be a combinatorial problem. It requires manual annotation of object parts, hence addition of a new category is difficult. Our approach does not require annotation of object parts, and is able to find recurring patterns in data automatically. Finally, methods based on deep learning \cite{wu20153d,Su_2015_ICCV} perform well on object categorization tasks. The challenge lies in designing the network to different tasks, since it is not possible to visualise the learned features in order to check if they are visually meaningful. 
 
 \section{Representation\label{sec:Representation}}
-
 
 \subsection{Definitions\label{sec:Definitions}}
 
