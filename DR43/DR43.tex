@@ -194,12 +194,30 @@ We now detail the work for each of these areas in turn.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Article: IR Sensor-based Grasp Planner for the Pisa/IIT SoftHand Under Uncertainty}
-\label{ann:highLevelPlanning}
+\subsection{Article: Enhancing Adaptive Grasp Planning Through a Simple Sensor-based Reflex Mechanism}
+\label{ann:IRSensorBasedGraspPlanning}
 \begin{description}
-    \item[Authors] E. Luberto, G. Santaera, Y. Wu, M. Gabiccini
+    \item[Authors] E. Luberto, G. Santaera, Y. Wu, M. Gabiccini, and A. Bicchi
     \item[Info] Submitted to: 2016 IEEE/RSJ International Conference on Intelligent Robots and Systems
-    \item[Abstract] This paper presents an approach to refine grasps for soft robotic hands in the presence of uncertainty. Once a pre-planned grasp, e.g. from a database, has been selected for execution to an object detected in a scene, an infrared sensor-informed grasp planner is run online that essentially reduces uncertainties related to object shape and its pose in the environment. The proposed method implements a grasp location optimization algorithm that allows to minimize the distances between hand fingertips and the object by continuously controlling the wrist pose and the amount of hand closing. Experimental studies with the Kuka-LWR arm and the Pisa/IIT SoftHand illustrate the benefit of the developed technique and the improvement in the grasping performance with respect to the open-loop execution of grasps planned on the basis of prior visual cues only.
+    \item[Abstract] This paper presents an approach to achieve
+adaptive grasp of unknown objects whose position is only
+approximately known via point-cloud data. We assume no
+representation of objects, and no off-line grasp planning.
+Rather, we exploit the adaptability of a soft robotic hand
+which can autonomously conform to the shape of a grasped
+object if properly approached. Once a grasp approach has
+been preliminary planned based only on rough estimates of the
+object position, the hand is shaped to a pre-grasp configuration.
+Before closing the hand, a sensor-based algorithm is applied
+that corrects the relative hand-object posture so as to enhance
+the probability that the object is “caged” by the fingers. The
+algorithm minimizes the distance between the hand’s fingerpads
+and the object by continuously controlling the wrist pose and
+orientation and the hand closure. Experimental studies with a
+Kuka-LWR arm and a Pisa/IIT Softhand illustrate the benefit
+of the developed technique and the improvement in grasping
+performance with respect to open-loop execution of grasps
+planned on the basis of prior RGB-D cues only.
     \item[Relation with the deliverable] this work is concerned with the problem of dealing with uncertainty when performing a grasp with a compliant hand. The present work contributes to the goals of Tasks 4.3 and 4.4.
     \item[Attachment] (following pages until next annex)
 \end{description}

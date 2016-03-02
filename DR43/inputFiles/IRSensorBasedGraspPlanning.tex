@@ -1,18 +1,19 @@
 %%% Infrared Sensor-based Grasp Planning
 
-\subsubsection{Infrared Sensor-based Grasp Planning}
+\subsubsection{Enhancing Adaptive Grasp Planning Through
+a Simple Sensor-based Reflex Mechanism}
 \label{sec:IRSensorBasedGraspPlanning}
 
-In this work we present an approach to refine grasps for soft robotic hands which allows to cope with situations where uncertainty is so large that the intrinsic adaptability of the hand is not enough to overcome it. 
+In this work we present an approach to refine grasps for soft robotic hands which allows to cope with situations where uncertainty is so large that the intrinsic adaptability of the hand is not enough to overcome it.
 
 Once a pre-planned grasp, e.g. from a database, has been selected for execution to an object detected in a scene, an infrared sensor-informed grasp planner is run online that essentially reduces uncertainties related to object shape, and its pose in the environment and with respect to the hand. The proposed method implements a pre-grasp hand pose optimization algorithm
 %--- the wrist pose and the amount of hand closing are the control inputs ---
-that allows to minimize the distances between hand fingertips and the object to be grasped by continuously controlling the wrist pose and the amount of hand closing along the hand synergy. 
+that allows to minimize the distances between hand fingertips and the object to be grasped by continuously controlling the wrist pose and the amount of hand closing along the hand synergy.
 
 Experimental studies with the Kuka-LWR arm and the Pisa/IIT Softhand demonstrate the benefit of the developed technique and the improvement in the grasping performance with respect to the open-loop execution of grasps planned on the basis of prior visual cues only.
 
 Our contributions with this work are both theoretical and technological. On the theoretical side, the centering of the hand while it wraps around the object is posed as a nonlinear optimization problem, where the cost function is directly related to the distances between the hand fingertips (where the IR sensors are located) and the object. Since the cost function is intrinsically numerical and evaluated at run time, we propose a Gauss-Newton-like strategy to obtain an approximation of the residual distance and its Jacobian with respect to the possible hand moves, i.e. its pose and the amount of closing.
 
-On the technological side, our contribution is represented by the design of thimbles with embedded IR sensors, which can cohabit with the IMU-glove on the Pisa/IIT SoftHand. 
+On the technological side, our contribution is represented by the design of thimbles with embedded IR sensors, which can cohabit with the IMU-glove on the Pisa/IIT SoftHand.
 
 More details on this new approach and on the achieved results can be found in Sec.~\ref{ann:highLevelPlanning}.
