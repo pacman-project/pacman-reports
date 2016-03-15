@@ -1,0 +1,903 @@
+
+%% bare_conf.tex
+%% V1.4b
+%% 2015/08/26
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.8b or later) with an IEEE
+%% conference paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/pkg/ieeetran
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall the IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%*************************************************************************
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. The IEEE's font choices and paper sizes can   ***
+% *** trigger bugs that do not appear when using other class files.       ***                          ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+\documentclass[conference]{IEEEtran}
+% Some Computer Society conferences also require the compsoc mode option,
+% but others use the standard conference format.
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[conference]{../sty/IEEEtran}
+
+\usepackage{graphicx,footnote,hyperref}
+\usepackage{amsmath,amssymb,multirow}
+\newcommand{\KL}{\mathop{\textrm{KL}}}
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/pkg/ifpdf
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+% *** CITATION PACKAGES ***
+%
+%\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of the IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off
+% such as if a citation ever needs to be enclosed in parenthesis.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 5.0 (2009-03-20) and later if using hyperref.sty.
+% The latest version can be obtained at:
+% http://www.ctan.org/pkg/cite
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation
+% can be obtained at: 
+% http://www.ctan.org/pkg/graphicx
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found at:
+% http://www.ctan.org/pkg/epslatex
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). The IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics.
+%
+% Note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/pkg/amsmath
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as the IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/pkg/algorithms
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/pkg/algorithmicx
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/pkg/array
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+%  \usepackage[caption=false,font=footnotesize]{subfig}
+%\fi
+% subfig.sty, written by Steven Douglas Cochran, is the modern replacement
+% for subfigure.sty, the latter of which is no longer maintained and is
+% incompatible with some LaTeX packages including fixltx2e. However,
+% subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
+% which will override IEEEtran.cls' handling of captions and this will result
+% in non-IEEE style figure/table captions. To prevent this problem, be sure
+% and invoke subfig.sty's "caption=false" package option (available since
+% subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
+% handling of captions.
+% Note that the Computer Society format requires a larger sans serif font
+% than the serif footnote size font used in traditional IEEE formatting
+% and thus the need to invoke different subfig.sty package options depending
+% on whether compsoc mode has been enabled.
+%
+% The latest version and documentation of subfig.sty can be obtained at:
+% http://www.ctan.org/pkg/subfig
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure.
+% Be aware that LaTeX2e kernels dated 2015 and later have fixltx2e.sty's
+% corrections already built into the system in which case a warning will
+% be issued if an attempt is made to load fixltx2e.sty as it is no longer
+% needed.
+% The latest version and documentation can be found at:
+% http://www.ctan.org/pkg/fixltx2e
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/pkg/stfloats
+% Do not use the stfloats baselinefloat ability as the IEEE does not allow
+% \baselineskip to stretch. Authors submitting work to the IEEE should note
+% that the IEEE rarely uses double column equations and that authors should try
+% to avoid such use. Do not be tempted to use the cuted.sty or midfloat.sty
+% packages (also by Sigitas Tolusis) as the IEEE does not format its papers in
+% such ways.
+% Do not attempt to use stfloats with fixltx2e as they are incompatible.
+% Instead, use Morten Hogholm'a dblfloatfix which combines the features
+% of both fixltx2e and stfloats:
+%
+% \usepackage{dblfloatfix}
+% The latest version can be found at:
+% http://www.ctan.org/pkg/dblfloatfix
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version and documentation can be obtained at:
+% http://www.ctan.org/pkg/url
+% Basically, \url{my_url_here}.
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+\title{Inference of view-based 3D from 2D shape information using a Hierarchical Object Representation based on a Sparse Autoencoder Network}
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Mirela Popa \\ and Justus Piater}
+\IEEEauthorblockA{Institute of Computer Science\\
+University of Innsbruck\\
+Innsbruck, Austria\\
+Email: Mirela.Popa@uibk.ac.at \\ Justus.Piater@uibk.ac.at}
+\and
+\IEEEauthorblockN{Jeremy L. Wyatt}
+\IEEEauthorblockA{School of Computer Science \\
+University of Birmingham\\
+Birmingham, England\\
+Email: jlw@cs.bham.ac.uk}}
+
+% for over three affiliations, or if they all won't fit within the width
+% of the page, use this alternative format:
+% 
+%\author{\IEEEauthorblockN{Michael Shell\IEEEauthorrefmark{1},
+%Homer Simpson\IEEEauthorrefmark{2},
+%James Kirk\IEEEauthorrefmark{3}, 
+%Montgomery Scott\IEEEauthorrefmark{3} and
+%Eldon Tyrell\IEEEauthorrefmark{4}}
+%\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Electrical and Computer Engineering\\
+%Georgia Institute of Technology,
+%Atlanta, Georgia 30332--0250\\ Email: see http://www.michaelshell.org/contact.html}
+%\IEEEauthorblockA{\IEEEauthorrefmark{2}Twentieth Century Fox, Springfield, USA\\
+%Email: homer@thesimpsons.com}
+%\IEEEauthorblockA{\IEEEauthorrefmark{3}Starfleet Academy, San Francisco, California 96678-2391\\
+%Telephone: (800) 555--1212, Fax: (888) 555--1212}
+%\IEEEauthorblockA{\IEEEauthorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
+
+
+\graphicspath{ {../images/} }
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract
+\begin{abstract}
+We propose a method for constructing a pair of complementary hierarchical representations from 2D edge images and from view-based 3D data, respectively.  As a learning algorithm, our model uses a sparse autoencoder network, which propagates information bottom-up, while offering an efficient inference mechanism across hierarchies, based on discretization of the responses at each layer.  We introduce a probabilistic fusion model for inferring missing observations across modalities and for scene reconstruction by exploiting correlations between 2D and view-based 3D observations. The results obtained on the PaCMan dataset demonstrate the efficacy of our approach.
+%\keywords{Hierarchical Representation, Sparse Autoencoder Network, Depth Inference}
+\end{abstract}
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+\section{Introduction}
+Visual object recognition and categorization has many potential applications, enabling scene interpretation, semantic visual retrieval, and cognitive robotics. Furthermore, efficient object representations can be useful in a number of robotic application domains, such as object manipulation by a robotic arm, including tasks such as loading and unloading a dishwasher, grasping objects or opening a door \cite{Detry-2013-IROS}. 
+
+However, obtaining an efficient object representation is difficult due to high intra-class variation in shape, appearance and pose, but also due to illumination changes, occlusions or clutter. One approach useful for dealing with these limitations is to use a hierarchical object representation, which provides a compact representation on different levels of abstraction, provides object part shareability between different object categories and can cope with incompleteness produced by occlusions.
+
+In recent years, many approaches have been proposed for object class detection using 2D features from a single-view, such as the deformable part model \cite{Felzenswalb2010}, but also multi-view based methods which are useful at predicting not only the category but also the pose of an object in a scene \cite{Teney2014}. Furthermore, the availability of depth sensors such as Kinect had a great impact on the rapid development of algorithms for construction and acquisition of view-based 3D object models. Employing view-based 3D models for object recognition is useful, as they capture the intrinsic geometric structure of objects and provide a compact object representation \cite{Liebelt2010}. Throughout this paper, by 2D data we mean intensity images, while an equivalent name of view-based 3D models in the literature is 2.5D models.
+
+Provided that 2D and view-based 3D information are complementary, we aim to combine them in an efficient manner using a hierarchical representation, enabling improved recognition performance and inference of one modality (2D/3D) from the other one (3D/2D). 
+
+There are different fusion methods available, such as early-level fusion \cite{Arca2007}, where different features are concatenated at an early stage, or decision-level fusion \cite{Soltana2010} in which recognition is performed individually for each input channel and the final decision is taken by combining the independent results, using different criteria such as taking the maximum or using a weighted average \cite{Mahmoudi2013}.
+
+These methods are insufficient for our goal, as we aim to take advantage of the correlations between 2D and view-based 3D information not only at the beginning or at the end of the recognition process, but to model them in a hierarchical manner, by considering relationships between parts in the 2D and view-based 3D hierarchies. Even though there are works which consider the relationships between 2D and 3D visual information, to the best of our knowledge, there is no other work which investigates this problem using a hierarchical modeling approach.
+
+Therefore, in this work, we propose using both 2D and view-based 3D primitives, constructed using hierarchical representations, in which the effect of low-level visual features on higher-level entities is learned, leading to detection of object models in a scene and cross-hierarchy inference. 
+
+The principles of hierarchy construction for both 2D and view-based 3D data are similar and are learned using sparse autoencoder networks. The relations between the two types of information are captured using an efficient probabilistic model. The model provides better inference, by reinforcing the evidence provided by one input channel with that from the other. Furthermore, it can be employed in the case of missing observations, inferring the most likely view-based 3D primitives from the observed 2D ones and vice-versa. 
+
+In the following section we present a review of related work, while in Section~\ref{sec:learning} we introduce our hierarchical model for object representation using the two available data types, 2D intensity-based shape information and 3D view-based depth data. Next, in Section~\ref{sec:analysis} we present our method for capturing correspondences between 2D and view-based 3D primitives, while in Section~\ref{sec:inference} we introduce our proposed algorithm for inferring view-based 3D parts given observed 2D parts. The experimental results are presented in Section~\ref{sec:results} and conclusions are formulated in Section~\ref{sec:conclusions}.
+
+\section{Related Work}
+\label{sec:related_work}  
+
+One approach towards fusing 2D and 3D information consists of projecting a 3D shape into 2D and finding a set of meaningful multi-view 2D projections \cite{WangGWC0C13}, an option supported by Fleming and Singh \cite{Fleming2009} who argue that human perception of 3D shapes is based on 2D observations. Projection of 3D information into 2D as a means to recognize 3D objects and their pose is not new in computer vision and has been investigated also by Cyr and Kimia \cite{Cyr2001}. This approach is justified by the simplification of the problem, obtained by working in a low-dimensional space and by making use of the bigger volume of 2D image data available in the online environment. The disadvantages of this method reside in the complexity of the process, which requires manual labelling of parts, an assumption regarding the upright orientation of objects, as well as a slightly worse performance on articulated objects in comparison with rigid objects.
+
+Another approach for capturing 2D to view-based 3D correlations is described by Cheng et al.~\cite{Cheng2010}. This work assumes that edge information in an image has a high probability of also being an edge in the depth map. Next, an image is divided into blocks and depth is assigned based on neighbourhood information and smoothed using bilateral filtering.
+
+An adaptive fusion approach of 2D and 3D features is proposed by Arca et al.~\cite{Arca2007} with an application in face recognition. The integration of the two modalities is beneficial, as 2D features are more precise at capturing facial details, while 3D features are more robust under pose or lighting variations. The two types of features are fused at an early stage, while in the recognition process, only the most reliable features are used. Discarding of unreliable features is achieved using a matching criterion, which assigns weights based on a similarity measure. The same topic is investigated also by Soltana et al.~\cite{Soltana2010}, where the fusion strategy consists of an offline and an online weight learning process. In both cases the most relevant weights of all the scores for each sample in each modality is automatically selected.
+
+3D object retrieval based on a 2D image represent another source of inspiration for linking 2D and 3D information. Eitz et al.~\cite{Eitz2012} propose using a sketch representation based on optimized Gabor filters, followed by a bag-of-words approach. The feature extraction technique can be further refined into a hierarchical representation using concepts proposed by Dai et al.~\cite{Dai2014}, which guide the learning of a dictionary of templates in an unsupervised manner. 
+
+Recovering 3D depth from a single image for scene understanding represents an important topic in computer vision and was investigated by Tian et al.~\cite{Tian2014} using a deep learning model, by Saxena et al.~\cite{Saxena2009} by means of a Markov Random Field(MRF) model which captured the relationships between different parts of an image and by Konrad et al.~\cite{Konrad2012} who proposed a depth sampling method, by fusing the corresponding depth images of the top $k$-nearest neighbour images of the query image.
+
+The review of work dealing with 2D and view-based 3D information showed that fusing them is beneficial, while great care needs to be given to challenging issues such as conflicting data, outliers and noise, or data registration and correlation assessment. Without a proper pre-analysis of all these issues, the success rate of the fusion algorithm can be affected. In the next section, we introduce our proposed hierarchical object representation model.  
+
+\section{Hierarchical Object Representation} 
+\label{sec:learning}    
+
+Our goal consists of matching 2D and view-based 3D parts in order to permit inference of 2D parts from observed view-based 3D parts and vice-versa and also to achieve better object recognition and/or object pose recognition accuracy.  
+
+In order to obtain 2D and 3D-view based object parts at different levels of granularity, we propose using a hierarchical model which enables binding of parts at different layers. A hierarchical representation has advantages such as capturing exponential variability in a compact way and allowing fast inference.
+
+The reason for building a new hierarchical model, instead of using existing models, is that we need a consistent method for forming parts for both modalities (2D intensity and 3D view-based), parts which need to share the same receptive field, otherwise correlations might only partially reflect the real relationships between the two information channels.
+
+The principles for forming the hierarchical object representations are consistent for both 2D and 3D view-based data, where the size of the receptive field is gradually increased at each layer, up to the top layer which is sufficiently large to represent the whole object. Therefore, we will only describe the learning process for one type of data, namely 2D information. To obtain an object representation robust to illumination changes we use 2D shape information, obtained by applying an edge detection algorithm to the 2D intensity images.
+
+The input used for learning the 2D hierarchical representation is a set $\mathcal{Z}$ of training edge images $Z^i \in \mathcal{Z}, i=1,\ldots,|\mathcal{Z}|$, represented\footnote{Here and in the following, superscripts always constitute upper indices; their use as powers will be indicated explicitly unless unambiguously clear from the context.} as a set of vectorized patches $Z_j$, i.e., $Z^i=\{Z_1,\ldots,Z_j,\ldots,Z_{|Z^i|}\}$, where each image patch
+$Z_j=[z_{j1},\ldots,z_{jk},\ldots,z_{jn^2}]^T \in R^n$ is centered around an edge pixel $z_{jk}$. The size $n^2$ of an image patch is the size $F^1=n^2$ of the corresponding receptive field at the first layer, while the number of patches of each edge image $|Z^i|$ is given by the number of edge pixels divided by the stride. The total number of patches used in the training phase is given by $|Z_*|=\sum_{i=1}^{|\mathcal{Z}|} |Z^i|$.
+
+\subsection{Learning algorithm} 
+
+The first layer is learned using a sparse autoencoder algorithm, which is one approach to automatically learn features from unlabeled data and proved to be suitable not only for computer vision, but also for a range of problems including text, audio, etc. An autoencoder network is an unsupervised learning algorithm which applies backpropagation, setting the target values to be equal to the input values. Therefore, one practical application is to use it for reconstruction. 
+
+%\begin{figure}
+%\begin{center}
+%\includegraphics[height = 0.3\textheight]{autoencoder}
+%\end{center}
+%\caption{Example of an autoencoder network, where the function $h$ learns an output $z'$ similar to the input $z$.}
+%\label{fig:autoencoder}
+%\end{figure}
+
+The function used to map the input data $Z_j\in \mathbb{R}^n$ is the function
+\begin{equation}
+ h(\theta,j)= g(W_2 g(W_1 Z_j+b_1)+b_2)
+\end{equation}
+which uses a set of linear combinations of the model parameters 
+$\rho=(W_1,W_2,b_1,b_2)$ and a non-linear activation function $g$.
+
+The sizes of the matrices $(W_1,W_2)$ and bias vectors $(b_1,b_2)$ are defined according to the vision task, which in our case is a reconstruction task. Therefore, given a desired number of features $k$ to be obtained, the parameter sizes are $W_1 \in \mathbb{R}^{k\times n} $, $W_2 \in \mathbb{R}^{n\times k}$, $b_1\in \mathbb{R}^k$, and $b_2 \in \mathbb{R}^n$. The optimum number of features $k$ can be found experimentally, e.g.\ via cross-validation, to minimize the reconstruction error.
+
+For the activation function $g$ there exist several options such as the sigmoid function $g(z)=\frac{1}{1+\text{e}^{-z}}$, or the hyperbolic tangent $  g(z)=\tanh z=\frac{\text{e}^z-\text{e}^{-z}}{\text{e}^z+\text{e}^{-z}}$.
+In the current implementation we chose to use the sigmoid function, as its range is $[0,1]$ which is suitable for image data.
+
+Learning the model parameters $\rho=(W_1,W_2,b_1,b_2)$ can be done using a batch gradient descent method, where the cost function $J$ can be defined to minimize the reconstruction error and will be trained on the data itself:
+\begin{equation}
+   J(\theta,j)=\left\|h(\theta,j)-Z_j\right\|_2^2 + \alpha\sum_{i=1}^{2} \left\|W_i\right\|_2^2
+\end{equation}
+where the second term of the function is a regularization term that tends to decrease the magnitude of the weights---which helps to prevent overfitting---and the parameter $\alpha$ controls the relative importance of the two terms.
+ 
+Furthermore, by placing different constraints on the cost function, such as limiting the number of hidden units, we can obtain a compressed representation of the input data. A sparsity constraint will force most of the hidden units to be inactive most of the time. By inactive, we mean the neuronal activation value is close to 0, while active means their value is close to 1. The new cost function is defined as
+\begin{equation}
+J_{\textrm{sparse}}(\theta)=J(\theta)+\beta \KL(\rho,\rho')
+\end{equation}
+where $\rho$ is the mean activation of the hidden units, and $\rho'$ is a sparsity parameter which is usually a small value close to zero. By minimizing the KL divergence, we thus force $\rho$ to be close to zero. In other words, we force most of the hidden units to be inactive.
+
+\subsection{Discretization mechanism for obtaining parts} 
+
+After learning the model parameters, we want to obtain a discrete set of parts. This goal is achieved by clustering in the space of feature vectors formed of hidden unit activations. For each input patch $Z_j$, we obtain a feature vector
+\begin{equation}
+a_j=W_1Z_j+b_1, \;j=1,\ldots,|Z_*|.
+\end{equation}
+The output of the clustering method is a codebook
+\begin{equation}
+C^1=\{C_1,\ldots,C_i,\ldots,C_{M^1}\}
+\end{equation}
+which represents the set of parts at the first layer $\Gamma^{1}$. 
+
+The number of clusters $M^l, l=1,\ldots,L_{2D}$ (where the number of layers for the 2D representation is $L_{2D}$) and the clustering method ($k$-means, agglomerative clustering, hierarchical clustering) represent two more design choices. These can be made based on experiments so as to find the optimum number of parts at each layer $l$. 
+
+The input to the second layer is a set of patches $Z_j^2=\{a_1,\ldots,a_i,\ldots,a_{p^2}\}$, obtained by concatenating  $p^2$ overlapping feature vectors $a_i$ introduced in (4), extracted at different positions inside the specified receptive field at the second layer $F^2=2F^1$. The number $p^l$ of overlapping sub-parts considered at each layer represents another design decision.
+
+\subsection{Parameter optimization based on reconstruction error}
+
+We chose to optimize the parameter values based on minimizing the reconstruction error at each layer $l$. For this purpose, we considered the relative root mean square reconstruction error \cite{Chai2014}, which for one input image/feature patch $Z_j^l$ on layer $l$ is $r_j^l$ and and the overall reconstruction error for a layer $l$ is $r^l$
+\begin{equation}
+  r_j^l = \frac{\left\|h^l(\theta,j)-Z_j^l\right\|_2}{\left\|Z_j^l\right\|_2},\quad
+   r^l = \frac{1}{|Z_*^l|} \sum_{j=1}^{|Z_*^l|} r_j^l.
+  \label{eqn:recon-error.patch}
+\end{equation}
+where $|Z_*^l|$ is the number of patches on layer $l$.
+
+The same learning method as described above is used to obtain the model parameters $\rho^2=(W_1^2,W_2^2,b_1^2,b_2^2)$ at the second layer, while the set of parts $\Gamma^{2}$ is obtained by clustering the feature vectors formed of activations at the second layer:
+\begin{equation}
+a_j^2=W_1^2Z_j^2+b_1^2, \;j=1,\ldots,|Z_*^2|
+\end{equation}
+where $|Z_*^2|$ is the number of extracted patches on the second layer.
+
+Next, all the other layers in our hierarchical representation, up to the top layer $L_{2D}$, are learned in an iterative manner as described above, where the input to each layer $l$ is given by the activations of the hidden units learned on patches from the previous layer $l-1$. This hierarchical approach is useful for capturing non-linear dependencies in the input data and models them iteratively, from low-level image patches up to the object level.
+
+For optimizing the construction of the hierarchical representation, we decided to use supervised information on the last two layers. This design choice leads to the formation of view-specific parts at layer $L_{2D}-1$ and category-specific parts at the last layer $L_{2D}$. The learning process is the same as described above, with the only difference that image patches are selected only from images belonging to one object category, instead of coming from the entire database.    
+
+Each layer will produce a set of weight vectors $W_1^l$ which compress the input information, while producing a useful representation. 
+
+The set of model parameters at each layer $l$ is  given by
+\begin{equation}
+\theta^l = (rho^l,\Gamma^l,F^l),
+\rho^l=(W_1^l,W_2^l,b_1^l,b_2^l).
+\end{equation}
+
+The set of parts obtained at each layer $l\in\{1,\ldots,n_{2D}\}$ for the 2D $\{\Gamma^l\}$ and view-based 3D $\{\Omega^l\}$ hierarchical representations are depicted in Section~\ref{sec:results}.
+
+An approach similar to that described above was proposed by Masci et al.~\cite{Masci2011}, where stacked autoencoders are trained in a similar fashion, one layer at a time, and each layer receives as input the latent representation of the layer below. The main difference from that work, addressed in our approach, is the cross-hierarchy prediction power which is achieved by discretizing the responses of each layer into a set of parts, using clustering techniques. This step enables efficient inference of parts from one hierarchy, given observed parts in the other hierarchy. In the next section we present our model for binding the two hierarchical representations for 2D and view-based 3D data.
+ 
+\section{Establishing correspondences between 2D and 3D view-based hierarchical representations}
+\label{sec:analysis}
+
+We build the 2D and the view-based 3D hierarchical representations on similar learning principles, and their parts encode at each layer the same spatial locality $F_{2D}^l=F_{3D}^l$, while the difference lies in the different types of information they encode, edges and depth.
+Furthermore, the two hierarchies are trained on the same object models, consisting of both 2D edge images and the corresponding depth images or point clouds.  
+The hierarchical compositional 2D model is formed of $L_{2D}$ layers, each layer being composed of a number of 2D parts. 
+As our main goal was to be able to do efficient inference across the two representations, we chose to use the same number of layers in both hierarchies, i.e., $L_{2D}=L_{3D}=L$.
+
+We denote part $i$ constructed at layer $l$ of a hierarchical vocabulary of 2D shapes by $\Gamma_{i}^{l}$, for $i=1,\ldots,|\Gamma_*^l|$ and $l=1,\ldots,L$. Part $j$ constructed at layer $l$ of the  hierarchical vocabulary of view-based 3D shapes is denoted by $\Omega_{j}^{l}$, for $j=1,\ldots,|\Omega_*^l|$ and $l=1,\ldots,L$.
+
+For establishing correspondences between the parts in the two hierarchies, we build an $N\times M$ \emph{correspondence table} with $N=\sum_{l=1}^L |\Gamma_*^l|$ rows corresponding to the 2D parts and $M=\sum_{l=1}^L |\Omega_*^l|$ columns corresponding to the view-based 3D parts, as depicted in Figure~\ref{fig:fused-models} below.  Our goal is to establish layer-by-layer correspondences $(\Gamma_{i}^l,\Omega_{j}^l)$ between 2D and view-based 3D  parts (Figure~\ref{fig:fused-models}).
+
+\begin{figure}
+\begin{center}
+\includegraphics[clip, trim=0.5cm 1cm 0.5cm 1cm, width=0.5\textwidth]{Fused_representation}
+\end{center}
+\caption{Correspondences between the 2D and view-based 3D hierarchies.}
+\label{fig:fused-models}
+\end{figure}
+
+The correspondences between the two types of parts are built using an observation function $c^l(i,j)$, which quantizes the co-occurrences of a 2D part $\Gamma_i^l$ and a view-based 3D part $\Omega_j^l$, and vice-versa, at each layer $l$. 
+To every correspondence $c^l(i,j)$ we assign a real value. As to each 3D (2D) part might correspond several 2D (3D) parts, all associated correspondences will be activated. Therefore, the value $c^l(i,j)$ is computed as the joint probability of observing parts $\Gamma_i^l$ and $\Omega_j^l$ at the same spatial location:
+\begin{equation}
+  c^l(i,j) = P(\Gamma_i^l,\Omega_j^l).
+  \label{eqn:cij.Pij}
+ \end{equation} 
+
+In general, there will not be a one-to-one relation between 2D and view-based 3D parts, as the 2D parts are represented using edges and they can be correlated with depth parts which encode depth disparities on one side or the other one of the edge part and also can be correlated with internal depth edges. Still, the number of correlations will decrease for higher-level parts, as more complex edge structures such as L, Y or T junctions are better at predicting the possible associated depth structures.
+
+The correspondence table represents the set of possible correspondences over all sets of 2D and view-based 3D parts.  
+Moreover, the joint probability table of 2D and view-based 3D parts can be used to perform inference of view-based 3D parts/2D parts coherently and transparently across the 2D and view-based 3D hierarchies.
+
+Still, the inference process can be regarded from two perspectives, given the type of parts we want to predict, either 2D or 3D. Therefore, for the task of inferring a 2D part $\Gamma_i^l$ from an observed view-based 3D part $\Omega_j^l$ at layer $l$, we employ the conditional probabilities
+\begin{equation}
+P(\Gamma_i^l \vert \Omega_j^l)=\frac{P(\Gamma_i^l,\Omega_j^l)}{P(\Omega_j^l)}, \;i=1,\dots,|\Gamma_*^l|
+\label{eqn:PGO.Bayes}
+\end{equation}
+to retrieve all 2D parts $\Gamma_i^l$ which are likely to be observed
+with the view-based 3D part $\Omega_j^l$.  
+Conversely, inference of a view-based 3D part $\Omega_j^l$ can be performed using the conditional probability
+\begin{equation}
+ P(\Omega_j^l \vert \Gamma_i^l)=\frac{P(\Gamma_i^l,\Omega_j^l)}{P(\Gamma_i^l)}, \;j=1,\dots,|\Omega_*^l|,
+\end{equation} 
+which permits retrieving all view-based 3D parts $\Omega_j^l$ which could be observed with the 2D part $\Gamma_i^l$. 
+ 
+The correspondence table introduced above can be considered a starting point for different tasks, such as inferring view-based 3D parts from observed 2D parts, and (conversely) inferring 2D parts from observed view-based 3D parts, object recognition, object reconstruction, or pose estimation. 
+
+%Furthermore, the correspondence table can be used as a starting point for building better prediction models, such as training a classifier for predicting 3D view-based parts, given an observed 2D part, which takes into account not only the conditional probabilities across hierarchies, but also their associated feature vectors.
+
+\subsection{Inference of View-based 3D Parts using 2D and 3D Hierarchical Compositional Models}
+\label{sec:inference}
+
+We now propose a probabilistic model for performing inference in the view-based 3D hierarchy, by reusing the inference mechanism existing in the 2D hierarchy in combination with the joint probability table introduced above.
+We assume that parts in the view-based 3D hierarchy are formed by propagating evidence from lower to higher layers in a probabilistic manner. 
+
+The inference across hierarchies is performed by conditioning the probability of a view-based 3D part $\Omega_j^{l}$ at layer $l$ not only on the sub-parts at the previous layer $l-1$ but also on the 2D parts $\Gamma_k^l$ at layer $l$, that are probable to co-occur with it. Thus, we use in the inference process the conditional probability $P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l)$ instead of $P(\Omega_j^{l} \vert \Omega_i^{l-1})$ for $i=1,\dots,\Omega_*^{l-1}$.
+
+2D parts $\Gamma_k^l$ are retrieved using the joint probability table introduced in Section~\ref{sec:analysis}, and consist of the set of 2D parts which maximize the $P(\Gamma_k^l,\Omega_j^l)$. The threshold for part selection $\tau$, where $P(\Gamma_k^l,\Omega_j^l)>\tau$, is learned according to the purpose of the inference process.
+
+Furthermore, using Bayes' Rule we can estimate the conditional probability $P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l)$ as
+\begin{equation}
+  P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l})P(\Omega_j^{l})}{P(\Omega_i^{l-1},\Gamma_k^l)}.
+  \label{eqn:POOG.Bayes}
+\end{equation}
+
+To estimate the conditional probability
+\begin{equation}
+ P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l},\Omega_i^{l-1}) P(\Omega_i^{l-1} \vert \Omega_j^{l})
+\end{equation}
+we take into account the principle of forming correlations introduced in Section~\ref{sec:analysis}, which suggests that if the parts $(\Gamma_k^l,\Omega_j^{l})$ can be correlated, then the parts $(\Gamma_k^l,\Omega_i^{l-1})$ are conditionally independent given part $\Omega_j^{l}$, as the correspondences between parts are established at the same layers in the two hierarchies. Therefore,
+\begin{equation}
+  P(\Omega_i^{l-1},\Gamma_k^l \vert \Omega_j^{l}) =  P(\Gamma_k^l \vert \Omega_j^{l}) P(\Omega_i^{l-1} \vert \Omega_j^{l}).
+  \label{eqn:part-cond-indep}
+\end{equation}
+By substituting Eqn.~\ref{eqn:part-cond-indep} into Eqn.~\ref{eqn:POOG.Bayes} we obtain
+\begin{equation}
+  P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Gamma_k^l \vert \Omega_j^{l})P(\Omega_i^{l-1} \vert \Omega_j^{l})P(\Omega_j^{l})}{P(\Omega_i^{l-1},\Gamma_k^l)},
+  \label{eqn:POOG.Bayes.POGO}
+\end{equation}
+where the conditional probability $P(\Gamma_k^l \vert \Omega_j^l)$ can be obtained from Eqn.~\ref{eqn:PGO.Bayes}, and $P(\Omega_i^{l-1} \vert \Omega_j^{l})$ can be computed via Bayes' Rule, as
+\begin{equation}
+  P(\Omega_i^{l-1} \vert \Omega_j^{l}) = \frac{P(\Omega_j^{l}\vert \Omega_i^{l-1})P(\Omega_i^{l-1})}{P(\Omega_j^{l})}.
+  \label{eqn:POO.Bayes}
+ \end{equation}
+
+Finally, by introducing Eqn.~\ref{eqn:POO.Bayes} into Eqn.~\ref{eqn:POOG.Bayes.POGO} we obtain
+\begin{equation}
+ P(\Omega_j^{l} \vert \Omega_i^{l-1},\Gamma_k^l) = \frac{P(\Gamma_k^l \vert \Omega_j^{l})P(\Omega_j^{l} \vert \Omega_i^{l-1})P(\Omega_i^{l-1})}{P(\Omega_i^{l-1},\Gamma_k^l)}.
+\end{equation}
+  
+The view-based 3D part prior $P(\Omega_i^{l-1})$ can be considered uniform or computed using the inverse frequency operator on an input database, which takes into account the part frequency across the database, while the joint probability $P(\Omega_i^{l-1},\Gamma_k^l)$ can be obtained from Eqn.~\ref{eqn:cij.Pij} presented in Section~\ref{sec:analysis}.
+
+The proposed model will be initialized with probabilities of 2D parts at the first layer of the 2D hierarchy. The observations in the 2D hierarchy will be used to propagate information to the view-based 3D hierarchy and finally to obtain hypotheses about view-based 3D parts. 
+
+Next, we introduce a method for optimizing the prediction of view-based 3D parts, by incorporating additional context information.
+
+\subsection{Classification}
+
+As there are many-to-many correspondences, choosing the best part according to the conditional probability is not always the best choice, due to ambiguity of edge structures which could correspond to many depth parts. Therefore, one solution for effective inference of view-based 3D parts, given observed 2D parts, consists of extracting complementary information from the region surrounding an edge part using HOG features. Additionally, we trained a SVM classifier to improve the prediction of view-based 3D parts. 
+The comparison of results obtained for each layer are presented in Section~\ref{sec:results}, showing the detection accuracy of depth parts in both cases, without and with additional context information. The baseline model is the probabilistic inference model presented in Section~\ref{sec:inference}.
+
+%We depict in Figure~\ref{classification} two examples of reconstructed depth images using the inference algorithm introduced in subsection~\ref{sec:inference} based on only 2D edge information in Figure~\ref{classification}(A) and on additional complementary features in Figure~\ref{classification}(B). As it can be noticed adding context information helps in most cases at disambiguating the depth part corresponding to an edge part.
+%
+%\begin{figure}
+%\begin{center}
+%\includegraphics[width=0.7\textwidth]{classification}
+%\end{center}
+%\caption{Reconstruction of depth image based on 2D edge parts using only the inference algorithm in (A) and combining the inference algorithm with the SVM classifier in (B).}
+%\label{classification}
+%\end{figure}
+
+In the following section we provide the results obtained using the proposed approach for learning the two hierarchical representations and the inference algorithm for prediction across hierarchies.
+
+\section{Experimental Results}
+\label{sec:results}
+
+We learned and tested the proposed hierarchical representations for 2D and view-based 3D data on a set of object categories from the PaCMan dataset which is publicly available\footnote{\url{http://www.pacman-project.eu/datasets/}}. We depict in Figure~\ref{database} a set of example images (edge and depth) from nine object categories. 
+
+The dataset contains gray-scale and depth images generated from 3D models of 20 categories of various kitchen related objects, each category containing on average 20 instances. Each object is captured at dense, regular viewpoint intervals, and we use 20 out of 48 different viewpoints of an object instance, both in the training and testing phase. We trained and tested our approach on ten object categories, using 75\% instances from each category in the training phase and 25\% instances in the testing phase. The testing set $\mathcal{Z'}$ of edge images $Z'^i \in \mathcal{Z'}, i=1,\ldots,|\mathcal{Z'}|$ is composed of vectorized image patches $Z'_j$, i.e., $Z'^i=\{Z'_1,\ldots,Z'_j,\ldots,Z'_{|Z'^i|}\}$ obtained in the same manner as presented in Section~\ref{sec:learning}.
+
+\begin{figure}
+\begin{center}
+\includegraphics[clip, trim=0.5cm 3.2cm 0.5cm 2.5cm, width=0.45\textwidth]{database_pacman}
+\end{center}
+\caption{Examples of object instances (cup, pan, mug, cutting board, bottle, bowl,tea cup, can and box) from the PaCMan database.}
+\label{database}
+\end{figure}
+
+The number of constructed layers in a hierarchy depends on the size of the training objects. For the PaCMan dataset, the hierarchical representations are formed of five layers. 
+
+One important issue consisted of finding the optimum number of parts at each layer for each representation. Apart from minimizing the reconstruction error introduced in Eqn.~\ref{eqn:recon-error.patch}, we also used the Davies-Bouldin (DB) index \cite{Bouldin97} as a method to assess the quality of the clustering process. The optimum number of parts $k$ on a layer $l$ is selected according to the minimum DB index. As the dimensionality of the feature vectors used in the clustering process increases at each layer, we applied the PCA dimensionality reduction method for a faster and more efficient selection of the optimum number of clusters.
+
+Examples of the learned parts at each layer of the two hierarchical representations and correspondences between them are depicted in Figure~\ref{hierarchy}.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{hierarchy}
+\end{center}
+\caption{Examples of parts at each layer in the 2D and view-based 3D hierarchies and correspondences between them.}
+\label{hierarchy}
+\end{figure}
+
+We present in Table~\ref{tab:stats} for each layer in the 2D and view-based 3D hierarchies the optimum number of parts and the reconstruction error obtained for each hierarchy on the testing set. The reconstruction error is computed using an adaptation of the formula introduced in Eqn.~\ref{eqn:recon-error.patch},
+\begin{equation}
+ Err^l = \frac{1}{|Z_*^{'l}|} \sum_{j=1}^{|Z_*^{'l}|} r_j^l,\quad
+ r_j^l = \frac{\left\|\Gamma_m^l-Z_j^{'l}\right\|_2}{\left\|Z_j^{'l}\right\|_2},
+ \label{eq:r}
+\end{equation}
+where $m$ is the index of best-fitting part for a patch from the testing set $Z_j^{'l}$ at layer $l$ that indicates the size of the receptive field $F^l$:
+ \begin{equation}
+ m=\min_{i=1}^{|\Gamma_*^l|}(\left\|\Gamma_i^l-Z_j^{'l}\right\|_2).
+\end{equation}
+
+ \begin{table}
+ \begin{center}
+  \begin{tabular}{ | c | c | c | c | c |r |}
+      \hline
+      Layer $l$  & $|\Gamma_*^l|$ & $Err_{2D}$ &  $|\Omega_*^l|$ & $Err_{3D}$ \\ \hline
+    1 &  90 & 0.37 & 150 & 0.58 \\ \hline
+    2 &  300 & 0.54 & 200 & 0.63 \\ \hline
+    3 &  300 & 0.68 & 300 & 0.65  \\ \hline 
+    4 &  550 & 0.71 & 600 & 0.34  \\ \hline
+    5 &  270 & 0.57 & 280 & 0.22 \\ \hline
+  \end{tabular}
+\end{center}
+ \caption{Statistics of parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
+ \label{tab:stats}
+\end{table}
+
+%\begin{figure}
+%\begin{center}
+%\includegraphics[width=0.6\textwidth]{reconstruction_edge}
+%\end{center}
+%\caption{2D reconstruction examples of a mug instance from different viewpoints at Layers 2 and 3.}
+%\label{reconstructionEdge}
+%\end{figure}
+
+%Analysis of the results presented in Table~\ref{tab:stats} highlights two phenomena: The reconstruction error in the 2D case increases with $l$, while in the 3D case it decreases. As the error is computed per pixel in a patch, a slight translation of an edge part will increase the error with quite a high margin. On the other hand in the depth case, a part translation impacts the error in a much smaller way, while the decrease of the overall error is due to the increasing of the number of parts with $l$, which improves the chances of finding a better fitting part for each patch. 
+
+%We present in Figures \ref{reconstructionEdge} and \ref{reconstructionDepth} several examples of reconstruction for both hierarchical representations at different layers. 
+%
+%\begin{figure}
+%\begin{center}
+%\includegraphics[width=0.6\textwidth]{reconstruction_depth}
+%\end{center}
+%\caption{3D view-based reconstruction examples of a mug instance from different viewpoints at Layers 2 and 3.}
+%\label{reconstructionDepth}
+%\end{figure}
+
+One of our principal aims consists in quantifying the predictive power of the learned correspondences between 2D and view-based 3D information channels, at each layer of their compositional representations. This is assessed using multiple statistical measures. First, we assess the conditional probabilities of 2D parts given 3D parts and vice versa, and compute the predictive power in the case of choosing the part which maximizes the conditional probability. Some examples of correlations are depicted in Figure~\ref{correlations}.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{correlations_1_3}
+\end{center}
+\caption{Correlation examples between 2D and the best corresponding view-based 3D parts at Layers 2-4.}
+\label{correlations}
+\end{figure}
+
+The results obtained for each layer are presented in Table~\ref{tab:stats.inference} together with the reconstruction error of view-based 3D parts given 2D parts. The \textit{Inference} column contains for each layer $l$ the recall value for the correct prediction of depth parts relative to the ground truth depth patches using the inference algorithm, while the classifier column $Inference+SVM$ shows the recall when using additional context information in combination with the inference algorithm. 
+
+The cross-hierarchy reconstruction error is computed using an adapted version of Eqn.~\ref{eqn:recon-error.patch},
+\begin{equation}
+ Err(3D|2D)^l = \frac{1}{|D_*^{'l}|} \sum_{j=1}^{|D_*^{'l}|} r_j^l(3D|2D)
+ \end{equation}
+ 
+\begin{equation} 
+ r_j^l(3D|2D) = \frac{\left\|\Omega_{m'}^l-D_j^{'l}\right\|_2}{\left\|D_j^{'l}\right\|_2}, 
+\end{equation}
+ where $m'$ is the index that maximizes the conditional probability of a view-based 3D part given the observed 2D part $\Gamma_m^l$, and $D_j^{'l}$ is the ground-truth depth patch from the testing set corresponding to the observed 2D patch $Z_j^{'l}$ at layer $l$, while $m$ is the index of best fitting 2D part for the patch $Z_j^{'l}$
+\begin{equation}
+ m'=\max_{i=1}^{|\Omega_*^l|}P(\Omega_i^l|\Gamma_m^l),\quad  m=\min_{i=1}^{|\Gamma_*^l|}(\left\|\Gamma_i^l-Z_j^{'l}\right\|_2).
+\end{equation}
+
+ \begin{table}
+ \begin{center}
+  \begin{tabular}{ | c | c | c | c | c |r |}
+      \hline
+   \multirow{2}{*}{Layer $l$}  &  \multicolumn{2}{ |c| } {$Inference$} & \multicolumn{2}{ |c| } {$Inference+SVM$}  \\ \cline{2-5}
+   & \quad Recall \quad  & $Err(3D|2D)$ & \quad Recall \quad & $Err(3D|2D)$ \\ \hline
+      \hline
+    $l_1$ &  34.12\% & 1.39 & 50.4\% & 0.64 \\ \hline
+    $l_2$ &  27.36\% & 0.99 & 53.6\% & 0.56  \\ \hline
+    $l_3$ &  24.27\% & 0.87 & 56.4\% & 0.44  \\ \hline 
+    $l_4$ &  22.44\% & 0.69 & 45\% & 0.37  \\ \hline
+    $l_5$ &  45.50\% & 0.46 & 61.5\% & 0.29  \\  \hline
+  \end{tabular}
+\end{center}
+ \caption{Statistics of inference results of view-based 3D parts given 2D observed parts at Layers 1-5 in the 2D and view-based 3D hierarchies.}
+ \label{tab:stats.inference}
+\end{table}
+
+As it can be noticed in Table~\ref{tab:stats.inference}, using an SVM classifier in combination with the inference algorithm is beneficial, leading to an improved prediction power and a minimization of the reconstruction error.
+
+In Figure \ref{inference} we depict several examples of depth images formed of 3D view-based parts inferred from observed 2D parts detected from a corresponding edge image using the probabilistic model introduced in Section~\ref{sec:inference}. As we use overlapping receptive fields in both hierarchies, we enforce consistency of overlapping predictions using a correlation score for each pixel, weighted by the confidence of the 2D parts that predicted its value and the conditional probability of the view-based 3D part given the observed 2D part. The set of images at each layer $l=1,\ldots,5$ in Figure~\ref{inference} is composed of the ground truth edge image, the predicted edge image via the 2D hierarchy, the depth reconstructed image based on the inference of depth parts given 2D detected parts and the corresponding ground truth depth image, at each specific layer. The images only contain data around edge parts, while the size of the predicted region increases at each layer.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{inference}
+\end{center}
+\caption{Reconstruction examples of depth images based on inference results of view-based 3D parts given 2D observed parts at Layers 1--5 in the 2D and view-based 3D hierarchies.}
+\label{inference}
+\end{figure}
+
+\section{Conclusion}
+\label{sec:conclusions}
+
+In this work we proposed a method for constructing a hierarchical representations, for two information channels, 2D intensity data and view-based 3D depth data. We employed as a learning algorithm a sparse autonencoder network, where each layer receives as input the latent representation of the layer below. For obtaining predictions across hierarchies, we discretized the responses of each layer into a set of parts, using clustering techniques. Furthermore, we introduced a probabilistic fusion model for linking the two information channels across hierarchies. The fused model enables an improved and refined representation of the world, while being able to infer 3D object shape from 2D intensity edge information. Next, we evaluated the learned correspondences between parts in the two hierarchies showing that meaningful correlations can be formed for a set of parts, while specific 2D parts have low prediction power, due to ambiguity of edge structures which could correspond to many depth parts. We handled this problem, by extracting complementary information from the region surrounding an edge part using HOG features, which were fed to a SVM classifier. This method proved its usefulness in the inference process, leading to an improved prediction of the correct corresponding depth part. As future work, we plan to test the efficacy of our approach on scenes composed of several objects exposing different levels of complexity, such as clutter and occlusions.
+
+
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that the IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command,
+% and the \label for the overall figure must come after \caption.
+% \hfil is used as a separator to get equal spacing.
+% Watch out that the combined width of all the subfigures on a 
+% line do not exceed the text width or a line break will occur.
+%
+%\begin{figure*}[!t]
+%\centering
+%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
+%\label{fig_second_case}}
+%\caption{Simulation results for the network.}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat[]), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
+% labels, the optional argument to \subfloat must be present. If a
+% subcaption is not desired, just leave its contents blank,
+% e.g., \subfloat[].
+
+
+% An example of a floating table. Note that, for IEEE style tables, the
+% \caption command should come BEFORE the table and, given that table
+% captions serve much like titles, are usually capitalized except for words
+% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
+% and up, which are usually not capitalized unless they are the first or
+% last word of the caption. Table text will default to \footnotesize as
+% the IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that the IEEE does not put floats in the very first column
+% - or typically anywhere on the first page for that matter. Also,
+% in-text middle ("here") positioning is typically not used, but it
+% is allowed and encouraged for Computer Society conferences (but
+% not Computer Society journals). Most IEEE journals/conferences use
+% top floats exclusively. 
+% Note that, LaTeX2e, unlike IEEE journals/conferences, places
+% footnotes above bottom floats. This can be corrected via the
+% \fnbelowfloat command of the stfloats package.
+
+
+% use section* for acknowledgment
+\section*{Acknowledgment}
+
+The authors would like to thank...
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+
+%\begin{thebibliography}{1}
+%
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%
+%\end{thebibliography}
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,egbib}
+
+
+\end{document}
+
+
