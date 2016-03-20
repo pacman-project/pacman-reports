@@ -26,7 +26,7 @@
 
 \title{Methodologies for grasp acquisition and planning}
 \deliverableid{DR 4.3}
-\author{H. Marino, C.J.~Rosales, M. Kopicki, G. Santaera, E. Luberto, Y. Wu, A. Artoni, G. Pannocchia, M. Gabiccini, and J.L.~Wyatt}
+\author{H. Marino, C.J.~Rosales, M. Kopicki, G. Santaera, E. Luberto, Y. Wu, A. Artoni, G. Pannocchia, M. Gabiccini, C. Zito, D. Belter, A. Leonardis, A. Bicchi, and J.L.~Wyatt}
 \address{University of Birmingham, UK}
 \email{jlw@cs.bham.ac.uk}
 \headertitle{Grasp acquisition and planning}
@@ -83,7 +83,7 @@ In our view, grasp methodologies that try to cope with pose uncertainty, object 
 
 The selection of correct grasp strategies when the object to be grasped in unknown or only partially visible environments is a trivial task for humans. Although robotics has made significant progress in autonomous grasping, the problem of grasping novel objects in under uncertainty and partial information is still an open area. In this report, we document our work to tackle these problems.
 
-The planned work for the final year involved Tasks 4.3 and Tasks 4.4. These aimed to demonstrate grasp acquisition using our methods for learning and planning under uncertainty, in particular the goal was to demonstrate these on real robot hands, and in particular to the show ability to plan grasps under pose and shape uncertainty and incompleteness. We also promised methods to achieve optimal choice of contact forces during grasp acquisition.  We describe all of these here.
+The planned work for the final year involved Tasks 4.3 and Tasks 4.4. These aimed to demonstrate grasp acquisition using our methods for learning and planning under uncertainty, in particular the goal was to demonstrate these on real robot hands, and in particular to the show ability to plan grasps under pose and shape uncertainty and incompleteness. We also promised methods to achieve optimal choice of contact forces during grasp acquisition.  Finally, the project promised methods for combining grasp formation with part based representations. We describe all of these here.
 
 %% Input from Claudio
 % In Task 4.4 we posed the problem of grasping as a problem of motion planning under uncertainty. We planned to implement and evaluate a motion planning algorithm in a physics based simulation, prior to transfer to a real robot. The requirement was for an algorithm that could provide robust reach to grasp trajectories in the face of object pose and shape uncertainty, planning for and taking advantage of tactile contacts. We considered both methods that plan explicitly in belief space, and those that embed information from observations in the physical space. We elected to pursue the latter route.
@@ -91,9 +91,9 @@ The planned work for the final year involved Tasks 4.3 and Tasks 4.4. These aime
 
 \subsection{Actual work performed}
 
-The work we have performed can be divided into work on learning, planning, and optimisation. We quickly summarise our achievements in each area, before describing the specific contributions in detail. Each of these appraoches directly address our Task 4.3 and 4.4 goals of grasp acquisition and grasp planning and learning under uncertainty and incompleteness.\\
+The work we have performed can be divided into work on learning, planning, and optimisation. We quickly summarise our achievements in each area, before describing the specific contributions in detail. Each of these approaches directly address our Task 4.3 and 4.4 goals of grasp acquisition and grasp planning and learning under uncertainty and incompleteness.\\
 
-\noindent {\bf Learning:} in previous years we presented our method for learning grasps from small numbers of examples, using a probabilistic approach, which employs a product of experts to provide generalisation of final grasp configurations. This year we have extended this in two ways. First, we present the adaptation to underactuated robotic hands of the grasp planning algorithm previously devised only for fully actuated hands --- the DLR-HIT Hand II was used last year by the University of Birmingham. Our approach, by using a product of experts, learns now not only the desired final grasp, but also good grasping trajectories from rigid body simulations of the Pisa/IIT SoftHand. The new method shows that it is possible to use just a few example grasps in order to be able to transfer this knowledge to unknown, even partially visible objects. This has resulted in a paper to be submitted to IROS. More details can be found in~\ref{ann:LearningInferenceUnderactuatedHands}.  In a second contribution, reported in DR2.2, we have extended our learning method to work with the compositional hierarchy.  In a third piece of work we have extended our approach based on multiple eigenspaces to learning a data-driven taxonomy of grasps. This has been trained on 4500 postures. We describe this in Sec.~\ref{sec:DataDrivenMovementAnalysis}. \\
+\noindent {\bf Learning:} in previous years we presented our method for learning grasps from small numbers of examples, using a probabilistic approach, which employs a product of experts to provide generalisation of final grasp configurations. This year we have extended this in two ways. First, we present the adaptation to underactuated robotic hands of the grasp planning algorithm previously devised only for fully actuated hands --- the DLR-HIT Hand II was used last year by the University of Birmingham. Our approach, by using a product of experts, learns now not only the desired final grasp, but also good grasping trajectories from rigid body simulations of the Pisa/IIT SoftHand. The new method shows that it is possible to generalise our method from fully actuated hands, by taking. This has resulted in a paper to be submitted to IROS. More details can be found in~\ref{ann:LearningInferenceUnderactuatedHands}.  In a second contribution, reported in DR2.2, we have extended our learning method to work with the compositional hierarchy.  In a third piece of work we have extended our approach based on multiple eigenspaces to learning a data-driven taxonomy of grasps. This has been trained on 4500 postures. We describe this in Sec.~\ref{sec:DataDrivenMovementAnalysis}. Finally in a fourth piece of work we have described an algorithm for generalising a grasp by combining our grasp learning algorithm with our part based representations. We hypothesize that this will enable better grasping of parts with occluded surfaces.\\
 
 \noindent {\bf Planning:} with regard to planning under uncertainty and incomplete information we have two strands of work. One is grasping under uncertainty, taking into account the value of tactile information. At a choice point at the end of year 1 we chose to pursue this using a planning method that performed belief space planning by embedding information gains in the physical space. This year we have completed an implementation on the Boris platform, and present the results of this and simulation studies in a draft paper to be submitted to autonomous robots. The work is described in more detail in Sec.~\ref{sec:PlanningUncertainty}. In a second strand we completed our work on high level planning to move objects between locations. Sec.~\ref{sec:HighLevelPlanning} presents our approach to solve this problem, possibly by using handoffs, table support, and regrasping. This work constituted the theoretical foundation for the high-level planning needed to perform Task 5.3 at M24. The planner has now been tested (in simulation) also in more complex scenarios, with respect to bimanual object passing, with promising results.
 The good level of maturity reached by the work is testified by the journal publication in~\ref{ann:highLevelPlanning}.  We have also developed sensing and planning to guide grasp acquisition prior to the moment of contact. In Sec.~\ref{sec:IRSensorBasedGraspPlanning}, we describe this work, in which we plan and control the approach trajectory using IR sensors. \\
@@ -128,6 +128,9 @@ We now detail the work for each of these areas in turn.
 % To be prepared by: Hamal MARINO
 % Data-Driven Human Grasp Movement Analysis
 \input{./inputFiles/DataDrivenMovementAnalysis.tex}
+
+
+\input{./inputFiles/CompositionalGrasping.tex}
 
 \subsection{Planning}
 
@@ -194,30 +197,12 @@ We now detail the work for each of these areas in turn.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Article: Enhancing Adaptive Grasp Planning Through a Simple Sensor-based Reflex Mechanism}
-\label{ann:IRSensorBasedGraspPlanning}
+\subsection{Article: IR Sensor-based Grasp Planner for the Pisa/IIT SoftHand Under Uncertainty}
+\label{ann:highLevelPlanning}
 \begin{description}
-    \item[Authors] E. Luberto, G. Santaera, Y. Wu, M. Gabiccini, and A. Bicchi
+    \item[Authors] E. Luberto, G. Santaera, Y. Wu, M. Gabiccini
     \item[Info] Submitted to: 2016 IEEE/RSJ International Conference on Intelligent Robots and Systems
-    \item[Abstract] This paper presents an approach to achieve
-adaptive grasp of unknown objects whose position is only
-approximately known via point-cloud data. We assume no
-representation of objects, and no off-line grasp planning.
-Rather, we exploit the adaptability of a soft robotic hand
-which can autonomously conform to the shape of a grasped
-object if properly approached. Once a grasp approach has
-been preliminary planned based only on rough estimates of the
-object position, the hand is shaped to a pre-grasp configuration.
-Before closing the hand, a sensor-based algorithm is applied
-that corrects the relative hand-object posture so as to enhance
-the probability that the object is “caged” by the fingers. The
-algorithm minimizes the distance between the hand’s fingerpads
-and the object by continuously controlling the wrist pose and
-orientation and the hand closure. Experimental studies with a
-Kuka-LWR arm and a Pisa/IIT Softhand illustrate the benefit
-of the developed technique and the improvement in grasping
-performance with respect to open-loop execution of grasps
-planned on the basis of prior RGB-D cues only.
+    \item[Abstract] This paper presents an approach to refine grasps for soft robotic hands in the presence of uncertainty. Once a pre-planned grasp, e.g. from a database, has been selected for execution to an object detected in a scene, an infrared sensor-informed grasp planner is run online that essentially reduces uncertainties related to object shape and its pose in the environment. The proposed method implements a grasp location optimization algorithm that allows to minimize the distances between hand fingertips and the object by continuously controlling the wrist pose and the amount of hand closing. Experimental studies with the Kuka-LWR arm and the Pisa/IIT SoftHand illustrate the benefit of the developed technique and the improvement in the grasping performance with respect to the open-loop execution of grasps planned on the basis of prior visual cues only.
     \item[Relation with the deliverable] this work is concerned with the problem of dealing with uncertainty when performing a grasp with a compliant hand. The present work contributes to the goals of Tasks 4.3 and 4.4.
     \item[Attachment] (following pages until next annex)
 \end{description}
@@ -229,7 +214,7 @@ planned on the basis of prior RGB-D cues only.
 \label{ann:LearningInferenceUnderactuatedHands}
 \begin{description}
     \item[Authors] M. Kopicki, C. J. Rosales, H. Marino, M. Gabiccini, J. L. Wyatt
-    \item[Info] Submitted to: {\color{red} update this and the attached PDF!}
+    \item[Info] Submitted to IROS 2016
     \item[Abstract] Recent advances have been made in learning of grasps for fully actuated hands. A typical approach learns the target locations of finger links on the object. When a new object must be grasped, new finger locations are generated, and a collision free reach-to-grasp trajectory is planned. Such a division of labour fails to transfer directly to underactuated hands, which improve grasp reliability via contacts with the object during grasping. In this paper we present a method for learning transferrable grasps for underactuated hands. Our approach learns not only the desired final grasp, and also good grasping trajectories, from a rigid body simulation. This enables us to learn how to approach the object and close the underactuated hand from a variety of poses. Our method does not rely on explicit representation of the contact sequence.
 The core learning method uses product of experts. This allows grasp transfer to novel objects and works despite partial shape reconstruction of less than 25\% of the surface. From nine training grasps on three objects the method transferred grasps to previously unseen, novel objects, that differ significantly from the training objects, with an 80\% success rate. We move beyond previous work by: i) showing the ability to learn transferrable grasps for underactuated hands; ii) extending our learning
 method to work with multiple training examples for each grasp
@@ -246,14 +231,16 @@ grasp trajectories.
 \label{ann:DataDrivenHumanGraspMovementAnalysis}
 \begin{description}
     \item[Authors] H. Marino, M. Gabiccini, A. Leonardis, and A. Bicchi
-    \item[Info] Accepted for presentation in: 47th International Symposium on Robotics (ISR), Munich, Germany, June 21-22, 2016; this version is not final and subject to change up to the submission deadline of March 31, 2016.
+    \item[Info] 47th International Symposium on Robotics
+(ISR), Munich, Germany, June 21-22, 2016; this version is not the final
+camera ready.
     \item[Abstract] The description of human hand motions is very complex, and methods to reduce this complexity have attracted much attention in the motor control literature. Important implications in robot hand design and programming have also generated a wide interest in the robotics research community.
     Early studies prevalently used direct analysis methods such as visual inspection to define grasp taxonomies. More recently, analytical methods have been employed to perform grasping data dimensionality reduction. In this paper, we present a methodology to reconcile these two distinct and apparently incompatible approaches under a unified framework: this allows us to obtain a data-generated grasp taxonomy along with low-dimensional representations which could be used for human grasping data classification and posture reconstruction, as well as for simplifying grasp planning algorithms and robotic hands programming.
 %    Humans tend to simplify the space of possible grasps they can perform. This led to the introduction of grasp taxonomies via direct inspection of human movements, and data dimensionality reduction methods for grasp classification, robotic grasp synthesis, and simple hands design. In this paper, we present a methodology to reconcile these two distinct and apparently incompatible approaches under a unified framework, obtaining a data-driven taxonomy that can serve as a link among the aforementioned solutions.
     \item[Relation with the deliverable] this work is concerned with the problem of finding a principled way of analyzing human grasping motion in order to obtain guidelines for the design of hand underactuation mechanisms based on specific tasks to be accomplished.
     \item[Attachment] (following pages until next annex)
 \end{description}
-\includepdf[pages=-]{./attachedPapers/marino2016datadriven.pdf}
+\includepdf[pages=-]{./attachedPapers/marino2015datadriven.pdf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -284,15 +271,37 @@ grasp trajectories.
 \end{description}
 \includepdf[pages=-]{./attachedPapers/OffsetFreeMPCExplained.pdf}
 
-\subsection{Article: Active Touch for Grasping}
+\subsection{Article: Active Touch for Dexterous Grasping}
 \label{ann:activetouch}
 \begin{description}
     \item[Authors] Claudio Zito, Valerio Ortenzi, Maxime Adjigble, Marek Kopicki and Jeremy L. Wyatt
-    \item[Info] To be submitted to: Autonomous Robots
-    \item[Abstract]
+    \item[Info] Submitted to Autonomous Robots
+    \item[Abstract] Dexterous grasping of objects with uncertain pose is a yet unsolved problem in robotics. In this work, we present a novel solution to such problem. We propose a trade-off between grasp and information gain in that we plan an information gain whilst simultaneously attempting to grasp the object. First, we show how tactile information, acquired during a failed attempt to grasp an object can be used to refine the estimate of the object's pose. Second, we describe how this information can be used to re-plan new reach-to-grasp trajectories for successive grasp attempts. Third, we show how complex, dexterous grasping trajectories can be efficiently planned for a non-convex object described as a point cloud. Finally we present IR3ne, our information reward based algorithm, to show how reach-to-grasp trajectories can be modified, so that they maximise the expected tactile information gain, while simultaneously delivering the hand to the grasp configuration which is most likely to succeed. The method is demonstrated in trials on a simulated robot and on a half-humanoid platform called Boris. Sequential re-planning is shown to achieve a higher success rate than single grasp attempts. Also, our algorithm IR3ne requires fewer re-planning iterations with its trajectories maximising information gain than conventional planning methods.
+
     \item[Relation with the deliverable]: this paper is central to our work on grasp acquisition under uncertainty. The method we have developed reasons about the uncertainty in the pose of the object, and plans to gather information while reaching the desired grasp state. This places grasp acquisition and active tactile information gathering in a tractable framework.
     \item[Attachment] (following pages until next annex)
 \end{description}
-%\includepdf[pages=-]{./attachedPapers/OffsetFreeMPCExplained.pdf}
+\includepdf[pages=-]{./attachedPapers/zito-et-al-ar-active-grasp.pdf}
+
+
+\subsection{Article: Learning dexterous grasps with object parts}
+\label{ann:GraspingCompositions}
+\begin{description}
+    \item[Authors] Marek Kopicki, Dominik Belter, and Jeremy L. Wyatt
+    \item[Info] Technical Report
+    \item[Abstract] In this report we build on our previous work on using products of
+experts (PoE) to learn grasps. Although PoE generalises grasps well to
+novel objects, it does not condition grasps on information about parts.
+We hypothesize that conditioning grasping experts on parts from a com-
+positional hierarchy can offer several advantages, including dealing with
+missing data due to occlusions. In this report we describe the method that
+we propose to handle these problems. This includes descriptions of the
+training and inference procedures which extend those from our previous
+method.
+
+    \item[Relation with the deliverable]: this paper brings together our work on grasping, together with our work on compositions. Thus it brings together two of the fundamental threads of PaCMan.
+    \item[Attachment] (following pages until next annex)
+\end{description}
+\includepdf[pages=-]{./attachedPapers/graspparts3d-ijrr2016.pdf}
 
 \end{document}
