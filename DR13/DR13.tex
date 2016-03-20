@@ -84,14 +84,13 @@ The main goal for the final stage of the project was to complete Task 1.3.
 {\em Task 1.3 Integration of 2D and 3D representations of objects:} We will integrate (bind) the two information channels, the one that models 2D shape fragments on various levels of complexity and the other that structures 3D elements in a compositional hierarchy. The integration will take a form of feature binding at various levels of granularity. We will learn significant statistical correlations between the two channels and link together the co-occuring features in a probabilistic sense.
 \end{quotation}
 
-For the final period the specific sub-goal was to ``Develop an efficient inference process that will operate both on combined (i.e., 2D
-and 3D visual information channels) as well as on the individual ones.''
+For the final period the specific sub-goal was to ``Develop an efficient inference process that will operate both on combined (i.e., 2D and 3D visual information channels) as well as on the individual ones.''
 
 \subsection{Actual work performed}
 
 %What does the report actually present? How have the tasks been addressed? To what extent have the intended objectives been achieved? Why, how -- or why not? 
 
-We have achieved the goal of Task 1.3, using an approach based, as promised, on a pair of linked compositional hierarchies. Each hierarchy employs stacked autoencoders. The links between the 2D and 3D features are learned using the probabilistic approach to this that we presented at the Year 2 review. We also completed work on several instantiations of our compositional hierarchy that utilise the same core learning framework, but which have different ways of encoding object shape. The first encodes the 2D shape on the image plane caused by intensity changes. The second encodes the 3D shape of the object in a view based manner, expressing the changing depth of the object surfaces relative to the image plane. The third and fourth instantiations encode the 3D shape of the object in a view independent manner. The third instantiation does this in a surface based way, the fourth instantiation starts with this, and then builds on top of it a volumetric representation of 3D shape. In another WP we have combined this representation with our grasping algorithms. Finally, we have studied and implemented competing methods in the form of CNNs. In addition to all these pieces of work, we have generated a new dataset, containing 400 objects from 20 categories, which contains several hundred thousand depth and intensity images of these objects. We have used this for training of our compositional hierarchies. In addition it is intended for use as an enlarged training set for the cluttered scene challenge we presented as part of SHREC. Finally we participated in a workshop at ICCV, where we presented this challenge, and also a full ICCV paper on the theory of compositional hierarchies. The current work has resulted in drafts of three papers to be submitted to ECCV, and one paper to be submitted to IROS.
+We have achieved the goal of Task 1.3, using an approach based, as promised, on a pair of linked compositional hierarchies. Each hierarchy employs stacked autoencoders. The links between the 2D and 3D features are learned using the probabilistic approach to this that we presented at the Year 2 review. We also completed work on several instantiations of our compositional hierarchy that utilise the same core learning framework, but which have different ways of encoding object shape. The first encodes the 2D shape on the image plane caused by intensity changes. The second encodes the 3D shape of the object in a view based manner, expressing the changing depth of the object surfaces relative to the image plane. The third and fourth instantiations encode the 3D shape of the object in a view independent manner. The third instantiation does this in a surface based way, the fourth instantiation starts with this, and then builds on top of it a volumetric representation of 3D shape. In another WP we have combined this representation with our grasping algorithms. Finally, we have studied and implemented competing methods in the form of CNNs. In addition to all these pieces of work, we have generated a new dataset, containing 400 objects from 20 categories, which contains several hundred thousand depth and intensity images of these objects. We have used this for training of our compositional hierarchies. In addition it is intended for use as an enlarged training set for the cluttered scene challenge we presented as part of SHREC. Finally we participated in a workshop at ICCV, where we presented this challenge, and also a full ICCV paper on the theory of compositional hierarchies. The current work has resulted in drafts of several papers we plan to submit to ICPR and ACCV.
 
 \subsubsection{Linked 2D-3D compositional hierarchies}
 
@@ -195,7 +194,7 @@ The category labels are stored in a 400x1 array that contains the label of every
 \subsection{Article: \em Hierarchical Object Representation based on a Sparse Autoencoder Network}
 \begin{description}
     \item[Authors] Mirela Popa, Jeremy L Wyatt and Justus Piater
-    \item[Info] This is a long version of a paper to be submitted to ECCV 2016.
+    \item[Info] To be submitted to ACCV 2016.
     \item[Abstract] We propose a method for constructing a pair of complementary
 hierarchical representations from 2D edge images and from view-based 3D
 data, respectively.  As a learning algorithm, our model uses a sparse
@@ -208,35 +207,40 @@ between 2D and view-based 3D observations. The results obtained on the
 PaCMan dataset demonstrate the efficacy of our approach.
     \item [Relation with the deliverable] This work is concerned with learning and inference using a pair of linked 2D-3D hierarchies. This is one of primary goals of the WP, and the primary goal of Task 1.3. The paper describes how we create a compositional hierarchy using a stacked autoencoder. It then shows how we learn a pair of such hierarchies, one for 2D intensity information, and one for view based 3D information. The hierarchies are grown using the same principles we have developed elsewhere, including We then show how these hierarchies can be linked using probabilistically correct inference. Finally we show that this enables us to infer 3D structure from 2D intensity edges. This meets the goal of Task 1.3.
     
-    \item[Attachment] The attachment is included at the end of the deliverable.
+    \item[Attachment] The attachment is included in the following pages.
 \end{description}
 % attach your PDF(s) if required, pusblished and online available documents do not require it if you provide the doi (only doi are permitted)
 %\includepdf[pages=-]{./attachedPapers/YOURFILE.pdf
+\includepdf[pages=-]{./attachedPapers/HierarchicalSparseAutoencoders.pdf}
+
 \newpage
 
 \subsection{Article: \em A view-invariant, compositional hierarchical representation of 3D shapes}
 \begin{description}
     \item[Authors] Vladislav Kramarev, Ales Leonardis and Jeremy L. Wyatt
-    \item[Info] To be submitted to ECCV 2016.
+    \item[Info] To be submitted to ACCV 2016.
     \item[Abstract] We propose a novel, view-invariant, compositional hierarchical representation of 3D shape. The representation is surface based. The hierarchy is learned from 3D models, either point cloud or mesh data. The hierarchy is built in layers, where each layer is a vocabulary of parts, each part corresponding to some 3D surface. The parts in a layer are learned by composing parts from the layer below. The implementation of the framework allows learning of compact hierarchies. Each part is able to capture variation in shape, and does so by encoding densities over transformations between part poses, and measures of surface similiarity. Compactness is also achieved by the fact that the parts learned are shared across different object categories. In empirical work we show the features that the hierarchy learns, and demonstrate their shareability. Receptive fields for each layer are redundant, and grow geodesically across the surface of the object.
     \item [Relation with the deliverable] This paper describes a more advanced form of the previously view variant 3D compositional hierarchy that we presented in previous years. We have now moved this hierarchy to be completely view independent. This enables the parts to grow without restrictions imposed by the viewpoint. We demonstrate the learning on a PacMan dataset gathered specifically for this purpose. This work represents part of the progress we have made on compositional hierarchies for 3D shape.
-    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+    \item[Attachment] The attachment is included in the following pages. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
 \end{description}
+\includepdf[pages=-]{./attachedPapers/eccv2016submission.pdf}
+
 \newpage
 
 \subsection{Article: \em Learning and inference with a compositional hierarchical representation
 of 3D object shape}
 \begin{description}
     \item[Authors] Domink Belter, Marek Kopicki, Ales Leonardis and Jeremy L. Wyatt
-    \item[Info] To be submitted to IROS 2016. % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
+    \item[Info] Technical Report % UNDER REVIEW / IN PRESS / ACCEPTED FOR PUBLICATION (PROVIDE WHERE) / PUBLISHED AND AVAILABLE ONLINE (PROVIDE DOI)
     \item[Abstract] Modelling of object shape is an essential precursor to any method for object manipulation. In this paper
 we present a method for learning compositional hierarchical representations of 2.5D and 3D object shape. These are representations
 that consist of a hierarchy of parts. We present novel algorithms for learning and inference. We empirically demonstrate the ability to learn these representations from real
 depth data, and to fill in missing information caused by self-occlusions. We also demonstrate the ability of the hierarchy to model variable shape, and to share parts across different
 objects and object categories.
     \item [Relation with the deliverable] This paper describes an extension of the type of approach in the previous attachment. This compositional hierarchy starts with learning view invariant surface parts from viewpoint specific data. It then performs a further abstraction by creating parts that are based on volumetric receptive fields, and learned from data obtained from several different views. The hierarchy is the part of our work on 3D compositions that has been implemented to connect with our grasp learning algorithms. In this paper we describe how the hierarchy is learned, and show that it has the properties of view invariance, shareability and robustness to noise that we desire. To show the ability to learn in the face of noisy data we demonstrate learning on the IJRR dataset that 
-    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+    \item[Attachment] The attachment is included in the following pages. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
 \end{description}
+\includepdf[pages=-]{./attachedPapers/finalReport.pdf}
 \newpage
 
 \subsection{Article: \em Gaussian parametrization of deep convolutional network filters}
@@ -255,8 +259,9 @@ two classification dataset, CIFAR-10 and PaCMan database. We show that proposed 
 as standard CNNs, but achieves higher level of compactness of filters and is a first step towards the compositional interpretation
 of the representation being learned through CNNs.
     \item [Relation with the deliverable] This paper describes work on applying CNNs to learning object categories. The study looks at the performance of a CNN implementation on two datasets CIFAR-10 and the PacMan synthetic object dataset. The paper focuses on 2D intensity images, and on object categorisation. Part of the purpose of this investigation was to assess the level of performance of CNNs on similar data to that used by our compositional hierarchies. The paper looks at ways of simplifying CNNs while retaining their performance, the approach being to constrain weights to lie on a Gaussian. 
-    \item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+    \item[Attachment] The attachment is included in the following pages. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
 \end{description}
+\includepdf[pages=-]{./attachedPapers/GaussianCNN_TechReport.pdf}
 \newpage
 
 
@@ -271,8 +276,9 @@ structure of the SMs for statistical learning of the geometric transformations o
 actions on the SMs. For this purpose, we design a disjoint union topology using an indexing mechanism for the formation of shape models on SMs in the vocabulary, recursively. We represent the topological relationship between
 shape components using graphs, which are aggregated to construct a hierarchical graph structure for the shape vocabulary. To this end, we introduce a framework to implement the indexing mechanisms for the employment of the vocabulary for structural shape classification. The proposed approach is used to construct invariant shape representations. Results on benchmark shape classification outperform state-of-the-art methods.
 \item [Relation with the deliverable] This shows the completion of our work on CHOP, and the ability of the CHOP method to draw inferences in the face of occlusions.
-\item[Attachment] The attachment is included at the end of the deliverable. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
+\item[Attachment] The attachment is included in the following pages. %if so, e.g. (following pages until next annex) or The article can be downloaded at the DOI link above, hence no attachment is provided
 \end{description}
+\includepdf[pages=-]{./attachedPapers/Ozay_Compositional_Hierarchical_Representation_ICCV_2015_paper.pdf}
 \newpage
 
 %
@@ -287,14 +293,5 @@ shape components using graphs, which are aggregated to construct a hierarchical 
 %\end{description}
 %\newpage
 
-\includepdf[pages=-]{./attachedPapers/HierarchicalSparseAutoencoders.pdf}
-
-\includepdf[pages=-]{./attachedPapers/eccv2016submission.pdf}
-
-\includepdf[pages=-]{./attachedPapers/finalReport.pdf}
-
-\includepdf[pages=-]{./attachedPapers/GaussianCNN_TechReport.pdf}
-
-\includepdf[pages=-]{./attachedPapers/Ozay_Compositional_Hierarchical_Representation_ICCV_2015_paper.pdf}
 
 \end{document}
